@@ -13,7 +13,11 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar
+        barStyle="light-content"
+        translucent={true}
+        backgroundColor="transparent"
+      />
       <LinearGradient
         colors={['#0699FF', '#0D6CEC']}
         style={styles.topContainer}>
