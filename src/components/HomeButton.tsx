@@ -1,7 +1,11 @@
 import * as React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {ImageSource} from 'react-native-vector-icons/Icon';
-import {scaleSize, scaleHeight, setSpText2} from '../utils/responsive';
+import {
+  scaleSize,
+  scaleHeight,
+  setSpText2,
+} from 'react-native-responsive-design';
 
 type Props = {
   colorLeft: string;

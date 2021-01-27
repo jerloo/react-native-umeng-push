@@ -6,7 +6,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import HomeButton from '../components/HomeButton';
 import {colorWhite} from '../styles';
-import {scaleSize, scaleHeight, setSpText2} from '../utils/responsive';
+import {
+  scaleSize,
+  scaleHeight,
+  setSpText2,
+} from 'react-native-responsive-design';
 
 export default function HomeScreen() {
   return (
