@@ -5,6 +5,7 @@
 ### 当前开发进度
 
 - 登录页界面（[预览](./screenshots/login.jpeg)）
+- 首页界面（[预览](./screenshots/home.jpeg)）
 
 ### 开发环境
 
