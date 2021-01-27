@@ -7,7 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {colorWhite} from '../styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export default function LoginScreen() {
+export default function LoginScreen({navigation}) {
   const [remember, setRemember] = React.useState(true);
   const [passwordVisible, setPasswordVisible] = React.useState(true);
 
@@ -112,11 +112,13 @@ export default function LoginScreen() {
           onPress={() => setRemember(!remember)}
         />
 
-        <LinearGradient
-          colors={['#0699FF', '#0D6CEC']}
-          style={styles.submitButton}>
-          <Text style={styles.submitText}>登录</Text>
-        </LinearGradient>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <LinearGradient
+            colors={['#0699FF', '#0D6CEC']}
+            style={styles.submitButton}>
+            <Text style={styles.submitText}>登录</Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
     </View>
   );

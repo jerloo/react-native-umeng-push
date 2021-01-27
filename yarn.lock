@@ -5783,6 +5783,11 @@ react-native-reanimated@^1.13.2:
   dependencies:
     fbjs "^1.0.0"
 
+react-native-responsive-design@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/react-native-responsive-design/-/react-native-responsive-design-1.0.0.tgz#a6a0d923692df62dedb24a8b098a52ef375904c8"
+  integrity sha512-oQxNLzUmE5K8NITLKdL7yOPhRvMezwBcCBx+nKFN98IyGZoGHY8SESrx2HXJ6mFvs6y1ec6gsOyGWILcB1ScCA==
+
 react-native-safe-area-context@^3.1.9:
   version "3.1.9"
   resolved "https://registry.npm.taobao.org/react-native-safe-area-context/download/react-native-safe-area-context-3.1.9.tgz#48864ea976b0fa57142a2cc523e1fd3314e7247e"
