@@ -1,7 +1,9 @@
 /**
  * @format
  */
-
+// https://github.com/facebook/react-native/issues/23922#issuecomment-648096619
+/** URL polyfill */
+import 'react-native-url-polyfill/auto';
 import 'react-native-gesture-handler';
 
 import {AppRegistry} from 'react-native';
