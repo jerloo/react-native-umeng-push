@@ -12,68 +12,83 @@ import {
   scaleSize,
   setSpText2,
 } from 'react-native-responsive-design';
-import {api} from '../utils/apiUtils';
+import {logger as Logger} from 'react-native-logs';
+
+import center from '../data';
 
 import {Toast} from '@ant-design/react-native';
-import {setSession} from '../utils/sesstionUtils';
+import {getSession} from '../utils/sesstionUtils';
+
+const logger = Logger.createLogger();
 
 export default function LoginScreen({navigation}: {navigation: any}) {
   const [remember, setRemember] = React.useState(true);
   const [passwordVisible, setPasswordVisible] = React.useState(true);
 
-  const [telnetName, setTelnetName] = React.useState('handa');
-  const [userName, setUserName] = React.useState('malp');
-  const [password, setPassword] = React.useState('Mobile_2021!.');
+  const [tenantName, setTenantName] = React.useState('');
+  const [userName, setUserName] = React.useState('');
+  const [passWord, setPassword] = React.useState('');
 
   var loadingButton = React.useRef<AnimatedLoadingButton>(null);
 
-  const onSubmit = async () => {
+  const onSubmit = async (t: string, u: string, p: string) => {
     loadingButton?.current?.setLoading(true);
-    if (telnetName === '') {
+    if (t === '') {
+      loadingButton?.current?.setLoading(false);
       Toast.fail('请输入机构名称');
       return;
     }
-    if (userName === '') {
-      Toast.fail('请输入账号');
-      return;
-    }
-    if (password === '') {
-      Toast.fail('请输入账号');
-      return;
-    }
-    try {
-      const loginResult = await api.loginApi.apiAppLoginLoginPost({
-        tenantName: telnetName,
-        userName: userName,
-        passWord: password,
-      });
-      if (loginResult.status === 200) {
-        await api.provider.set(
-          loginResult.data.tokenType + ' ' + loginResult.data.accessToken,
-        );
-        const infoResult = await api.chargeApi.apiAppChargeUserInfoGet();
-        if (infoResult.status === 200) {
-          setSession({
-            autoLogin: remember,
-            userInfo: infoResult.data,
-          });
-          loadingButton?.current?.setLoading(false);
-          navigation.navigate('Home');
-        } else {
-          loadingButton?.current?.setLoading(false);
-          Toast.fail('服务器错误，请稍后再试');
-        }
-      } else {
-        console.log(loginResult);
-        loadingButton?.current?.setLoading(false);
-        Toast.fail('用户名或密码错误');
-      }
-    } catch (e) {
-      console.log(e);
+    if (t === '') {
       loadingButton?.current?.setLoading(false);
-      Toast.fail('用户名或密码错误');
+      Toast.fail('请输入账号');
+      return;
+    }
+    if (p === '') {
+      loadingButton?.current?.setLoading(false);
+      Toast.fail('请输入账号');
+      return;
+    }
+    const result = await center.login(
+      {
+        tenantName: t,
+        userName: u,
+        passWord: p,
+      },
+      remember,
+    );
+    if (result === true) {
+      loadingButton.current?.setLoading(false);
+      navigation.replace('Home');
+    } else {
+      Toast.fail(result as string);
     }
   };
+
+  const loadFetch = async () => {
+    const session = await getSession();
+    const pr = setRemember(session?.autoLogin ?? false);
+    const pt = setTenantName(session?.tenantName ?? '');
+    const pu = setUserName(session?.userInfo.userName ?? '');
+    const pp = setPassword(session?.password ?? '');
+
+    if (session?.autoLogin === true) {
+      Promise.all([pr, pt, pu, pp]).then(() => {
+        setTimeout(() => {
+          onSubmit(
+            session.tenantName,
+            session.userInfo.userName,
+            session.password,
+          );
+        }, 2000);
+      });
+    }
+  };
+
+  const loadOnSubmit = React.useCallback(loadFetch, []);
+
+  React.useEffect(() => {
+    loadOnSubmit();
+  }, [loadOnSubmit]);
 
   return (
     <View style={styles.container}>
@@ -102,8 +117,8 @@ export default function LoginScreen({navigation}: {navigation: any}) {
           placeholder="机构编号"
           keyboardType="default"
           inputStyle={styles.inputStyle}
-          onChangeText={(text) => setTelnetName(text)}
-          value={telnetName}
+          onChangeText={(text) => setTenantName(text)}
+          value={tenantName}
           leftIcon={
             <Image
               style={styles.inputIcon}
@@ -111,7 +126,7 @@ export default function LoginScreen({navigation}: {navigation: any}) {
             />
           }
           rightIcon={
-            <TouchableOpacity onPress={() => setTelnetName('')}>
+            <TouchableOpacity onPress={() => setTenantName('')}>
               <Icon name="close-circle" size={setSpText2(30)} color="#CCCCCC" />
             </TouchableOpacity>
           }
@@ -146,7 +161,7 @@ export default function LoginScreen({navigation}: {navigation: any}) {
           secureTextEntry={passwordVisible}
           inputStyle={styles.inputStyle}
           onChangeText={(text) => setPassword(text)}
-          value={password}
+          value={passWord}
           leftIcon={
             <Image
               style={styles.inputIcon}
@@ -194,7 +209,7 @@ export default function LoginScreen({navigation}: {navigation: any}) {
           buttonStyle={styles.submitButton}
           title="登录"
           titleStyle={styles.submitText}
-          onPress={onSubmit}
+          onPress={() => onSubmit(tenantName, userName, passWord)}
         />
       </View>
     </View>

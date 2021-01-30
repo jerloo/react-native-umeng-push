@@ -11,8 +11,17 @@ import {
   scaleHeight,
   setSpText2,
 } from 'react-native-responsive-design';
+import {getSession, UserSession} from '../utils/sesstionUtils';
 
 export default function HomeScreen() {
+  const [session, setSession] = React.useState<UserSession>();
+
+  React.useEffect(() => {
+    getSession().then((s) => {
+      setSession(s || undefined);
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -26,7 +35,7 @@ export default function HomeScreen() {
         style={styles.topContainer}>
         <SafeAreaView>
           <View style={styles.userProfile}>
-            <Text style={styles.userName}>卢杰杰</Text>
+            <Text style={styles.userName}>{session?.userInfo.name}</Text>
             <Image
               style={styles.avatar}
               source={require('../assets/shouye-gerenxinxi.png')}

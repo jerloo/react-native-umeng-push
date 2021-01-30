@@ -1,7 +1,9 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { MeterReaderDto } from '../../apiclient/src/models';
 
-interface UserSession {
+export interface UserSession {
+  tenantName: string;
+  password: string;
   autoLogin: boolean;
   userInfo: MeterReaderDto;
 }
