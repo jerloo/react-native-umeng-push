@@ -26,6 +26,12 @@ npx react-native run-android
 npx react-native run-ios
 ```
 
+### API地址
+
+### 测试环境
+
+http://mobilereadtransfer.yuncloudtech.cn/index.html
+
 ## 测试账号
 
 | 机构编码 | 用户名 | 密码           |

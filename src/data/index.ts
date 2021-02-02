@@ -13,16 +13,93 @@ const USERNAME_PWD_ERROR = '用户名或密码错误';
 
 interface ApiService {
   login(payload: LoginInput, autoLogin: boolean): Promise<string | boolean>;
+  updateName(name: string): Promise<string | boolean>;
+  updatePhoneNumber(phoneNumber: string): Promise<string | boolean>;
+  changePassword(
+    currentPassword: string,
+    newPassword: string,
+  ): Promise<string | boolean>;
 }
 
 class OnlineApiService implements ApiService {
+  async updateName(name: string): Promise<string | boolean> {
+    try {
+      const result = await api.chargeApi.apiAppChargeUserPut(name);
+      console.log(result);
+      if (result.status < 400) {
+        const infoResult = await api.chargeApi.apiAppChargeUserInfoGet();
+        if (infoResult.status < 400) {
+          const session = await getSession();
+          setSession({
+            tenantName: session!!.tenantName,
+            password: session!!.password,
+            autoLogin: session!!.autoLogin,
+            userInfo: infoResult.data,
+          });
+          return true;
+        } else {
+          return SERVER_ERROR;
+        }
+      }
+      return SERVER_ERROR;
+    } catch (e) {
+      console.log(e);
+      return SERVER_ERROR;
+    }
+  }
+
+  async updatePhoneNumber(phoneNumber: string): Promise<string | boolean> {
+    try {
+      const result = await api.chargeApi.apiAppChargeUserPut(
+        undefined,
+        phoneNumber,
+      );
+      if (result.status < 400) {
+        const infoResult = await api.chargeApi.apiAppChargeUserInfoGet();
+        if (infoResult.status < 400) {
+          const session = await getSession();
+          setSession({
+            tenantName: session!!.tenantName,
+            password: session!!.password,
+            autoLogin: session!!.autoLogin,
+            userInfo: infoResult.data,
+          });
+          return true;
+        } else {
+          return SERVER_ERROR;
+        }
+      }
+      return SERVER_ERROR;
+    } catch {
+      return SERVER_ERROR;
+    }
+  }
+
+  async changePassword(
+    currentPassword: string,
+    newPassword: string,
+  ): Promise<string | boolean> {
+    try {
+      const result = await api.chargeApi.apiAppChargeChangePasswordPut(
+        currentPassword,
+        newPassword,
+      );
+      if (result.status < 400) {
+        return true;
+      }
+      return SERVER_ERROR;
+    } catch {
+      return SERVER_ERROR;
+    }
+  }
+
   async login(
     payload: LoginInput,
     autoLogin: boolean,
   ): Promise<string | boolean> {
     try {
       const loginResult = await api.loginApi.apiAppLoginLoginPost(payload);
-      if (loginResult.status === 200) {
+      if (loginResult.status < 400) {
         console.log('login success', loginResult);
         const token =
           loginResult.data.tokenType + ' ' + loginResult.data.accessToken;
@@ -30,7 +107,7 @@ class OnlineApiService implements ApiService {
         const p2 = AsyncStorage.setItem('token', token);
         const pall = await Promise.all([p1, p2]);
         const infoResult = await api.chargeApi.apiAppChargeUserInfoGet();
-        if (infoResult.status === 200) {
+        if (infoResult.status < 400) {
           setSession({
             tenantName: payload.tenantName,
             password: payload?.passWord,
@@ -54,9 +131,21 @@ class OnlineApiService implements ApiService {
 }
 
 class OfflineApiService implements ApiService {
+  updateName(_name: string): Promise<string | boolean> {
+    return Promise.resolve(NO_NETWORK_ERROR);
+  }
+  updatePhoneNumber(_phoneNumber: string): Promise<string | boolean> {
+    return Promise.resolve(NO_NETWORK_ERROR);
+  }
+  changePassword(
+    _currentPassword: string,
+    _newPassword: string,
+  ): Promise<string | boolean> {
+    return Promise.resolve(NO_NETWORK_ERROR);
+  }
   async login(
     payload: LoginInput,
-    autoLogin: boolean,
+    _autoLogin: boolean,
   ): Promise<string | boolean> {
     const savedSession = await getSession();
     if (savedSession === null || savedSession.tenantName === '') {
@@ -80,6 +169,30 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+  async updateName(name: string): Promise<string | boolean> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.updateName(name);
+    }
+    return this.offline.updateName(name);
+  }
+  async updatePhoneNumber(phoneNumber: string): Promise<string | boolean> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.updatePhoneNumber(phoneNumber);
+    }
+    return this.offline.updatePhoneNumber(phoneNumber);
+  }
+  async changePassword(
+    currentPassword: string,
+    newPassword: string,
+  ): Promise<string | boolean> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.changePassword(currentPassword, newPassword);
+    }
+    return this.offline.changePassword(currentPassword, newPassword);
   }
 
   async login(

@@ -8,13 +8,25 @@ import {
   setSpText2,
 } from 'react-native-responsive-design';
 import EditTitleBar from '../components/EditTitleBar';
+import center from '../data';
+import {Toast} from '@ant-design/react-native';
 
 export default function EditPasswordScreen({navigation}) {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPasword, setConfirmPassword] = useState('');
 
-  const onSave = async () => {};
+  const onSave = async () => {
+    const key = Toast.loading('保存中', 0);
+    const result = await center.changePassword(oldPassword, newPassword);
+    if (result === true) {
+      Toast.remove(key);
+      navigation.goBack();
+    } else {
+      Toast.remove(key);
+      Toast.fail(result as string);
+    }
+  };
 
   return (
     <View style={styles.container}>

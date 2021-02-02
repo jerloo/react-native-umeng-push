@@ -10,6 +10,8 @@ import {
 import {getSession} from '../utils/sesstionUtils';
 import Icon from 'react-native-vector-icons/Ionicons';
 import EditTitleBar from '../components/EditTitleBar';
+import center from '../data';
+import {Toast} from '@ant-design/react-native';
 
 export default function EditNameScreen({navigation}) {
   const [name, setName] = useState('');
@@ -24,7 +26,17 @@ export default function EditNameScreen({navigation}) {
     fetchSession();
   }, []);
 
-  const onSave = async () => {};
+  const onSave = async () => {
+    const key = Toast.loading('保存中', 0);
+    const result = await center.updateName(name);
+    if (result === true) {
+      Toast.remove(key);
+      navigation.goBack();
+    } else {
+      Toast.remove(key);
+      Toast.fail(result as string);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -117,5 +129,6 @@ const styles = StyleSheet.create({
     fontSize: setSpText2(34),
     backgroundColor: 'white',
     paddingHorizontal: 0,
+    flex: 1,
   },
 });

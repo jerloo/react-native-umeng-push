@@ -1,3 +1,4 @@
+import {Toast} from '@ant-design/react-native';
 import * as React from 'react';
 import {useState, useEffect} from 'react';
 import {StatusBar, StyleSheet, Text, View} from 'react-native';
@@ -9,6 +10,7 @@ import {
 } from 'react-native-responsive-design';
 import EditTitleBar from '../components/EditTitleBar';
 import {getSession, UserSession} from '../utils/sesstionUtils';
+import center from '../data';
 
 export default function EditPhoneScreen({navigation}) {
   const [session, sSession] = useState<UserSession>();
@@ -24,7 +26,17 @@ export default function EditPhoneScreen({navigation}) {
     fetchSession();
   }, []);
 
-  const onSave = () => {};
+  const onSave = async () => {
+    const key = Toast.loading('保存中', 0);
+    const result = await center.updatePhoneNumber(newPhone);
+    if (result === true) {
+      Toast.remove(key);
+      navigation.goBack();
+    } else {
+      Toast.remove(key);
+      Toast.fail(result as string);
+    }
+  };
 
   return (
     <View style={styles.container}>
