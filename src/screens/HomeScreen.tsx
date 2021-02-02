@@ -1,7 +1,10 @@
 import * as React from 'react';
 import {View, Text, StyleSheet, StatusBar, Image} from 'react-native';
 import {Input, Icon} from 'react-native-elements';
-import {ScrollView} from 'react-native-gesture-handler';
+import {
+  ScrollView,
+  TouchableWithoutFeedback,
+} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import HomeButton from '../components/HomeButton';
@@ -13,7 +16,7 @@ import {
 } from 'react-native-responsive-design';
 import {getSession, UserSession} from '../utils/sesstionUtils';
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
   const [session, setSession] = React.useState<UserSession>();
 
   React.useEffect(() => {
@@ -36,10 +39,13 @@ export default function HomeScreen() {
         <SafeAreaView>
           <View style={styles.userProfile}>
             <Text style={styles.userName}>{session?.userInfo.name}</Text>
-            <Image
-              style={styles.avatar}
-              source={require('../assets/shouye-gerenxinxi.png')}
-            />
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate('Profile')}>
+              <Image
+                style={styles.avatar}
+                source={require('../assets/shouye-gerenxinxi.png')}
+              />
+            </TouchableWithoutFeedback>
           </View>
           <Input
             style={{fontSize: setSpText2(28)}}

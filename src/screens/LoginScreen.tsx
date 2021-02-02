@@ -32,22 +32,19 @@ export default function LoginScreen({navigation}: {navigation: any}) {
   var loadingButton = React.useRef<AnimatedLoadingButton>(null);
 
   const onSubmit = async (t: string, u: string, p: string) => {
-    loadingButton?.current?.setLoading(true);
     if (t === '') {
-      loadingButton?.current?.setLoading(false);
       Toast.fail('请输入机构名称');
       return;
     }
     if (t === '') {
-      loadingButton?.current?.setLoading(false);
       Toast.fail('请输入账号');
       return;
     }
     if (p === '') {
-      loadingButton?.current?.setLoading(false);
-      Toast.fail('请输入账号');
+      Toast.fail('请输入密码');
       return;
     }
+    loadingButton?.current?.setLoading(true);
     const result = await center.login(
       {
         tenantName: t,
@@ -61,6 +58,9 @@ export default function LoginScreen({navigation}: {navigation: any}) {
       navigation.replace('Home');
     } else {
       Toast.fail(result as string);
+      setTimeout(() => {
+        loadingButton.current?.setLoading(false);
+      }, 1000);
     }
   };
 
@@ -73,13 +73,11 @@ export default function LoginScreen({navigation}: {navigation: any}) {
 
     if (session?.autoLogin === true) {
       Promise.all([pr, pt, pu, pp]).then(() => {
-        setTimeout(() => {
-          onSubmit(
-            session.tenantName,
-            session.userInfo.userName,
-            session.password,
-          );
-        }, 2000);
+        onSubmit(
+          session.tenantName,
+          session.userInfo.userName,
+          session.password,
+        );
       });
     }
   };
