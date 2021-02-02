@@ -2,11 +2,6 @@
 
 ## Development
 
-### 当前开发进度
-
-- 登录页界面（[预览](./screenshots/login.jpeg)）
-- 首页界面（[预览](./screenshots/home.jpeg)）
-
 ### 开发环境
 
 - nodejs 14 lts
@@ -31,3 +26,9 @@ npx react-native run-android
 npx react-native run-ios
 ```
 
+## 测试账号
+
+| 机构编码 | 用户名 | 密码           |
+| -------- | ------ | -------------- |
+| handa    | malp   | Mobile_2021!.  |
+| shhd     | 306    | Mobile_2021!.T |
