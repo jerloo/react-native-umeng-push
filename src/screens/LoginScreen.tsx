@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {View, Text, StyleSheet, Image, StatusBar} from 'react-native';
 
-import {Input, CheckBox} from 'react-native-elements';
+import {CheckBox} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import {colorWhite} from '../styles';
@@ -18,6 +18,7 @@ import center from '../data';
 
 import {Toast} from '@ant-design/react-native';
 import {getSession} from '../utils/sesstionUtils';
+import Input from '../components/Input';
 
 const logger = Logger.createLogger();
 
@@ -183,20 +184,26 @@ export default function LoginScreen({navigation}: {navigation: any}) {
         />
         <CheckBox
           checkedIcon={
-            <Image
-              style={styles.inputIcon}
-              source={require('../assets/login_remember_checked.png')}
-            />
+            <View style={[styles.inputIcon, styles.rememberIconContainer]}>
+              <Image
+                style={styles.rememberIcon}
+                source={require('../assets/login_remember_checked.png')}
+              />
+            </View>
           }
           uncheckedIcon={
-            <Image
-              style={styles.inputIcon}
-              source={require('../assets/login_remember_unchecked.png')}
-            />
+            <View style={[styles.inputIcon, styles.rememberIconContainer]}>
+              <Image
+                style={styles.rememberIcon}
+                source={require('../assets/login_remember_unchecked.png')}
+              />
+            </View>
           }
           title="自动登录"
           textStyle={styles.rememberTitle}
           containerStyle={styles.rememberContainer}
+          style={{padding: 0, margin: 0}}
+          wrapperStyle={{padding: 0, margin: 0}}
           checked={remember}
           onPress={() => setRemember(!remember)}
         />
@@ -225,12 +232,13 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 2,
-    marginTop: -20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 25,
+    marginTop: -scaleHeight(20),
+    borderTopLeftRadius: scaleSize(20),
+    borderTopRightRadius: scaleSize(20),
+    padding: scaleSize(70),
     overflow: 'hidden',
     backgroundColor: colorWhite,
+    justifyContent: 'flex-start',
   },
   logo: {
     width: scaleSize(188),
@@ -253,24 +261,41 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     fontSize: setSpText2(34),
+    marginBottom: 0,
+    marginTop: 0,
+    paddingBottom: 0,
+    paddingTop: 0,
   },
   rememberContainer: {
     padding: 0,
-    backgroundColor: 'rgba(0,0,0,0)',
     borderWidth: 0,
+    marginHorizontal: 0,
+    width: '100%',
+    marginStart: 0,
+    backgroundColor: 'transparent',
+  },
+  rememberIcon: {
+    width: scaleSize(28),
+    height: scaleSize(28),
+  },
+  rememberIconContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   rememberTitle: {
     fontSize: setSpText2(32),
     fontWeight: 'normal',
+    marginStart: scaleSize(30),
   },
   containerWidget: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: scaleSize(50),
+    height: scaleSize(50),
+    borderRadius: scaleSize(25),
     backgroundColor: '#0D6CEC',
     alignSelf: 'center',
-    marginTop: -50,
-    marginBottom: 50,
+    marginTop: -scaleHeight(100),
+    marginBottom: scaleHeight(100),
   },
   submitButtonContainer: {
     height: scaleHeight(90),

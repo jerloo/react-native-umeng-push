@@ -1,0 +1,25 @@
+{
+  "name": "apiclient",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "jeremaihloo <jeremaihloo1024@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-typescript": "^7.12.7",
+    "@types/jest": "^26.0.20",
+    "@types/node": "^12.11.5",
+    "babel-jest": "^26.6.3",
+    "jest": "^26.6.3",
+    "ts-node": "^9.1.1",
+    "typescript": "^3.6.4"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}

@@ -1,0 +1,1224 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "抄表系统 - Pda抄表",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/app/charge/userInfo": {
+      "get": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "获取抄表员基础信息",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaMeterReaderDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaMeterReaderDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaMeterReaderDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/charge/user": {
+      "put": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "更新抄表员用户名、手机号码\r\n若只修改其中一个，另一个为空即可",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "用户名",
+            "schema": {
+              "type": "string",
+              "description": "用户名",
+              "nullable": true
+            }
+          },
+          {
+            "name": "phoneNumber",
+            "in": "query",
+            "description": "电话号码",
+            "schema": {
+              "type": "string",
+              "description": "电话号码",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/app/charge/changePassword": {
+      "put": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "更新抄表员登录密码",
+        "parameters": [
+          {
+            "name": "currentPassword",
+            "in": "query",
+            "description": "当前密码",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "当前密码"
+            }
+          },
+          {
+            "name": "newPassword",
+            "in": "query",
+            "description": "新密码",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "新密码"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/app/charge/bookList": {
+      "get": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "根据抄表员工号获取应抄册本",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaMeterBookDtoListResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaMeterBookDtoListResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaMeterBookDtoListResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/charge/readDataByBookIds": {
+      "post": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "根据设备编号下载抄表数据",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadDataByBookIdsInput"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadDataByBookIdsInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadDataByBookIdsInput"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadDataByBookIdsInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaReadDataDtoListResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaReadDataDtoListResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaReadDataDtoListResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/charge/custDetailsByCustId": {
+      "post": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "根据客户编号获取客户详细信息",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaCustDetailsInput"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaCustDetailsInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaCustDetailsInput"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaCustDetailsInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaCustDetailsDtoListResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaCustDetailsDtoListResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaCustDetailsDtoListResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/login/login": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "抄表员登录",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginInput"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginInput"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogOutput"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogOutput"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogOutput"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/mobileReading/uploadReadingDate": {
+      "post": {
+        "tags": [
+          "MobileReading"
+        ],
+        "summary": "pda抄表数据上传",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UploadReadingDateDto"
+                },
+                "description": ""
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UploadReadingDateDto"
+                },
+                "description": ""
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UploadReadingDateDto"
+                },
+                "description": ""
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UploadReadingDateDto"
+                },
+                "description": ""
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/app/sample": {
+      "get": {
+        "tags": [
+          "Sample"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SampleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SampleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SampleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/sample/authorized": {
+      "get": {
+        "tags": [
+          "Sample"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SampleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SampleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SampleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PdaUserPermissionDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "权限编码",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "权限名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "权限说明",
+            "nullable": true
+          },
+          "isGranted": {
+            "type": "boolean",
+            "description": "是否授权"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Pda权限"
+      },
+      "PdaMeterReaderDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "抄表员Id",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "姓名",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "description": "工号",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "description": "邮箱",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "电话",
+            "nullable": true
+          },
+          "userPermissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaUserPermissionDto"
+            },
+            "description": "Pda权限",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "抄表员个人信息"
+      },
+      "PdaMeterBookDto": {
+        "type": "object",
+        "properties": {
+          "billMonth": {
+            "type": "integer",
+            "description": "账务年月",
+            "format": "int32"
+          },
+          "bookId": {
+            "type": "integer",
+            "description": "册本编号",
+            "format": "int32"
+          },
+          "bookCode": {
+            "type": "string",
+            "description": "册本编码 创建由[Sequence]获取",
+            "nullable": true
+          },
+          "bookName": {
+            "type": "string",
+            "description": "册本名称",
+            "nullable": true
+          },
+          "readCycle": {
+            "type": "integer",
+            "description": "抄表周期",
+            "format": "int32"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          },
+          "readingNumber": {
+            "type": "integer",
+            "description": "已抄数",
+            "format": "int32"
+          },
+          "totalNumber": {
+            "type": "integer",
+            "description": "应抄数",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "移动端抄表-册本清单"
+      },
+      "PdaMeterBookDtoListResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaMeterBookDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReadDataByBookIdsInput": {
+        "type": "object",
+        "properties": {
+          "deviceCode": {
+            "type": "string",
+            "description": "设备号",
+            "nullable": true
+          },
+          "bookIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "册本Id",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "抄表数据查询"
+      },
+      "TerminalFileDto": {
+        "type": "object",
+        "properties": {
+          "fileType": {
+            "type": "integer",
+            "description": "文件类型 --文本、照片、视频等",
+            "format": "int32"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "文件名称",
+            "nullable": true
+          },
+          "fileUrl": {
+            "type": "string",
+            "description": "文件地址",
+            "nullable": true
+          },
+          "isDeleted": {
+            "type": "boolean",
+            "description": "是否删除"
+          }
+        },
+        "additionalProperties": false,
+        "description": "附件属性"
+      },
+      "PdaReadDataDto": {
+        "type": "object",
+        "properties": {
+          "billMonth": {
+            "type": "integer",
+            "description": "抄表年月",
+            "format": "int32"
+          },
+          "custId": {
+            "type": "integer",
+            "description": "客户编号",
+            "format": "int32"
+          },
+          "readTimes": {
+            "type": "integer",
+            "description": "抄次",
+            "format": "int32"
+          },
+          "terminalFiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TerminalFileDto"
+            },
+            "description": "抄表附件地址",
+            "nullable": true
+          },
+          "oweNumber": {
+            "type": "integer",
+            "description": "欠费笔数",
+            "format": "int32"
+          },
+          "bookId": {
+            "type": "integer",
+            "description": "册本编号",
+            "format": "int32"
+          },
+          "bookCode": {
+            "type": "string",
+            "description": "册本编码",
+            "nullable": true
+          },
+          "bookSortIndex": {
+            "type": "integer",
+            "description": "册内序号",
+            "format": "int32"
+          },
+          "custCode": {
+            "type": "string",
+            "description": "客户编号",
+            "nullable": true
+          },
+          "custName": {
+            "type": "string",
+            "description": "客户名称",
+            "nullable": true
+          },
+          "custAddress": {
+            "type": "string",
+            "description": "客户地址",
+            "nullable": true
+          },
+          "custState": {
+            "type": "string",
+            "description": "客户状态",
+            "nullable": true
+          },
+          "deposit": {
+            "type": "number",
+            "description": "预存款余额",
+            "format": "double"
+          },
+          "lastChange": {
+            "type": "number",
+            "description": "上次零头",
+            "format": "double"
+          },
+          "priceCode": {
+            "type": "integer",
+            "description": "用水性质",
+            "format": "int32"
+          },
+          "meterState": {
+            "type": "string",
+            "description": "水表状态",
+            "nullable": true
+          },
+          "barCode": {
+            "type": "string",
+            "description": "水表条形码",
+            "nullable": true
+          },
+          "steelMark": {
+            "type": "string",
+            "description": "水表钢印号",
+            "nullable": true
+          },
+          "installLocation": {
+            "type": "string",
+            "description": "水表位置",
+            "nullable": true
+          },
+          "caliberValue": {
+            "type": "integer",
+            "description": "口径",
+            "format": "int32"
+          },
+          "rangeValue": {
+            "type": "integer",
+            "description": "量程",
+            "format": "int32"
+          },
+          "lastReading": {
+            "type": "integer",
+            "description": "上次抄码",
+            "format": "int32"
+          },
+          "lastChildReading": {
+            "type": "integer",
+            "description": "上次子表抄码",
+            "format": "int32"
+          },
+          "lastReadWater": {
+            "type": "integer",
+            "description": "上次抄见水量",
+            "format": "int32"
+          },
+          "lastReadDate": {
+            "type": "string",
+            "description": "上次抄表时间",
+            "format": "date-time"
+          },
+          "lastReadStateId": {
+            "type": "integer",
+            "description": "上次抄表状态",
+            "format": "int32"
+          },
+          "reading": {
+            "type": "integer",
+            "description": "本次抄码",
+            "format": "int32"
+          },
+          "childReading": {
+            "type": "integer",
+            "description": "本次子表抄码",
+            "format": "int32"
+          },
+          "readWater": {
+            "type": "integer",
+            "description": "本次抄见水量",
+            "format": "int32",
+            "nullable": true
+          },
+          "readDate": {
+            "type": "string",
+            "description": "本次抄表时间",
+            "format": "date-time",
+            "nullable": true
+          },
+          "readStateId": {
+            "type": "integer",
+            "description": "抄表状态",
+            "format": "int32",
+            "nullable": true
+          },
+          "highLowState": {
+            "type": "integer",
+            "description": "量高量低标志",
+            "format": "int32"
+          },
+          "isEstimate": {
+            "type": "boolean",
+            "description": "是否估抄"
+          },
+          "readRemark": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          },
+          "recordState": {
+            "type": "integer",
+            "description": "抄表状态 0：未抄 1:已抄 2:已复核 3：已开账",
+            "format": "int32"
+          },
+          "replaceWater": {
+            "type": "integer",
+            "description": "换表水量",
+            "format": "int32"
+          },
+          "avgWater": {
+            "type": "integer",
+            "description": "平均水量",
+            "format": "int32"
+          },
+          "highCoefficient": {
+            "type": "number",
+            "description": "量高系数",
+            "format": "double"
+          },
+          "lowCoefficient": {
+            "type": "number",
+            "description": "量低系数",
+            "format": "double"
+          },
+          "highWater": {
+            "type": "integer",
+            "description": "量高",
+            "format": "int32",
+            "readOnly": true
+          },
+          "lowWater": {
+            "type": "integer",
+            "description": "量低",
+            "format": "int32",
+            "readOnly": true
+          },
+          "dataState": {
+            "type": "integer",
+            "description": "数据状态 0 更新、添加。-1删除",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "移动端抄表-客户清单"
+      },
+      "PdaReadDataDtoListResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaReadDataDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PdaCustDetailsInput": {
+        "type": "object",
+        "properties": {
+          "custId": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "客户Id",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "客户编号"
+      },
+      "PdaCustInfo": {
+        "type": "object",
+        "properties": {
+          "custName": {
+            "type": "string",
+            "description": "客户名称",
+            "nullable": true
+          },
+          "custAddress": {
+            "type": "string",
+            "description": "客户地址",
+            "nullable": true
+          },
+          "orgName": {
+            "type": "string",
+            "description": "营业站点",
+            "nullable": true
+          },
+          "mobile": {
+            "type": "string",
+            "description": "联系电话",
+            "nullable": true
+          },
+          "population": {
+            "type": "integer",
+            "description": "人口数",
+            "format": "int32"
+          },
+          "payMethod": {
+            "type": "string",
+            "description": "缴费方式",
+            "nullable": true
+          },
+          "custType": {
+            "type": "string",
+            "description": "用户类型",
+            "nullable": true
+          },
+          "priceCode": {
+            "type": "string",
+            "description": "用水性质",
+            "nullable": true
+          },
+          "deposit": {
+            "type": "number",
+            "description": "预存余额",
+            "format": "double"
+          },
+          "yearTotalWater": {
+            "type": "integer",
+            "description": "年度使用量",
+            "format": "int32"
+          },
+          "reading": {
+            "type": "integer",
+            "description": "当前底码",
+            "format": "int32"
+          },
+          "installLocation": {
+            "type": "string",
+            "description": "安装位置",
+            "nullable": true
+          },
+          "steelMark": {
+            "type": "string",
+            "description": "钢印号",
+            "nullable": true
+          },
+          "caliber": {
+            "type": "string",
+            "description": "水表口径",
+            "nullable": true
+          },
+          "producer": {
+            "type": "string",
+            "description": "水表厂家",
+            "nullable": true
+          },
+          "replaceDate": {
+            "type": "string",
+            "description": "换表日期",
+            "nullable": true
+          },
+          "buildDate": {
+            "type": "string",
+            "description": "立户日期",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "基础信息"
+      },
+      "PdaReadingRecord": {
+        "type": "object",
+        "properties": {
+          "billMonth": {
+            "type": "integer",
+            "description": "抄表年月",
+            "format": "int32"
+          },
+          "readingDate": {
+            "type": "string",
+            "description": "抄表时间",
+            "nullable": true
+          },
+          "lastReading": {
+            "type": "integer",
+            "description": "上期抄码",
+            "format": "int32"
+          },
+          "reading": {
+            "type": "integer",
+            "description": "本期抄码",
+            "format": "int32"
+          },
+          "readWater": {
+            "type": "integer",
+            "description": "本期水量",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "抄表记录"
+      },
+      "PdaBillingInfo": {
+        "type": "object",
+        "properties": {
+          "billMonth": {
+            "type": "integer",
+            "description": "账务年月",
+            "format": "int32"
+          },
+          "billWater": {
+            "type": "integer",
+            "description": "开账水量",
+            "format": "int32"
+          },
+          "extendedAmount": {
+            "type": "number",
+            "description": "账单金额",
+            "format": "double"
+          },
+          "lateFee": {
+            "type": "number",
+            "description": "违约金",
+            "format": "double"
+          },
+          "payState": {
+            "type": "integer",
+            "description": "欠费标志\r\n0：欠费",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "账单信息"
+      },
+      "PdaPayRecord": {
+        "type": "object",
+        "properties": {
+          "payDate": {
+            "type": "string",
+            "description": "缴费时间",
+            "nullable": true
+          },
+          "cashier": {
+            "type": "string",
+            "description": "收费员",
+            "nullable": true
+          },
+          "actualMoney": {
+            "type": "number",
+            "description": "实缴金额",
+            "format": "double"
+          },
+          "deposit": {
+            "type": "number",
+            "description": "余额",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "缴费记录"
+      },
+      "PdaCustDetailsDto": {
+        "type": "object",
+        "properties": {
+          "custId": {
+            "type": "integer",
+            "description": "客户编号",
+            "format": "int32"
+          },
+          "custInfo": {
+            "$ref": "#/components/schemas/PdaCustInfo"
+          },
+          "readingRecords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaReadingRecord"
+            },
+            "nullable": true
+          },
+          "billingInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaBillingInfo"
+            },
+            "nullable": true
+          },
+          "payRecords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaPayRecord"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "客户详情"
+      },
+      "PdaCustDetailsDtoListResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaCustDetailsDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoginInput": {
+        "required": [
+          "passWord",
+          "tenantName",
+          "userName"
+        ],
+        "type": "object",
+        "properties": {
+          "tenantName": {
+            "type": "string",
+            "description": "机构编码"
+          },
+          "userName": {
+            "type": "string",
+            "description": "账号"
+          },
+          "passWord": {
+            "type": "string",
+            "description": "密码"
+          }
+        },
+        "additionalProperties": false,
+        "description": "登录"
+      },
+      "LogOutput": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "AccessToken",
+            "nullable": true
+          },
+          "tokenType": {
+            "type": "string",
+            "description": "TokenType",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "登录"
+      },
+      "UploadReadingDateDto": {
+        "type": "object",
+        "properties": {
+          "billMonth": {
+            "type": "integer",
+            "description": "抄表年月",
+            "format": "int32"
+          },
+          "custId": {
+            "type": "integer",
+            "description": "客户编号",
+            "format": "int32"
+          },
+          "readTimes": {
+            "type": "integer",
+            "description": "抄次",
+            "format": "int32"
+          },
+          "reading": {
+            "type": "integer",
+            "description": "本次抄码",
+            "format": "int32"
+          },
+          "childReading": {
+            "type": "integer",
+            "description": "本次子表抄码",
+            "format": "int32"
+          },
+          "readWater": {
+            "type": "integer",
+            "description": "本次抄见水量",
+            "format": "int32",
+            "nullable": true
+          },
+          "readDate": {
+            "type": "string",
+            "description": "本次抄表时间",
+            "format": "date-time",
+            "nullable": true
+          },
+          "readStateId": {
+            "type": "integer",
+            "description": "抄表状态",
+            "format": "int32",
+            "nullable": true
+          },
+          "highLowState": {
+            "type": "integer",
+            "description": "量高量低标志",
+            "format": "int32"
+          },
+          "isEstimate": {
+            "type": "boolean",
+            "description": "是否估抄"
+          },
+          "readRemark": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Pda抄表数据上传"
+      },
+      "SampleDto": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization format: Bearer {token}.",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "MobileReading",
+      "description": "Pda抄表数据上传"
+    },
+    {
+      "name": "Login",
+      "description": "登录"
+    },
+    {
+      "name": "Charge",
+      "description": "营收数据查询"
+    }
+  ]
+}
