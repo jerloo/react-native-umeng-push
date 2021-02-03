@@ -179,29 +179,26 @@ export default function LoginScreen({navigation}: {navigation: any}) {
             </TouchableOpacity>
           }
         />
-        <CheckBox
-          checkedIcon={
+        <TouchableOpacity
+          style={styles.rememberContainer}
+          onPress={() => setRemember(!remember)}>
+          {remember ? (
             <View style={[styles.inputIcon, styles.rememberIconContainer]}>
               <Image
                 style={styles.rememberIcon}
                 source={require('../assets/login_remember_checked.png')}
               />
             </View>
-          }
-          uncheckedIcon={
+          ) : (
             <View style={[styles.inputIcon, styles.rememberIconContainer]}>
               <Image
                 style={styles.rememberIcon}
                 source={require('../assets/login_remember_unchecked.png')}
               />
             </View>
-          }
-          title="自动登录"
-          textStyle={styles.rememberTitle}
-          containerStyle={styles.rememberContainer}
-          checked={remember}
-          onPress={() => setRemember(!remember)}
-        />
+          )}
+          <Text style={styles.rememberTitle}>自动登录</Text>
+        </TouchableOpacity>
 
         <AnimatedLoadingButton
           ref={loadingButton}
@@ -266,10 +263,13 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     marginHorizontal: 0,
     width: '100%',
-    // marginStart: 0,
+    marginStart: 0,
     backgroundColor: 'transparent',
     // backgroundColor: 'blue',
     margin: 0,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   rememberIcon: {
     width: scaleSize(28),
@@ -282,7 +282,6 @@ const styles = StyleSheet.create({
   },
   rememberTitle: {
     fontSize: setSpText2(32),
-    fontWeight: 'normal',
     marginStart: scaleSize(30),
   },
   containerWidget: {
