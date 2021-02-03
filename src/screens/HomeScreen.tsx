@@ -1,6 +1,6 @@
 import * as React from 'react';
+import {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, StatusBar, Image} from 'react-native';
-import {Input, Icon} from 'react-native-elements';
 import {
   ScrollView,
   TouchableWithoutFeedback,
@@ -15,11 +15,12 @@ import {
   setSpText2,
 } from 'react-native-responsive-design';
 import {getSession, UserSession} from '../utils/sesstionUtils';
+import SearchBox from '../components/SearchBox';
 
-export default function HomeScreen({navigation}) {
-  const [session, setSession] = React.useState<UserSession>();
+export default function HomeScreen({navigation}: any) {
+  const [session, setSession] = useState<UserSession>();
 
-  React.useEffect(() => {
+  useEffect(() => {
     getSession().then((s) => {
       setSession(s || undefined);
     });
@@ -34,7 +35,7 @@ export default function HomeScreen({navigation}) {
       />
 
       <LinearGradient
-        colors={['#038FFF', '#066AF0']}
+        colors={['#4888E3', '#2567E5']}
         style={styles.topContainer}>
         <SafeAreaView>
           <View style={styles.userProfile}>
@@ -47,15 +48,9 @@ export default function HomeScreen({navigation}) {
               />
             </TouchableWithoutFeedback>
           </View>
-          <Input
-            style={{fontSize: setSpText2(28)}}
-            placeholder="户号/户名/地址/册本号"
-            inputContainerStyle={styles.searchBoxContainer}
-            inputStyle={styles.searchBox}
-            placeholderTextColor={colorWhite}
-            leftIcon={<Icon name="search" color="#FFFFFF" />}
-            leftIconContainerStyle={{marginStart: scaleSize(30)}}
-          />
+          <View style={{marginHorizontal: scaleSize(30)}}>
+            <SearchBox />
+          </View>
         </SafeAreaView>
       </LinearGradient>
       <ScrollView>
@@ -109,21 +104,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  topContainer: {},
+  topContainer: {
+    paddingBottom: scaleHeight(28),
+  },
   userProfile: {
     width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: scaleHeight(44),
-    marginBottom: scaleHeight(32),
+    marginBottom: scaleHeight(34),
     paddingHorizontal: scaleSize(42),
     alignItems: 'center',
   },
   userName: {
     fontSize: setSpText2(44),
     color: colorWhite,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   avatar: {
     width: scaleSize(44),
@@ -137,7 +134,7 @@ const styles = StyleSheet.create({
   groupTitle: {
     fontSize: setSpText2(40),
     marginBottom: scaleHeight(17),
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   groupRow: {
     display: 'flex',
@@ -149,13 +146,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.4)',
     borderRadius: scaleHeight(40),
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
     marginHorizontal: scaleSize(10),
-  },
-  searchBox: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: scaleHeight(60),
   },
 });

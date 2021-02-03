@@ -14,8 +14,10 @@ export default function Input(props: Props) {
       <View style={styles.inputContainer}>
         <TextInput
           placeholder={props.placeholder}
+          onChangeText={props.onChangeText}
           style={[styles.input, props.inputStyle]}
           underlineColorAndroid="transparent"
+          {...props}
         />
       </View>
 

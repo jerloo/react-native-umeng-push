@@ -12,15 +12,12 @@ import {
   scaleSize,
   setSpText2,
 } from 'react-native-responsive-design';
-import {logger as Logger} from 'react-native-logs';
 
 import center from '../data';
 
 import {Toast} from '@ant-design/react-native';
 import {getSession} from '../utils/sesstionUtils';
 import Input from '../components/Input';
-
-const logger = Logger.createLogger();
 
 export default function LoginScreen({navigation}: {navigation: any}) {
   const [remember, setRemember] = React.useState(true);
@@ -202,8 +199,6 @@ export default function LoginScreen({navigation}: {navigation: any}) {
           title="自动登录"
           textStyle={styles.rememberTitle}
           containerStyle={styles.rememberContainer}
-          style={{padding: 0, margin: 0}}
-          wrapperStyle={{padding: 0, margin: 0}}
           checked={remember}
           onPress={() => setRemember(!remember)}
         />
@@ -271,8 +266,10 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     marginHorizontal: 0,
     width: '100%',
-    marginStart: 0,
+    // marginStart: 0,
     backgroundColor: 'transparent',
+    // backgroundColor: 'blue',
+    margin: 0,
   },
   rememberIcon: {
     width: scaleSize(28),
