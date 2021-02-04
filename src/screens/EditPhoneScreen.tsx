@@ -12,7 +12,7 @@ import EditTitleBar from '../components/EditTitleBar';
 import {getSession, UserSession} from '../utils/sesstionUtils';
 import center from '../data';
 
-export default function EditPhoneScreen({navigation}) {
+export default function EditPhoneScreen({navigation}: any) {
   const [session, sSession] = useState<UserSession>();
   const [newPhone, setNewPhone] = useState('');
 
@@ -31,6 +31,7 @@ export default function EditPhoneScreen({navigation}) {
     const result = await center.updatePhoneNumber(newPhone);
     if (result === true) {
       Toast.remove(key);
+      Toast.success('修改成功');
       navigation.goBack();
     } else {
       Toast.remove(key);

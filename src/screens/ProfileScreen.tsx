@@ -1,17 +1,7 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react';
-import {
-  Image,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import {
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+import {Image, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {
   scaleHeight,
   scaleSize,
@@ -20,7 +10,7 @@ import {
 import {BackTitleBar} from '../components/BackTitleBar';
 import {getSession, setSession, UserSession} from '../utils/sesstionUtils';
 
-export default function ProfileScreen({navigation}) {
+export default function ProfileScreen({navigation}: any) {
   const [session, sSession] = useState<UserSession>();
 
   const fetchSession = async () => {

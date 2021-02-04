@@ -11,7 +11,7 @@ import EditTitleBar from '../components/EditTitleBar';
 import center from '../data';
 import {Toast} from '@ant-design/react-native';
 
-export default function EditPasswordScreen({navigation}) {
+export default function EditPasswordScreen({navigation}: any) {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPasword, setConfirmPassword] = useState('');
@@ -21,6 +21,7 @@ export default function EditPasswordScreen({navigation}) {
     const result = await center.changePassword(oldPassword, newPassword);
     if (result === true) {
       Toast.remove(key);
+      Toast.success('修改成功');
       navigation.goBack();
     } else {
       Toast.remove(key);
@@ -49,6 +50,8 @@ export default function EditPasswordScreen({navigation}) {
         <View style={styles.blockRowInput}>
           <Text style={styles.textTitleNew}>旧密码</Text>
           <TextInput
+            textContentType="password"
+            secureTextEntry={true}
             multiline={false}
             numberOfLines={1}
             underlineColorAndroid="transparent"
@@ -63,6 +66,8 @@ export default function EditPasswordScreen({navigation}) {
         <View style={styles.blockRowInput}>
           <Text style={styles.textTitleNew}>新密码</Text>
           <TextInput
+            textContentType="password"
+            secureTextEntry={true}
             multiline={false}
             numberOfLines={1}
             underlineColorAndroid="transparent"
@@ -77,6 +82,8 @@ export default function EditPasswordScreen({navigation}) {
         <View style={styles.blockRowInput}>
           <Text style={styles.textTitleNew}>确认密码</Text>
           <TextInput
+            textContentType="password"
+            secureTextEntry={true}
             multiline={false}
             numberOfLines={1}
             underlineColorAndroid="transparent"

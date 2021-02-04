@@ -13,7 +13,7 @@ import EditTitleBar from '../components/EditTitleBar';
 import center from '../data';
 import {Toast} from '@ant-design/react-native';
 
-export default function EditNameScreen({navigation}) {
+export default function EditNameScreen({navigation}: any) {
   const [name, setName] = useState('');
 
   const fetchSession = async () => {
@@ -31,6 +31,7 @@ export default function EditNameScreen({navigation}) {
     const result = await center.updateName(name);
     if (result === true) {
       Toast.remove(key);
+      Toast.success('修改成功');
       navigation.goBack();
     } else {
       Toast.remove(key);
