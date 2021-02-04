@@ -1,7 +1,5 @@
 import * as React from 'react';
 import {View, Text, StyleSheet, Image, StatusBar} from 'react-native';
-
-import {CheckBox} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import {colorWhite} from '../styles';
@@ -34,7 +32,7 @@ export default function LoginScreen({navigation}: {navigation: any}) {
       Toast.fail('请输入机构名称');
       return;
     }
-    if (t === '') {
+    if (u === '') {
       Toast.fail('请输入账号');
       return;
     }
