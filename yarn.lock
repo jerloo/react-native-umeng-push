@@ -6593,10 +6593,10 @@ rimraf@~2.2.6:
   resolved "https://registry.npm.taobao.org/rimraf/download/rimraf-2.2.8.tgz#e439be2aaee327321952730f99a8929e4fc50582"
   integrity sha1-5Dm+Kq7jJzIZUnMPmaiSnk/FBYI=
 
-rn-animated-loading-button@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/rn-animated-loading-button/-/rn-animated-loading-button-1.0.2.tgz#b98a5fbd1c31dfce477078516f200306a9d1e8c0"
-  integrity sha512-gP1CF3MT8Wgzp5LtmqLXrRbgK0bzGqddjYBQ8ObVtxyfTLp5CMwX+jIEZNaxFFT3wuWPgT2/OVS+LvO/vCz2Sg==
+rn-animated-loading-button@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/rn-animated-loading-button/-/rn-animated-loading-button-1.0.4.tgz#d236f1231a92be488ad889f234491095aea7ed35"
+  integrity sha512-sj2OLKFQXsP7Subllo8nZZkoMTVgZ/UVzvNr6JtB4fk8u8pVlWCaPCcFxmF20zGnPH6n6zxyci1USWF+XQ0bcw==
   dependencies:
     react-native-linear-gradient "^2.5.6"
 

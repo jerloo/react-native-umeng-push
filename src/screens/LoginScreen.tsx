@@ -25,6 +25,8 @@ export default function LoginScreen({navigation}: {navigation: any}) {
   const [userName, setUserName] = React.useState('');
   const [passWord, setPassword] = React.useState('');
 
+  const [loading, setLoading] = React.useState(false);
+
   var loadingButton = React.useRef<AnimatedLoadingButton>(null);
 
   const onSubmit = async (t: string, u: string, p: string) => {
@@ -41,6 +43,7 @@ export default function LoginScreen({navigation}: {navigation: any}) {
       return;
     }
     loadingButton?.current?.setLoading(true);
+    setLoading(true);
     const result = await center.login(
       {
         tenantName: t,
@@ -56,6 +59,7 @@ export default function LoginScreen({navigation}: {navigation: any}) {
       Toast.fail(result as string);
       setTimeout(() => {
         loadingButton.current?.setLoading(false);
+        setLoading(false);
       }, 1000);
     }
   };
@@ -106,6 +110,7 @@ export default function LoginScreen({navigation}: {navigation: any}) {
       <View style={styles.mainContainer}>
         <View style={styles.containerWidget} />
         <Input
+          editable={!loading}
           multiline={false}
           numberOfLines={1}
           placeholder="机构编号"
@@ -126,8 +131,8 @@ export default function LoginScreen({navigation}: {navigation: any}) {
           }
         />
         <Input
+          editable={!loading}
           numberOfLines={1}
-          editable={true}
           multiline={false}
           keyboardType="default"
           placeholder="输入账号"
@@ -147,6 +152,7 @@ export default function LoginScreen({navigation}: {navigation: any}) {
           }
         />
         <Input
+          editable={!loading}
           placeholder="输入密码"
           numberOfLines={1}
           multiline={false}
@@ -179,7 +185,11 @@ export default function LoginScreen({navigation}: {navigation: any}) {
         />
         <TouchableOpacity
           style={styles.rememberContainer}
-          onPress={() => setRemember(!remember)}>
+          onPress={() => {
+            if (!loading) {
+              setRemember(!remember);
+            }
+          }}>
           {remember ? (
             <View style={[styles.inputIcon, styles.rememberIconContainer]}>
               <Image
@@ -199,6 +209,7 @@ export default function LoginScreen({navigation}: {navigation: any}) {
         </TouchableOpacity>
 
         <AnimatedLoadingButton
+          disabled={userName === '' || tenantName === '' || passWord === ''}
           ref={loadingButton}
           containerStyle={styles.submitButtonContainer}
           buttonStyle={styles.submitButton}
