@@ -1001,6 +1001,13 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@pliybird/react-native-clear-cache@^1.0.0", "@pliybird/react-native-clear-cache@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/@pliybird/react-native-clear-cache/-/react-native-clear-cache-1.0.1.tgz#eef376e6ed68909bbc725ac7717440079da38a5f"
+  integrity sha512-GjNNDZT6pCi/LBBwh7QAmEGHg5oV5bkRcPFpYfsJMKg8XqPbHUDJn6FjB8oAk6NOwJoQxH+0zp+pwQn7mOZBQA==
+  dependencies:
+    "@pliybird/react-native-clear-cache" "^1.0.0"
+
 "@react-native-community/art@^1.2.0":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@react-native-community/art/-/art-1.2.0.tgz#386d95393f6042d9006f9d4bc6063fb898794460"
