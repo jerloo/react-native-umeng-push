@@ -19,9 +19,33 @@ interface ApiService {
     currentPassword: string,
     newPassword: string,
   ): Promise<string | boolean>;
+  uploadLogFile(fileName: string, fileUrl: string): Promise<string | boolean>;
 }
 
 class OnlineApiService implements ApiService {
+  async uploadLogFile(
+    fileName: string,
+    fileUrl: string,
+  ): Promise<string | boolean> {
+    try {
+      const result = await api.logApi.apiAppMobileLogUploadMobileLogFilePost({
+        deviceCode: '1-1-1-1',
+        logFiles: [
+          {
+            logFileName: fileName,
+            logFileUrl: fileUrl,
+          },
+        ],
+      });
+      if (result.status < 400) {
+        return true;
+      }
+      return SERVER_ERROR;
+    } catch {
+      return SERVER_ERROR;
+    }
+  }
+
   async updateName(name: string): Promise<string | boolean> {
     try {
       const result = await api.chargeApi.apiAppChargeUserPut(name);
@@ -131,6 +155,12 @@ class OnlineApiService implements ApiService {
 }
 
 class OfflineApiService implements ApiService {
+  async uploadLogFile(
+    _fileName: string,
+    _fileUrl: string,
+  ): Promise<string | boolean> {
+    return NO_NETWORK_ERROR;
+  }
   updateName(_name: string): Promise<string | boolean> {
     return Promise.resolve(NO_NETWORK_ERROR);
   }
@@ -169,6 +199,16 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+  async uploadLogFile(
+    fileName: string,
+    fileUrl: string,
+  ): Promise<string | boolean> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.uploadLogFile(fileName, fileUrl);
+    }
+    return this.offline.uploadLogFile(fileName, fileUrl);
   }
   async updateName(name: string): Promise<string | boolean> {
     const netInfo = await NetInfo.fetch();

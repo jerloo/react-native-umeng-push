@@ -37,7 +37,7 @@ export interface PdaReadDataDto {
     readTimes?: any;
     /**
      * 抄表附件地址
-     * @type {Array&lt;TerminalFileDto&gt;}
+     * @type {Array&lt;MobileFileDto&gt;}
      * @memberof PdaReadDataDto
      */
     terminalFiles?: any;

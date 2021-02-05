@@ -14,31 +14,31 @@
 /**
  * 附件属性
  * @export
- * @interface TerminalFileDto
+ * @interface MobileFileDto
  */
-export interface TerminalFileDto {
+export interface MobileFileDto {
     /**
-     * 文件类型 --文本、照片、视频等
+     * 文件类型
      * @type {number}
-     * @memberof TerminalFileDto
+     * @memberof MobileFileDto
      */
     fileType?: any;
     /**
      * 文件名称
      * @type {string}
-     * @memberof TerminalFileDto
+     * @memberof MobileFileDto
      */
     fileName?: any;
     /**
      * 文件地址
      * @type {string}
-     * @memberof TerminalFileDto
+     * @memberof MobileFileDto
      */
     fileUrl?: any;
     /**
      * 是否删除
      * @type {boolean}
-     * @memberof TerminalFileDto
+     * @memberof MobileFileDto
      */
     isDeleted?: any;
 }

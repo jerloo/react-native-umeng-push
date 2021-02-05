@@ -18,69 +18,15 @@
  */
 export interface UploadReadingDateDto {
     /**
-     * 抄表年月
-     * @type {number}
-     * @memberof UploadReadingDateDto
-     */
-    billMonth?: any;
-    /**
-     * 客户编号
-     * @type {number}
-     * @memberof UploadReadingDateDto
-     */
-    custId?: any;
-    /**
-     * 抄次
-     * @type {number}
-     * @memberof UploadReadingDateDto
-     */
-    readTimes?: any;
-    /**
-     * 本次抄码
-     * @type {number}
-     * @memberof UploadReadingDateDto
-     */
-    reading?: any;
-    /**
-     * 本次子表抄码
-     * @type {number}
-     * @memberof UploadReadingDateDto
-     */
-    childReading?: any;
-    /**
-     * 本次抄见水量
-     * @type {number}
-     * @memberof UploadReadingDateDto
-     */
-    readWater?: any;
-    /**
-     * 本次抄表时间
-     * @type {Date}
-     * @memberof UploadReadingDateDto
-     */
-    readDate?: any;
-    /**
-     * 抄表状态
-     * @type {number}
-     * @memberof UploadReadingDateDto
-     */
-    readStateId?: any;
-    /**
-     * 量高量低标志
-     * @type {number}
-     * @memberof UploadReadingDateDto
-     */
-    highLowState?: any;
-    /**
-     * 是否估抄
-     * @type {boolean}
-     * @memberof UploadReadingDateDto
-     */
-    isEstimate?: any;
-    /**
-     * 备注
+     * 设备号
      * @type {string}
      * @memberof UploadReadingDateDto
      */
-    readRemark?: any;
+    deviceCode: any;
+    /**
+     * 抄表数据
+     * @type {Array&lt;ReadingDateDto&gt;}
+     * @memberof UploadReadingDateDto
+     */
+    readingDates: any;
 }

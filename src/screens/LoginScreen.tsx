@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {View, Text, StyleSheet, Image, StatusBar} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { View, Text, StyleSheet, Image, StatusBar } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-import {colorWhite} from '../styles';
+import { colorWhite } from '../styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AnimatedLoadingButton from 'rn-animated-loading-button';
 import {
@@ -13,11 +13,12 @@ import {
 
 import center from '../data';
 
-import {Toast} from '@ant-design/react-native';
-import {getSession} from '../utils/sesstionUtils';
+import { Toast } from '@ant-design/react-native';
+import { getSession } from '../utils/sesstionUtils';
 import Input from '../components/Input';
+import { l } from '../utils/logUtils';
 
-export default function LoginScreen({navigation}: {navigation: any}) {
+export default function LoginScreen({ navigation }: { navigation: any }) {
   const [remember, setRemember] = React.useState(true);
   const [passwordVisible, setPasswordVisible] = React.useState(true);
 
@@ -42,6 +43,7 @@ export default function LoginScreen({navigation}: {navigation: any}) {
       Toast.fail('请输入密码');
       return;
     }
+    l.debug(`Start submit login ${t} ${u} ${p}`);
     loadingButton?.current?.setLoading(true);
     setLoading(true);
     const result = await center.login(
@@ -54,6 +56,7 @@ export default function LoginScreen({navigation}: {navigation: any}) {
     );
     if (result === true) {
       loadingButton.current?.setLoading(false);
+      l.debug(`Login success ${t} ${u} ${p}`);
       navigation.replace('Home');
     } else {
       Toast.fail(result as string);

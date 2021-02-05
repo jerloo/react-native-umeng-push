@@ -14,13 +14,13 @@
 /**
  * 
  * @export
- * @interface SampleDto
+ * @interface PdaCustListDtoListResultDto
  */
-export interface SampleDto {
+export interface PdaCustListDtoListResultDto {
     /**
      * 
-     * @type {number}
-     * @memberof SampleDto
+     * @type {Array&lt;PdaCustListDto&gt;}
+     * @memberof PdaCustListDtoListResultDto
      */
-    value?: any;
+    items?: any;
 }

@@ -247,6 +247,48 @@
         }
       }
     },
+    "/api/app/charge/custList": {
+      "get": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "客户快速查询",
+        "parameters": [
+          {
+            "name": "parameter",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": ""
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaCustListDtoListResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaCustListDtoListResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaCustListDtoListResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/app/login/login": {
       "post": {
         "tags": [
@@ -303,49 +345,33 @@
         }
       }
     },
-    "/api/app/mobileReading/uploadReadingDate": {
+    "/api/app/mobileLog/uploadMobileLogFile": {
       "post": {
         "tags": [
-          "MobileReading"
+          "MobileLog"
         ],
-        "summary": "pda抄表数据上传",
+        "summary": "pda日志上传",
         "requestBody": {
           "description": "",
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/UploadReadingDateDto"
-                },
-                "description": ""
+                "$ref": "#/components/schemas/UploadMobileLogFileDto"
               }
             },
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/UploadReadingDateDto"
-                },
-                "description": ""
+                "$ref": "#/components/schemas/UploadMobileLogFileDto"
               }
             },
             "text/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/UploadReadingDateDto"
-                },
-                "description": ""
+                "$ref": "#/components/schemas/UploadMobileLogFileDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/UploadReadingDateDto"
-                },
-                "description": ""
+                "$ref": "#/components/schemas/UploadMobileLogFileDto"
               }
             }
           },
@@ -358,60 +384,80 @@
         }
       }
     },
-    "/api/app/sample": {
-      "get": {
+    "/api/app/mobileReading/uploadReadingDate": {
+      "post": {
         "tags": [
-          "Sample"
+          "MobileReading"
         ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/SampleDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SampleDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SampleDto"
-                }
+        "summary": "pda抄表数据上传",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadReadingDateDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadReadingDateDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadReadingDateDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadReadingDateDto"
               }
             }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
     },
-    "/api/app/sample/authorized": {
-      "get": {
+    "/api/app/mobileReading/uploadReadingFile": {
+      "post": {
         "tags": [
-          "Sample"
+          "MobileReading"
         ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/SampleDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SampleDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SampleDto"
-                }
+        "summary": "pda抄表附件上传",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadReadingFileDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadReadingFileDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadReadingFileDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadReadingFileDto"
               }
             }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -566,12 +612,12 @@
         "additionalProperties": false,
         "description": "抄表数据查询"
       },
-      "TerminalFileDto": {
+      "MobileFileDto": {
         "type": "object",
         "properties": {
           "fileType": {
             "type": "integer",
-            "description": "文件类型 --文本、照片、视频等",
+            "description": "文件类型",
             "format": "int32"
           },
           "fileName": {
@@ -613,7 +659,7 @@
           "terminalFiles": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TerminalFileDto"
+              "$ref": "#/components/schemas/MobileFileDto"
             },
             "description": "抄表附件地址",
             "nullable": true
@@ -1077,6 +1123,51 @@
         },
         "additionalProperties": false
       },
+      "PdaCustListDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "客户ID",
+            "format": "int32"
+          },
+          "custCode": {
+            "type": "string",
+            "description": "客户编号",
+            "nullable": true
+          },
+          "custName": {
+            "type": "string",
+            "description": "客户姓名",
+            "nullable": true
+          },
+          "custAddress": {
+            "type": "string",
+            "description": "客户地址",
+            "nullable": true
+          },
+          "bookCode": {
+            "type": "string",
+            "description": "册本编号",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "快捷查询Dto"
+      },
+      "PdaCustListDtoListResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaCustListDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LoginInput": {
         "required": [
           "passWord",
@@ -1118,7 +1209,48 @@
         "additionalProperties": false,
         "description": "登录"
       },
-      "UploadReadingDateDto": {
+      "MobileLogFileDto": {
+        "required": [
+          "logFileName",
+          "logFileUrl"
+        ],
+        "type": "object",
+        "properties": {
+          "logFileName": {
+            "type": "string",
+            "description": "日志名称"
+          },
+          "logFileUrl": {
+            "type": "string",
+            "description": "日志文件路径"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Pda日志"
+      },
+      "UploadMobileLogFileDto": {
+        "required": [
+          "deviceCode"
+        ],
+        "type": "object",
+        "properties": {
+          "deviceCode": {
+            "type": "string",
+            "description": "设备号"
+          },
+          "logFiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MobileLogFileDto"
+            },
+            "description": "Pda日志",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Pda日志上传"
+      },
+      "ReadingDateDto": {
         "type": "object",
         "properties": {
           "billMonth": {
@@ -1182,15 +1314,79 @@
         "additionalProperties": false,
         "description": "Pda抄表数据上传"
       },
-      "SampleDto": {
+      "UploadReadingDateDto": {
+        "required": [
+          "deviceCode",
+          "readingDates"
+        ],
         "type": "object",
         "properties": {
-          "value": {
-            "type": "integer",
-            "format": "int32"
+          "deviceCode": {
+            "type": "string",
+            "description": "设备号"
+          },
+          "readingDates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReadingDateDto"
+            },
+            "description": "抄表数据"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Pda抄表数据上传"
+      },
+      "ReadingFileDto": {
+        "type": "object",
+        "properties": {
+          "billMonth": {
+            "type": "integer",
+            "description": "抄表年月",
+            "format": "int32"
+          },
+          "custId": {
+            "type": "integer",
+            "description": "客户编号",
+            "format": "int32"
+          },
+          "readTimes": {
+            "type": "integer",
+            "description": "抄次",
+            "format": "int32"
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MobileFileDto"
+            },
+            "description": "附件列表",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Pda抄表附件上传"
+      },
+      "UploadReadingFileDto": {
+        "required": [
+          "deviceCode",
+          "readingFiles"
+        ],
+        "type": "object",
+        "properties": {
+          "deviceCode": {
+            "type": "string",
+            "description": "设备号"
+          },
+          "readingFiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReadingFileDto"
+            },
+            "description": "抄表数据附件"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Pda附件上传"
       }
     },
     "securitySchemes": {
@@ -1208,6 +1404,10 @@
     }
   ],
   "tags": [
+    {
+      "name": "MobileLog",
+      "description": "Pda日志上传"
+    },
     {
       "name": "MobileReading",
       "description": "Pda抄表数据上传"
