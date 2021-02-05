@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {useState} from 'react';
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
-import {TextInput} from 'react-native-gesture-handler';
+import { useState } from 'react';
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 import {
   scaleHeight,
   scaleSize,
@@ -9,14 +9,18 @@ import {
 } from 'react-native-responsive-design';
 import EditTitleBar from '../components/EditTitleBar';
 import center from '../data';
-import {Toast} from '@ant-design/react-native';
+import { Toast } from '@ant-design/react-native';
 
-export default function EditPasswordScreen({navigation}: any) {
+export default function EditPasswordScreen({ navigation }: any) {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPasword, setConfirmPassword] = useState('');
 
   const onSave = async () => {
+    // if (!/^(?=.*?[0-9])(?=.*?[a-z])[0-9a-z]{8,}$/.test(newPassword)) {
+    //   Toast.fail('密码必须至少8位字符，同时需包含字母和数字');
+    //   return;
+    // }
     const key = Toast.loading('保存中', 0);
     const result = await center.changePassword(oldPassword, newPassword);
     if (result === true) {
@@ -25,7 +29,7 @@ export default function EditPasswordScreen({navigation}: any) {
       navigation.goBack();
     } else {
       Toast.remove(key);
-      Toast.fail(result as string);
+      Toast.fail('修改失败');
     }
   };
 

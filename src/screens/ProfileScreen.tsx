@@ -21,6 +21,9 @@ import { getSession, setSession, UserSession } from '../utils/sesstionUtils';
 import CosXmlReactNative from '../utils/uploadUtils';
 import center from '../data';
 import Caches from 'react-native-caches';
+import NetInfo from '@react-native-community/netinfo';
+import { NO_NETWORK_ERROR } from '../data';
+import DeviceInfo from 'react-native-device-info';
 
 export default function ProfileScreen({ navigation }: any) {
   const [session, sSession] = useState<UserSession>();
@@ -34,9 +37,10 @@ export default function ProfileScreen({ navigation }: any) {
       sSession(s);
     }
   };
+
   useEffect(() => {
     fetchSession();
-  });
+  }, []);
 
   const logout = async () => {
     if (session !== null) {
@@ -46,8 +50,13 @@ export default function ProfileScreen({ navigation }: any) {
   };
 
   const uploadLog = async () => {
-    // /handa/202101/zhangsa/2021-02-05-001.log.txt
     setUploadLogVisible(false);
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable !== true) {
+      Toast.fail(NO_NETWORK_ERROR);
+      return;
+    }
+    // /handa/202101/zhangsa/2021-02-05-001.log.txt
     const objectName = await getObjectKey();
     console.log('log file object name', objectName);
     const uploadRequest = {
@@ -168,7 +177,7 @@ export default function ProfileScreen({ navigation }: any) {
           onPress={() => setCheckVersionVisible(true)}>
           <Text style={styles.textPrimary}>版本信息</Text>
           <View style={styles.blockRowRight}>
-            <Text style={styles.textSec}>V1.2.2</Text>
+            <Text style={styles.textSec}>V{DeviceInfo.getVersion()}</Text>
             <Image
               style={styles.arrowRight}
               source={require('../assets/btn_arrow_right.png')}

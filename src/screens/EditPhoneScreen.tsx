@@ -1,18 +1,18 @@
-import {Toast} from '@ant-design/react-native';
+import { Toast } from '@ant-design/react-native';
 import * as React from 'react';
-import {useState, useEffect} from 'react';
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
-import {TextInput} from 'react-native-gesture-handler';
+import { useState, useEffect } from 'react';
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 import {
   scaleHeight,
   scaleSize,
   setSpText2,
 } from 'react-native-responsive-design';
 import EditTitleBar from '../components/EditTitleBar';
-import {getSession, UserSession} from '../utils/sesstionUtils';
+import { getSession, UserSession } from '../utils/sesstionUtils';
 import center from '../data';
 
-export default function EditPhoneScreen({navigation}: any) {
+export default function EditPhoneScreen({ navigation }: any) {
   const [session, sSession] = useState<UserSession>();
   const [newPhone, setNewPhone] = useState('');
 

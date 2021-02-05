@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet, StatusBar} from 'react-native';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import { View, Image, Text, StyleSheet, StatusBar } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import {
   scaleHeight,
   scaleSize,

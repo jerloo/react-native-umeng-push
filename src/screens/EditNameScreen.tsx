@@ -1,19 +1,19 @@
 import * as React from 'react';
-import {useState, useEffect} from 'react';
-import {StatusBar, StyleSheet, View, TextInput} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { useState, useEffect } from 'react';
+import { StatusBar, StyleSheet, View, TextInput } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
   scaleHeight,
   scaleSize,
   setSpText2,
 } from 'react-native-responsive-design';
-import {getSession} from '../utils/sesstionUtils';
+import { getSession } from '../utils/sesstionUtils';
 import Icon from 'react-native-vector-icons/Ionicons';
 import EditTitleBar from '../components/EditTitleBar';
 import center from '../data';
-import {Toast} from '@ant-design/react-native';
+import { Toast } from '@ant-design/react-native';
 
-export default function EditNameScreen({navigation}: any) {
+export default function EditNameScreen({ navigation }: any) {
   const [name, setName] = useState('');
 
   const fetchSession = async () => {

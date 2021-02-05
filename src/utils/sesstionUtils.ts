@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import { MeterReaderDto } from '../../apiclient/src/models';
+import { PdaMeterReaderDto } from '../../apiclient/src/models';
 
 export interface UserSession {
   tenantName: string;
   password: string;
   autoLogin: boolean;
-  userInfo: MeterReaderDto;
+  userInfo: PdaMeterReaderDto;
 }
 
 export const setSession = (session: UserSession) => {

@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, TextInput, StyleSheet} from 'react-native';
-import {InputProps} from 'react-native-elements';
-import {scaleHeight, scaleSize} from 'react-native-responsive-design';
+import { View, TextInput, StyleSheet } from 'react-native';
+import { InputProps } from 'react-native-elements';
+import { scaleHeight, scaleSize } from 'react-native-responsive-design';
 
 interface Props extends InputProps {}
 

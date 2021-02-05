@@ -1,15 +1,13 @@
-import { LoginInput, MeterReaderDto } from '../../apiclient/src/models';
+import { LoginInput } from '../../apiclient/src/models';
 import { api } from '../utils/apiUtils';
 import { getSession, setSession } from '../utils/sesstionUtils';
 import NetInfo from '@react-native-community/netinfo';
-import { logger as Logger } from 'react-native-logs';
 import AsyncStorage from '@react-native-community/async-storage';
-const logger = Logger.createLogger();
 
-const NETWORK_ERROR = '网络错误，请稍后再试';
-const SERVER_ERROR = '服务器错误，请稍后再试';
-const NO_NETWORK_ERROR = '请连接网络';
-const USERNAME_PWD_ERROR = '用户名或密码错误';
+export const NETWORK_ERROR = '网络错误，请稍后再试';
+export const SERVER_ERROR = '服务器错误，请稍后再试';
+export const NO_NETWORK_ERROR = '请连接网络';
+export const USERNAME_PWD_ERROR = '用户名或密码错误';
 
 interface ApiService {
   login(payload: LoginInput, autoLogin: boolean): Promise<string | boolean>;

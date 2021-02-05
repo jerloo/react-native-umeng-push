@@ -1,23 +1,23 @@
 import * as React from 'react';
-import {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, StatusBar, Image} from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, StatusBar, Image } from 'react-native';
 import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import HomeButton from '../components/HomeButton';
-import {colorWhite} from '../styles';
+import { colorWhite } from '../styles';
 import {
   scaleSize,
   scaleHeight,
   setSpText2,
 } from 'react-native-responsive-design';
-import {getSession, UserSession} from '../utils/sesstionUtils';
+import { getSession, UserSession } from '../utils/sesstionUtils';
 import SearchBox from '../components/SearchBox';
 
-export default function HomeScreen({navigation}: any) {
+export default function HomeScreen({ navigation }: any) {
   const [session, setSession] = useState<UserSession>();
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function HomeScreen({navigation}: any) {
               />
             </TouchableWithoutFeedback>
           </View>
-          <View style={{marginHorizontal: scaleSize(30)}}>
+          <View style={{ marginHorizontal: scaleSize(30) }}>
             <SearchBox />
           </View>
         </SafeAreaView>

@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, TextInput, StyleSheet} from 'react-native';
-import {colorWhite} from '../styles';
-import {Icon} from 'react-native-elements';
+import { View, TextInput, StyleSheet } from 'react-native';
+import { colorWhite } from '../styles';
+import { Icon } from 'react-native-elements';
 import {
   scaleHeight,
   scaleSize,
@@ -11,7 +11,7 @@ import {
 export default function SearchBox() {
   return (
     <View style={styles.searchBoxContainer}>
-      <View style={{marginStart: scaleSize(22), marginEnd: scaleSize(18)}}>
+      <View style={{ marginStart: scaleSize(22), marginEnd: scaleSize(18) }}>
         <Icon name="search" color="#FFFFFF" />
       </View>
       <View style={styles.inputContainer}>

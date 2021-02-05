@@ -30,6 +30,7 @@
     "react-native": "0.63.4",
     "react-native-animated-loading-button": "^1.0.1",
     "react-native-caches": "^1.0.0",
+    "react-native-device-info": "^8.0.1",
     "react-native-elements": "^3.1.0",
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "^1.9.0",

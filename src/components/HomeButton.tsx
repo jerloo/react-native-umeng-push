@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
-import {ImageSource} from 'react-native-vector-icons/Icon';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import { ImageSource } from 'react-native-vector-icons/Icon';
 import {
   scaleSize,
   scaleHeight,
@@ -16,8 +16,10 @@ type Props = {
 export default function HomeButton(props: Props) {
   return (
     <View style={styles.homeButtonContainer}>
-      <View style={[styles.homeButtonTop, {backgroundColor: props.colorTop}]} />
-      <View style={[styles.homeButton, {borderLeftColor: props.colorLeft}]}>
+      <View
+        style={[styles.homeButtonTop, { backgroundColor: props.colorTop }]}
+      />
+      <View style={[styles.homeButton, { borderLeftColor: props.colorLeft }]}>
         <Image style={styles.homeButtonIcon} source={props.iconSource} />
         <Text style={styles.homeButtonTitle}>{props.title}</Text>
       </View>
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#BED5F5',
     borderTopEndRadius: 5,
     borderLeftWidth: 0,
-    transform: [{rotate: '359deg'}],
+    transform: [{ rotate: '359deg' }],
   },
   homeButton: {
     width: scaleSize(330),
