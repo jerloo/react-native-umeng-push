@@ -11,7 +11,12 @@ import {
 } from 'react-native-responsive-design';
 import { BackTitleBar } from '../components/BackTitleBar';
 import { colorWhite } from '../styles';
-import { currentLogFileName, currentLogFilePath, l } from '../utils/logUtils';
+import {
+  currentLogFileName,
+  currentLogFilePath,
+  getObjectKey,
+  l,
+} from '../utils/logUtils';
 import { getSession, setSession, UserSession } from '../utils/sesstionUtils';
 import CosXmlReactNative from '../utils/uploadUtils';
 import center from '../data';
@@ -41,17 +46,13 @@ export default function ProfileScreen({ navigation }: any) {
   };
 
   const uploadLog = async () => {
+    // /handa/202101/zhangsa/2021-02-05-001.log.txt
     setUploadLogVisible(false);
-    const prefix = session?.tenantName;
+    const objectName = await getObjectKey();
+    console.log('log file object name', objectName);
     const uploadRequest = {
       bucket: 'mobilereadapp-1259078701',
-      object:
-        prefix +
-        '/' +
-        currentLogFileName.replace('logs_', '').replace('.txt', '') +
-        '/' +
-        session?.userInfo.userName +
-        '.log.txt',
+      object: objectName,
       // 文件本地 Uri 或者 路径
       fileUri: 'file://' + currentLogFilePath,
     };

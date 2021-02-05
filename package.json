@@ -25,6 +25,7 @@
     "@react-navigation/stack": "^5.14.2",
     "add": "^2.0.6",
     "cos-xml-react-native": "^1.0.0",
+    "dayjs": "^1.10.4",
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-animated-loading-button": "^1.0.1",

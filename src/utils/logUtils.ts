@@ -4,14 +4,21 @@ import {
   consoleTransport,
 } from 'react-native-logs';
 import RNFS from 'react-native-fs';
+import dayjs from 'dayjs';
+import { getSession } from './sesstionUtils';
 
-let today = new Date();
-let month = today.getMonth() + 1;
-let year = today.getFullYear();
-
-export const currentLogFileName = `${year}${month}.txt`;
+// /handa/202101/zhangsa/2021-02-05-001.log.txt
+export const currentLogFileName = `${dayjs().format('YYYY-MM-DD-001')}.log.txt`;
 export const currentLogFileDir = RNFS.CachesDirectoryPath + '/logs';
 export const currentLogFilePath = currentLogFileDir + '/' + currentLogFileName;
+
+export const getObjectKey = async () => {
+  const session = await getSession();
+  const username = session?.userInfo.userName;
+  const dtYearMonth = dayjs().format('YYYYMM');
+  // /handa/202101/zhangsa/2021-02-05-001.log.txt
+  return `/${session?.tenantName}/${dtYearMonth}/${username}/${currentLogFileName}`;
+};
 
 RNFS.exists(currentLogFileDir).then((value) => {
   if (!value) {
