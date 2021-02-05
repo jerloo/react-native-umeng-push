@@ -9,10 +9,15 @@ let today = new Date();
 let month = today.getMonth() + 1;
 let year = today.getFullYear();
 
-export const currentLogFileName = `logs_${year}${month}.txt`;
-export const currentLogFilePath =
-  RNFS.DocumentDirectoryPath + '/' + currentLogFileName;
-export const currentLogFileDir = RNFS.DocumentDirectoryPath;
+export const currentLogFileName = `${year}${month}.txt`;
+export const currentLogFileDir = RNFS.CachesDirectoryPath + '/logs';
+export const currentLogFilePath = currentLogFileDir + '/' + currentLogFileName;
+
+RNFS.exists(currentLogFileDir).then((value) => {
+  if (!value) {
+    RNFS.mkdir(currentLogFileDir);
+  }
+});
 
 const defaultConfig = {
   severity: 'debug',
@@ -24,6 +29,7 @@ const defaultConfig = {
     FS: RNFS,
     fileLogName: currentLogFileName,
     fileName: currentLogFileName,
+    filePath: currentLogFileDir,
   },
   levels: {
     debug: 0,

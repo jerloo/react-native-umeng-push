@@ -86,7 +86,15 @@ export default function ProfileScreen({ navigation }: any) {
     }
   };
 
-  const clearCache = async () => {};
+  const clearCache = async () => {
+    setClearCacheVisible(false);
+    try {
+      await clearCache();
+      Toast.success('清理缓存成功');
+    } catch {
+      Toast.success('清理缓存失败');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -191,7 +199,9 @@ export default function ProfileScreen({ navigation }: any) {
             <Text style={styles.bottomTitle}>确认上传日志？</Text>
           </View>
           <View style={styles.bottomDivide} />
-          <ListItem style={styles.bottomConfirmButton} onPress={uploadLog}>
+          <ListItem
+            containerStyle={styles.bottomConfirmButton}
+            onPress={uploadLog}>
             <ListItem.Content>
               <ListItem.Title style={styles.bottomConfirmText}>
                 确定
