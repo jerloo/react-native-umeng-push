@@ -13,7 +13,6 @@ CosXmlReactNative.initWithSessionCredentialCallback(
       `http://81.68.221.56:44361/api/app/files/tempSecretKey?FileSource=2&Bucket=mobilereadapp&Prefix=${prefix}`,
     );
     const responseJson = await response.json();
-    console.log(responseJson);
     const credentials = responseJson.Credentials;
     const expiredTime = responseJson.ExpiredTime;
     const sessionCredentials = {
@@ -22,7 +21,6 @@ CosXmlReactNative.initWithSessionCredentialCallback(
       expiredTime: expiredTime,
       sessionToken: credentials.Token,
     };
-    console.log(sessionCredentials);
     return sessionCredentials;
   },
 );

@@ -49,7 +49,6 @@ class OnlineApiService implements ApiService {
   async updateName(name: string): Promise<string | boolean> {
     try {
       const result = await api.chargeApi.apiAppChargeUserPut(name);
-      console.log(result);
       if (result.status < 400) {
         const infoResult = await api.chargeApi.apiAppChargeUserInfoGet();
         if (infoResult.status < 400) {
@@ -124,7 +123,6 @@ class OnlineApiService implements ApiService {
     try {
       const loginResult = await api.loginApi.apiAppLoginLoginPost(payload);
       if (loginResult.status < 400) {
-        console.log('login success', loginResult);
         const token =
           loginResult.data.tokenType + ' ' + loginResult.data.accessToken;
         const p1 = await api.provider.set(token);

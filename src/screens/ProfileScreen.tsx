@@ -15,7 +15,7 @@ import { currentLogFileName, currentLogFilePath, l } from '../utils/logUtils';
 import { getSession, setSession, UserSession } from '../utils/sesstionUtils';
 import CosXmlReactNative from '../utils/uploadUtils';
 import center from '../data';
-import clear from '@pliybird/react-native-clear-cache';
+import Caches from 'react-native-caches';
 
 export default function ProfileScreen({ navigation }: any) {
   const [session, sSession] = useState<UserSession>();
@@ -69,7 +69,6 @@ export default function ProfileScreen({ navigation }: any) {
         },
       );
       // info 包含上传结果
-      console.log(uploadResult);
       const result = await center.uploadLogFile(
         currentLogFileName,
         uploadResult.Location,
@@ -90,9 +89,8 @@ export default function ProfileScreen({ navigation }: any) {
   const clearCache = async () => {
     setClearCacheVisible(false);
     try {
-      clear.runClearCache(() => {
-        Toast.success('清理缓存成功');
-      });
+      await Caches.runClearCache();
+      Toast.success('清理缓存成功');
     } catch {
       Toast.success('清理缓存失败');
     }

@@ -12,7 +12,6 @@
   "dependencies": {
     "@ant-design/icons-react-native": "^2.2.1",
     "@ant-design/react-native": "^4.0.7",
-    "@pliybird/react-native-clear-cache": "^1.0.1",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/cameraroll": "^4.0.2",
@@ -29,6 +28,7 @@
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-animated-loading-button": "^1.0.1",
+    "react-native-caches": "^1.0.0",
     "react-native-elements": "^3.1.0",
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "^1.9.0",

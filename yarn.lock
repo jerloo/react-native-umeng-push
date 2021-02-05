@@ -1001,13 +1001,6 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@pliybird/react-native-clear-cache@^1.0.0", "@pliybird/react-native-clear-cache@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/@pliybird/react-native-clear-cache/-/react-native-clear-cache-1.0.1.tgz#eef376e6ed68909bbc725ac7717440079da38a5f"
-  integrity sha512-GjNNDZT6pCi/LBBwh7QAmEGHg5oV5bkRcPFpYfsJMKg8XqPbHUDJn6FjB8oAk6NOwJoQxH+0zp+pwQn7mOZBQA==
-  dependencies:
-    "@pliybird/react-native-clear-cache" "^1.0.0"
-
 "@react-native-community/art@^1.2.0":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@react-native-community/art/-/art-1.2.0.tgz#386d95393f6042d9006f9d4bc6063fb898794460"
@@ -6098,6 +6091,11 @@ react-native-animated-loading-button@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/react-native-animated-loading-button/-/react-native-animated-loading-button-1.0.1.tgz#966a5241a4379ef98ed6c8aa2e16d5d62504734e"
   integrity sha512-zkXd0oY4wzu7FPRSgbAsF0RKUm1ZDZV1NZeeqK4gJSe/Zrj8/tjEt5DTQf5OnvwRkaxaRvEPgW/UkAjipBqPfA==
+
+react-native-caches@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/react-native-caches/-/react-native-caches-1.0.0.tgz#4cbef3675d904158abf8a1625b0101f7cbb6353e"
+  integrity sha512-I1ETaqQYleui78/L01MykbQ3IkE4LHd/nlAM9kmwaLpBT0CUJlHnwwYglQFRFCt7iP0kYd1fMzUwI3Wc8ZIOFA==
 
 react-native-circular-progress@0.0.8:
   version "0.0.8"
