@@ -48,7 +48,7 @@ export default function EditPhoneScreen({ navigation }: any) {
       />
       <EditTitleBar
         title="手机号修改"
-        canDone={newPhone !== ''}
+        canDone={newPhone !== '' && newPhone.length >= 11}
         onBack={() => navigation.goBack()}
         onDone={onSave}
       />
@@ -67,7 +67,7 @@ export default function EditPhoneScreen({ navigation }: any) {
             numberOfLines={1}
             underlineColorAndroid="transparent"
             style={styles.inputStyle}
-            keyboardType="default"
+            keyboardType="phone-pad"
             placeholder="请输入您的新手机号"
             defaultValue={newPhone}
             onChangeText={(text) => setNewPhone(text)}
