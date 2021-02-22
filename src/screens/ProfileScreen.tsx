@@ -40,7 +40,7 @@ export default function ProfileScreen({ navigation }: any) {
 
   useEffect(() => {
     fetchSession();
-  }, []);
+  });
 
   const logout = async () => {
     if (session !== null) {
