@@ -21,6 +21,10 @@ export default function EditPasswordScreen({ navigation }: any) {
     //   Toast.fail('密码必须至少8位字符，同时需包含字母和数字');
     //   return;
     // }
+    if (oldPassword === newPassword) {
+      Toast.fail('新密码和旧密码不能相同');
+      return;
+    }
     const key = Toast.loading('保存中', 0);
     const result = await center.changePassword(oldPassword, newPassword);
     if (result === true) {
