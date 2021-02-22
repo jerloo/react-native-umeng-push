@@ -26,7 +26,7 @@ export const LoginApiAxiosParamCreator = function (configuration?: Configuration
     return {
         /**
          * 
-         * @summary 抄表员登录
+         * @summary 登录
          * @param {LoginInput} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -75,6 +75,48 @@ export const LoginApiAxiosParamCreator = function (configuration?: Configuration
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary 登出
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppLoginLogoutPost: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/app/login/logout`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -86,13 +128,26 @@ export const LoginApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary 抄表员登录
+         * @summary 登录
          * @param {LoginInput} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         async apiAppLoginLoginPost(body: LoginInput, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LogOutput>> {
             const localVarAxiosArgs = await LoginApiAxiosParamCreator(configuration).apiAppLoginLoginPost(body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary 登出
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiAppLoginLogoutPost(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await LoginApiAxiosParamCreator(configuration).apiAppLoginLogoutPost(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -109,13 +164,22 @@ export const LoginApiFactory = function (configuration?: Configuration, basePath
     return {
         /**
          * 
-         * @summary 抄表员登录
+         * @summary 登录
          * @param {LoginInput} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         apiAppLoginLoginPost(body: LoginInput, options?: any): AxiosPromise<LogOutput> {
             return LoginApiFp(configuration).apiAppLoginLoginPost(body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 登出
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppLoginLogoutPost(options?: any): AxiosPromise<void> {
+            return LoginApiFp(configuration).apiAppLoginLogoutPost(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -129,7 +193,7 @@ export const LoginApiFactory = function (configuration?: Configuration, basePath
 export class LoginApi extends BaseAPI {
     /**
      * 
-     * @summary 抄表员登录
+     * @summary 登录
      * @param {LoginInput} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -137,5 +201,15 @@ export class LoginApi extends BaseAPI {
      */
     public apiAppLoginLoginPost(body: LoginInput, options?: any) {
         return LoginApiFp(this.configuration).apiAppLoginLoginPost(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @summary 登出
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LoginApi
+     */
+    public apiAppLoginLogoutPost(options?: any) {
+        return LoginApiFp(this.configuration).apiAppLoginLogoutPost(options).then((request) => request(this.axios, this.basePath));
     }
 }

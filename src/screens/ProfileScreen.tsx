@@ -47,6 +47,8 @@ export default function ProfileScreen({ navigation }: any) {
       session!!.autoLogin = false;
       await setSession(session!!);
     }
+    await center.logout();
+    navigation.goBack();
   };
 
   const uploadLog = async () => {

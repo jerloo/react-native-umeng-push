@@ -12,21 +12,21 @@
  * Do not edit the class manually.
  */
 /**
- * 登录返回
+ * 抄表员轨迹上传
  * @export
- * @interface LogOutput
+ * @interface UploadTrajectoryDto
  */
-export interface LogOutput {
+export interface UploadTrajectoryDto {
     /**
-     * AccessToken
+     * 设备号
      * @type {string}
-     * @memberof LogOutput
+     * @memberof UploadTrajectoryDto
      */
-    accessToken?: any;
+    deviceCode: any;
     /**
-     * TokenType
-     * @type {string}
-     * @memberof LogOutput
+     * Pda日志
+     * @type {Array&lt;MobileTrajectoryDto&gt;}
+     * @memberof UploadTrajectoryDto
      */
-    tokenType?: any;
+    trajectorys?: any;
 }

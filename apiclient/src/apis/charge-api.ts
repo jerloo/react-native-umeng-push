@@ -16,8 +16,8 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { PdaCustDetailsDtoListResultDto } from '../models';
 import { PdaCustDetailsInput } from '../models';
+import { PdaCustDtoListResultDto } from '../models';
 import { PdaCustListDtoListResultDto } from '../models';
 import { PdaMeterBookDtoListResultDto } from '../models';
 import { PdaMeterReaderDto } from '../models';
@@ -422,7 +422,7 @@ export const ChargeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiAppChargeCustDetailsByCustIdPost(body: PdaCustDetailsInput, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PdaCustDetailsDtoListResultDto>> {
+        async apiAppChargeCustDetailsByCustIdPost(body: PdaCustDetailsInput, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PdaCustDtoListResultDto>> {
             const localVarAxiosArgs = await ChargeApiAxiosParamCreator(configuration).apiAppChargeCustDetailsByCustIdPost(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -521,7 +521,7 @@ export const ChargeApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiAppChargeCustDetailsByCustIdPost(body: PdaCustDetailsInput, options?: any): AxiosPromise<PdaCustDetailsDtoListResultDto> {
+        apiAppChargeCustDetailsByCustIdPost(body: PdaCustDetailsInput, options?: any): AxiosPromise<PdaCustDtoListResultDto> {
             return ChargeApiFp(configuration).apiAppChargeCustDetailsByCustIdPost(body, options).then((request) => request(axios, basePath));
         },
         /**

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 /**
- * Pda抄表附件上传
+ * Pda抄表附件
  * @export
  * @interface ReadingFileDto
  */

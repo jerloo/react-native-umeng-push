@@ -12,21 +12,27 @@
  * Do not edit the class manually.
  */
 /**
- * 登录返回
+ * 轨迹
  * @export
- * @interface LogOutput
+ * @interface MobileTrajectoryDto
  */
-export interface LogOutput {
+export interface MobileTrajectoryDto {
     /**
-     * AccessToken
-     * @type {string}
-     * @memberof LogOutput
+     * 经度
+     * @type {number}
+     * @memberof MobileTrajectoryDto
      */
-    accessToken?: any;
+    longitude?: any;
     /**
-     * TokenType
-     * @type {string}
-     * @memberof LogOutput
+     * 维度
+     * @type {number}
+     * @memberof MobileTrajectoryDto
      */
-    tokenType?: any;
+    latitude?: any;
+    /**
+     * 采集时间
+     * @type {Date}
+     * @memberof MobileTrajectoryDto
+     */
+    collectTime?: any;
 }

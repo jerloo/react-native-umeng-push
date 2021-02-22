@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 /**
- * 移动端抄表-客户清单
+ * Pda抄表数据下载
  * @export
  * @interface PdaReadDataDto
  */

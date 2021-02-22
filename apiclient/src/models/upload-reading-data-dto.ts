@@ -12,21 +12,21 @@
  * Do not edit the class manually.
  */
 /**
- * 登录返回
+ * Pda抄表数据上传
  * @export
- * @interface LogOutput
+ * @interface UploadReadingDataDto
  */
-export interface LogOutput {
+export interface UploadReadingDataDto {
     /**
-     * AccessToken
+     * 设备号
      * @type {string}
-     * @memberof LogOutput
+     * @memberof UploadReadingDataDto
      */
-    accessToken?: any;
+    deviceCode: any;
     /**
-     * TokenType
-     * @type {string}
-     * @memberof LogOutput
+     * 抄表数据
+     * @type {Array&lt;ReadingDataDto&gt;}
+     * @memberof UploadReadingDataDto
      */
-    tokenType?: any;
+    readingDates: any;
 }

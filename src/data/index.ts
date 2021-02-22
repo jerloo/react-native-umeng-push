@@ -11,6 +11,7 @@ export const USERNAME_PWD_ERROR = '用户名或密码错误';
 
 interface ApiService {
   login(payload: LoginInput, autoLogin: boolean): Promise<string | boolean>;
+  logout(): Promise<string | boolean>;
   updateName(name: string): Promise<string | boolean>;
   updatePhoneNumber(phoneNumber: string): Promise<string | boolean>;
   changePassword(
@@ -21,6 +22,19 @@ interface ApiService {
 }
 
 class OnlineApiService implements ApiService {
+  async logout(): Promise<string | boolean> {
+    try {
+      const result = await api.loginApi.apiAppLoginLogoutPost();
+      if (result.status < 400) {
+        return true;
+      }
+      return SERVER_ERROR;
+    } catch (e) {
+      console.log(e);
+      return SERVER_ERROR;
+    }
+  }
+
   async uploadLogFile(
     fileName: string,
     fileUrl: string,
@@ -151,24 +165,32 @@ class OnlineApiService implements ApiService {
 }
 
 class OfflineApiService implements ApiService {
+  async logout(): Promise<string | boolean> {
+    return true;
+  }
+
   async uploadLogFile(
     _fileName: string,
     _fileUrl: string,
   ): Promise<string | boolean> {
     return NO_NETWORK_ERROR;
   }
-  updateName(_name: string): Promise<string | boolean> {
-    return Promise.resolve(NO_NETWORK_ERROR);
+
+  async updateName(_name: string): Promise<string | boolean> {
+    return NO_NETWORK_ERROR;
   }
-  updatePhoneNumber(_phoneNumber: string): Promise<string | boolean> {
-    return Promise.resolve(NO_NETWORK_ERROR);
+
+  async updatePhoneNumber(_phoneNumber: string): Promise<string | boolean> {
+    return NO_NETWORK_ERROR;
   }
-  changePassword(
+
+  async changePassword(
     _currentPassword: string,
     _newPassword: string,
   ): Promise<string | boolean> {
-    return Promise.resolve(NO_NETWORK_ERROR);
+    return NO_NETWORK_ERROR;
   }
+
   async login(
     payload: LoginInput,
     _autoLogin: boolean,
@@ -196,6 +218,15 @@ class CenterService implements ApiService {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
   }
+
+  async logout(): Promise<string | boolean> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.logout();
+    }
+    return this.offline.logout();
+  }
+
   async uploadLogFile(
     fileName: string,
     fileUrl: string,
@@ -206,6 +237,7 @@ class CenterService implements ApiService {
     }
     return this.offline.uploadLogFile(fileName, fileUrl);
   }
+
   async updateName(name: string): Promise<string | boolean> {
     const netInfo = await NetInfo.fetch();
     if (netInfo.isInternetReachable === true) {
@@ -213,6 +245,7 @@ class CenterService implements ApiService {
     }
     return this.offline.updateName(name);
   }
+
   async updatePhoneNumber(phoneNumber: string): Promise<string | boolean> {
     const netInfo = await NetInfo.fetch();
     if (netInfo.isInternetReachable === true) {
@@ -220,6 +253,7 @@ class CenterService implements ApiService {
     }
     return this.offline.updatePhoneNumber(phoneNumber);
   }
+
   async changePassword(
     currentPassword: string,
     newPassword: string,

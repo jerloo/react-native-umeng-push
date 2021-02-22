@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 /**
- * 登录
+ * 登录请求
  * @export
  * @interface LoginInput
  */

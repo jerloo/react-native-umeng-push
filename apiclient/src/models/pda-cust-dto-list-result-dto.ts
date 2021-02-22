@@ -12,21 +12,15 @@
  * Do not edit the class manually.
  */
 /**
- * 登录返回
+ * 
  * @export
- * @interface LogOutput
+ * @interface PdaCustDtoListResultDto
  */
-export interface LogOutput {
+export interface PdaCustDtoListResultDto {
     /**
-     * AccessToken
-     * @type {string}
-     * @memberof LogOutput
+     * 
+     * @type {Array&lt;PdaCustDto&gt;}
+     * @memberof PdaCustDtoListResultDto
      */
-    accessToken?: any;
-    /**
-     * TokenType
-     * @type {string}
-     * @memberof LogOutput
-     */
-    tokenType?: any;
+    items?: any;
 }
