@@ -6,9 +6,12 @@ import {
 import RNFS from 'react-native-fs';
 import dayjs from 'dayjs';
 import { getSession } from './sesstionUtils';
+import uuid from 'uuid';
 
-// /handa/202101/zhangsa/2021-02-05-001.log.txt
-export const currentLogFileName = `${dayjs().format('YYYY-MM-DD-001')}.log.txt`;
+// /handa/202101/zhangsa/2021-02-05-{uuid}.log.txt
+export const currentLogFileName = `${dayjs().format(
+  'YYYY-MM-DD-',
+)}${uuid.v4().replace('-', '')}.log.txt`;
 export const currentLogFileDir = RNFS.CachesDirectoryPath + '/logs';
 export const currentLogFilePath = currentLogFileDir + '/' + currentLogFileName;
 
@@ -16,7 +19,7 @@ export const getObjectKey = async () => {
   const session = await getSession();
   const username = session?.userInfo.userName;
   const dtYearMonth = dayjs().format('YYYYMM');
-  // /handa/202101/zhangsa/2021-02-05-001.log.txt
+  // /handa/202101/zhangsa/2021-02-05-{uuid}.log.txt
   return `/${session?.tenantName}/${dtYearMonth}/${username}/${currentLogFileName}`;
 };
 
