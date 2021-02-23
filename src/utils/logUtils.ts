@@ -6,13 +6,11 @@ import {
 import RNFS from 'react-native-fs';
 import dayjs from 'dayjs';
 import { getSession } from './sesstionUtils';
-import uuid from 'uuid';
+import * as uuid from 'uuid';
 
 // /handa/202101/zhangsa/2021-02-05-{uuid}.log.txt
-export const currentLogFileName = `${dayjs().format(
-  'YYYY-MM-DD-',
-)}${uuid.v4().replace('-', '')}.log.txt`;
-export const currentLogFileDir = RNFS.CachesDirectoryPath + '/logs';
+export const currentLogFileName = `${dayjs().format('YYYY-MM-DD')}.log.txt`;
+export const currentLogFileDir = RNFS.CachesDirectoryPath;
 export const currentLogFilePath = currentLogFileDir + '/' + currentLogFileName;
 
 export const getObjectKey = async () => {
@@ -20,14 +18,16 @@ export const getObjectKey = async () => {
   const username = session?.userInfo.userName;
   const dtYearMonth = dayjs().format('YYYYMM');
   // /handa/202101/zhangsa/2021-02-05-{uuid}.log.txt
-  return `/${session?.tenantName}/${dtYearMonth}/${username}/${currentLogFileName}`;
+  return `/${session?.tenantName}/${dtYearMonth}/${username}/${dayjs().format(
+    'YYYY-MM-DD',
+  )}-${uuid.v4().toString().replace('-', '')}.log.txt`;
 };
 
-RNFS.exists(currentLogFileDir).then((value) => {
-  if (!value) {
-    RNFS.mkdir(currentLogFileDir);
-  }
-});
+// RNFS.exists(currentLogFileDir).then((value) => {
+//   if (!value) {
+//     RNFS.mkdir(currentLogFileDir);
+//   }
+// });
 
 const defaultConfig = {
   severity: 'debug',

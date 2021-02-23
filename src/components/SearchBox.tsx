@@ -12,14 +12,14 @@ export default function SearchBox() {
   return (
     <View style={styles.searchBoxContainer}>
       <View style={{ marginStart: scaleSize(22), marginEnd: scaleSize(18) }}>
-        <Icon name="search" color="#FFFFFF" />
+        <Icon name="search" color="#BFC9E3" />
       </View>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
           underlineColorAndroid="transparent"
           placeholder="户号/户名/地址/册本号"
-          placeholderTextColor={colorWhite}
+          placeholderTextColor="#BFC9E3"
         />
       </View>
     </View>
@@ -28,18 +28,18 @@ export default function SearchBox() {
 
 const styles = StyleSheet.create({
   searchBoxContainer: {
-    backgroundColor: 'rgba(255,255,255,0.4)',
-    borderRadius: scaleHeight(40),
+    backgroundColor: '#F2F3F5',
+    borderRadius: scaleSize(30),
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    marginHorizontal: scaleSize(10),
-    height: scaleHeight(60),
+    height: scaleSize(60),
   },
   input: {
     fontSize: setSpText2(28),
     height: '100%',
     padding: 0,
+    color: '#BFC9E3',
   },
   inputContainer: {
     flex: 1,

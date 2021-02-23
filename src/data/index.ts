@@ -1,4 +1,4 @@
-import { LoginInput } from '../../apiclient/src/models';
+import { LoginInput, PdaMeterBookDto } from '../../apiclient/src/models';
 import { api } from '../utils/apiUtils';
 import { getSession, setSession } from '../utils/sesstionUtils';
 import NetInfo from '@react-native-community/netinfo';
@@ -19,9 +19,23 @@ interface ApiService {
     newPassword: string,
   ): Promise<string | boolean>;
   uploadLogFile(fileName: string, fileUrl: string): Promise<string | boolean>;
+  getBookList(): Promise<PdaMeterBookDto[] | string>;
 }
 
 class OnlineApiService implements ApiService {
+  async getBookList(): Promise<string | PdaMeterBookDto[]> {
+    try {
+      const result = await api.chargeApi.apiAppChargeBookListGet();
+      if (result.status < 400) {
+        return result.data.items;
+      }
+      return SERVER_ERROR;
+    } catch (e) {
+      console.log(e);
+      return SERVER_ERROR;
+    }
+  }
+
   async logout(): Promise<string | boolean> {
     try {
       const result = await api.loginApi.apiAppLoginLogoutPost();
@@ -137,6 +151,7 @@ class OnlineApiService implements ApiService {
       if (loginResult.status < 400) {
         const token =
           loginResult.data.tokenType + ' ' + loginResult.data.accessToken;
+        console.log('token', token);
         const p1 = await api.provider.set(token);
         const p2 = AsyncStorage.setItem('token', token);
         const pall = await Promise.all([p1, p2]);
@@ -165,6 +180,10 @@ class OnlineApiService implements ApiService {
 }
 
 class OfflineApiService implements ApiService {
+  async getBookList(): Promise<string | PdaMeterBookDto[]> {
+    throw new Error('Method not implemented.');
+  }
+
   async logout(): Promise<string | boolean> {
     return true;
   }
@@ -217,6 +236,14 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+
+  async getBookList(): Promise<string | PdaMeterBookDto[]> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.getBookList();
+    }
+    return this.offline.getBookList();
   }
 
   async logout(): Promise<string | boolean> {

@@ -1,4 +1,7 @@
+import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 import CosXmlReactNative from 'cos-xml-react-native';
+import dayjs from 'dayjs';
 import { getSession } from './sesstionUtils';
 
 CosXmlReactNative.initWithSessionCredentialCallback(
@@ -8,10 +11,26 @@ CosXmlReactNative.initWithSessionCredentialCallback(
   async () => {
     const session = await getSession();
     const prefix = session?.tenantName;
-    // 请求临时密钥
-    const response = await fetch(
-      `http://81.68.221.56:44361/api/app/files/tempSecretKey?FileSource=2&Bucket=mobilereadapp&Prefix=${prefix}`,
+    const token = await AsyncStorage.getItem('token');
+    console.log(
+      '开始请求获取临时凭证接口',
+      dayjs().format('YYYY-MM-DD HH:mm:ss'),
     );
+    // 请求临时密钥
+    const response = await axios.get(
+      `http://fileservice.yuncloudtech.cn/api/app/files/tempSecretKey?FileSource=2&Bucket=mobilereadapp&Prefix=${prefix}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+        timeout: 3000,
+      },
+    );
+    console.log(
+      '完成请求获取临时凭证接口',
+      dayjs().format('YYYY-MM-DD HH:mm:ss'),
+    );
+    console.log(response);
     const responseJson = await response.json();
     const credentials = responseJson.Credentials;
     const expiredTime = responseJson.ExpiredTime;

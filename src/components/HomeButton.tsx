@@ -6,24 +6,23 @@ import {
   scaleHeight,
   setSpText2,
 } from 'react-native-responsive-design';
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
 type Props = {
   colorLeft: string;
   colorTop: string;
   iconSource: ImageSource;
   title: string;
+  onPress: () => void;
 };
 export default function HomeButton(props: Props) {
   return (
-    <View style={styles.homeButtonContainer}>
-      <View
-        style={[styles.homeButtonTop, { backgroundColor: props.colorTop }]}
-      />
-      <View style={[styles.homeButton, { borderLeftColor: props.colorLeft }]}>
-        <Image style={styles.homeButtonIcon} source={props.iconSource} />
-        <Text style={styles.homeButtonTitle}>{props.title}</Text>
-      </View>
-    </View>
+    <TouchableNativeFeedback
+      style={styles.homeButtonContainer}
+      onPress={props.onPress}>
+      <Image style={styles.homeButtonIcon} source={props.iconSource} />
+      <Text style={styles.homeButtonTitle}>{props.title}</Text>
+    </TouchableNativeFeedback>
   );
 }
 
@@ -31,27 +30,12 @@ const styles = StyleSheet.create({
   homeButtonContainer: {
     display: 'flex',
     flexDirection: 'column',
-  },
-  homeButtonTop: {
-    width: scaleSize(330),
-    height: scaleHeight(10),
-    marginBottom: -scaleHeight(5),
-    backgroundColor: '#BED5F5',
-    borderTopEndRadius: 5,
-    borderLeftWidth: 0,
-    transform: [{ rotate: '359deg' }],
-  },
-  homeButton: {
-    width: scaleSize(330),
-    height: scaleHeight(220),
-    display: 'flex',
+    backgroundColor: '#F5F6FA',
+    width: scaleSize(220),
+    height: scaleSize(220),
     justifyContent: 'center',
     alignItems: 'center',
-    borderLeftColor: '#096BF3',
-    borderLeftWidth: 5,
-    backgroundColor: '#FFFEFC',
-    borderBottomEndRadius: 5,
-    borderTopEndRadius: 5,
+    borderRadius: scaleSize(8),
   },
   homeButtonIcon: {
     width: scaleSize(80),
@@ -60,6 +44,6 @@ const styles = StyleSheet.create({
   homeButtonTitle: {
     fontSize: setSpText2(34),
     marginTop: scaleHeight(22),
-    fontWeight: 'bold',
+    color: '#666666',
   },
 });

@@ -17,6 +17,7 @@ import { Toast } from '@ant-design/react-native';
 import { getSession } from '../utils/sesstionUtils';
 import Input from '../components/Input';
 import { l } from '../utils/logUtils';
+import AuthContext from '../utils/contextUtls';
 
 export default function LoginScreen({ navigation }: { navigation: any }) {
   const [remember, setRemember] = React.useState(true);
@@ -27,6 +28,8 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
   const [passWord, setPassword] = React.useState('');
 
   const [loading, setLoading] = React.useState(false);
+
+  const { signIn } = React.useContext(AuthContext);
 
   var loadingButton = React.useRef<AnimatedLoadingButton>(null);
 
@@ -57,6 +60,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
     if (result === true) {
       loadingButton.current?.setLoading(false);
       l.debug(`Login success ${t} ${u} ${p}`);
+      signIn();
       navigation.replace('Home');
     } else {
       Toast.fail(result as string);
@@ -94,7 +98,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
   return (
     <View style={styles.container}>
       <StatusBar
-        barStyle="light-content"
+        barStyle="dark-content"
         translucent={true}
         backgroundColor="transparent"
       />

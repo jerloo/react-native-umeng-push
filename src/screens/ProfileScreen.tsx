@@ -24,6 +24,7 @@ import Caches from 'react-native-caches';
 import NetInfo from '@react-native-community/netinfo';
 import { NO_NETWORK_ERROR } from '../data';
 import DeviceInfo from 'react-native-device-info';
+import dayjs from 'dayjs';
 
 export default function ProfileScreen({ navigation }: any) {
   const [session, sSession] = useState<UserSession>();
@@ -72,19 +73,28 @@ export default function ProfileScreen({ navigation }: any) {
     // 上传 与 暂停后续传对象
     // 注意如果是续传，请务必跟初始上传使用同一个 uploadRequest 对象
     try {
+      console.log(
+        '开始调取腾讯云COS获取凭证 ',
+        dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      );
       const uploadResult = await CosXmlReactNative.upload(
         uploadRequest,
         (processedBytes: number, targetBytes: number) => {
           // 回调进度
-          l.debug('put Progress callback : ', processedBytes, targetBytes);
+          console.log('put Progress callback : ', processedBytes, targetBytes);
           // setProgress(processedBytes / targetBytes);
         },
+      );
+      console.log(
+        '结束调取腾讯云COS获取凭证，并开始上传 ',
+        dayjs().format('YYYY-MM-DD HH:mm:ss'),
       );
       // info 包含上传结果
       const result = await center.uploadLogFile(
         currentLogFileName,
         uploadResult.Location,
       );
+      console.log('结束上传 ', dayjs().format('YYYY-MM-DD HH:mm:ss'));
       Toast.remove(key);
       if (result === true) {
         Toast.success('上传成功');
@@ -92,7 +102,7 @@ export default function ProfileScreen({ navigation }: any) {
         Toast.fail('上传失败');
       }
     } catch (e) {
-      console.log(e);
+      console.log('上传失败', e);
       Toast.remove(key);
       Toast.fail('上传失败');
     }

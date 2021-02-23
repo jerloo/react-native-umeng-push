@@ -5,10 +5,8 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
-import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import HomeButton from '../components/HomeButton';
-import { colorWhite } from '../styles';
 import {
   scaleSize,
   scaleHeight,
@@ -29,30 +27,24 @@ export default function HomeScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
       <StatusBar
-        barStyle="light-content"
+        barStyle="dark-content"
         translucent={true}
         backgroundColor="transparent"
       />
 
-      <LinearGradient
-        colors={['#4888E3', '#2567E5']}
-        style={styles.topContainer}>
-        <SafeAreaView>
-          <View style={styles.userProfile}>
-            <Text style={styles.userName}>{session?.userInfo.name}</Text>
-            <TouchableWithoutFeedback
-              onPress={() => navigation.navigate('Profile')}>
-              <Image
-                style={styles.avatar}
-                source={require('../assets/shouye-gerenxinxi.png')}
-              />
-            </TouchableWithoutFeedback>
-          </View>
-          <View style={{ marginHorizontal: scaleSize(30) }}>
-            <SearchBox />
-          </View>
-        </SafeAreaView>
-      </LinearGradient>
+      <SafeAreaView style={styles.topContainer}>
+        <View style={styles.userProfile}>
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate('Profile')}>
+            <Image
+              style={styles.avatar}
+              source={require('../assets/shouye-gerenxinxi.png')}
+            />
+          </TouchableWithoutFeedback>
+          <Text style={styles.userName}>{session?.userInfo.name}</Text>
+        </View>
+        <SearchBox />
+      </SafeAreaView>
       <ScrollView>
         <View style={styles.mainContainer}>
           <Text style={styles.groupTitle}>我的抄表</Text>
@@ -62,11 +54,8 @@ export default function HomeScreen({ navigation }: any) {
               colorTop="#BED5F5"
               title="抄表任务"
               iconSource={require('../assets/shouye-chaobiaorengwu.png')}
+              onPress={() => navigation.navigate('Books')}
             />
-          </View>
-
-          <Text style={styles.groupTitle}>统计分析</Text>
-          <View style={styles.groupRow}>
             <HomeButton
               colorLeft="#EFB541"
               colorTop="#EFB541"
@@ -80,6 +69,7 @@ export default function HomeScreen({ navigation }: any) {
               iconSource={require('../assets/shouye-shoufeimingxi.png')}
             />
           </View>
+
           <View style={styles.groupRow}>
             <HomeButton
               colorLeft="#6F65F2"
@@ -93,6 +83,7 @@ export default function HomeScreen({ navigation }: any) {
               title="收费汇总"
               iconSource={require('../assets/shouye-shoufeihuizong.png')}
             />
+            <View style={{ width: scaleSize(220), height: scaleSize(220) }} />
           </View>
         </View>
       </ScrollView>
@@ -103,24 +94,25 @@ export default function HomeScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#ffffff',
   },
   topContainer: {
-    paddingBottom: scaleHeight(28),
+    // paddingBottom: scaleHeight(28),
+    paddingHorizontal: scaleSize(30),
   },
   userProfile: {
     width: '100%',
     display: 'flex',
-    justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: scaleHeight(44),
     marginBottom: scaleHeight(34),
-    paddingHorizontal: scaleSize(42),
     alignItems: 'center',
   },
   userName: {
     fontSize: setSpText2(44),
-    color: colorWhite,
+    color: '#333333',
     fontWeight: '700',
+    marginStart: scaleSize(15),
   },
   avatar: {
     width: scaleSize(44),
@@ -129,11 +121,11 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     // backgroundColor: '#F7F7F7',
-    padding: scaleSize(30),
+    paddingHorizontal: scaleSize(30),
   },
   groupTitle: {
     fontSize: setSpText2(40),
-    marginBottom: scaleHeight(17),
+    marginVertical: scaleSize(30),
     fontWeight: '700',
   },
   groupRow: {
