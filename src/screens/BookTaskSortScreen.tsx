@@ -49,7 +49,7 @@ export default function BookTaskSortScreen({ route, navigation }: any) {
 
   const renderBookItem = (info: ListRenderItemInfo<PdaReadDataDtoHolder>) => {
     return (
-      <TouchableOpacity>
+      <TouchableOpacity activeOpacity={1.0}>
         <BookDataItem
           showExtra={false}
           item={info.item.item}

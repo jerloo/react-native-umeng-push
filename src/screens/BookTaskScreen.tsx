@@ -6,16 +6,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 import { getSession, UserSession } from '../utils/sesstionUtils';
-import { BooksBackTitleBar } from '../components/BooksBackTitleBar';
 import { PdaReadDataDto } from '../../apiclient/src/models';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
 import BookDataItem from '../components/BookReadItem';
-import { SwipeListView } from 'react-native-swipe-list-view';
 import { PdaReadDataDtoHolder } from '../data/holders';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import SwipeButton from '../components/SwipeButton';
 import BookDataBackTitleBar from '../components/BookDataBackTitleBar';
+import SearchBox from '../components/SearchBox';
+import { Tabs } from '@ant-design/react-native';
 
 export default function BookTaskScreen({ route, navigation }: any) {
   const [session, setSession] = useState<UserSession>();
@@ -51,6 +50,7 @@ export default function BookTaskScreen({ route, navigation }: any) {
   const renderBookItem = (info: ListRenderItemInfo<PdaReadDataDtoHolder>) => {
     return (
       <TouchableOpacity
+        activeOpacity={1.0}
         onLongPress={() => {
           const items = bookDataItems.map((item) => {
             if (item.item.custId === info.item.item.custId) {
@@ -69,7 +69,11 @@ export default function BookTaskScreen({ route, navigation }: any) {
           });
           setBookDataItems(items);
         }}
-        onPress={() => navigation.navigate('NewRead')}>
+        onPress={() =>
+          navigation.navigate('NewRead', {
+            data: info.item.item,
+          })
+        }>
         <BookDataItem
           showExtra={info.item.showExtra}
           item={info.item.item}
@@ -97,22 +101,56 @@ export default function BookTaskScreen({ route, navigation }: any) {
               navigation.navigate('BookTaskSort', route.params)
             }
           />
+          <SearchBox
+            style={styles.searchContainer}
+            placeholderTextColor={colorWhite}
+          />
         </SafeAreaView>
       </LinearGradient>
 
-      <FlatList<PdaReadDataDtoHolder>
-        style={styles.items}
-        data={bookDataItems}
-        renderItem={renderBookItem}
-        ItemSeparatorComponent={() => (
-          <View style={{ height: scaleSize(18) }} />
-        )}
-        keyExtractor={(item) => item.item.custId.toString()}
-        contentInset={{ bottom: 100 }}
-        contentContainerStyle={{
-          paddingBottom: scaleSize(30),
-        }}
-      />
+      <Tabs
+        tabs={[{ title: '未抄' }, { title: '已抄' }, { title: '全部' }]}
+        tabBarUnderlineStyle={{ height: scaleSize(6) }}>
+        <FlatList<PdaReadDataDtoHolder>
+          style={styles.items}
+          data={bookDataItems}
+          renderItem={renderBookItem}
+          ItemSeparatorComponent={() => (
+            <View style={{ height: scaleSize(18) }} />
+          )}
+          keyExtractor={(item) => item.item.custId.toString()}
+          contentInset={{ bottom: 100 }}
+          contentContainerStyle={{
+            paddingBottom: scaleSize(30),
+          }}
+        />
+        <FlatList<PdaReadDataDtoHolder>
+          style={styles.items}
+          data={bookDataItems}
+          renderItem={renderBookItem}
+          ItemSeparatorComponent={() => (
+            <View style={{ height: scaleSize(18) }} />
+          )}
+          keyExtractor={(item) => item.item.custId.toString()}
+          contentInset={{ bottom: 100 }}
+          contentContainerStyle={{
+            paddingBottom: scaleSize(30),
+          }}
+        />
+        <FlatList<PdaReadDataDtoHolder>
+          style={styles.items}
+          data={bookDataItems}
+          renderItem={renderBookItem}
+          ItemSeparatorComponent={() => (
+            <View style={{ height: scaleSize(18) }} />
+          )}
+          keyExtractor={(item) => item.item.custId.toString()}
+          contentInset={{ bottom: 100 }}
+          contentContainerStyle={{
+            paddingBottom: scaleSize(30),
+          }}
+        />
+      </Tabs>
     </View>
   );
 }
@@ -201,5 +239,9 @@ const styles = StyleSheet.create({
   },
   rowHiddenDelete: {
     backgroundColor: '#F0655A',
+  },
+  searchContainer: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    marginHorizontal: scaleSize(30),
   },
 });

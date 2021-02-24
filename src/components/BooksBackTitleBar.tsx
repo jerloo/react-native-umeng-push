@@ -13,6 +13,9 @@ import { colorWhite } from '../styles';
 interface Props {
   onBack: () => void;
   rightIcon?: ImageSourcePropType;
+  title?: string;
+  titleColor?: string;
+  leftIcon?: ImageSourcePropType;
 }
 
 export default function BooksBackTitleBar(props: Props) {
@@ -21,11 +24,16 @@ export default function BooksBackTitleBar(props: Props) {
       <TouchableWithoutFeedback onPress={() => props.onBack()}>
         <Image
           style={styles.titleBarBackButton}
-          source={require('../assets/qietu/cebenxiangqing/book_details_icon_back_normal.png')}
+          source={
+            props.leftIcon ||
+            require('../assets/qietu/cebenxiangqing/book_details_icon_back_normal.png')
+          }
         />
       </TouchableWithoutFeedback>
 
-      <Text style={styles.titleBarTitle}>抄表任务</Text>
+      <Text style={[styles.titleBarTitle, { color: props.titleColor }]}>
+        {props.title || '抄表任务'}
+      </Text>
       <TouchableWithoutFeedback onPress={() => props.onBack()}>
         <Image
           style={styles.titleBarBackButton}
@@ -42,10 +50,6 @@ export default function BooksBackTitleBar(props: Props) {
 const paddingScreen = scaleSize(30);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'transparent',
-  },
   titleBar: {
     backgroundColor: 'transparent',
     // paddingTop: (StatusBar.currentHeight || 0) + scaleHeight(20),

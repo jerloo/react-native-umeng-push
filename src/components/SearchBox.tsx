@@ -1,25 +1,42 @@
 import React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
-import { colorWhite } from '../styles';
-import { Icon } from 'react-native-elements';
 import {
-  scaleHeight,
-  scaleSize,
-  setSpText2,
-} from 'react-native-responsive-design';
+  View,
+  TextInput,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+  Image,
+  ImageSourcePropType,
+} from 'react-native';
+import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 
-export default function SearchBox() {
+interface Props {
+  style?: StyleProp<ViewStyle>;
+  inputContainerStyle?: StyleProp<ViewStyle>;
+  inputStyle?: StyleProp<ViewStyle>;
+  placeholderTextColor?: string;
+  placeholder?: string;
+  icon?: ImageSourcePropType;
+}
+
+export default function SearchBox(props: Props) {
   return (
-    <View style={styles.searchBoxContainer}>
+    <View style={[styles.searchBoxContainer, props.style]}>
       <View style={{ marginStart: scaleSize(22), marginEnd: scaleSize(18) }}>
-        <Icon name="search" color="#BFC9E3" />
+        <Image
+          style={styles.icon}
+          source={
+            props.icon ||
+            require('../assets/qietu/cebenxiangqing/book_details_icon_query_normal.png')
+          }
+        />
       </View>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
           underlineColorAndroid="transparent"
-          placeholder="户号/户名/地址/册本号"
-          placeholderTextColor="#BFC9E3"
+          placeholder={props.placeholder || '户号/户名/地址/册本号'}
+          placeholderTextColor={props.placeholderTextColor || '#BFC9E3'}
         />
       </View>
     </View>
@@ -44,5 +61,9 @@ const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
     marginEnd: scaleSize(30),
+  },
+  icon: {
+    width: scaleSize(32),
+    height: scaleSize(32),
   },
 });

@@ -72,6 +72,7 @@ export default function BooksScreen({ navigation }: any) {
   const renderBookItem = (info: ListRenderItemInfo<PdaMeterBookDtoHolder>) => {
     return (
       <TouchableOpacity
+        activeOpacity={1.0}
         style={styles.item}
         onPress={() => bookItemClick(info.item)}>
         <BookItem

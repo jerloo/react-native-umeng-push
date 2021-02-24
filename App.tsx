@@ -25,6 +25,7 @@ import AuthContext from './src/utils/contextUtls';
 import BooksScreen from './src/screens/BooksScreen';
 import BookTaskScreen from './src/screens/BookTaskScreen';
 import BookTaskSortScreen from './src/screens/BookTaskSortScreen';
+import NewReadScreen from './src/screens/NewReadScreen';
 
 const Stack = createStackNavigator();
 
@@ -147,6 +148,11 @@ function App() {
                   <Stack.Screen
                     name="BookTaskSort"
                     component={BookTaskSortScreen}
+                    options={{ header: () => null }}
+                  />
+                  <Stack.Screen
+                    name="NewRead"
+                    component={NewReadScreen}
                     options={{ header: () => null }}
                   />
                 </>
