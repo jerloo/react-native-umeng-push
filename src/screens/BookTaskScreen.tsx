@@ -6,6 +6,7 @@ import {
   StyleSheet,
   StatusBar,
   ListRenderItemInfo,
+  FlatList,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,19 +14,14 @@ import { colorWhite } from '../styles';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 import { getSession, UserSession } from '../utils/sesstionUtils';
 import { BooksBackTitleBar } from '../components/BooksBackTitleBar';
-import { PdaMeterBookDto } from '../../apiclient/src/models';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import BookItem from '../components/BookItem';
+import { PdaReadDataDto } from '../../apiclient/src/models';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
-import PdaMeterBookDtoHolder from '../data/bookHolder';
-import CircleCheckBox from '../components/CircleCheckBox';
+import BookDataItem from './BookReadItem';
 
-export default function BookTaskScreen({ navigation }: any) {
+export default function BookTaskScreen({ route, navigation }: any) {
   const [session, setSession] = useState<UserSession>();
-  const [demoBookItems, setDemoBookItems] = useState<PdaMeterBookDtoHolder[]>(
-    [],
-  );
+  const [bookDataItems, setBookDataItems] = useState<PdaReadDataDto[]>([]);
 
   useEffect(() => {
     getSession().then((s) => {
@@ -34,46 +30,24 @@ export default function BookTaskScreen({ navigation }: any) {
   }, []);
 
   useEffect(() => {
-    center.getBookList().then((res) => {
+    const { bookId } = route.params;
+
+    center.getBookDataByIds([bookId]).then((res) => {
       if (res instanceof String) {
         Toast.fail(res as string);
       } else {
-        const items = (res as PdaMeterBookDto[]).map((value) => {
-          const item: PdaMeterBookDtoHolder = {
-            item: value,
-            checked: false,
-          };
-          return item;
-        });
-        setDemoBookItems(items);
+        const items = res as PdaReadDataDto[];
+        setBookDataItems(items);
       }
     });
-  }, []);
+  }, [route.params]);
 
-  const bookItemClick = (holder: PdaMeterBookDtoHolder) => {
-    demoBookItems.forEach((item) => {
-      if (item.item.bookId === holder.item.bookId) {
-        item.checked = !item.checked;
-        console.log('更改状态', item);
-      }
-    });
-    setDemoBookItems([...demoBookItems]);
-  };
-
-  const renderBookItem = (info: ListRenderItemInfo<PdaMeterBookDtoHolder>) => {
+  const renderBookItem = (info: ListRenderItemInfo<PdaReadDataDto>) => {
     return (
-      <View style={styles.item} key={info.item.item.bookId}>
-        <BookItem holder={info.item} onClick={() => bookItemClick(info.item)} />
+      <View style={styles.item} key={info.item.custId}>
+        <BookDataItem item={info.item} />
       </View>
     );
-  };
-
-  const allBooksClick = () => {
-    const allChecked = !demoBookItems.find((item) => item.checked === false);
-    demoBookItems.forEach((item) => {
-      item.checked = !allChecked;
-    });
-    setDemoBookItems([...demoBookItems]);
   };
 
   return (
@@ -89,49 +63,19 @@ export default function BookTaskScreen({ navigation }: any) {
         style={styles.topContainer}>
         <SafeAreaView>
           <BooksBackTitleBar onBack={() => navigation.goBack()} />
-          <View style={styles.topBox}>
-            <View style={styles.topItem}>
-              <Text style={styles.topItemValue}>12345</Text>
-              <Text style={styles.topItemLabel}>应抄</Text>
-            </View>
-            <View style={styles.topItem}>
-              <Text style={styles.topItemValue}>12345</Text>
-              <Text style={styles.topItemLabel}>已抄</Text>
-            </View>
-            <View style={styles.topItem}>
-              <Text style={styles.topItemValue}>12345</Text>
-              <Text style={styles.topItemLabel}>已上传</Text>
-            </View>
-          </View>
         </SafeAreaView>
       </LinearGradient>
 
-      <FlatList<PdaMeterBookDtoHolder>
+      <FlatList<PdaReadDataDto>
         style={styles.items}
-        data={demoBookItems}
+        data={bookDataItems}
         renderItem={renderBookItem}
-        keyExtractor={(item) => item.item.bookId.toString()}
+        keyExtractor={(item) => item.custId.toString()}
         contentInset={{ bottom: 100 }}
         contentContainerStyle={{
           paddingBottom: scaleSize(30),
         }}
       />
-
-      <View style={styles.bottomContainer}>
-        <CircleCheckBox
-          title="全选"
-          onClick={allBooksClick}
-          checked={!demoBookItems.find((item) => item.checked === false)}
-        />
-        <View style={styles.bottomRight}>
-          <Text style={styles.bottomLabel}>
-            已选测本({demoBookItems.filter((item) => item.checked).length})
-          </Text>
-          <TouchableOpacity style={styles.btnDone}>
-            <Text style={styles.btnDoneText}>下载</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
     </View>
   );
 }
@@ -143,7 +87,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   topContainer: {
-    height: scaleSize(210),
+    paddingBottom: scaleSize(30),
   },
   topBox: {
     backgroundColor: colorWhite,
@@ -172,10 +116,10 @@ const styles = StyleSheet.create({
   items: {
     // backgroundColor: colorWhite,
     // marginTop: scaleSize(100),
-    marginTop: scaleSize(100),
+    // marginTop: scaleSize(100),
   },
   item: {
-    marginHorizontal: scaleSize(30),
+    // marginHorizontal: scaleSize(30),
     marginTop: scaleSize(18),
   },
   bottomContainer: {

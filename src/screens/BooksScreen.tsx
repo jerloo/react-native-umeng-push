@@ -50,7 +50,7 @@ export default function BooksScreen({ navigation }: any) {
     });
   }, []);
 
-  const bookItemClick = (holder: PdaMeterBookDtoHolder) => {
+  const bookItemCheckClick = (holder: PdaMeterBookDtoHolder) => {
     demoBookItems.forEach((item) => {
       if (item.item.bookId === holder.item.bookId) {
         item.checked = !item.checked;
@@ -60,10 +60,20 @@ export default function BooksScreen({ navigation }: any) {
     setDemoBookItems([...demoBookItems]);
   };
 
+  const bookItemClick = (holder: PdaMeterBookDtoHolder) => {
+    navigation.navigate('BookTask', {
+      bookId: holder.item.bookId,
+    });
+  };
+
   const renderBookItem = (info: ListRenderItemInfo<PdaMeterBookDtoHolder>) => {
     return (
       <View style={styles.item} key={info.item.item.bookId}>
-        <BookItem holder={info.item} onClick={() => bookItemClick(info.item)} />
+        <BookItem
+          holder={info.item}
+          onCheckClick={() => bookItemCheckClick(info.item)}
+          onClick={() => bookItemClick(info.item)}
+        />
       </View>
     );
   };

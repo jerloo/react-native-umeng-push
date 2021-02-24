@@ -1,4 +1,8 @@
-import { LoginInput, PdaMeterBookDto } from '../../apiclient/src/models';
+import {
+  LoginInput,
+  PdaMeterBookDto,
+  PdaReadDataDto,
+} from '../../apiclient/src/models';
 import { api } from '../utils/apiUtils';
 import { getSession, setSession } from '../utils/sesstionUtils';
 import NetInfo from '@react-native-community/netinfo';
@@ -20,9 +24,25 @@ interface ApiService {
   ): Promise<string | boolean>;
   uploadLogFile(fileName: string, fileUrl: string): Promise<string | boolean>;
   getBookList(): Promise<PdaMeterBookDto[] | string>;
+  getBookDataByIds(ids: number[]): Promise<PdaReadDataDto[] | string>;
 }
 
 class OnlineApiService implements ApiService {
+  async getBookDataByIds(ids: number[]): Promise<string | PdaReadDataDto[]> {
+    try {
+      const result = await api.chargeApi.apiAppChargeReadDataByBookIdsPost({
+        bookIds: ids,
+      });
+      if (result.status < 400) {
+        return result.data.items;
+      }
+      return SERVER_ERROR;
+    } catch (e) {
+      console.log(e);
+      return SERVER_ERROR;
+    }
+  }
+
   async getBookList(): Promise<string | PdaMeterBookDto[]> {
     try {
       const result = await api.chargeApi.apiAppChargeBookListGet();
@@ -180,6 +200,10 @@ class OnlineApiService implements ApiService {
 }
 
 class OfflineApiService implements ApiService {
+  async getBookDataByIds(ids: number[]): Promise<string | PdaReadDataDto[]> {
+    throw new Error('Method not implemented.');
+  }
+
   async getBookList(): Promise<string | PdaMeterBookDto[]> {
     throw new Error('Method not implemented.');
   }
@@ -236,6 +260,14 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+
+  async getBookDataByIds(ids: number[]): Promise<string | PdaReadDataDto[]> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.getBookDataByIds(ids);
+    }
+    return this.offline.getBookDataByIds(ids);
   }
 
   async getBookList(): Promise<string | PdaMeterBookDto[]> {

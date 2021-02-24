@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 import PdaMeterBookDtoHolder from '../data/bookHolder';
 import { colorWhite } from '../styles';
@@ -8,15 +9,16 @@ import CircleCheckBox from './CircleCheckBox';
 interface Props {
   holder: PdaMeterBookDtoHolder;
   onClick: () => void;
+  onCheckClick: () => void;
 }
 
 export default function BookItem(props: Props) {
   return (
-    <View style={styles.container}>
+    <TouchableWithoutFeedback style={styles.container} onPress={props.onClick}>
       <View style={styles.titleContainer}>
         <CircleCheckBox
           checked={props.holder.checked}
-          onClick={props.onClick}
+          onClick={props.onCheckClick}
         />
         <Text style={styles.bookName}>{props.holder.item.bookName}</Text>
         <Text style={styles.geyuechao}>隔月抄</Text>
@@ -44,7 +46,7 @@ export default function BookItem(props: Props) {
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
