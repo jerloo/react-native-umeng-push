@@ -1,21 +1,15 @@
 import React from 'react';
-import {
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  ImageSourcePropType,
-} from 'react-native';
+import { View, Image, Text, StyleSheet } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 import { colorWhite } from '../styles';
 
 interface Props {
   onBack: () => void;
-  rightIcon?: ImageSourcePropType;
+  onSortClick: () => void;
 }
 
-export default function BooksBackTitleBar(props: Props) {
+export default function BookDataBackTitleBar(props: Props) {
   return (
     <View style={styles.titleBar}>
       <TouchableWithoutFeedback onPress={() => props.onBack()}>
@@ -26,15 +20,22 @@ export default function BooksBackTitleBar(props: Props) {
       </TouchableWithoutFeedback>
 
       <Text style={styles.titleBarTitle}>抄表任务</Text>
-      <TouchableWithoutFeedback onPress={() => props.onBack()}>
-        <Image
-          style={styles.titleBarBackButton}
-          source={
-            props.rightIcon ||
-            require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')
-          }
-        />
-      </TouchableWithoutFeedback>
+      <View style={styles.rightContainer}>
+        <TouchableWithoutFeedback
+          style={{ marginEnd: scaleSize(18) }}
+          onPress={() => props.onBack()}>
+          <Image
+            style={styles.titleBarBackButton}
+            source={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}
+          />
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => props.onSortClick()}>
+          <Image
+            style={styles.titleBarBackButton}
+            source={require('../assets/qietu/cebenxiangqing/book_details_icon_adjustment_normal.png')}
+          />
+        </TouchableWithoutFeedback>
+      </View>
     </View>
   );
 }
@@ -65,5 +66,10 @@ const styles = StyleSheet.create({
     fontSize: setSpText2(40),
     color: colorWhite,
     // alignSelf: 'center',
+  },
+  rightContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

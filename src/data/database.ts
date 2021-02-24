@@ -1,5 +1,5 @@
 import SQLite from 'react-native-sqlite-storage';
-import PdaMeterBookDtoHolder from './bookHolder';
+import { PdaMeterBookDtoHolder } from './holders';
 
 SQLite.DEBUG(true);
 SQLite.enablePromise(true);

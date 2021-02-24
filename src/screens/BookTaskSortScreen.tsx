@@ -6,18 +6,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 import { getSession, UserSession } from '../utils/sesstionUtils';
-import { BooksBackTitleBar } from '../components/BooksBackTitleBar';
+import BooksBackTitleBar from '../components/BooksBackTitleBar';
 import { PdaReadDataDto } from '../../apiclient/src/models';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
 import BookDataItem from '../components/BookReadItem';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { PdaReadDataDtoHolder } from '../data/holders';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import SwipeButton from '../components/SwipeButton';
-import BookDataBackTitleBar from '../components/BookDataBackTitleBar';
 
-export default function BookTaskScreen({ route, navigation }: any) {
+export default function BookTaskSortScreen({ route, navigation }: any) {
   const [session, setSession] = useState<UserSession>();
   const [bookDataItems, setBookDataItems] = useState<PdaReadDataDtoHolder[]>(
     [],
@@ -50,28 +49,9 @@ export default function BookTaskScreen({ route, navigation }: any) {
 
   const renderBookItem = (info: ListRenderItemInfo<PdaReadDataDtoHolder>) => {
     return (
-      <TouchableOpacity
-        onLongPress={() => {
-          const items = bookDataItems.map((item) => {
-            if (item.item.custId === info.item.item.custId) {
-              item.showExtra = true;
-            } else {
-              item.showExtra = false;
-            }
-            return item;
-          });
-          setBookDataItems(items);
-        }}
-        onPressOut={() => {
-          const items = bookDataItems.map((item) => {
-            item.showExtra = false;
-            return item;
-          });
-          setBookDataItems(items);
-        }}
-        onPress={() => navigation.navigate('NewRead')}>
+      <TouchableOpacity>
         <BookDataItem
-          showExtra={info.item.showExtra}
+          showExtra={false}
           item={info.item.item}
           key={info.item.item.custId}
         />
@@ -91,16 +71,14 @@ export default function BookTaskScreen({ route, navigation }: any) {
         colors={['#4888E3', '#2567E5']}
         style={styles.topContainer}>
         <SafeAreaView>
-          <BookDataBackTitleBar
+          <BooksBackTitleBar
             onBack={() => navigation.goBack()}
-            onSortClick={() =>
-              navigation.navigate('BookTaskSort', route.params)
-            }
+            rightIcon={require('../assets/qietu/cebenxiangqing/book_details_icon_query_normal.png')}
           />
         </SafeAreaView>
       </LinearGradient>
 
-      <FlatList<PdaReadDataDtoHolder>
+      <SwipeListView<PdaReadDataDtoHolder>
         style={styles.items}
         data={bookDataItems}
         renderItem={renderBookItem}
@@ -112,6 +90,23 @@ export default function BookTaskScreen({ route, navigation }: any) {
         contentContainerStyle={{
           paddingBottom: scaleSize(30),
         }}
+        renderHiddenItem={(data, rowMap) => (
+          <View style={styles.rowHidden}>
+            <SwipeButton
+              style={styles.rowHiddenStatic}
+              title="置顶"
+              icon={require('../assets/qietu/cebenxiangqing/book_details_icon_top_normal.png')}
+            />
+            <SwipeButton
+              style={styles.rowHiddenDelete}
+              title="取消"
+              icon={require('../assets/qietu/cebenxiangqing/book_details_icon_cancel_normal.png')}
+            />
+          </View>
+        )}
+        leftOpenValue={scaleSize(-240)}
+        rightOpenValue={scaleSize(240)}
+        disableLeftSwipe={true}
       />
     </View>
   );

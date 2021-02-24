@@ -6,20 +6,22 @@ import {
   StyleSheet,
   StatusBar,
   ListRenderItemInfo,
+  TouchableOpacity,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 import { getSession, UserSession } from '../utils/sesstionUtils';
-import { BooksBackTitleBar } from '../components/BooksBackTitleBar';
+import BooksBackTitleBar from '../components/BooksBackTitleBar';
 import { PdaMeterBookDto } from '../../apiclient/src/models';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import BookItem from '../components/BookItem';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
-import PdaMeterBookDtoHolder from '../data/bookHolder';
+import { PdaMeterBookDtoHolder } from '../data/holders';
 import CircleCheckBox from '../components/CircleCheckBox';
+import { SwipeListView } from 'react-native-swipe-list-view';
+import SwipeButton from '../components/SwipeButton';
 
 export default function BooksScreen({ navigation }: any) {
   const [session, setSession] = useState<UserSession>();
@@ -63,18 +65,21 @@ export default function BooksScreen({ navigation }: any) {
   const bookItemClick = (holder: PdaMeterBookDtoHolder) => {
     navigation.navigate('BookTask', {
       bookId: holder.item.bookId,
+      title: holder.item.bookCode,
     });
   };
 
   const renderBookItem = (info: ListRenderItemInfo<PdaMeterBookDtoHolder>) => {
     return (
-      <View style={styles.item} key={info.item.item.bookId}>
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => bookItemClick(info.item)}>
         <BookItem
+          key={info.item.item.bookId}
           holder={info.item}
           onCheckClick={() => bookItemCheckClick(info.item)}
-          onClick={() => bookItemClick(info.item)}
         />
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -116,10 +121,30 @@ export default function BooksScreen({ navigation }: any) {
         </SafeAreaView>
       </LinearGradient>
 
-      <FlatList<PdaMeterBookDtoHolder>
+      <SwipeListView<PdaMeterBookDtoHolder>
         style={styles.items}
         data={demoBookItems}
         renderItem={renderBookItem}
+        disableLeftSwipe={true}
+        ItemSeparatorComponent={() => (
+          <View style={{ height: scaleSize(18) }} />
+        )}
+        renderHiddenItem={(data, rowMap) => (
+          <View style={styles.rowHidden}>
+            <SwipeButton
+              style={styles.rowHiddenStatic}
+              title="统计"
+              icon={require('../assets/qietu/chaobiaorenwu/meter_reading_task_icon_statistics_normal.png')}
+            />
+            <SwipeButton
+              style={styles.rowHiddenDelete}
+              title="删除"
+              icon={require('../assets/qietu/chaobiaorenwu/meter_reading_task_icon_delete_normal.png')}
+            />
+          </View>
+        )}
+        leftOpenValue={scaleSize(-240)}
+        rightOpenValue={scaleSize(240)}
         keyExtractor={(item) => item.item.bookId.toString()}
         contentInset={{ bottom: 100 }}
         contentContainerStyle={{
@@ -185,8 +210,9 @@ const styles = StyleSheet.create({
     marginTop: scaleSize(100),
   },
   item: {
-    marginHorizontal: scaleSize(30),
-    marginTop: scaleSize(18),
+    paddingHorizontal: scaleSize(30),
+    // marginTop: scaleSize(18),
+    backgroundColor: '#F9F9F9',
   },
   bottomContainer: {
     paddingHorizontal: scaleSize(30),
@@ -217,5 +243,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  rowHidden: {
+    // marginTop: scaleSize(18),
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  rowHiddenStatic: {
+    backgroundColor: '#4B90F2',
+  },
+  rowHiddenDelete: {
+    backgroundColor: '#F0655A',
   },
 });

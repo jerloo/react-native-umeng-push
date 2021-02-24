@@ -24,6 +24,7 @@ import { getSession } from './src/utils/sesstionUtils';
 import AuthContext from './src/utils/contextUtls';
 import BooksScreen from './src/screens/BooksScreen';
 import BookTaskScreen from './src/screens/BookTaskScreen';
+import BookTaskSortScreen from './src/screens/BookTaskSortScreen';
 
 const Stack = createStackNavigator();
 
@@ -141,6 +142,11 @@ function App() {
                   <Stack.Screen
                     name="BookTask"
                     component={BookTaskScreen}
+                    options={{ header: () => null }}
+                  />
+                  <Stack.Screen
+                    name="BookTaskSort"
+                    component={BookTaskSortScreen}
                     options={{ header: () => null }}
                   />
                 </>

@@ -15,7 +15,7 @@ interface Props {
   rightIcon?: ImageSourcePropType;
 }
 
-export default function BooksBackTitleBar(props: Props) {
+export default function BooksBackSearchTitleBar(props: Props) {
   return (
     <View style={styles.titleBar}>
       <TouchableWithoutFeedback onPress={() => props.onBack()}>

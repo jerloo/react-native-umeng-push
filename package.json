@@ -45,6 +45,7 @@
     "react-native-sqlite-storage": "^5.0.0",
     "react-native-submit-button": "^1.0.5",
     "react-native-svg": "^12.1.0",
+    "react-native-swipe-list-view": "^3.2.6",
     "react-native-url-polyfill": "^1.2.0",
     "react-native-vector-icons": "^8.0.0",
     "rn-animated-loading-button": "^1.0.4",

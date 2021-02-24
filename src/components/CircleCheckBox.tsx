@@ -15,14 +15,14 @@ export default function CircleCheckBox(props: Props) {
         <View style={[styles.inputIcon, styles.rememberIconContainer]}>
           <Image
             style={styles.rememberIcon}
-            source={require('../assets/login_remember_checked.png')}
+            source={require('../assets/qietu/chaobiaorenwu/meter_reading_task_icon_unselectde_slelected.png')}
           />
         </View>
       ) : (
         <View style={[styles.inputIcon, styles.rememberIconContainer]}>
           <Image
             style={styles.rememberIcon}
-            source={require('../assets/login_remember_unchecked.png')}
+            source={require('../assets/qietu/chaobiaorenwu/meter_reading_task_icon_unselectde_normal.png')}
           />
         </View>
       )}
