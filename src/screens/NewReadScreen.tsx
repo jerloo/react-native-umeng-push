@@ -20,9 +20,9 @@ import dayjs from 'dayjs';
 import LocationButton from '../components/LocationButton';
 import Attachments from '../components/Attachments';
 import Modal from 'react-native-smart-modal';
+import { TextInput } from 'react-native-gesture-handler';
 
 export default function NewReadScreen({ route, navigation }: any) {
-  const [stateExtra, setStateExtra] = useState(false);
   const { data } = route.params;
   const [newData, setNewData] = useState<PdaReadDataDto>(data);
   const [attachmentsModalVisible, setAttachmentsModalVisible] = useState(false);
@@ -38,11 +38,7 @@ export default function NewReadScreen({ route, navigation }: any) {
 
   const saveData = () => {};
 
-  const line = () => {
-    return (
-      <View style={{ height: scaleSize(1), backgroundColor: '#DEDEDE' }} />
-    );
-  };
+  const openLighting = () => {};
 
   const renderStateExtra = () => {
     return (
@@ -68,8 +64,34 @@ export default function NewReadScreen({ route, navigation }: any) {
           </View>
 
           <View style={styles.extraRowPart}>
-            <Text style={styles.extraLabel}>本期水量</Text>
+            <Text style={styles.extraLabel}>本次水量</Text>
             <Text style={styles.extraValue}>{newData.readWater}</Text>
+          </View>
+        </View>
+        <View style={styles.extraRow}>
+          <View style={styles.extraRowPart}>
+            <Text style={styles.extraLabel}>上次抄表</Text>
+            <Text style={[styles.extraValue, { color: '#666666' }]}>
+              {dayjs(newData.lastReadDate).format('YYYY-MM-DD')}
+            </Text>
+          </View>
+
+          <View style={[styles.extraRowPart, { justifyContent: 'flex-end' }]}>
+            <TouchableOpacity style={styles.tableValueButton}>
+              <Text style={styles.tableValueButtonText}>往期</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.extraRow}>
+          <View style={styles.extraRowPart}>
+            <Text style={styles.extraLabel}>预算金额</Text>
+            <Text style={styles.extraValue}>{0}</Text>
+          </View>
+
+          <View style={[styles.extraRowPart, { justifyContent: 'flex-end' }]}>
+            <TouchableOpacity style={styles.tableValueButton}>
+              <Text style={styles.tableValueButtonText}>预算</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -143,10 +165,25 @@ export default function NewReadScreen({ route, navigation }: any) {
           <View style={styles.colorBlank} />
         </TouchableOpacity>
         <View style={styles.contentWrapper}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>{newData.bookCode}</Text>
-            <Text style={styles.subTitle}>({newData.custId})</Text>
+          <View style={styles.contentTop}>
+            <View style={styles.sortIndex}>
+              <Text style={styles.sortIndexText}>{newData.bookSortIndex}</Text>
+            </View>
+
+            <View style={styles.contentTopBottom}>
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>{newData.bookCode}</Text>
+                <Text style={styles.subTitle}>({newData.custId})</Text>
+              </View>
+              <View style={styles.contentTopDesc}>
+                <Text style={styles.contentTopDescLabel}>水表信息：</Text>
+                <Text style={styles.contentTopDescValue}>
+                  {newData.steelMark}
+                </Text>
+              </View>
+            </View>
           </View>
+
           <View style={styles.rightBottom}>
             <LocationButton />
             <Text style={styles.description}>{newData.custAddress}</Text>
@@ -166,66 +203,7 @@ export default function NewReadScreen({ route, navigation }: any) {
               style={{ marginStart: scaleSize(16) }}
             />
           </View>
-          {line()}
-          <View style={styles.table}>
-            <View style={styles.tableLeft}>
-              <Text style={styles.tableLabel}>钢印号</Text>
-              {line()}
-              <Text style={styles.tableLabel}>上次抄表</Text>
-              {line()}
-              <Text style={styles.tableLabel}>抄表状态</Text>
-            </View>
-            <View style={styles.tableRight}>
-              <Text style={styles.tableValue}>{newData.steelMark}</Text>
-              {line()}
-              <View style={styles.tableValueRow}>
-                <Text style={styles.tableValue}>
-                  {dayjs(newData.lastReadDate).format('YYYY-MM-DD')}
-                </Text>
-                <TouchableOpacity style={styles.tableValueButton}>
-                  <Text style={styles.tableValueButtonText}>往期</Text>
-                </TouchableOpacity>
-              </View>
-
-              {line()}
-              <View style={styles.tableValueRow}>
-                <Text style={styles.tableValue}>{newData.readStateId}</Text>
-                <TouchableOpacity
-                  style={styles.tableValueButton}
-                  onPress={() => {
-                    setStateExtra(!stateExtra);
-                  }}>
-                  <Text style={styles.tableValueButtonText}>更多</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
           {renderStateExtra()}
-          <View style={styles.table}>
-            <View style={styles.tableLeft}>
-              {line()}
-              <Text style={styles.tableLabel}>抄见水量</Text>
-              {line()}
-              <Text style={styles.tableLabel}>预算金额</Text>
-              <View
-                style={{ height: scaleSize(10), backgroundColor: colorWhite }}
-              />
-            </View>
-            <View style={styles.tableRight}>
-              {line()}
-              <Text style={styles.tableValue}>{newData.readWater}</Text>
-              {line()}
-              <View style={styles.tableValueRow}>
-                <Text style={styles.tableValue}>{newData.readWater}</Text>
-                <TouchableOpacity style={styles.tableValueButton}>
-                  <Text style={styles.tableValueButtonText}>预算</Text>
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{ height: scaleSize(10), backgroundColor: colorWhite }}
-              />
-            </View>
-          </View>
         </View>
       </View>
     );
@@ -242,26 +220,47 @@ export default function NewReadScreen({ route, navigation }: any) {
       <SafeAreaView style={styles.mainContainer}>
         <BooksBackTitleBar
           title="抄表录入"
-          titleColor="#333333"
+          titleColor={colorWhite}
           onBack={() => navigation.goBack()}
           onRightClick={() => setAttachmentsModalVisible(true)}
-          leftIcon={require('../assets/qietu/yonghuxiangqing/user_detailsr_icon_back_normal.png')}
-          rightIcon={require('../assets/qietu/chaobiaoluru/enter_icon_enclosure_normal.png')}
+          leftIcon={require('../assets/qietu/cebenxiangqing/book_details_icon_back_normal.png')}
+          rightIcon={require('../assets/enter_icon_enclosure_normal_white.png')}
         />
         <View style={styles.main}>
           <ScrollView>{renderContent()}</ScrollView>
+
           <View style={styles.maskRow}>
             <View style={styles.maskLeft}>
               <Image
                 style={styles.maskIcon}
-                source={require('../assets/qietu/chaobiaoluru/enter_icon_remarks_normal.png')}
+                source={require('../assets/enter_icon_remarks_normal.png')}
               />
-              <Text style={styles.maskTitle}>备注：</Text>
-              <Text style={styles.maskContent}>点击添加备注(100字以内)</Text>
+              <TextInput
+                style={{
+                  backgroundColor: colorWhite,
+                  marginStart: scaleSize(16),
+                  height: scaleSize(60),
+                  paddingVertical: scaleSize(12),
+                  paddingHorizontal: scaleSize(18),
+                  flex: 1,
+                }}
+                placeholder="点击添加备注(100字以内)"
+              />
+              <TouchableOpacity
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  paddingStart: scaleSize(30),
+                }}
+                onPress={openLighting}>
+                <Image
+                  style={styles.maskIcon}
+                  source={require('../assets/shoudiantong.png')}
+                />
+              </TouchableOpacity>
             </View>
-
-            <Text style={styles.maskValue}>{newData.reading}</Text>
           </View>
+
           {newData.recordState === 0 || newData.recordState === 1 ? (
             <KeyBoard
               onBackClick={() => {
@@ -295,7 +294,7 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#3273E4',
   },
   topContainer: {
     paddingBottom: scaleSize(30),
@@ -308,7 +307,7 @@ const styles = StyleSheet.create({
   },
   main: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#3273E4',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -319,7 +318,8 @@ const styles = StyleSheet.create({
     marginTop: scaleSize(12),
     display: 'flex',
     flexDirection: 'column',
-    borderRadius: scaleSize(4),
+    borderRadius: scaleSize(8),
+    overflow: 'hidden',
   },
   title: {
     color: '#333333',
@@ -416,8 +416,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   tableValueButton: {
-    marginTop: scaleSize(24),
-    marginBottom: scaleSize(6),
+    // marginTop: scaleSize(24),
+    // marginBottom: scaleSize(6),
+    alignSelf: 'flex-end',
   },
   tableValueButtonText: {
     fontSize: scaleSize(26),
@@ -428,8 +429,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginVertical: scaleSize(17),
-    marginHorizontal: scaleSize(30),
+    paddingVertical: scaleSize(17),
+    paddingHorizontal: scaleSize(30),
+    backgroundColor: '#F5F5F4',
   },
   maskLeft: {
     display: 'flex',
@@ -437,8 +439,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   maskIcon: {
-    width: scaleSize(37),
-    height: scaleSize(29),
+    width: scaleSize(35),
+    height: scaleSize(40),
   },
   maskTitle: {
     fontSize: scaleSize(28),
@@ -460,12 +462,13 @@ const styles = StyleSheet.create({
     marginHorizontal: scaleSize(0),
     padding: scaleSize(30),
     backgroundColor: '#F9F9F9',
-    marginTop: scaleSize(25),
+    marginBottom: scaleSize(41),
   },
   extraRow: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: scaleSize(24),
   },
   extraRowPart: {
     display: 'flex',
@@ -481,5 +484,42 @@ const styles = StyleSheet.create({
     color: '#066DF1',
     fontSize: scaleSize(28),
     marginStart: scaleSize(12),
+  },
+  contentTop: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  sortIndex: {
+    backgroundColor: '#F5F6FA',
+    width: scaleSize(90),
+    height: scaleSize(90),
+    borderRadius: scaleSize(45),
+    marginEnd: scaleSize(16),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sortIndexText: {
+    fontSize: scaleSize(40),
+    color: '#5384F9',
+    fontWeight: 'bold',
+  },
+  contentTopBottom: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  contentTopDesc: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: scaleSize(10),
+  },
+  contentTopDescLabel: {
+    fontSize: scaleSize(24),
+    color: '#999999',
+  },
+  contentTopDescValue: {
+    fontSize: scaleSize(24),
+    color: '#999999',
+    fontWeight: 'bold',
   },
 });
