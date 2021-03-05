@@ -42,6 +42,7 @@
     "react-native-responsive-design": "^1.0.0",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.17.0",
+    "react-native-smart-modal": "^0.0.11",
     "react-native-sqlite-storage": "^5.0.0",
     "react-native-submit-button": "^1.0.5",
     "react-native-svg": "^12.1.0",

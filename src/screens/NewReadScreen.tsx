@@ -1,41 +1,42 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
-import { View, StyleSheet, StatusBar, Text, Image } from 'react-native';
+import { useState } from 'react';
+import {
+  View,
+  StyleSheet,
+  StatusBar,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { scaleSize } from 'react-native-responsive-design';
-import { getSession, UserSession } from '../utils/sesstionUtils';
 import BooksBackTitleBar from '../components/BooksBackTitleBar';
 import { PdaReadDataDto } from '../../apiclient/src/models';
-import center from '../data';
 import { colorWhite } from '../styles';
 import Tag from '../components/Tag';
 import KeyBoard from '../components/KeyBoard';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import dayjs from 'dayjs';
+import LocationButton from '../components/LocationButton';
+import Attachments from '../components/Attachments';
+import Modal from 'react-native-smart-modal';
 
 export default function NewReadScreen({ route, navigation }: any) {
   const [stateExtra, setStateExtra] = useState(false);
-  const [session, setSession] = useState<UserSession>();
   const { data } = route.params;
   const [newData, setNewData] = useState<PdaReadDataDto>(data);
+  const [attachmentsModalVisible, setAttachmentsModalVisible] = useState(false);
+  const [settingsModalVisible, setSettingsModalVisible] = useState(false);
 
   const setValue = (value: string) => {
     setNewData({
       ...newData,
-      reading: Number.parseInt(value),
+      reading: parseInt(value, 10),
       readWater: newData.reading - newData.lastReading,
     });
   };
 
-  useEffect(() => {
-    getSession().then((s) => {
-      setSession(s || undefined);
-    });
-  }, []);
-
-  const saveData = () => {
-    center.offline.saveReading(newData);
-  };
+  const saveData = () => {};
 
   const line = () => {
     return (
@@ -88,6 +89,48 @@ export default function NewReadScreen({ route, navigation }: any) {
     return '';
   };
 
+  const renderAttachmentsModal = () => {
+    return (
+      <Modal
+        visible={attachmentsModalVisible}
+        fullScreen
+        horizontalLayout="right"
+        animationIn="slideInRight"
+        animationOut="slideOutRight"
+        onChange={setAttachmentsModalVisible}>
+        <View
+          style={{
+            width: scaleSize(509),
+            backgroundColor: colorWhite,
+            height: '100%',
+          }}>
+          <Attachments files={[]} />
+        </View>
+      </Modal>
+    );
+  };
+
+  const renderSettingsModal = () => {
+    return (
+      <Modal
+        visible={settingsModalVisible}
+        fullScreen
+        horizontalLayout="right"
+        animationIn="slideInRight"
+        animationOut="slideOutRight"
+        onChange={setSettingsModalVisible}>
+        <View
+          style={{
+            width: scaleSize(509),
+            backgroundColor: colorWhite,
+            height: '100%',
+          }}>
+          <Attachments files={[]} />
+        </View>
+      </Modal>
+    );
+  };
+
   const renderContent = () => {
     return (
       <View style={styles.content}>
@@ -105,10 +148,7 @@ export default function NewReadScreen({ route, navigation }: any) {
             <Text style={styles.subTitle}>({newData.custId})</Text>
           </View>
           <View style={styles.rightBottom}>
-            <Image
-              style={styles.iconLocation}
-              source={require('../assets/qietu/cebenxiangqing/book_details_icon_address_normal.png')}
-            />
+            <LocationButton />
             <Text style={styles.description}>{newData.custAddress}</Text>
           </View>
           <View style={styles.tags}>
@@ -199,17 +239,12 @@ export default function NewReadScreen({ route, navigation }: any) {
         backgroundColor="transparent"
       />
 
-      <SafeAreaView
-        style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-        }}>
+      <SafeAreaView style={styles.mainContainer}>
         <BooksBackTitleBar
           title="抄表录入"
           titleColor="#333333"
           onBack={() => navigation.goBack()}
+          onRightClick={() => setAttachmentsModalVisible(true)}
           leftIcon={require('../assets/qietu/yonghuxiangqing/user_detailsr_icon_back_normal.png')}
           rightIcon={require('../assets/qietu/chaobiaoluru/enter_icon_enclosure_normal.png')}
         />
@@ -249,6 +284,8 @@ export default function NewReadScreen({ route, navigation }: any) {
           ) : null}
         </View>
       </SafeAreaView>
+      {renderAttachmentsModal()}
+      {renderSettingsModal()}
     </View>
   );
 }
@@ -262,6 +299,12 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     paddingBottom: scaleSize(30),
+  },
+  mainContainer: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
   },
   main: {
     flex: 1,

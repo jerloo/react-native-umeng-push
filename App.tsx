@@ -27,6 +27,7 @@ import BookTaskScreen from './src/screens/BookTaskScreen';
 import BookTaskSortScreen from './src/screens/BookTaskSortScreen';
 import NewReadScreen from './src/screens/NewReadScreen';
 import CustDetailsScreen from './src/screens/CustDetailsScreen';
+import { PortalProvider } from 'react-native-portal-view';
 
 const Stack = createStackNavigator();
 
@@ -98,76 +99,78 @@ function App() {
   );
 
   return (
-    <Provider>
-      <ThemeProvider>
-        <NavigationContainer>
-          <AuthContext.Provider value={authContext}>
-            <Stack.Navigator>
-              {state.session == null ? (
-                <Stack.Screen
-                  name="Login"
-                  component={LoginScreen}
-                  options={{ header: () => null }}
-                />
-              ) : (
-                <>
+    <PortalProvider>
+      <Provider>
+        <ThemeProvider>
+          <NavigationContainer>
+            <AuthContext.Provider value={authContext}>
+              <Stack.Navigator>
+                {state.session == null ? (
                   <Stack.Screen
-                    name="Home"
-                    component={HomeScreen}
+                    name="Login"
+                    component={LoginScreen}
                     options={{ header: () => null }}
                   />
-                  <Stack.Screen
-                    name="Profile"
-                    component={ProfileScreen}
-                    options={{ header: () => null }}
-                  />
-                  <Stack.Screen
-                    name="EditName"
-                    component={EditNameScreen}
-                    options={{ header: () => null }}
-                  />
-                  <Stack.Screen
-                    name="EditPhone"
-                    component={EditPhoneScreen}
-                    options={{ header: () => null }}
-                  />
-                  <Stack.Screen
-                    name="EditPassword"
-                    component={EditPasswordScreen}
-                    options={{ header: () => null }}
-                  />
-                  <Stack.Screen
-                    name="Books"
-                    component={BooksScreen}
-                    options={{ header: () => null }}
-                  />
-                  <Stack.Screen
-                    name="BookTask"
-                    component={BookTaskScreen}
-                    options={{ header: () => null }}
-                  />
-                  <Stack.Screen
-                    name="BookTaskSort"
-                    component={BookTaskSortScreen}
-                    options={{ header: () => null }}
-                  />
-                  <Stack.Screen
-                    name="NewRead"
-                    component={NewReadScreen}
-                    options={{ header: () => null }}
-                  />
-                  <Stack.Screen
-                    name="CustDetails"
-                    component={CustDetailsScreen}
-                    options={{ header: () => null }}
-                  />
-                </>
-              )}
-            </Stack.Navigator>
-          </AuthContext.Provider>
-        </NavigationContainer>
-      </ThemeProvider>
-    </Provider>
+                ) : (
+                  <>
+                    <Stack.Screen
+                      name="Home"
+                      component={HomeScreen}
+                      options={{ header: () => null }}
+                    />
+                    <Stack.Screen
+                      name="Profile"
+                      component={ProfileScreen}
+                      options={{ header: () => null }}
+                    />
+                    <Stack.Screen
+                      name="EditName"
+                      component={EditNameScreen}
+                      options={{ header: () => null }}
+                    />
+                    <Stack.Screen
+                      name="EditPhone"
+                      component={EditPhoneScreen}
+                      options={{ header: () => null }}
+                    />
+                    <Stack.Screen
+                      name="EditPassword"
+                      component={EditPasswordScreen}
+                      options={{ header: () => null }}
+                    />
+                    <Stack.Screen
+                      name="Books"
+                      component={BooksScreen}
+                      options={{ header: () => null }}
+                    />
+                    <Stack.Screen
+                      name="BookTask"
+                      component={BookTaskScreen}
+                      options={{ header: () => null }}
+                    />
+                    <Stack.Screen
+                      name="BookTaskSort"
+                      component={BookTaskSortScreen}
+                      options={{ header: () => null }}
+                    />
+                    <Stack.Screen
+                      name="NewRead"
+                      component={NewReadScreen}
+                      options={{ header: () => null }}
+                    />
+                    <Stack.Screen
+                      name="CustDetails"
+                      component={CustDetailsScreen}
+                      options={{ header: () => null }}
+                    />
+                  </>
+                )}
+              </Stack.Navigator>
+            </AuthContext.Provider>
+          </NavigationContainer>
+        </ThemeProvider>
+      </Provider>
+    </PortalProvider>
   );
 }
 

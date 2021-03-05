@@ -1,6 +1,13 @@
 import SQLite from 'react-native-sqlite-storage';
-import { PdaMeterBookDto, PdaReadDataDto } from '../../apiclient/src/models';
-import { PdaMeterBookDtoHolder } from './holders';
+import { PdaReadDataDto } from '../../apiclient/src/models';
+import {
+  MobileFileDtoHolder,
+  PdaBillingInfoHolder,
+  PdaCustInfoHolder,
+  PdaMeterBookDtoHolder,
+  PdaPayRecordHolder,
+  PdaReadingRecordHolder,
+} from './holders';
 
 SQLite.DEBUG(true);
 SQLite.enablePromise(true);
@@ -83,7 +90,8 @@ class DataBase {
         readingNumber INTEGER,
         remark NVARCHAR(30),
         totalNumber INTEGER,
-        downloaded boolean
+        downloaded boolean,
+        uploadedNumber INTEGER
       ); `,
     ).catch((error) => {
       this.errorCB(error);
@@ -138,6 +146,66 @@ class DataBase {
       this.errorCB(error);
     });
 
+    tx.executeSql(`CREATE TABLE IF NOT EXISTS CustInfos (
+      custId INTEGER,
+      custName NVARCHAR(30),
+      custAddress NVARCHAR(30),
+      orgName NVARCHAR(30),
+      mobile NVARCHAR(30),
+      population INTEGER,
+      payMethod NVARCHAR(30),
+      custType NVARCHAR(30),
+      priceCode NVARCHAR(30),
+      deposit INTEGER,
+      yearTotalWater INTEGER,
+      reading INTEGER,
+      installLocation NVARCHAR(30),
+      steelMark NVARCHAR(30),
+      caliber NVARCHAR(30),
+      producer NVARCHAR(30),
+      replaceDate NVARCHAR(30),
+      buildDate NVARCHAR(30),
+    )`);
+
+    tx.executeSql(`CREATE TABLE IF NOT EXISTS ReadingRecords (
+      custId INTEGER,
+      billMonth INTEGER,
+      readingDate NVARCHAR(30),
+      lastReading INTEGER,
+      reading INTEGER,
+      readWater INTEGER
+    )`);
+
+    tx.executeSql(`CREATE TABLE IF NOT EXISTS BillingInfos (
+      custId INTEGER,
+      billMonth INTEGER,
+      billWater INTEGER,
+      extendedAmount INTEGER,
+      lateFee INTEGER,
+      payState INTEGER
+    )`);
+
+    tx.executeSql(`CREATE TABLE IF NOT EXISTS PayRecords (
+      custId INTEGER,
+      payDate NVARCHAR(30),
+      cashier NVARCHAR(30),
+      actualMoney INTEGER,
+      deposit INTEGER
+    )`);
+
+    tx.executeSql(`CREATE TABLE IF NOT EXISTS Attaments (
+      custId INTEGER,
+      readTimes INTEGER,
+      billMonth INTEGER,
+      uploaded boolean,
+      url NVARCHAR(30),
+      fileName NVARCHAR(30),
+      filePath NVARCHAR(30),
+      fileSize INTEGER,
+      fileSource INTEGER,
+      isRemove boolean
+    )`);
+
     console.log('Executing INSERT stmts');
 
     tx.executeSql('INSERT INTO Versions (version_id) VALUES (1);').catch(
@@ -179,6 +247,165 @@ class DataBase {
       .catch((err) => {
         this.errorCB(err);
       });
+  };
+
+  saveCustInfos = (holders: PdaCustInfoHolder[]) => {
+    this.db
+      ?.transaction((tx) => {
+        holders.forEach((item) => {
+          tx.executeSql(
+            `INSERT INTO CustInfos ('custId','custName','custAddress','orgName','mobile','population','payMethod','custType','priceCode','deposit','yearTotalWater','reading','installLocation','steelMark','caliber','producer','replaceDate','buildDate') 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+              item.custId,
+              item.custName,
+              item.custAddress,
+              item.orgName,
+              item.mobile,
+              item.population,
+              item.payMethod,
+              item.custType,
+              item.priceCode,
+              item.deposit,
+              item.yearTotalWater,
+              item.reading,
+              item.installLocation,
+              item.steelMark,
+              item.caliber,
+              item.producer,
+              item.replaceDate,
+              item.buildDate,
+            ],
+          )
+            .then(() => {
+              console.log(`保存基本信息[${holders.length}]条`);
+            })
+            .catch((err) => {
+              this.errorCB(err);
+            });
+        });
+      })
+      .catch((err) => {
+        this.errorCB(err);
+      });
+  };
+
+  getCustInfoById = async (custId: number) => {
+    const result = await this.db?.executeSql(
+      'SELECT * FROM CustInfos WHERE custId = ?',
+      [custId],
+    );
+    return result?.[0].rows.raw() || [];
+  };
+
+  saveReadingRecords = (holders: PdaReadingRecordHolder[]) => {
+    this.db
+      ?.transaction((tx) => {
+        holders.forEach((item) => {
+          tx.executeSql(
+            `INSERT INTO ReadingRecords ('custId','billMonth','readingDate','lastReading','reading','readWater') 
+            VALUES (?, ?, ?, ?, ?, ?)`,
+            [
+              item.custId,
+              item.billMonth,
+              item.readingDate,
+              item.lastReading,
+              item.reading,
+              item.readWater,
+            ],
+          )
+            .then(() => {
+              console.log(`保存抄表信息[${holders.length}]条`);
+            })
+            .catch((err) => {
+              this.errorCB(err);
+            });
+        });
+      })
+      .catch((err) => {
+        this.errorCB(err);
+      });
+  };
+
+  getReadingRecordsByCustId = async (custId: number) => {
+    const result = await this.db?.executeSql(
+      'SELECT * FROM ReadingRecords WHERE custId = ?',
+      [custId],
+    );
+    return result?.[0].rows.raw() || [];
+  };
+
+  saveBillingInfos = (holders: PdaBillingInfoHolder[]) => {
+    this.db
+      ?.transaction((tx) => {
+        holders.forEach((item) => {
+          tx.executeSql(
+            `INSERT INTO BillingInfos ('custId','billMonth','billWater','extendedAmount','lateFee','payState') 
+            VALUES (?, ?, ?, ?, ?, ?)`,
+            [
+              item.custId,
+              item.billMonth,
+              item.billWater,
+              item.extendedAmount,
+              item.lateFee,
+              item.payState,
+            ],
+          )
+            .then(() => {
+              console.log(`保存账单信息[${holders.length}]条`);
+            })
+            .catch((err) => {
+              this.errorCB(err);
+            });
+        });
+      })
+      .catch((err) => {
+        this.errorCB(err);
+      });
+  };
+
+  getBillingInfosByCustId = async (custId: number) => {
+    const result = await this.db?.executeSql(
+      'SELECT * FROM BillingINfos WHERE custId = ?',
+      [custId],
+    );
+    return result?.[0].rows.raw() || [];
+  };
+
+  savePayRecords = (holders: PdaPayRecordHolder[]) => {
+    this.db
+      ?.transaction((tx) => {
+        holders.forEach((item) => {
+          tx.executeSql(
+            `INSERT INTO PayRecords ('custId','payDate','cashier','actualMoney','deposit') 
+            VALUES (?, ?, ?, ?, ?)`,
+            [
+              item.custId,
+              item.payDate,
+              item.cashier,
+              item.actualMoney,
+              item.deposit,
+            ],
+          )
+            .then(() => {
+              console.log(`保存缴费信息[${holders.length}]条`);
+            })
+            .catch((err) => {
+              this.errorCB(err);
+            });
+        });
+      })
+      .catch((err) => {
+        this.errorCB(err);
+      });
+  };
+
+  getPayRecordsByCustId = async (custId: number) => {
+    const result = await this.db?.executeSql(
+      'SELECT * FROM PayRecords WHERE custId = ?',
+      [custId],
+    );
+    return result?.[0].rows.raw() || [];
   };
 
   getBooks = async () => {
@@ -259,6 +486,26 @@ class DataBase {
       `UPDATE Books SET downloaded = ? WHERE bookId in (${ids.join(',')})`,
       [true],
     );
+  };
+
+  getBookTotalData = async () => {
+    const result = await this.db?.executeSql(
+      'SELECT sum(readingNumber) as readingNumber, sum(totalNumber) as totalNumber, sum(uploadedNumber) as uploadedNumber FROM Books',
+      [],
+    );
+    const items = result?.[0].rows.raw() || [
+      {
+        readingNumber: 0,
+        totalNumber: 0,
+        uploadedNumber: 0,
+      },
+    ];
+    console.log('totalNumbers', items[0]);
+    return {
+      readingNumber: items[0].readingNumber || 0,
+      totalNumber: items[0].totalNumber || 0,
+      uploadedNumber: items[0].uploadedNumber || 0,
+    };
   };
 }
 

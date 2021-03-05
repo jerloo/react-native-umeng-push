@@ -5,7 +5,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
-import { getSession, UserSession } from '../utils/sesstionUtils';
 import { PdaReadDataDto } from '../../apiclient/src/models';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
@@ -17,16 +16,9 @@ import SearchBox from '../components/SearchBox';
 import { Tabs } from '@ant-design/react-native';
 
 export default function BookTaskScreen({ route, navigation }: any) {
-  const [session, setSession] = useState<UserSession>();
   const [bookDataItems, setBookDataItems] = useState<PdaReadDataDtoHolder[]>(
     [],
   );
-
-  useEffect(() => {
-    getSession().then((s) => {
-      setSession(s || undefined);
-    });
-  }, []);
 
   useEffect(() => {
     const { bookId } = route.params;
@@ -123,7 +115,9 @@ export default function BookTaskScreen({ route, navigation }: any) {
           },
           { title: `全部(${bookDataItems.length})` },
         ]}
-        tabBarUnderlineStyle={{ height: scaleSize(6) }}>
+        tabBarUnderlineStyle={{ height: scaleSize(6) }}
+        tabBarActiveTextColor="#4B92F4"
+        tabBarInactiveTextColor="#333333">
         <FlatList<PdaReadDataDtoHolder>
           style={styles.items}
           data={bookDataItems.filter((it) => !it.item.reading)}

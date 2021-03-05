@@ -11,8 +11,8 @@ import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 import { colorWhite } from '../styles';
 
 interface Props {
-  onBack: () => void;
-  onRightClick: () => void;
+  onBack?: () => void;
+  onRightClick?: () => void;
   rightIcon?: ImageSourcePropType;
   title?: string;
   titleColor?: string;
@@ -22,7 +22,7 @@ interface Props {
 export default function BooksBackTitleBar(props: Props) {
   return (
     <View style={styles.titleBar}>
-      <TouchableWithoutFeedback onPress={() => props.onBack()}>
+      <TouchableWithoutFeedback onPress={() => props.onBack && props.onBack()}>
         <Image
           style={styles.titleBarBackButton}
           source={
@@ -35,7 +35,8 @@ export default function BooksBackTitleBar(props: Props) {
       <Text style={[styles.titleBarTitle, { color: props.titleColor }]}>
         {props.title || '抄表任务'}
       </Text>
-      <TouchableWithoutFeedback onPress={() => props.onRightClick()}>
+      <TouchableWithoutFeedback
+        onPress={() => props.onRightClick && props?.onRightClick()}>
         <Image
           style={styles.titleBarBackButton}
           source={

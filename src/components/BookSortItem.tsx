@@ -10,21 +10,13 @@ interface Props {
   showExtra: boolean;
 }
 
-export default function BookReadItem(props: Props) {
+export default function BookSortItem(props: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.mainContainer}>
         <View style={styles.sortIndex}>
           <Text style={styles.sortIndexText}>{props.item.bookSortIndex}</Text>
         </View>
-
-        <View
-          style={{
-            backgroundColor: '#E7E7E7',
-            width: scaleSize(2),
-            height: scaleSize(106),
-          }}
-        />
 
         <View style={styles.rightContainer}>
           <View style={styles.rightTop}>
@@ -41,31 +33,32 @@ export default function BookReadItem(props: Props) {
         </View>
       </View>
 
-      <View style={styles.extra}>
-        <View style={styles.extraRow}>
-          <View style={styles.extraRowPart}>
-            <Text style={styles.extraLabel}>上期抄码</Text>
-            <Text style={styles.extraValue}>{props.item.lastReading}</Text>
+      {props.showExtra ? (
+        <View style={styles.extra}>
+          <View style={styles.extraRow}>
+            <View style={styles.extraRowPart}>
+              <Text style={styles.extraLabel}>上期抄码</Text>
+              <Text style={styles.extraValue}>{props.item.lastReading}</Text>
+            </View>
+            <View style={styles.extraRowPart}>
+              <Text style={styles.extraLabel}>本期抄码</Text>
+              <Text style={styles.extraValue}>{props.item.reading}</Text>
+            </View>
           </View>
-          <View style={styles.extraRowPart}>
-            <Text style={styles.extraLabel}>本期抄码</Text>
-            <Text style={styles.extraValue}>{props.item.reading}</Text>
-          </View>
-          <View style={styles.extraRowPart}>
-            <Text style={styles.extraLabel}>抄见水量</Text>
-            <Text style={styles.extraValue}>{props.item.readWater}</Text>
+          <View style={styles.extraRow}>
+            <View style={styles.extraRowPart}>
+              <Text style={styles.extraLabel}>抄见水量</Text>
+              <Text style={styles.extraValue}>{props.item.readWater}</Text>
+            </View>
+            <View style={styles.extraRowPart}>
+              <Text style={styles.extraLabel}>抄表日期</Text>
+              <Text style={styles.extraValue}>
+                {dayjs(props.item.lastReadDate).format('YYYY-MM-DD')}
+              </Text>
+            </View>
           </View>
         </View>
-        <View style={styles.extraRow}>
-          <View style={styles.extraRowPart} />
-          <View style={[styles.extraRowPart, { justifyContent: 'flex-end' }]}>
-            <Text style={styles.dateLabel}>抄表日期：</Text>
-            <Text style={styles.dateValue}>
-              {dayjs(props.item.lastReadDate).format('YYYY-MM-DD')}
-            </Text>
-          </View>
-        </View>
-      </View>
+      ) : null}
     </View>
   );
 }
@@ -75,7 +68,6 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    marginStart: scaleSize(30),
   },
   mainContainer: {
     flex: 1,
@@ -85,23 +77,22 @@ const styles = StyleSheet.create({
     backgroundColor: colorWhite,
   },
   sortIndex: {
-    backgroundColor: colorWhite,
-    width: scaleSize(86),
-    height: scaleSize(106),
+    backgroundColor: '#E7F2FF',
+    width: scaleSize(150),
+    height: scaleSize(160),
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   sortIndexText: {
-    color: '#5384F9',
-    fontSize: scaleSize(34),
-    fontWeight: 'bold',
+    color: '#669FEE',
+    fontSize: scaleSize(56),
   },
   rightContainer: {
     display: 'flex',
     flexDirection: 'column',
-    paddingHorizontal: scaleSize(14),
-    // paddingVertical: scaleSize(20),
+    paddingHorizontal: scaleSize(30),
+    paddingVertical: scaleSize(20),
   },
   rightTop: {
     display: 'flex',
@@ -109,11 +100,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: scaleSize(30),
+    fontSize: scaleSize(34),
     color: '#333333',
   },
   subTitle: {
-    fontSize: scaleSize(28),
+    fontSize: scaleSize(30),
     color: '#333333',
     marginStart: scaleSize(17),
   },
@@ -137,14 +128,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     marginHorizontal: scaleSize(16),
+    padding: scaleSize(30),
     backgroundColor: '#FCFEFF',
   },
   extraRow: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: scaleSize(6),
-    paddingHorizontal: scaleSize(20),
   },
   extraRowPart: {
     display: 'flex',
@@ -154,19 +144,11 @@ const styles = StyleSheet.create({
   },
   extraLabel: {
     color: '#666666',
-    fontSize: scaleSize(24),
+    fontSize: scaleSize(28),
   },
   extraValue: {
     color: '#066DF1',
-    fontSize: scaleSize(24),
+    fontSize: scaleSize(28),
     marginStart: scaleSize(12),
-  },
-  dateLabel: {
-    color: '#999999',
-    fontSize: scaleSize(20),
-  },
-  dateValue: {
-    color: '#666666',
-    fontSize: scaleSize(20),
   },
 });

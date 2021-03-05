@@ -5,28 +5,20 @@ import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
-import { getSession, UserSession } from '../utils/sesstionUtils';
 import BooksBackTitleBar from '../components/BooksBackTitleBar';
 import { PdaReadDataDto } from '../../apiclient/src/models';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
-import BookDataItem from '../components/BookReadItem';
+import BookSortItem from '../components/BookSortItem';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { PdaReadDataDtoHolder } from '../data/holders';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SwipeButton from '../components/SwipeButton';
 
 export default function BookTaskSortScreen({ route, navigation }: any) {
-  const [session, setSession] = useState<UserSession>();
-  const [bookDataItems, setBookDataItems] = useState<PdaReadDataDtoHolder[]>(
+  const [BookSortItems, setBookSortItems] = useState<PdaReadDataDtoHolder[]>(
     [],
   );
-
-  useEffect(() => {
-    getSession().then((s) => {
-      setSession(s || undefined);
-    });
-  }, []);
 
   useEffect(() => {
     const { bookId, title } = route.params;
@@ -43,7 +35,7 @@ export default function BookTaskSortScreen({ route, navigation }: any) {
           };
           return data;
         });
-        setBookDataItems(items);
+        setBookSortItems(items);
       }
     });
   }, [route.params]);
@@ -51,7 +43,7 @@ export default function BookTaskSortScreen({ route, navigation }: any) {
   const renderBookItem = (info: ListRenderItemInfo<PdaReadDataDtoHolder>) => {
     return (
       <TouchableOpacity activeOpacity={1.0}>
-        <BookDataItem
+        <BookSortItem
           showExtra={false}
           item={info.item.item}
           key={info.item.item.custId}
@@ -70,14 +62,14 @@ export default function BookTaskSortScreen({ route, navigation }: any) {
 
   const topRow = (rowMap, rowKey) => {
     closeRow(rowMap, rowKey);
-    let newData = [...bookDataItems];
+    let newData = [...BookSortItems];
     newData.forEach((item) => {
       if (item.item.bookId === rowKey) {
         item.item.bookSortIndex = 1;
       }
     });
     newData = newData.sort((it) => it.item.bookSortIndex);
-    setBookDataItems(newData);
+    setBookSortItems(newData);
   };
 
   return (
@@ -104,7 +96,7 @@ export default function BookTaskSortScreen({ route, navigation }: any) {
 
       <SwipeListView<PdaReadDataDtoHolder>
         style={styles.items}
-        data={bookDataItems}
+        data={BookSortItems}
         renderItem={renderBookItem}
         ItemSeparatorComponent={() => (
           <View style={{ height: scaleSize(18) }} />

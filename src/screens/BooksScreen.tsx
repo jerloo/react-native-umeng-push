@@ -7,12 +7,12 @@ import {
   StatusBar,
   ListRenderItemInfo,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
-import { getSession, UserSession } from '../utils/sesstionUtils';
 import BooksBackTitleBar from '../components/BooksBackTitleBar';
 import BookItem from '../components/BookItem';
 import center from '../data';
@@ -21,14 +21,21 @@ import { PdaMeterBookDtoHolder } from '../data/holders';
 import CircleCheckBox from '../components/CircleCheckBox';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import SwipeButton from '../components/SwipeButton';
+import db from '../data/database';
+import { NumbersType } from '../data/models';
 
 export default function BooksScreen({ navigation }: any) {
-  const [session, setSession] = useState<UserSession>();
   const [bookItems, setBookItems] = useState<PdaMeterBookDtoHolder[]>([]);
+  const [totalNumbers, setTotalNumbers] = useState<NumbersType>({
+    readingNumber: 0,
+    totalNumber: 0,
+    uploadedNumber: 0,
+  });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getSession().then((s) => {
-      setSession(s || undefined);
+    db.getBookTotalData().then((result) => {
+      setTotalNumbers(result);
     });
   }, []);
 
@@ -93,20 +100,31 @@ export default function BooksScreen({ navigation }: any) {
   };
 
   const refresh = () => {
-    center.getBookList().then((res) => {
-      if (res instanceof String) {
-        Toast.fail(res as string);
-      } else {
-        const items = (res as PdaMeterBookDtoHolder[]).map((value) => {
-          value.checked = false;
-          return value;
-        });
-        setBookItems(items);
-      }
-    });
+    if (loading) {
+      return;
+    }
+
+    setLoading(true);
+    center
+      .getBookList()
+      .then((res) => {
+        setLoading(false);
+
+        if (res instanceof String) {
+          Toast.fail(res as string);
+        } else {
+          const items = (res as PdaMeterBookDtoHolder[]).map((value) => {
+            value.checked = false;
+            return value;
+          });
+          setBookItems(items);
+        }
+      })
+      .catch(() => setLoading(false));
   };
 
   const download = () => {
+    setLoading(true);
     center
       .getBookDataByIds(
         bookItems.filter((value) => value.checked).map((it) => it.bookId),
@@ -114,7 +132,9 @@ export default function BooksScreen({ navigation }: any) {
       .then(() => {
         console.log('下载数据完成');
         fetchLocal();
-      });
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   };
 
   return (
@@ -137,15 +157,21 @@ export default function BooksScreen({ navigation }: any) {
           />
           <View style={styles.topBox}>
             <View style={styles.topItem}>
-              <Text style={styles.topItemValue}>12345</Text>
+              <Text style={styles.topItemValue}>
+                {totalNumbers?.totalNumber}
+              </Text>
               <Text style={styles.topItemLabel}>应抄</Text>
             </View>
             <View style={styles.topItem}>
-              <Text style={styles.topItemValue}>12345</Text>
+              <Text style={styles.topItemValue}>
+                {totalNumbers?.readingNumber}
+              </Text>
               <Text style={styles.topItemLabel}>已抄</Text>
             </View>
             <View style={styles.topItem}>
-              <Text style={styles.topItemValue}>12345</Text>
+              <Text style={styles.topItemValue}>
+                {totalNumbers?.uploadedNumber}
+              </Text>
               <Text style={styles.topItemLabel}>已上传</Text>
             </View>
           </View>
@@ -199,6 +225,16 @@ export default function BooksScreen({ navigation }: any) {
           </TouchableOpacity>
         </View>
       </View>
+
+      {loading ? (
+        <View style={styles.loading}>
+          <Image
+            style={styles.loadingIcon}
+            source={require('../assets/qietu/chaobiaorenwu/meter_reading_task_picture_normal.png')}
+          />
+          <Text style={styles.loadingTitle}>数据下载中</Text>
+        </View>
+      ) : null}
     </View>
   );
 }
@@ -288,5 +324,23 @@ const styles = StyleSheet.create({
   },
   rowHiddenDelete: {
     backgroundColor: '#F0655A',
+  },
+  loading: {
+    position: 'absolute',
+    zIndex: 9999,
+    right: scaleSize(30),
+    bottom: scaleSize(314),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  loadingIcon: {
+    width: scaleSize(88),
+    height: scaleSize(92),
+  },
+  loadingTitle: {
+    color: '#2484E8',
+    fontSize: scaleSize(14),
+    marginTop: scaleSize(-15),
   },
 });

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-  View,
   Image,
   Text,
   StyleSheet,
@@ -16,7 +15,7 @@ interface Props {
   icon: ImageSourcePropType;
   title: string;
   style?: StyleProp<ViewStyle>;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export default function SwipeButton({ icon, title, style, onClick }: Props) {
