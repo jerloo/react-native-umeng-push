@@ -31,9 +31,8 @@ CosXmlReactNative.initWithSessionCredentialCallback(
       dayjs().format('YYYY-MM-DD HH:mm:ss'),
     );
     console.log(response);
-    const responseJson = await response.json();
-    const credentials = responseJson.Credentials;
-    const expiredTime = responseJson.ExpiredTime;
+    const credentials = response.data.Credentials;
+    const expiredTime = response.data.ExpiredTime;
     const sessionCredentials = {
       tmpSecretId: credentials.TmpSecretId,
       tmpSecretKey: credentials.TmpSecretKey,

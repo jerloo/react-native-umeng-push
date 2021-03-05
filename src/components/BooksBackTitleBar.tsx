@@ -12,6 +12,7 @@ import { colorWhite } from '../styles';
 
 interface Props {
   onBack: () => void;
+  onRightClick: () => void;
   rightIcon?: ImageSourcePropType;
   title?: string;
   titleColor?: string;
@@ -34,7 +35,7 @@ export default function BooksBackTitleBar(props: Props) {
       <Text style={[styles.titleBarTitle, { color: props.titleColor }]}>
         {props.title || '抄表任务'}
       </Text>
-      <TouchableWithoutFeedback onPress={() => props.onBack()}>
+      <TouchableWithoutFeedback onPress={() => props.onRightClick()}>
         <Image
           style={styles.titleBarBackButton}
           source={

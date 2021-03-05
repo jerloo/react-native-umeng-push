@@ -12,39 +12,39 @@
  * Do not edit the class manually.
  */
 /**
- * 附件属性
+ * 账单明细
  * @export
- * @interface MobileFileDto
+ * @interface PdaChargeDetails
  */
-export interface MobileFileDto {
+export interface PdaChargeDetails {
     /**
-     * 文件名称
+     * 费用组成
      * @type {string}
-     * @memberof MobileFileDto
+     * @memberof PdaChargeDetails
      */
-    fileName?: any;
+    feeItem?: any;
     /**
-     * 文件地址
+     * 费用代码
      * @type {string}
-     * @memberof MobileFileDto
+     * @memberof PdaChargeDetails
      */
-    filePath?: any;
+    feeItemCode?: any;
     /**
-     * 文件大小
+     * 单价
+     * @type {string}
+     * @memberof PdaChargeDetails
+     */
+    price?: any;
+    /**
+     * 水量
      * @type {number}
-     * @memberof MobileFileDto
+     * @memberof PdaChargeDetails
      */
-    fileSize?: any;
+    water?: any;
     /**
-     * 文件来源
+     * 金额
      * @type {number}
-     * @memberof MobileFileDto
+     * @memberof PdaChargeDetails
      */
-    fileSource?: any;
-    /**
-     * 是否删除
-     * @type {boolean}
-     * @memberof MobileFileDto
-     */
-    isRemove?: any;
+    money?: any;
 }

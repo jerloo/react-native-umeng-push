@@ -7,7 +7,6 @@ import { getSession, UserSession } from '../utils/sesstionUtils';
 import BooksBackTitleBar from '../components/BooksBackTitleBar';
 import { PdaReadDataDto } from '../../apiclient/src/models';
 import center from '../data';
-import { PdaReadDataDtoHolder } from '../data/holders';
 import { colorWhite } from '../styles';
 import Tag from '../components/Tag';
 import KeyBoard from '../components/KeyBoard';
@@ -15,12 +14,18 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import dayjs from 'dayjs';
 
 export default function NewReadScreen({ route, navigation }: any) {
+  const [stateExtra, setStateExtra] = useState(false);
   const [session, setSession] = useState<UserSession>();
-  const [bookDataItems, setBookDataItems] = useState<PdaReadDataDtoHolder[]>(
-    [],
-  );
   const { data } = route.params;
   const [newData, setNewData] = useState<PdaReadDataDto>(data);
+
+  const setValue = (value: string) => {
+    setNewData({
+      ...newData,
+      reading: Number.parseInt(value),
+      readWater: newData.reading - newData.lastReading,
+    });
+  };
 
   useEffect(() => {
     getSession().then((s) => {
@@ -28,10 +33,59 @@ export default function NewReadScreen({ route, navigation }: any) {
     });
   }, []);
 
+  const saveData = () => {
+    center.offline.saveReading(newData);
+  };
+
   const line = () => {
     return (
       <View style={{ height: scaleSize(1), backgroundColor: '#DEDEDE' }} />
     );
+  };
+
+  const renderStateExtra = () => {
+    return (
+      <View style={styles.extra}>
+        <View style={styles.extraRow}>
+          <View style={styles.extraRowPart}>
+            <Text style={styles.extraLabel}>上期抄码</Text>
+            <Text style={[styles.extraValue, { color: '#333333' }]}>
+              {newData.lastReading}
+            </Text>
+          </View>
+          <View style={styles.extraRowPart}>
+            <Text style={styles.extraLabel}>上次水量</Text>
+            <Text style={[styles.extraValue, { color: '#333333' }]}>
+              {newData.lastReadWater}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.extraRow}>
+          <View style={styles.extraRowPart}>
+            <Text style={styles.extraLabel}>本期抄码</Text>
+            <Text style={styles.extraValue}>{newData.reading}</Text>
+          </View>
+
+          <View style={styles.extraRowPart}>
+            <Text style={styles.extraLabel}>本期水量</Text>
+            <Text style={styles.extraValue}>{newData.readWater}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  const recordState = (n: number) => {
+    if (n === 0) {
+      return '未抄';
+    } else if (n === 1) {
+      return '已抄';
+    } else if (n === 2) {
+      return '已复核';
+    } else if (n === 3) {
+      return '已开账';
+    }
+    return '';
   };
 
   const renderContent = () => {
@@ -56,7 +110,7 @@ export default function NewReadScreen({ route, navigation }: any) {
           <View style={styles.tags}>
             <Tag title="欠费" borderColor="#F5D28C" textColor="#EAAF38" />
             <Tag
-              title="未抄"
+              title={recordState(newData.recordState)}
               borderColor="#C2C2C2"
               textColor="#666666"
               style={{ marginStart: scaleSize(16) }}
@@ -76,17 +130,6 @@ export default function NewReadScreen({ route, navigation }: any) {
               <Text style={styles.tableLabel}>上次抄表</Text>
               {line()}
               <Text style={styles.tableLabel}>抄表状态</Text>
-              {line()}
-              <Text style={styles.tableLabel}>上期抄码</Text>
-              {line()}
-              <Text style={styles.tableLabel}>本期抄码</Text>
-              {line()}
-              <Text style={styles.tableLabel}>抄见水量</Text>
-              {line()}
-              <Text style={styles.tableLabel}>预算金额</Text>
-              <View
-                style={{ height: scaleSize(10), backgroundColor: colorWhite }}
-              />
             </View>
             <View style={styles.tableRight}>
               <Text style={styles.tableValue}>{newData.steelMark}</Text>
@@ -102,15 +145,29 @@ export default function NewReadScreen({ route, navigation }: any) {
 
               {line()}
               <View style={styles.tableValueRow}>
-                <Text style={styles.tableValue}>{newData.readWater}</Text>
-                <TouchableOpacity style={styles.tableValueButton}>
+                <Text style={styles.tableValue}>{newData.readStateId}</Text>
+                <TouchableOpacity
+                  style={styles.tableValueButton}
+                  onPress={() => {
+                    setStateExtra(!stateExtra);
+                  }}>
                   <Text style={styles.tableValueButtonText}>更多</Text>
                 </TouchableOpacity>
               </View>
+            </View>
+          </View>
+          {renderStateExtra()}
+          <View style={styles.table}>
+            <View style={styles.tableLeft}>
               {line()}
-              <Text style={styles.tableValue}>{newData.lastReading}</Text>
+              <Text style={styles.tableLabel}>抄见水量</Text>
               {line()}
-              <Text style={styles.tableValue}>{newData.reading}</Text>
+              <Text style={styles.tableLabel}>预算金额</Text>
+              <View
+                style={{ height: scaleSize(10), backgroundColor: colorWhite }}
+              />
+            </View>
+            <View style={styles.tableRight}>
               {line()}
               <Text style={styles.tableValue}>{newData.readWater}</Text>
               {line()}
@@ -164,9 +221,28 @@ export default function NewReadScreen({ route, navigation }: any) {
               <Text style={styles.maskContent}>点击添加备注(100字以内)</Text>
             </View>
 
-            <Text style={styles.maskValue}>1123</Text>
+            <Text style={styles.maskValue}>{newData.reading}</Text>
           </View>
-          <KeyBoard />
+          {newData.recordState === 0 || newData.recordState === 1 ? (
+            <KeyBoard
+              onBackClick={() => {
+                if (newData.reading.toString().length !== 0) {
+                  setValue(
+                    newData.reading
+                      .toString()
+                      .substring(0, newData.reading.toString().length - 1),
+                  );
+                }
+              }}
+              onNumberClick={(n) => {
+                setValue(`${newData.reading}${n}`);
+              }}
+              onPhotoClick={() => {}}
+              onConfirmClick={saveData}
+              onNextClick={() => {}}
+              onPreClick={() => {}}
+            />
+          ) : null}
         </View>
       </SafeAreaView>
     </View>
@@ -330,5 +406,33 @@ const styles = StyleSheet.create({
     fontSize: scaleSize(40),
     color: '#333333',
     fontWeight: 'bold',
+  },
+  extra: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginHorizontal: scaleSize(0),
+    padding: scaleSize(30),
+    backgroundColor: '#F9F9F9',
+    marginTop: scaleSize(25),
+  },
+  extraRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  extraRowPart: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    flex: 1,
+  },
+  extraLabel: {
+    color: '#666666',
+    fontSize: scaleSize(28),
+  },
+  extraValue: {
+    color: '#066DF1',
+    fontSize: scaleSize(28),
+    marginStart: scaleSize(12),
   },
 });

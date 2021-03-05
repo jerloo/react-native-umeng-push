@@ -12,39 +12,39 @@
  * Do not edit the class manually.
  */
 /**
- * 附件属性
+ * 
  * @export
- * @interface MobileFileDto
+ * @interface SysSettingDto
  */
-export interface MobileFileDto {
+export interface SysSettingDto {
     /**
-     * 文件名称
+     * 参数分组
      * @type {string}
-     * @memberof MobileFileDto
+     * @memberof SysSettingDto
      */
-    fileName?: any;
+    groupName?: any;
     /**
-     * 文件地址
+     * 参数名称
      * @type {string}
-     * @memberof MobileFileDto
+     * @memberof SysSettingDto
      */
-    filePath?: any;
+    name?: any;
     /**
-     * 文件大小
-     * @type {number}
-     * @memberof MobileFileDto
+     * 参数编码
+     * @type {string}
+     * @memberof SysSettingDto
      */
-    fileSize?: any;
+    code?: any;
     /**
-     * 文件来源
-     * @type {number}
-     * @memberof MobileFileDto
+     * 参数当前值
+     * @type {string}
+     * @memberof SysSettingDto
      */
-    fileSource?: any;
+    value?: any;
     /**
-     * 是否删除
-     * @type {boolean}
-     * @memberof MobileFileDto
+     * 备注
+     * @type {string}
+     * @memberof SysSettingDto
      */
-    isRemove?: any;
+    remark?: any;
 }

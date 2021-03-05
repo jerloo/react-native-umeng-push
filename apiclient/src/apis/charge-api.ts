@@ -16,12 +16,19 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import { PdaArrearageChargesInputDto } from '../models';
+import { PdaArrearageDtoPagedResultDto } from '../models';
+import { PdaArrearageInputDto } from '../models';
+import { PdaChargeListDtoListResultDto } from '../models';
 import { PdaCustDetailsInput } from '../models';
 import { PdaCustDtoListResultDto } from '../models';
 import { PdaCustListDtoListResultDto } from '../models';
 import { PdaMeterBookDtoListResultDto } from '../models';
 import { PdaMeterReaderDto } from '../models';
 import { PdaReadDataDtoListResultDto } from '../models';
+import { PdaReadStateDtoListResultDto } from '../models';
+import { PdaReadingCollectDtoListResultDto } from '../models';
+import { PdaReadingCollectInput } from '../models';
 import { ReadDataByBookIdsInput } from '../models';
 /**
  * ChargeApi - axios parameter creator
@@ -185,7 +192,7 @@ export const ChargeApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary 客户快速查询
-         * @param {string} parameter 
+         * @param {string} parameter 查询参数
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -227,6 +234,159 @@ export const ChargeApiAxiosParamCreator = function (configuration?: Configuratio
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 欠费查询-欠费详情
+         * @param {PdaArrearageChargesInputDto} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppChargeGetArrearageChargeListPost: async (body: PdaArrearageChargesInputDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling apiAppChargeGetArrearageChargeListPost.');
+            }
+            const localVarPath = `/api/app/charge/getArrearageChargeList`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 欠费查询
+         * @param {PdaArrearageInputDto} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppChargeGetArrearageListPost: async (body: PdaArrearageInputDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling apiAppChargeGetArrearageListPost.');
+            }
+            const localVarPath = `/api/app/charge/getArrearageList`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 抄表统计查询
+         * @param {PdaReadingCollectInput} body 查询参数
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppChargeGetReadingCollectPost: async (body: PdaReadingCollectInput, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling apiAppChargeGetReadingCollectPost.');
+            }
+            const localVarPath = `/api/app/charge/getReadingCollect`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -278,6 +438,48 @@ export const ChargeApiAxiosParamCreator = function (configuration?: Configuratio
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
             localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 抄表状态查询
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppChargeReadStatesGet: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/app/charge/readStates`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -432,12 +634,54 @@ export const ChargeApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 客户快速查询
-         * @param {string} parameter 
+         * @param {string} parameter 查询参数
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         async apiAppChargeCustListGet(parameter: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PdaCustListDtoListResultDto>> {
             const localVarAxiosArgs = await ChargeApiAxiosParamCreator(configuration).apiAppChargeCustListGet(parameter, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary 欠费查询-欠费详情
+         * @param {PdaArrearageChargesInputDto} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiAppChargeGetArrearageChargeListPost(body: PdaArrearageChargesInputDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PdaChargeListDtoListResultDto>> {
+            const localVarAxiosArgs = await ChargeApiAxiosParamCreator(configuration).apiAppChargeGetArrearageChargeListPost(body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary 欠费查询
+         * @param {PdaArrearageInputDto} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiAppChargeGetArrearageListPost(body: PdaArrearageInputDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PdaArrearageDtoPagedResultDto>> {
+            const localVarAxiosArgs = await ChargeApiAxiosParamCreator(configuration).apiAppChargeGetArrearageListPost(body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary 抄表统计查询
+         * @param {PdaReadingCollectInput} body 查询参数
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiAppChargeGetReadingCollectPost(body: PdaReadingCollectInput, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PdaReadingCollectDtoListResultDto>> {
+            const localVarAxiosArgs = await ChargeApiAxiosParamCreator(configuration).apiAppChargeGetReadingCollectPost(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -452,6 +696,19 @@ export const ChargeApiFp = function(configuration?: Configuration) {
          */
         async apiAppChargeReadDataByBookIdsPost(body: ReadDataByBookIdsInput, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PdaReadDataDtoListResultDto>> {
             const localVarAxiosArgs = await ChargeApiAxiosParamCreator(configuration).apiAppChargeReadDataByBookIdsPost(body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary 抄表状态查询
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiAppChargeReadStatesGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PdaReadStateDtoListResultDto>> {
+            const localVarAxiosArgs = await ChargeApiAxiosParamCreator(configuration).apiAppChargeReadStatesGet(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -527,12 +784,42 @@ export const ChargeApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary 客户快速查询
-         * @param {string} parameter 
+         * @param {string} parameter 查询参数
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         apiAppChargeCustListGet(parameter: string, options?: any): AxiosPromise<PdaCustListDtoListResultDto> {
             return ChargeApiFp(configuration).apiAppChargeCustListGet(parameter, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 欠费查询-欠费详情
+         * @param {PdaArrearageChargesInputDto} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppChargeGetArrearageChargeListPost(body: PdaArrearageChargesInputDto, options?: any): AxiosPromise<PdaChargeListDtoListResultDto> {
+            return ChargeApiFp(configuration).apiAppChargeGetArrearageChargeListPost(body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 欠费查询
+         * @param {PdaArrearageInputDto} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppChargeGetArrearageListPost(body: PdaArrearageInputDto, options?: any): AxiosPromise<PdaArrearageDtoPagedResultDto> {
+            return ChargeApiFp(configuration).apiAppChargeGetArrearageListPost(body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 抄表统计查询
+         * @param {PdaReadingCollectInput} body 查询参数
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppChargeGetReadingCollectPost(body: PdaReadingCollectInput, options?: any): AxiosPromise<PdaReadingCollectDtoListResultDto> {
+            return ChargeApiFp(configuration).apiAppChargeGetReadingCollectPost(body, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -543,6 +830,15 @@ export const ChargeApiFactory = function (configuration?: Configuration, basePat
          */
         apiAppChargeReadDataByBookIdsPost(body: ReadDataByBookIdsInput, options?: any): AxiosPromise<PdaReadDataDtoListResultDto> {
             return ChargeApiFp(configuration).apiAppChargeReadDataByBookIdsPost(body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 抄表状态查询
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppChargeReadStatesGet(options?: any): AxiosPromise<PdaReadStateDtoListResultDto> {
+            return ChargeApiFp(configuration).apiAppChargeReadStatesGet(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -610,13 +906,46 @@ export class ChargeApi extends BaseAPI {
     /**
      * 
      * @summary 客户快速查询
-     * @param {string} parameter 
+     * @param {string} parameter 查询参数
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChargeApi
      */
     public apiAppChargeCustListGet(parameter: string, options?: any) {
         return ChargeApiFp(this.configuration).apiAppChargeCustListGet(parameter, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @summary 欠费查询-欠费详情
+     * @param {PdaArrearageChargesInputDto} body 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChargeApi
+     */
+    public apiAppChargeGetArrearageChargeListPost(body: PdaArrearageChargesInputDto, options?: any) {
+        return ChargeApiFp(this.configuration).apiAppChargeGetArrearageChargeListPost(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @summary 欠费查询
+     * @param {PdaArrearageInputDto} body 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChargeApi
+     */
+    public apiAppChargeGetArrearageListPost(body: PdaArrearageInputDto, options?: any) {
+        return ChargeApiFp(this.configuration).apiAppChargeGetArrearageListPost(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @summary 抄表统计查询
+     * @param {PdaReadingCollectInput} body 查询参数
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChargeApi
+     */
+    public apiAppChargeGetReadingCollectPost(body: PdaReadingCollectInput, options?: any) {
+        return ChargeApiFp(this.configuration).apiAppChargeGetReadingCollectPost(body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -628,6 +957,16 @@ export class ChargeApi extends BaseAPI {
      */
     public apiAppChargeReadDataByBookIdsPost(body: ReadDataByBookIdsInput, options?: any) {
         return ChargeApiFp(this.configuration).apiAppChargeReadDataByBookIdsPost(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @summary 抄表状态查询
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChargeApi
+     */
+    public apiAppChargeReadStatesGet(options?: any) {
+        return ChargeApiFp(this.configuration).apiAppChargeReadStatesGet(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 

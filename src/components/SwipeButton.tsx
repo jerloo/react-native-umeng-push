@@ -8,6 +8,7 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { scaleSize } from 'react-native-responsive-design';
 import { colorWhite } from '../styles';
 
@@ -15,14 +16,15 @@ interface Props {
   icon: ImageSourcePropType;
   title: string;
   style?: StyleProp<ViewStyle>;
+  onClick: () => void;
 }
 
-export default function SwipeButton({ icon, title, style }: Props) {
+export default function SwipeButton({ icon, title, style, onClick }: Props) {
   return (
-    <View style={[styles.rowHiddenButton, style]}>
+    <TouchableOpacity style={[styles.rowHiddenButton, style]} onPress={onClick}>
       <Image style={styles.rowHiddenIcon} source={icon} />
       <Text style={styles.rowHiddenText}>{title}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -37,6 +39,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    height: '100%',
   },
   rowHiddenText: {
     color: colorWhite,

@@ -1,4 +1,4 @@
-import { ChargeApi, LoginApi, MobileLogApi } from './src/api';
+import { ChargeApi, LoginApi, MobileReadingApi } from './src/api';
 import Axios from 'axios';
 
 const axiosInstance = Axios.create({
@@ -11,12 +11,16 @@ export interface AccessTokenProvider {
 export class ApiClient {
   loginApi: LoginApi;
   chargeApi: ChargeApi;
-  logApi: MobileLogApi;
+  logApi: MobileReadingApi;
 
   provider: AccessTokenProvider;
 
   constructor(basePath: string, provider: AccessTokenProvider) {
-    this.loginApi = new LoginApi({ basePath: basePath }, basePath, axiosInstance);
+    this.loginApi = new LoginApi(
+      { basePath: basePath },
+      basePath,
+      axiosInstance,
+    );
     this.chargeApi = new ChargeApi(
       {
         apiKey: provider.get,
@@ -24,7 +28,7 @@ export class ApiClient {
       basePath,
       axiosInstance,
     );
-    this.logApi = new MobileLogApi(
+    this.logApi = new MobileReadingApi(
       {
         apiKey: provider.get,
       },

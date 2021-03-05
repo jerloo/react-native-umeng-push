@@ -31,7 +31,7 @@ export default function BookTaskScreen({ route, navigation }: any) {
   useEffect(() => {
     const { bookId } = route.params;
 
-    center.getBookDataByIds([bookId]).then((res) => {
+    center.offline.getBookDataByIds([bookId]).then((res) => {
       if (res instanceof String) {
         Toast.fail(res as string);
       } else {
@@ -100,6 +100,7 @@ export default function BookTaskScreen({ route, navigation }: any) {
             onSortClick={() =>
               navigation.navigate('BookTaskSort', route.params)
             }
+            title={`${route.params.title}册本`}
           />
           <SearchBox
             style={styles.searchContainer}
@@ -109,16 +110,41 @@ export default function BookTaskScreen({ route, navigation }: any) {
       </LinearGradient>
 
       <Tabs
-        tabs={[{ title: '未抄' }, { title: '已抄' }, { title: '全部' }]}
+        tabs={[
+          {
+            title: `未抄(${
+              bookDataItems.filter((it) => !it.item.reading).length
+            })`,
+          },
+          {
+            title: `已抄(${
+              bookDataItems.filter((it) => !!it.item.reading).length
+            })`,
+          },
+          { title: `全部(${bookDataItems.length})` },
+        ]}
         tabBarUnderlineStyle={{ height: scaleSize(6) }}>
         <FlatList<PdaReadDataDtoHolder>
           style={styles.items}
-          data={bookDataItems}
+          data={bookDataItems.filter((it) => !it.item.reading)}
           renderItem={renderBookItem}
           ItemSeparatorComponent={() => (
             <View style={{ height: scaleSize(18) }} />
           )}
-          keyExtractor={(item) => item.item.custId.toString()}
+          keyExtractor={(item) => 'unread-' + item.item.custId.toString()}
+          contentInset={{ bottom: 100 }}
+          contentContainerStyle={{
+            paddingBottom: scaleSize(30),
+          }}
+        />
+        <FlatList<PdaReadDataDtoHolder>
+          style={styles.items}
+          data={bookDataItems.filter((it) => !!it.item.reading)}
+          renderItem={renderBookItem}
+          ItemSeparatorComponent={() => (
+            <View style={{ height: scaleSize(18) }} />
+          )}
+          keyExtractor={(item) => 'read-' + item.item.custId.toString()}
           contentInset={{ bottom: 100 }}
           contentContainerStyle={{
             paddingBottom: scaleSize(30),
@@ -131,20 +157,7 @@ export default function BookTaskScreen({ route, navigation }: any) {
           ItemSeparatorComponent={() => (
             <View style={{ height: scaleSize(18) }} />
           )}
-          keyExtractor={(item) => item.item.custId.toString()}
-          contentInset={{ bottom: 100 }}
-          contentContainerStyle={{
-            paddingBottom: scaleSize(30),
-          }}
-        />
-        <FlatList<PdaReadDataDtoHolder>
-          style={styles.items}
-          data={bookDataItems}
-          renderItem={renderBookItem}
-          ItemSeparatorComponent={() => (
-            <View style={{ height: scaleSize(18) }} />
-          )}
-          keyExtractor={(item) => item.item.custId.toString()}
+          keyExtractor={(item) => 'all-' + item.item.custId.toString()}
           contentInset={{ bottom: 100 }}
           contentContainerStyle={{
             paddingBottom: scaleSize(30),

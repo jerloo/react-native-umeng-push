@@ -12,39 +12,39 @@
  * Do not edit the class manually.
  */
 /**
- * 附件属性
+ * 收费统计
  * @export
- * @interface MobileFileDto
+ * @interface PdaPaymentCollect
  */
-export interface MobileFileDto {
+export interface PdaPaymentCollect {
     /**
-     * 文件名称
-     * @type {string}
-     * @memberof MobileFileDto
+     * 收费日期
+     * @type {Date}
+     * @memberof PdaPaymentCollect
      */
-    fileName?: any;
+    payDate?: any;
     /**
-     * 文件地址
-     * @type {string}
-     * @memberof MobileFileDto
-     */
-    filePath?: any;
-    /**
-     * 文件大小
+     * 实际收费
      * @type {number}
-     * @memberof MobileFileDto
+     * @memberof PdaPaymentCollect
      */
-    fileSize?: any;
+    actualMoney?: any;
     /**
-     * 文件来源
+     * 实际销账
      * @type {number}
-     * @memberof MobileFileDto
+     * @memberof PdaPaymentCollect
      */
-    fileSource?: any;
+    soldMoney?: any;
     /**
-     * 是否删除
-     * @type {boolean}
-     * @memberof MobileFileDto
+     * 预存存入
+     * @type {number}
+     * @memberof PdaPaymentCollect
      */
-    isRemove?: any;
+    depositIn?: any;
+    /**
+     * 预存抵扣
+     * @type {number}
+     * @memberof PdaPaymentCollect
+     */
+    depositOut?: any;
 }

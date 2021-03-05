@@ -29,9 +29,10 @@ export default function BookTaskSortScreen({ route, navigation }: any) {
   }, []);
 
   useEffect(() => {
-    const { bookId } = route.params;
+    const { bookId, title } = route.params;
+    console.log(bookId, title);
 
-    center.getBookDataByIds([bookId]).then((res) => {
+    center.offline.getBookDataByIds([bookId]).then((res) => {
       if (res instanceof String) {
         Toast.fail(res as string);
       } else {
@@ -59,6 +60,26 @@ export default function BookTaskSortScreen({ route, navigation }: any) {
     );
   };
 
+  const onSearchButtonClick = () => {};
+
+  const closeRow = (rowMap, rowKey) => {
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].closeRow();
+    }
+  };
+
+  const topRow = (rowMap, rowKey) => {
+    closeRow(rowMap, rowKey);
+    let newData = [...bookDataItems];
+    newData.forEach((item) => {
+      if (item.item.bookId === rowKey) {
+        item.item.bookSortIndex = 1;
+      }
+    });
+    newData = newData.sort((it) => it.item.bookSortIndex);
+    setBookDataItems(newData);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -72,7 +93,10 @@ export default function BookTaskSortScreen({ route, navigation }: any) {
         style={styles.topContainer}>
         <SafeAreaView>
           <BooksBackTitleBar
+            onRightClick={onSearchButtonClick}
+            title={`${route.params.title}册本`}
             onBack={() => navigation.goBack()}
+            titleColor={colorWhite}
             rightIcon={require('../assets/qietu/cebenxiangqing/book_details_icon_query_normal.png')}
           />
         </SafeAreaView>
@@ -96,11 +120,13 @@ export default function BookTaskSortScreen({ route, navigation }: any) {
               style={styles.rowHiddenStatic}
               title="置顶"
               icon={require('../assets/qietu/cebenxiangqing/book_details_icon_top_normal.png')}
+              onClick={() => topRow(rowMap, data.item.item.bookId)}
             />
             <SwipeButton
               style={styles.rowHiddenDelete}
               title="取消"
               icon={require('../assets/qietu/cebenxiangqing/book_details_icon_cancel_normal.png')}
+              onClick={() => closeRow(rowMap, data.item.item.bookId)}
             />
           </View>
         )}

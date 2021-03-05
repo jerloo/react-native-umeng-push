@@ -14,7 +14,6 @@ import { colorWhite } from '../styles';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 import { getSession, UserSession } from '../utils/sesstionUtils';
 import BooksBackTitleBar from '../components/BooksBackTitleBar';
-import { PdaMeterBookDto } from '../../apiclient/src/models';
 import BookItem from '../components/BookItem';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
@@ -25,9 +24,7 @@ import SwipeButton from '../components/SwipeButton';
 
 export default function BooksScreen({ navigation }: any) {
   const [session, setSession] = useState<UserSession>();
-  const [demoBookItems, setDemoBookItems] = useState<PdaMeterBookDtoHolder[]>(
-    [],
-  );
+  const [bookItems, setBookItems] = useState<PdaMeterBookDtoHolder[]>([]);
 
   useEffect(() => {
     getSession().then((s) => {
@@ -35,38 +32,41 @@ export default function BooksScreen({ navigation }: any) {
     });
   }, []);
 
-  useEffect(() => {
-    center.getBookList().then((res) => {
+  const fetchLocal = () => {
+    center.offline.getBookList().then((res) => {
       if (res instanceof String) {
         Toast.fail(res as string);
       } else {
-        const items = (res as PdaMeterBookDto[]).map((value) => {
-          const item: PdaMeterBookDtoHolder = {
-            item: value,
-            checked: false,
-          };
-          return item;
+        const items = (res as PdaMeterBookDtoHolder[]).map((value) => {
+          value.checked = false;
+          return value;
         });
-        setDemoBookItems(items);
+        setBookItems(items);
       }
     });
+  };
+
+  useEffect(() => {
+    fetchLocal();
   }, []);
 
   const bookItemCheckClick = (holder: PdaMeterBookDtoHolder) => {
-    demoBookItems.forEach((item) => {
-      if (item.item.bookId === holder.item.bookId) {
+    bookItems.forEach((item) => {
+      if (item.bookId === holder.bookId) {
         item.checked = !item.checked;
         console.log('更改状态', item);
       }
     });
-    setDemoBookItems([...demoBookItems]);
+    setBookItems([...bookItems]);
   };
 
   const bookItemClick = (holder: PdaMeterBookDtoHolder) => {
-    navigation.navigate('BookTask', {
-      bookId: holder.item.bookId,
-      title: holder.item.bookCode,
-    });
+    if (holder.downloaded) {
+      navigation.navigate('BookTask', {
+        bookId: holder.bookId,
+        title: holder.bookCode,
+      });
+    }
   };
 
   const renderBookItem = (info: ListRenderItemInfo<PdaMeterBookDtoHolder>) => {
@@ -76,7 +76,7 @@ export default function BooksScreen({ navigation }: any) {
         style={styles.item}
         onPress={() => bookItemClick(info.item)}>
         <BookItem
-          key={info.item.item.bookId}
+          key={info.item.bookId}
           holder={info.item}
           onCheckClick={() => bookItemCheckClick(info.item)}
         />
@@ -85,11 +85,36 @@ export default function BooksScreen({ navigation }: any) {
   };
 
   const allBooksClick = () => {
-    const allChecked = !demoBookItems.find((item) => item.checked === false);
-    demoBookItems.forEach((item) => {
+    const allChecked = !bookItems.find((item) => item.checked === false);
+    bookItems.forEach((item) => {
       item.checked = !allChecked;
     });
-    setDemoBookItems([...demoBookItems]);
+    setBookItems([...bookItems]);
+  };
+
+  const refresh = () => {
+    center.getBookList().then((res) => {
+      if (res instanceof String) {
+        Toast.fail(res as string);
+      } else {
+        const items = (res as PdaMeterBookDtoHolder[]).map((value) => {
+          value.checked = false;
+          return value;
+        });
+        setBookItems(items);
+      }
+    });
+  };
+
+  const download = () => {
+    center
+      .getBookDataByIds(
+        bookItems.filter((value) => value.checked).map((it) => it.bookId),
+      )
+      .then(() => {
+        console.log('下载数据完成');
+        fetchLocal();
+      });
   };
 
   return (
@@ -104,7 +129,12 @@ export default function BooksScreen({ navigation }: any) {
         colors={['#4888E3', '#2567E5']}
         style={styles.topContainer}>
         <SafeAreaView>
-          <BooksBackTitleBar onBack={() => navigation.goBack()} />
+          <BooksBackTitleBar
+            onBack={() => navigation.goBack()}
+            onRightClick={refresh}
+            title="抄表任务"
+            titleColor={colorWhite}
+          />
           <View style={styles.topBox}>
             <View style={styles.topItem}>
               <Text style={styles.topItemValue}>12345</Text>
@@ -124,13 +154,13 @@ export default function BooksScreen({ navigation }: any) {
 
       <SwipeListView<PdaMeterBookDtoHolder>
         style={styles.items}
-        data={demoBookItems}
+        data={bookItems}
         renderItem={renderBookItem}
         disableLeftSwipe={true}
         ItemSeparatorComponent={() => (
           <View style={{ height: scaleSize(18) }} />
         )}
-        renderHiddenItem={(data, rowMap) => (
+        renderHiddenItem={(_data, _rowMap) => (
           <View style={styles.rowHidden}>
             <SwipeButton
               style={styles.rowHiddenStatic}
@@ -146,7 +176,7 @@ export default function BooksScreen({ navigation }: any) {
         )}
         leftOpenValue={scaleSize(-240)}
         rightOpenValue={scaleSize(240)}
-        keyExtractor={(item) => item.item.bookId.toString()}
+        keyExtractor={(item) => item.bookCode.toString()}
         contentInset={{ bottom: 100 }}
         contentContainerStyle={{
           paddingBottom: scaleSize(30),
@@ -157,13 +187,14 @@ export default function BooksScreen({ navigation }: any) {
         <CircleCheckBox
           title="全选"
           onClick={allBooksClick}
-          checked={!demoBookItems.find((item) => item.checked === false)}
+          checked={!bookItems.find((item) => item.checked === false)}
         />
         <View style={styles.bottomRight}>
           <Text style={styles.bottomLabel}>
-            已选测本({demoBookItems.filter((item) => item.checked).length})
+            已选测本(
+            {bookItems.filter((item) => item.checked === true).length})
           </Text>
-          <TouchableOpacity style={styles.btnDone}>
+          <TouchableOpacity style={styles.btnDone} onPress={download}>
             <Text style={styles.btnDoneText}>下载</Text>
           </TouchableOpacity>
         </View>

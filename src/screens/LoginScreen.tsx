@@ -61,7 +61,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
       loadingButton.current?.setLoading(false);
       l.debug(`Login success ${t} ${u} ${p}`);
       signIn();
-      navigation.replace('Home');
+      // navigation.replace('Home');
     } else {
       Toast.fail(result as string);
       setTimeout(() => {

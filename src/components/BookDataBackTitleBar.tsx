@@ -7,6 +7,7 @@ import { colorWhite } from '../styles';
 interface Props {
   onBack: () => void;
   onSortClick: () => void;
+  title?: string;
 }
 
 export default function BookDataBackTitleBar(props: Props) {
@@ -19,7 +20,7 @@ export default function BookDataBackTitleBar(props: Props) {
         />
       </TouchableWithoutFeedback>
 
-      <Text style={styles.titleBarTitle}>抄表任务</Text>
+      <Text style={styles.titleBarTitle}>{props.title || '抄表任务'}</Text>
       <View style={styles.rightContainer}>
         <TouchableWithoutFeedback
           style={{ marginEnd: scaleSize(18) }}

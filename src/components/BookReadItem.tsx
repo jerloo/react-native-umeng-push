@@ -21,7 +21,7 @@ export default function BookReadItem(props: Props) {
         <View style={styles.rightContainer}>
           <View style={styles.rightTop}>
             <Text style={styles.title}>{props.item.bookCode}</Text>
-            <Text style={styles.subTitle}>({props.item.barCode})</Text>
+            <Text style={styles.subTitle}>({props.item.custId})</Text>
           </View>
           <View style={styles.rightBottom}>
             <Image
@@ -38,17 +38,17 @@ export default function BookReadItem(props: Props) {
           <View style={styles.extraRow}>
             <View style={styles.extraRowPart}>
               <Text style={styles.extraLabel}>上期抄码</Text>
-              <Text style={styles.extraValue}>23123</Text>
+              <Text style={styles.extraValue}>{props.item.lastReading}</Text>
             </View>
             <View style={styles.extraRowPart}>
               <Text style={styles.extraLabel}>本期抄码</Text>
-              <Text style={styles.extraValue}>23123</Text>
+              <Text style={styles.extraValue}>{props.item.reading}</Text>
             </View>
           </View>
           <View style={styles.extraRow}>
             <View style={styles.extraRowPart}>
               <Text style={styles.extraLabel}>抄见水量</Text>
-              <Text style={styles.extraValue}>23123</Text>
+              <Text style={styles.extraValue}>{props.item.readWater}</Text>
             </View>
             <View style={styles.extraRowPart}>
               <Text style={styles.extraLabel}>抄表日期</Text>

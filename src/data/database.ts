@@ -1,4 +1,5 @@
 import SQLite from 'react-native-sqlite-storage';
+import { PdaMeterBookDto, PdaReadDataDto } from '../../apiclient/src/models';
 import { PdaMeterBookDtoHolder } from './holders';
 
 SQLite.DEBUG(true);
@@ -26,7 +27,7 @@ class DataBase {
 
   populateDatabase = (db: SQLite.SQLiteDatabase) => {
     console.log('Database integrity check');
-    db.executeSql('SELECT 1 FROM Version LIMIT 1')
+    db.executeSql('SELECT 1 FROM Versions LIMIT 1')
       .then(() => {
         return true;
       })
@@ -89,11 +90,11 @@ class DataBase {
     });
 
     tx.executeSql(
-      `CREATE TABLE IF NOT EXISTS BookDatas( 
+      `CREATE TABLE IF NOT EXISTS BookDatas ( 
         billMonth INTEGER, 
         custId INTEGER,
         readTimes INTEGER,
-        terminalFiles INTEGER,
+        terminalFiles NVARCHAR(2048),
         oweNumber INTEGER,
         bookId INTEGER,
         bookCode NVARCHAR(30),
@@ -153,15 +154,111 @@ class DataBase {
       ?.transaction((tx) => {
         holders.forEach((item) => {
           tx.executeSql(
-            `INSERT INTO Books VALUES(${item.item.billMonth}, ${item.item.bookId}, '${item.item.bookCode}', '${item.item.bookName}', ${item.item.readCycle}, '${item.item.remark}', ${item.item.readingNumber}, ${item.item.totalNumber}, false)`,
-          ).catch((err) => {
-            this.errorCB(err);
-          });
+            `INSERT INTO Books ('billMonth','bookId','bookCode','bookName','readCycle','readingNumber','remark','totalNumber','downloaded') 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+              item.billMonth,
+              item.bookId,
+              item.bookCode,
+              item.bookName,
+              item.readCycle,
+              item.readingNumber,
+              item.remark,
+              item.totalNumber,
+              false,
+            ],
+          )
+            .then(() => {
+              console.log(`保存抄表任务[${holders.length}]条`);
+            })
+            .catch((err) => {
+              this.errorCB(err);
+            });
         });
       })
       .catch((err) => {
         this.errorCB(err);
       });
+  };
+
+  getBooks = async () => {
+    const result = await this.db?.executeSql('SELECT * FROM Books', []);
+    return result?.[0].rows.raw() || [];
+  };
+
+  getBookDataByIds = async (ids: number[]) => {
+    const result = await this.db?.executeSql(
+      `SELECT * FROM BookDatas WHERE bookId in (${ids.join(
+        ',',
+      )}) ORDER BY bookSortIndex ASC`,
+      [],
+    );
+    return result?.[0].rows.raw() || [];
+  };
+
+  saveReadData = async (items: PdaReadDataDto[]) => {
+    await this.db?.transaction((tx) => {
+      console.log(items);
+      items.forEach((item) => {
+        console.log(item);
+        tx.executeSql(
+          'INSERT INTO BookDatas VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+          [
+            item.billMonth,
+            item.custId,
+            item.readTimes,
+            item.terminalFiles.join('|||'),
+            item.oweNumber,
+            item.bookId,
+            item.bookCode,
+            item.bookSortIndex,
+            item.custCode,
+            item.custName,
+            item.custAddress,
+            item.custState,
+            item.deposit,
+            item.lastChange,
+            item.priceCode,
+            item.meterState,
+            item.barCode,
+            item.steelMark,
+            item.installLocation,
+            item.caliberValue,
+            item.rangeValue,
+            item.lastReading,
+            item.lastChildReading,
+            item.lastReadWater,
+            item.lastReadDate,
+            item.lastReadStateId,
+            item.reading,
+            item.childReading,
+            item.readWater,
+            item.readDate,
+            item.readStateId,
+            item.highLowState,
+            item.isEstimate,
+            item.readRemark,
+            item.recordState,
+            item.replaceWater,
+            item.avgWater,
+            item.highCoefficient,
+            item.lowCoefficient,
+            item.highWater,
+            item.lowWater,
+            item.dataState,
+          ],
+        ).catch((e) => {
+          console.log('插入下载测本数据失败', e);
+        });
+      });
+    });
+  };
+
+  markBookDownloaded = async (ids: number[]) => {
+    return this.db?.executeSql(
+      `UPDATE Books SET downloaded = ? WHERE bookId in (${ids.join(',')})`,
+      [true],
+    );
   };
 }
 

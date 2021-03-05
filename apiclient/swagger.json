@@ -257,11 +257,11 @@
           {
             "name": "parameter",
             "in": "query",
-            "description": "",
+            "description": "查询参数",
             "required": true,
             "schema": {
               "type": "string",
-              "description": ""
+              "description": "查询参数"
             }
           }
         ],
@@ -282,6 +282,204 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PdaCustListDtoListResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/charge/getArrearageList": {
+      "post": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "欠费查询",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaArrearageInputDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaArrearageInputDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaArrearageInputDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaArrearageInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaArrearageDtoPagedResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaArrearageDtoPagedResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaArrearageDtoPagedResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/charge/getArrearageChargeList": {
+      "post": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "欠费查询-欠费详情",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaArrearageChargesInputDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaArrearageChargesInputDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaArrearageChargesInputDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaArrearageChargesInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaChargeListDtoListResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaChargeListDtoListResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaChargeListDtoListResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/charge/getReadingCollect": {
+      "post": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "抄表统计查询",
+        "requestBody": {
+          "description": "查询参数",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaReadingCollectInput"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaReadingCollectInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaReadingCollectInput"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaReadingCollectInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaReadingCollectDtoListResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaReadingCollectDtoListResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaReadingCollectDtoListResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/charge/readStates": {
+      "get": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "抄表状态查询",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaReadStateDtoListResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaReadStateDtoListResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaReadStateDtoListResultDto"
                 }
               }
             }
@@ -358,33 +556,33 @@
         }
       }
     },
-    "/api/app/mobileLog/uploadMobileLogFile": {
+    "/api/app/mobilePayment/paymentByCash": {
       "post": {
         "tags": [
-          "MobileLog"
+          "MobilePayment"
         ],
-        "summary": "pda日志上传",
+        "summary": "现金收费",
         "requestBody": {
           "description": "",
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/UploadMobileLogFileDto"
+                "$ref": "#/components/schemas/PdaPaymentInput"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UploadMobileLogFileDto"
+                "$ref": "#/components/schemas/PdaPaymentInput"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UploadMobileLogFileDto"
+                "$ref": "#/components/schemas/PdaPaymentInput"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UploadMobileLogFileDto"
+                "$ref": "#/components/schemas/PdaPaymentInput"
               }
             }
           },
@@ -393,6 +591,275 @@
         "responses": {
           "200": {
             "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/app/mobilePayment/paymentByAlipay": {
+      "post": {
+        "tags": [
+          "MobilePayment"
+        ],
+        "summary": "支付宝收费",
+        "parameters": [
+          {
+            "name": "custCode",
+            "in": "query",
+            "description": "客户编号",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "客户编号"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/mobilePayment/paymentByWeChat": {
+      "post": {
+        "tags": [
+          "MobilePayment"
+        ],
+        "summary": "微信收费",
+        "parameters": [
+          {
+            "name": "custCode",
+            "in": "query",
+            "description": "客户编号",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "客户编号"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/mobilePayment/pdaUser": {
+      "get": {
+        "tags": [
+          "MobilePayment"
+        ],
+        "summary": "查询全部Pda收费员",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeterReaderDtoListResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeterReaderDtoListResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeterReaderDtoListResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/mobilePayment/getPaymentCollect": {
+      "post": {
+        "tags": [
+          "MobilePayment"
+        ],
+        "summary": "收费统计",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaPaymentCollectInput"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaPaymentCollectInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaPaymentCollectInput"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaPaymentCollectInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaPaymentCollectDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaPaymentCollectDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaPaymentCollectDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/mobilePayment/getPaymentSubtotal": {
+      "post": {
+        "tags": [
+          "MobilePayment"
+        ],
+        "summary": "收费明细",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaPaymentCollectInput"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaPaymentCollectInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaPaymentCollectInput"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaPaymentCollectInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaPaySubtotalsDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaPaySubtotalsDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaPaySubtotalsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/mobilePayment/paymentDetails/{subtotalId}": {
+      "get": {
+        "tags": [
+          "MobilePayment"
+        ],
+        "summary": "收费详情",
+        "parameters": [
+          {
+            "name": "subtotalId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaChargeListDtoListResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaChargeListDtoListResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaChargeListDtoListResultDto"
+                }
+              }
+            }
           }
         }
       }
@@ -513,6 +980,75 @@
           }
         }
       }
+    },
+    "/api/app/mobileReading/uploadMobileLogFile": {
+      "post": {
+        "tags": [
+          "MobileReading"
+        ],
+        "summary": "pda日志上传",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadMobileLogFileDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadMobileLogFileDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadMobileLogFileDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadMobileLogFileDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/app/mobileSystem/settings": {
+      "get": {
+        "tags": [
+          "MobileSystem"
+        ],
+        "summary": "获取所有参数",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SysSettingDtoListResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SysSettingDtoListResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SysSettingDtoListResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -546,16 +1082,6 @@
       "PdaMeterReaderDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "description": "抄表员Id",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string",
-            "description": "姓名",
-            "nullable": true
-          },
           "userName": {
             "type": "string",
             "description": "工号",
@@ -577,6 +1103,16 @@
               "$ref": "#/components/schemas/PdaUserPermissionDto"
             },
             "description": "Pda权限",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "description": "人员Id",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "姓名",
             "nullable": true
           }
         },
@@ -667,22 +1203,27 @@
       "MobileFileDto": {
         "type": "object",
         "properties": {
-          "fileType": {
-            "type": "integer",
-            "description": "文件类型",
-            "format": "int32"
-          },
           "fileName": {
             "type": "string",
             "description": "文件名称",
             "nullable": true
           },
-          "fileUrl": {
+          "filePath": {
             "type": "string",
             "description": "文件地址",
             "nullable": true
           },
-          "isDeleted": {
+          "fileSize": {
+            "type": "integer",
+            "description": "文件大小",
+            "format": "int32"
+          },
+          "fileSource": {
+            "type": "integer",
+            "description": "文件来源",
+            "format": "int32"
+          },
+          "isRemove": {
             "type": "boolean",
             "description": "是否删除"
           }
@@ -1220,6 +1761,365 @@
         },
         "additionalProperties": false
       },
+      "PdaArrearageInputDto": {
+        "type": "object",
+        "properties": {
+          "beginMonth": {
+            "type": "integer",
+            "description": "开始年月",
+            "format": "int32",
+            "nullable": true
+          },
+          "endMonth": {
+            "type": "integer",
+            "description": "结束年月",
+            "format": "int32",
+            "nullable": true
+          },
+          "meterReaderId": {
+            "type": "string",
+            "description": "抄表员",
+            "format": "uuid",
+            "nullable": true
+          },
+          "bookId": {
+            "type": "integer",
+            "description": "册本编号",
+            "format": "int32",
+            "nullable": true
+          },
+          "queryConditions": {
+            "type": "string",
+            "description": "组合查询条件",
+            "nullable": true
+          },
+          "skipCount": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxResultCount": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Pda欠费查询"
+      },
+      "PdaArrearageDto": {
+        "type": "object",
+        "properties": {
+          "custId": {
+            "type": "integer",
+            "description": "客户Id",
+            "format": "int32"
+          },
+          "custCode": {
+            "type": "string",
+            "description": "客户编号",
+            "nullable": true
+          },
+          "custName": {
+            "type": "string",
+            "description": "客户名称",
+            "nullable": true
+          },
+          "custAddress": {
+            "type": "string",
+            "description": "客户地址",
+            "nullable": true
+          },
+          "totalExtendedAmount": {
+            "type": "number",
+            "description": "账单金额",
+            "format": "double"
+          },
+          "totalLateFee": {
+            "type": "number",
+            "description": "违约金",
+            "format": "double"
+          },
+          "deposit": {
+            "type": "number",
+            "description": "预存余额",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Pda欠费清单"
+      },
+      "PdaArrearageDtoPagedResultDto": {
+        "type": "object",
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaArrearageDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PdaArrearageChargesInputDto": {
+        "type": "object",
+        "properties": {
+          "beginMonth": {
+            "type": "integer",
+            "description": "开始年月",
+            "format": "int32",
+            "nullable": true
+          },
+          "endMonth": {
+            "type": "integer",
+            "description": "结束年月",
+            "format": "int32",
+            "nullable": true
+          },
+          "custId": {
+            "type": "integer",
+            "description": "客户编号",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "欠费查询-账单详情"
+      },
+      "PdaChargeDetails": {
+        "type": "object",
+        "properties": {
+          "feeItem": {
+            "type": "string",
+            "description": "费用组成",
+            "nullable": true
+          },
+          "feeItemCode": {
+            "type": "string",
+            "description": "费用代码",
+            "nullable": true
+          },
+          "price": {
+            "type": "string",
+            "description": "单价",
+            "nullable": true
+          },
+          "water": {
+            "type": "integer",
+            "description": "水量",
+            "format": "int32"
+          },
+          "money": {
+            "type": "number",
+            "description": "金额",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "账单明细"
+      },
+      "PdaChargeListDto": {
+        "type": "object",
+        "properties": {
+          "feeId": {
+            "type": "integer",
+            "description": "费用编号",
+            "format": "int32"
+          },
+          "billMonth": {
+            "type": "integer",
+            "description": "账单年月",
+            "format": "int32"
+          },
+          "readingDate": {
+            "type": "string",
+            "description": "抄表时间",
+            "nullable": true
+          },
+          "lastReading": {
+            "type": "integer",
+            "description": "上期抄码",
+            "format": "int32"
+          },
+          "reading": {
+            "type": "integer",
+            "description": "本期抄码",
+            "format": "int32"
+          },
+          "readWater": {
+            "type": "integer",
+            "description": "抄见水量",
+            "format": "int32"
+          },
+          "billWater": {
+            "type": "integer",
+            "description": "开账水量",
+            "format": "int32"
+          },
+          "extendedAmount": {
+            "type": "number",
+            "description": "账单金额",
+            "format": "double"
+          },
+          "lateFee": {
+            "type": "number",
+            "description": "违约金",
+            "format": "double"
+          },
+          "chargeDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaChargeDetails"
+            },
+            "description": "账单明细",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "账单列表"
+      },
+      "PdaChargeListDtoListResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaChargeListDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PdaReadingCollectInput": {
+        "type": "object",
+        "properties": {
+          "meterReadingId": {
+            "type": "string",
+            "description": "抄表员",
+            "format": "uuid"
+          },
+          "billMonth": {
+            "type": "integer",
+            "description": "抄表年月",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Pda 抄表统计查询"
+      },
+      "PdaReadingCollectDto": {
+        "type": "object",
+        "properties": {
+          "bookCode": {
+            "type": "string",
+            "description": "册本编号",
+            "nullable": true
+          },
+          "bookName": {
+            "type": "string",
+            "description": "册本名称",
+            "nullable": true
+          },
+          "expectRead": {
+            "type": "integer",
+            "description": "应抄数量",
+            "format": "int32"
+          },
+          "actualRead": {
+            "type": "integer",
+            "description": "实抄数量",
+            "format": "int32"
+          },
+          "totalWater": {
+            "type": "integer",
+            "description": "水量",
+            "format": "int32"
+          },
+          "totalMoney": {
+            "type": "number",
+            "description": "金额",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "抄表统计"
+      },
+      "PdaReadingCollectDtoListResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaReadingCollectDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PdaReadStateDto": {
+        "type": "object",
+        "properties": {
+          "stateCode": {
+            "type": "string",
+            "description": "状态编码",
+            "nullable": true
+          },
+          "stateName": {
+            "type": "string",
+            "description": "状态名称",
+            "nullable": true
+          },
+          "meterReadAlgorithm": {
+            "type": "integer",
+            "description": "抄表算法",
+            "format": "int32"
+          },
+          "sort": {
+            "type": "integer",
+            "description": "排序",
+            "format": "int32"
+          },
+          "parentId": {
+            "type": "integer",
+            "description": "父级Id",
+            "format": "int32",
+            "nullable": true
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "抄表状态"
+      },
+      "PdaReadStateDtoListResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaReadStateDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LoginInput": {
         "required": [
           "passWord",
@@ -1261,46 +2161,317 @@
         "additionalProperties": false,
         "description": "登录返回"
       },
-      "MobileLogFileDto": {
-        "required": [
-          "logFileName",
-          "logFileUrl"
-        ],
+      "FeeId": {
         "type": "object",
         "properties": {
-          "logFileName": {
-            "type": "string",
-            "description": "日志名称"
-          },
-          "logFileUrl": {
-            "type": "string",
-            "description": "日志文件路径"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Pda日志"
-      },
-      "UploadMobileLogFileDto": {
-        "required": [
-          "deviceCode"
-        ],
-        "type": "object",
-        "properties": {
-          "deviceCode": {
-            "type": "string",
-            "description": "设备号"
-          },
-          "logFiles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MobileLogFileDto"
-            },
-            "description": "Pda日志",
+          "feedId": {
+            "type": "integer",
+            "description": "FeeId",
+            "format": "int32",
             "nullable": true
           }
         },
         "additionalProperties": false,
-        "description": "Pda日志上传"
+        "description": "费用编号"
+      },
+      "PdaPaymentInput": {
+        "required": [
+          "actualMoney",
+          "chargeWay",
+          "custCode"
+        ],
+        "type": "object",
+        "properties": {
+          "custCode": {
+            "type": "string",
+            "description": "客户编号"
+          },
+          "feeIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FeeId"
+            },
+            "description": "费用编号",
+            "nullable": true
+          },
+          "actualMoney": {
+            "type": "number",
+            "description": "实收金额",
+            "format": "double"
+          },
+          "chargeWay": {
+            "type": "integer",
+            "description": "缴费方式",
+            "format": "int32"
+          },
+          "chequeType": {
+            "type": "integer",
+            "description": "收费小类",
+            "format": "int32",
+            "nullable": true
+          },
+          "tradeCode": {
+            "type": "string",
+            "description": "凭证号、付款码",
+            "nullable": true
+          },
+          "thirdPartyCode": {
+            "type": "string",
+            "description": "第三方机构代码",
+            "nullable": true
+          },
+          "thirdPartyNum": {
+            "type": "string",
+            "description": "第三方交易流水号",
+            "nullable": true
+          },
+          "remark": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Pda 现金收费"
+      },
+      "MeterReaderDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "人员Id",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "姓名",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "人员信息"
+      },
+      "MeterReaderDtoListResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MeterReaderDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PdaPaymentCollectInput": {
+        "type": "object",
+        "properties": {
+          "meterReaderId": {
+            "type": "string",
+            "description": "抄表员",
+            "format": "uuid"
+          },
+          "beginDate": {
+            "type": "integer",
+            "description": "开始时间\r\nyyyyMMdd",
+            "format": "int32"
+          },
+          "endDate": {
+            "type": "integer",
+            "description": "结束时间\r\nyyyyMMdd",
+            "format": "int32"
+          },
+          "queryConditions": {
+            "type": "string",
+            "description": "组合查询条件",
+            "nullable": true
+          },
+          "skipCount": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxResultCount": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "收费查询"
+      },
+      "PdaPaymentCollect": {
+        "type": "object",
+        "properties": {
+          "payDate": {
+            "type": "string",
+            "description": "收费日期",
+            "format": "date-time"
+          },
+          "actualMoney": {
+            "type": "number",
+            "description": "实际收费",
+            "format": "double"
+          },
+          "soldMoney": {
+            "type": "number",
+            "description": "实际销账",
+            "format": "double"
+          },
+          "depositIn": {
+            "type": "number",
+            "description": "预存存入",
+            "format": "double"
+          },
+          "depositOut": {
+            "type": "number",
+            "description": "预存抵扣",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "收费统计"
+      },
+      "PdaPaymentCollectPagedResultDto": {
+        "type": "object",
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaPaymentCollect"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PdaPaymentCollectDto": {
+        "type": "object",
+        "properties": {
+          "totalActualMoney": {
+            "type": "number",
+            "description": "实际收费",
+            "format": "double"
+          },
+          "totalSoldMoney": {
+            "type": "number",
+            "description": "实际销账",
+            "format": "double"
+          },
+          "paymentCollects": {
+            "$ref": "#/components/schemas/PdaPaymentCollectPagedResultDto"
+          }
+        },
+        "additionalProperties": false,
+        "description": "收费统计"
+      },
+      "PdaPaymentSubtotal": {
+        "type": "object",
+        "properties": {
+          "subtotalId": {
+            "type": "integer",
+            "description": "收费小计编号",
+            "format": "int32"
+          },
+          "chargeWay": {
+            "type": "string",
+            "description": "缴费方式",
+            "nullable": true
+          },
+          "payTime": {
+            "type": "string",
+            "description": "缴费时间",
+            "format": "date-time"
+          },
+          "custId": {
+            "type": "integer",
+            "description": "客户Id",
+            "format": "int32"
+          },
+          "custCode": {
+            "type": "string",
+            "description": "客户编号",
+            "nullable": true
+          },
+          "custName": {
+            "type": "string",
+            "description": "客户名称",
+            "nullable": true
+          },
+          "custAddress": {
+            "type": "string",
+            "description": "客户地址",
+            "nullable": true
+          },
+          "actualMoney": {
+            "type": "number",
+            "description": "实收金额",
+            "format": "double"
+          },
+          "soldMoney": {
+            "type": "number",
+            "description": "实际销账",
+            "format": "double"
+          },
+          "deposit": {
+            "type": "number",
+            "description": "预存变化",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "收费明细"
+      },
+      "PdaPaymentSubtotalPagedResultDto": {
+        "type": "object",
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PdaPaymentSubtotal"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PdaPaySubtotalsDto": {
+        "type": "object",
+        "properties": {
+          "custCount": {
+            "type": "integer",
+            "description": "户数",
+            "format": "int32"
+          },
+          "actualMoney": {
+            "type": "number",
+            "description": "实际收费",
+            "format": "double"
+          },
+          "soldMoney": {
+            "type": "number",
+            "description": "实际销账",
+            "format": "double"
+          },
+          "paySubtotals": {
+            "$ref": "#/components/schemas/PdaPaymentSubtotalPagedResultDto"
+          }
+        },
+        "additionalProperties": false,
+        "description": "收费明细"
       },
       "ReadingDataDto": {
         "type": "object",
@@ -1483,6 +2654,91 @@
         },
         "additionalProperties": false,
         "description": "抄表员轨迹上传"
+      },
+      "MobileLogFileDto": {
+        "required": [
+          "logFileName",
+          "logFileUrl"
+        ],
+        "type": "object",
+        "properties": {
+          "logFileName": {
+            "type": "string",
+            "description": "日志名称"
+          },
+          "logFileUrl": {
+            "type": "string",
+            "description": "日志文件路径"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Pda日志"
+      },
+      "UploadMobileLogFileDto": {
+        "required": [
+          "deviceCode"
+        ],
+        "type": "object",
+        "properties": {
+          "deviceCode": {
+            "type": "string",
+            "description": "设备号"
+          },
+          "logFiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MobileLogFileDto"
+            },
+            "description": "Pda日志",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Pda日志上传"
+      },
+      "SysSettingDto": {
+        "type": "object",
+        "properties": {
+          "groupName": {
+            "type": "string",
+            "description": "参数分组",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "参数名称",
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "description": "参数编码",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "description": "参数当前值",
+            "nullable": true
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SysSettingDtoListResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SysSettingDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       }
     },
     "securitySchemes": {
@@ -1502,15 +2758,19 @@
   "tags": [
     {
       "name": "Charge",
-      "description": "营收数据查询"
-    },
-    {
-      "name": "MobileLog",
-      "description": "Pda日志上传"
+      "description": "业务数据查询"
     },
     {
       "name": "MobileReading",
-      "description": "Pda抄表数据上传"
+      "description": "Pda数据上传、提交"
+    },
+    {
+      "name": "MobileSystem",
+      "description": "Pda数据查询"
+    },
+    {
+      "name": "MobilePayment",
+      "description": "Pda收费"
     },
     {
       "name": "Login",

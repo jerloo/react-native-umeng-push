@@ -18,8 +18,8 @@ export default function BookItem(props: Props) {
           checked={props.holder.checked}
           onClick={props.onCheckClick}
         />
-        <Text style={styles.bookName}>{props.holder.item.bookName}</Text>
-        <Text style={styles.geyuechao}>隔月抄</Text>
+        <Text style={styles.bookName}>{props.holder.bookName}</Text>
+        <Text style={styles.geyuechao}>{props.holder.readCycle}</Text>
         {props.holder.downloaded ? (
           <Text style={styles.downloaded}>已下载</Text>
         ) : null}
@@ -27,21 +27,15 @@ export default function BookItem(props: Props) {
       <View style={styles.detailsContainer}>
         <View style={styles.detailsBox}>
           <Text style={styles.detailsLabel}>应抄：</Text>
-          <Text style={styles.detailsValue}>
-            {props.holder.item.totalNumber}
-          </Text>
+          <Text style={styles.detailsValue}>{props.holder.totalNumber}</Text>
         </View>
         <View style={styles.detailsBox}>
           <Text style={styles.detailsLabel}>已抄：</Text>
-          <Text style={styles.detailsValue}>
-            {props.holder.item.readingNumber}
-          </Text>
+          <Text style={styles.detailsValue}>{props.holder.readingNumber}</Text>
         </View>
         <View style={styles.detailsBox}>
           <Text style={styles.detailsLabel}>已上传：</Text>
-          <Text style={styles.detailsValue}>
-            {props.holder.item.readingNumber}
-          </Text>
+          <Text style={styles.detailsValue}>{props.holder.readingNumber}</Text>
         </View>
       </View>
     </View>

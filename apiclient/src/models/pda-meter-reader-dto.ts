@@ -18,18 +18,6 @@
  */
 export interface PdaMeterReaderDto {
     /**
-     * 抄表员Id
-     * @type {string}
-     * @memberof PdaMeterReaderDto
-     */
-    id?: any;
-    /**
-     * 姓名
-     * @type {string}
-     * @memberof PdaMeterReaderDto
-     */
-    name?: any;
-    /**
      * 工号
      * @type {string}
      * @memberof PdaMeterReaderDto
@@ -53,4 +41,16 @@ export interface PdaMeterReaderDto {
      * @memberof PdaMeterReaderDto
      */
     userPermissions?: any;
+    /**
+     * 人员Id
+     * @type {string}
+     * @memberof PdaMeterReaderDto
+     */
+    id?: any;
+    /**
+     * 姓名
+     * @type {string}
+     * @memberof PdaMeterReaderDto
+     */
+    name?: any;
 }
