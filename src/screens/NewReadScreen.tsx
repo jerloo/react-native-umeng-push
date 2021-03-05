@@ -91,10 +91,14 @@ export default function NewReadScreen({ route, navigation }: any) {
   const renderContent = () => {
     return (
       <View style={styles.content}>
-        <View style={styles.cornerContainer}>
+        <TouchableOpacity
+          style={styles.cornerContainer}
+          onPress={() =>
+            navigation.navigate('CustDetails', { custId: newData.custId })
+          }>
           <Text style={styles.corner}>用户详情</Text>
           <View style={styles.colorBlank} />
-        </View>
+        </TouchableOpacity>
         <View style={styles.contentWrapper}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{newData.bookCode}</Text>

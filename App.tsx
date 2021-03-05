@@ -26,6 +26,7 @@ import BooksScreen from './src/screens/BooksScreen';
 import BookTaskScreen from './src/screens/BookTaskScreen';
 import BookTaskSortScreen from './src/screens/BookTaskSortScreen';
 import NewReadScreen from './src/screens/NewReadScreen';
+import CustDetailsScreen from './src/screens/CustDetailsScreen';
 
 const Stack = createStackNavigator();
 
@@ -153,6 +154,11 @@ function App() {
                   <Stack.Screen
                     name="NewRead"
                     component={NewReadScreen}
+                    options={{ header: () => null }}
+                  />
+                  <Stack.Screen
+                    name="CustDetails"
+                    component={CustDetailsScreen}
                     options={{ header: () => null }}
                   />
                 </>

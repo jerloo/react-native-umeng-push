@@ -2,7 +2,8 @@ import {
   LoginInput,
   PdaReadDataDto,
   PdaReadStateDto,
-  ReadingDataDto,
+  PdaCustDtoListResultDto,
+  PdaCustDto,
 } from '../../apiclient/src/models';
 import { api } from '../utils/apiUtils';
 import { getSession, setSession } from '../utils/sesstionUtils';
@@ -29,9 +30,26 @@ interface ApiService {
   getBookList(): Promise<PdaMeterBookDtoHolder[] | string>;
   getBookDataByIds(ids: number[]): Promise<PdaReadDataDto[] | string>;
   getReadStates(): Promise<PdaReadStateDto[] | string>;
+  getCustDetails(custIds: number[]): Promise<PdaCustDto | string>;
 }
 
 class OnlineApiService implements ApiService {
+  async getCustDetails(custIds: number[]): Promise<string | PdaCustDto> {
+    try {
+      const result = await api.chargeApi.apiAppChargeCustDetailsByCustIdPost({
+        custId: custIds,
+      });
+      if (result.status < 400) {
+        console.log('获取客户详情', (result.data.items || []).length);
+        return result.data.items || [];
+      }
+      return SERVER_ERROR;
+    } catch (e) {
+      console.log(e);
+      return SERVER_ERROR;
+    }
+  }
+
   async getReadStates(): Promise<string | PdaReadStateDto[]> {
     try {
       const result = await api.chargeApi.apiAppChargeReadStatesGet();
@@ -45,6 +63,7 @@ class OnlineApiService implements ApiService {
       return SERVER_ERROR;
     }
   }
+
   async getBookDataByIds(ids: number[]): Promise<string | PdaReadDataDto[]> {
     try {
       const result = await api.chargeApi.apiAppChargeReadDataByBookIdsPost({
@@ -92,15 +111,17 @@ class OnlineApiService implements ApiService {
     fileUrl: string,
   ): Promise<string | boolean> {
     try {
-      const result = await api.logApi.apiAppMobileLogUploadMobileLogFilePost({
-        deviceCode: '1-1-1-1',
-        logFiles: [
-          {
-            logFileName: fileName,
-            logFileUrl: fileUrl,
-          },
-        ],
-      });
+      const result = await api.logApi.apiAppMobileReadingUploadMobileLogFilePost(
+        {
+          deviceCode: '1-1-1-1',
+          logFiles: [
+            {
+              logFileName: fileName,
+              logFileUrl: fileUrl,
+            },
+          ],
+        },
+      );
       if (result.status < 400) {
         return true;
       }
@@ -278,6 +299,16 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+
+  async getCustDetails(
+    custIds: number[],
+  ): Promise<string | PdaCustDtoListResultDto> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.getCustDetails(custIds);
+    }
+    return this.offline.getCustDetails(custIds);
   }
 
   async getReadStates(): Promise<string | PdaReadStateDto[]> {
