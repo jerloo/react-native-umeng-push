@@ -163,7 +163,7 @@ class DataBase {
       caliber NVARCHAR(30),
       producer NVARCHAR(30),
       replaceDate NVARCHAR(30),
-      buildDate NVARCHAR(30),
+      buildDate NVARCHAR(30)
     )`);
 
     tx.executeSql(`CREATE TABLE IF NOT EXISTS ReadingRecords (

@@ -5,7 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
-import BooksBackTitleBar from '../components/BooksBackTitleBar';
+import BooksBackTitleBar from '../components/titlebars/BooksBackTitleBar';
 import { PdaReadDataDto } from '../../apiclient/src/models';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';

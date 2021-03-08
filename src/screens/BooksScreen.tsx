@@ -13,7 +13,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
-import BooksBackTitleBar from '../components/BooksBackTitleBar';
 import BookItem from '../components/BookItem';
 import center from '../data';
 import { Modal, Toast } from '@ant-design/react-native';
@@ -24,6 +23,7 @@ import SwipeButton from '../components/SwipeButton';
 import db from '../data/database';
 import { NumbersType } from '../data/models';
 import { getBillMonth } from '../utils/billMonthUtils';
+import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 
 export default function BooksScreen({ navigation }: any) {
   const [bookItems, setBookItems] = useState<PdaMeterBookDtoHolder[]>([]);
@@ -177,11 +177,12 @@ export default function BooksScreen({ navigation }: any) {
         colors={['#4888E3', '#2567E5']}
         style={styles.topContainer}>
         <SafeAreaView>
-          <BooksBackTitleBar
+          <CommonTitleBarEx
             onBack={() => navigation.goBack()}
-            onRightClick={refresh}
+            onRight2Click={refresh}
             title="抄表任务"
             titleColor={colorWhite}
+            right2Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}
           />
           <View style={styles.topBox}>
             <View style={styles.topItem}>
@@ -210,10 +211,14 @@ export default function BooksScreen({ navigation }: any) {
         style={styles.items}
         data={bookItems}
         renderItem={renderBookItem}
-        disableLeftSwipe={true}
         ItemSeparatorComponent={() => (
           <View style={{ height: scaleSize(18) }} />
         )}
+        disableLeftSwipe={true}
+        closeOnRowPress={true}
+        closeOnRowBeginSwipe={true}
+        closeOnScroll={true}
+        swipeToOpenPercent={30}
         renderHiddenItem={(_data, _rowMap) => (
           <View style={styles.rowHidden}>
             <SwipeButton

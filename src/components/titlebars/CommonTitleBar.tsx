@@ -10,13 +10,16 @@ import {
 interface Props {
   onBack: () => void;
 }
-export function BackTitleBar(props: Props) {
+
+export function CommonTitleBar(props: Props) {
   return (
     <View style={styles.titleBar}>
-      <TouchableWithoutFeedback onPress={() => props.onBack()}>
+      <TouchableWithoutFeedback
+        style={styles.button}
+        onPress={() => props.onBack()}>
         <Image
           style={styles.titleBarBackButton}
-          source={require('../assets/btn_back.png')}
+          source={require('../../assets/btn_back.png')}
         />
       </TouchableWithoutFeedback>
 
@@ -52,5 +55,8 @@ const styles = StyleSheet.create({
     fontSize: setSpText2(40),
     color: '#333333',
     // alignSelf: 'center',
+  },
+  button: {
+    padding: scaleSize(10),
   },
 });

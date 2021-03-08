@@ -1,7 +1,9 @@
 import {
   LoginInput,
+  MeterReaderDto,
   PdaCustDto,
   PdaReadDataDto,
+  PdaReadingCollectDto,
   PdaReadStateDto,
 } from '../../apiclient/src/models';
 import { getSession, setSession } from '../utils/sesstionUtils';
@@ -11,6 +13,38 @@ import { api } from '../utils/apiUtils';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class OnlineApiService implements ApiService {
+  async getAllPdaUsers(): Promise<MeterReaderDto[]> {
+    try {
+      const result = await api.paymentApi.apiAppMobilePaymentPdaUserGet();
+      if (result.status < 400) {
+        return result.data.items || [];
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
+  async getReadingCollect(
+    opId: string,
+    billMonth: number,
+  ): Promise<PdaReadingCollectDto[]> {
+    try {
+      const result = await api.chargeApi.apiAppChargeGetReadingCollectPost({
+        meterReadingId: opId,
+        billMonth: billMonth,
+      });
+      if (result.status < 400) {
+        return result.data.items || [];
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
   async getReadingMonth(): Promise<number | null> {
     try {
       const result = await api.chargeApi.apiAppChargeReadingMonthGet();

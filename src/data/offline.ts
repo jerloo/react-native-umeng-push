@@ -1,7 +1,9 @@
 import {
   LoginInput,
+  MeterReaderDto,
   PdaCustDto,
   PdaReadDataDto,
+  PdaReadingCollectDto,
   PdaReadStateDto,
 } from '../../apiclient/src/models';
 import { getBillMonth } from '../utils/billMonthUtils';
@@ -11,6 +13,17 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
+  async getAllPdaUsers(): Promise<MeterReaderDto[]> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
+  async getReadingCollect(
+    _opId: string,
+    _billMonth: number,
+  ): Promise<PdaReadingCollectDto[]> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
   async getReadStates(): Promise<PdaReadStateDto[]> {
     throw new Error('Method not implemented.');
   }

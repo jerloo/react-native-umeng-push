@@ -1,10 +1,15 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, StatusBar, Image } from 'react-native';
 import {
+  View,
+  Text,
+  StyleSheet,
+  StatusBar,
+  Image,
   ScrollView,
   TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+} from 'react-native';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 import HomeButton from '../components/HomeButton';
 import {
@@ -33,16 +38,16 @@ export default function HomeScreen({ navigation }: any) {
       />
 
       <SafeAreaView style={styles.topContainer}>
-        <View style={styles.userProfile}>
-          <TouchableWithoutFeedback
-            onPress={() => navigation.navigate('Profile')}>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate('Profile')}>
+          <View style={styles.userProfile}>
             <Image
               style={styles.avatar}
               source={require('../assets/shouye-gerenxinxi.png')}
             />
-          </TouchableWithoutFeedback>
-          <Text style={styles.userName}>{session?.userInfo.name}</Text>
-        </View>
+            <Text style={styles.userName}>{session?.userInfo.name}</Text>
+          </View>
+        </TouchableWithoutFeedback>
         <SearchBox />
       </SafeAreaView>
       <ScrollView>
@@ -76,6 +81,7 @@ export default function HomeScreen({ navigation }: any) {
               colorTop="#857CFF"
               title="抄表汇总"
               iconSource={require('../assets/shouye-chaobiaohuizong.png')}
+              onPress={() => navigation.navigate('ReadingCollect')}
             />
             <HomeButton
               colorLeft="#E98649"

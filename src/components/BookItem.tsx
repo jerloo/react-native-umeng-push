@@ -45,9 +45,9 @@ export default function BookItem(props: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: scaleSize(34),
-    paddingTop: scaleSize(16),
-    paddingBottom: scaleSize(24),
+    // paddingHorizontal: scaleSize(34),
+    // paddingTop: scaleSize(16),
+    // paddingBottom: scaleSize(24),
     backgroundColor: colorWhite,
   },
   titleContainer: {
@@ -58,13 +58,15 @@ const styles = StyleSheet.create({
   bookName: {
     color: '#333333',
     fontSize: setSpText2(34),
-    marginStart: scaleSize(18),
+    marginTop: scaleSize(16),
   },
   detailsContainer: {
     display: 'flex',
     flexDirection: 'row',
     marginTop: scaleSize(30),
     justifyContent: 'space-between',
+    marginBottom: scaleSize(24),
+    marginHorizontal: scaleSize(34),
   },
   detailsLabel: {
     fontSize: setSpText2(30),
@@ -88,6 +90,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scaleSize(8),
     marginStart: scaleSize(18),
     textAlign: 'center',
+    marginTop: scaleSize(16),
   },
   downloaded: {
     color: '#3874EA',
@@ -99,5 +102,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: scaleSize(8),
     marginStart: scaleSize(12),
     textAlign: 'center',
+    marginTop: scaleSize(16),
   },
 });

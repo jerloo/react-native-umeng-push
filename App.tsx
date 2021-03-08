@@ -28,6 +28,7 @@ import BookTaskSortScreen from './src/screens/BookTaskSortScreen';
 import NewReadScreen from './src/screens/NewReadScreen';
 import CustDetailsScreen from './src/screens/CustDetailsScreen';
 import { PortalProvider } from 'react-native-portal-view';
+import ReadingCollectScreen from './src/screens/ReadingCollectScreen';
 
 const Stack = createStackNavigator();
 
@@ -99,8 +100,8 @@ function App() {
   );
 
   return (
-    <PortalProvider>
-      <Provider>
+    <Provider>
+      <PortalProvider>
         <ThemeProvider>
           <NavigationContainer>
             <AuthContext.Provider value={authContext}>
@@ -163,14 +164,19 @@ function App() {
                       component={CustDetailsScreen}
                       options={{ header: () => null }}
                     />
+                    <Stack.Screen
+                      name="ReadingCollect"
+                      component={ReadingCollectScreen}
+                      options={{ header: () => null }}
+                    />
                   </>
                 )}
               </Stack.Navigator>
             </AuthContext.Provider>
           </NavigationContainer>
         </ThemeProvider>
-      </Provider>
-    </PortalProvider>
+      </PortalProvider>
+    </Provider>
   );
 }
 

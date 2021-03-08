@@ -6,6 +6,8 @@ import {
   StatusBar,
   ListRenderItemInfo,
   Text,
+  FlatList,
+  ScrollView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -19,8 +21,7 @@ import {
 } from '../../apiclient/src/models';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
-import BookDataBackTitleBar from '../components/BookDataBackTitleBar';
+import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import { Tabs } from '@ant-design/react-native';
 import dayjs from 'dayjs';
 
@@ -208,9 +209,9 @@ export default function CustDetailsScreen({ route, navigation }: any) {
         colors={['#4888E3', '#2567E5']}
         style={styles.topContainer}>
         <SafeAreaView>
-          <BookDataBackTitleBar
+          <CommonTitleBarEx
             onBack={() => navigation.goBack()}
-            onSortClick={() =>
+            onRight1Click={() =>
               navigation.navigate('BookTaskSort', route.params)
             }
             title={`${route.params.title}册本`}

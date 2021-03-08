@@ -8,10 +8,10 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { scaleSize } from 'react-native-responsive-design';
-import BooksBackTitleBar from '../components/BooksBackTitleBar';
 import { PdaReadDataDto } from '../../apiclient/src/models';
 import { colorWhite } from '../styles';
 import Tag from '../components/Tag';
@@ -20,7 +20,7 @@ import dayjs from 'dayjs';
 import LocationButton from '../components/LocationButton';
 import Attachments from '../components/Attachments';
 import Modal from 'react-native-smart-modal';
-import { TextInput } from 'react-native-gesture-handler';
+import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 
 export default function NewReadScreen({ route, navigation }: any) {
   const { data } = route.params;
@@ -125,6 +125,7 @@ export default function NewReadScreen({ route, navigation }: any) {
             width: scaleSize(509),
             backgroundColor: colorWhite,
             height: '100%',
+            paddingTop: StatusBar.currentHeight,
           }}>
           <Attachments files={[]} />
         </View>
@@ -141,12 +142,7 @@ export default function NewReadScreen({ route, navigation }: any) {
         animationIn="slideInRight"
         animationOut="slideOutRight"
         onChange={setSettingsModalVisible}>
-        <View
-          style={{
-            width: scaleSize(509),
-            backgroundColor: colorWhite,
-            height: '100%',
-          }}>
+        <View style={styles.settingsModalContent}>
           <Attachments files={[]} />
         </View>
       </Modal>
@@ -218,13 +214,13 @@ export default function NewReadScreen({ route, navigation }: any) {
       />
 
       <SafeAreaView style={styles.mainContainer}>
-        <BooksBackTitleBar
+        <CommonTitleBarEx
           title="抄表录入"
           titleColor={colorWhite}
           onBack={() => navigation.goBack()}
-          onRightClick={() => setAttachmentsModalVisible(true)}
-          leftIcon={require('../assets/qietu/cebenxiangqing/book_details_icon_back_normal.png')}
-          rightIcon={require('../assets/enter_icon_enclosure_normal_white.png')}
+          onRight2Click={() => setAttachmentsModalVisible(true)}
+          backIcon={require('../assets/qietu/cebenxiangqing/book_details_icon_back_normal.png')}
+          right2Icon={require('../assets/enter_icon_enclosure_normal_white.png')}
         />
         <View style={styles.main}>
           <ScrollView>{renderContent()}</ScrollView>
@@ -236,22 +232,11 @@ export default function NewReadScreen({ route, navigation }: any) {
                 source={require('../assets/enter_icon_remarks_normal.png')}
               />
               <TextInput
-                style={{
-                  backgroundColor: colorWhite,
-                  marginStart: scaleSize(16),
-                  height: scaleSize(60),
-                  paddingVertical: scaleSize(12),
-                  paddingHorizontal: scaleSize(18),
-                  flex: 1,
-                }}
+                style={styles.remark}
                 placeholder="点击添加备注(100字以内)"
               />
               <TouchableOpacity
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  paddingStart: scaleSize(30),
-                }}
+                style={styles.lightButton}
                 onPress={openLighting}>
                 <Image
                   style={styles.maskIcon}
@@ -521,5 +506,24 @@ const styles = StyleSheet.create({
     fontSize: scaleSize(24),
     color: '#999999',
     fontWeight: 'bold',
+  },
+  remark: {
+    backgroundColor: colorWhite,
+    marginStart: scaleSize(16),
+    height: scaleSize(60),
+    paddingVertical: scaleSize(12),
+    paddingHorizontal: scaleSize(18),
+    flex: 1,
+  },
+  lightButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingStart: scaleSize(30),
+  },
+  settingsModalContent: {
+    width: scaleSize(509),
+    backgroundColor: colorWhite,
+    height: '100%',
+    paddingTop: StatusBar.currentHeight,
   },
 });

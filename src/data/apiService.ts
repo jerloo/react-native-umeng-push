@@ -1,7 +1,9 @@
 import {
   LoginInput,
+  MeterReaderDto,
   PdaCustDto,
   PdaReadDataDto,
+  PdaReadingCollectDto,
   PdaReadStateDto,
 } from '../../apiclient/src/models';
 import { PdaMeterBookDtoHolder } from './holders';
@@ -21,7 +23,12 @@ export default interface ApiService {
   getReadStates(): Promise<PdaReadStateDto[]>;
   getCustDetails(custIds: number[]): Promise<PdaCustDto>;
   getReadingMonth(): Promise<number | null>;
-}
+  getReadingCollect(
+    opId: string,
+    billMonth: number,
+  ): Promise<PdaReadingCollectDto[]>;
+  getAllPdaUsers(): Promise<MeterReaderDto[]>;
+};
 
 export const NETWORK_ERROR = '网络错误，请稍后再试';
 export const SERVER_ERROR = '服务器错误，请稍后再试';

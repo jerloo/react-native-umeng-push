@@ -11,7 +11,7 @@ import { Toast } from '@ant-design/react-native';
 import BookDataItem from '../components/BookReadItem';
 import { PdaReadDataDtoHolder } from '../data/holders';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import BookDataBackTitleBar from '../components/BookDataBackTitleBar';
+import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import SearchBox from '../components/SearchBox';
 import { Tabs } from '@ant-design/react-native';
 
@@ -43,6 +43,10 @@ export default function BookTaskScreen({ route, navigation }: any) {
   }, [route.params]);
 
   const refresh = async () => {
+    if (loading) {
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await center.getBookDataByIds([route.params.bookId]);
@@ -107,13 +111,16 @@ export default function BookTaskScreen({ route, navigation }: any) {
         colors={['#4888E3', '#2567E5']}
         style={styles.topContainer}>
         <SafeAreaView>
-          <BookDataBackTitleBar
+          <CommonTitleBarEx
             onBack={() => navigation.goBack()}
-            onSortClick={() =>
+            onRight2Click={() =>
               navigation.navigate('BookTaskSort', route.params)
             }
-            onRefreshClick={() => refresh()}
+            right1Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}
+            onRight1Click={() => refresh()}
+            right2Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_adjustment_normal.png')}
             title={`${route.params.title}册本`}
+            titleColor={colorWhite}
           />
           <SearchBox
             style={styles.searchContainer}

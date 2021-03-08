@@ -7,7 +7,7 @@ import {
   scaleSize,
   setSpText2,
 } from 'react-native-responsive-design';
-import EditTitleBar from '../components/EditTitleBar';
+import EditTitleBar from '../components/titlebars/EditTitleBar';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
 

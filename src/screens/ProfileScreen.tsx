@@ -9,22 +9,21 @@ import {
   scaleSize,
   setSpText2,
 } from 'react-native-responsive-design';
-import { BackTitleBar } from '../components/BackTitleBar';
+import { CommonTitleBar } from '../components/titlebars/CommonTitleBar';
 import { colorWhite } from '../styles';
 import {
   currentLogFileName,
   currentLogFilePath,
   getObjectKey,
-  l,
 } from '../utils/logUtils';
 import { getSession, setSession, UserSession } from '../utils/sesstionUtils';
 import CosXmlReactNative from '../utils/uploadUtils';
 import center from '../data';
 import Caches from 'react-native-caches';
 import NetInfo from '@react-native-community/netinfo';
-import { NO_NETWORK_ERROR } from '../data';
 import DeviceInfo from 'react-native-device-info';
 import dayjs from 'dayjs';
+import { NO_NETWORK_ERROR } from '../data/apiService';
 
 export default function ProfileScreen({ navigation }: any) {
   const [session, sSession] = useState<UserSession>();
@@ -129,7 +128,7 @@ export default function ProfileScreen({ navigation }: any) {
         translucent={true}
         backgroundColor="transparent"
       />
-      <BackTitleBar onBack={() => navigation.goBack()} />
+      <CommonTitleBar onBack={() => navigation.goBack()} />
       <View style={styles.block}>
         <TouchableOpacity
           style={styles.blockRow}

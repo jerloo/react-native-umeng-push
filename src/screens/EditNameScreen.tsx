@@ -9,7 +9,7 @@ import {
 } from 'react-native-responsive-design';
 import { getSession } from '../utils/sesstionUtils';
 import Icon from 'react-native-vector-icons/Ionicons';
-import EditTitleBar from '../components/EditTitleBar';
+import EditTitleBar from '../components/titlebars/EditTitleBar';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
 

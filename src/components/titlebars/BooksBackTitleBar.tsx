@@ -5,33 +5,43 @@ import {
   Text,
   StyleSheet,
   ImageSourcePropType,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
-import { colorWhite } from '../styles';
+import { colorWhite } from '../../styles';
 
 interface Props {
-  onBack: () => void;
+  onBack?: () => void;
+  onRightClick?: () => void;
   rightIcon?: ImageSourcePropType;
+  title?: string;
+  titleColor?: string;
+  leftIcon?: ImageSourcePropType;
 }
 
-export default function BooksBackSearchTitleBar(props: Props) {
+export default function BooksBackTitleBar(props: Props) {
   return (
     <View style={styles.titleBar}>
-      <TouchableWithoutFeedback onPress={() => props.onBack()}>
+      <TouchableWithoutFeedback onPress={() => props.onBack && props.onBack()}>
         <Image
           style={styles.titleBarBackButton}
-          source={require('../assets/qietu/cebenxiangqing/book_details_icon_back_normal.png')}
+          source={
+            props.leftIcon ||
+            require('../../assets/qietu/cebenxiangqing/book_details_icon_back_normal.png')
+          }
         />
       </TouchableWithoutFeedback>
 
-      <Text style={styles.titleBarTitle}>抄表任务</Text>
-      <TouchableWithoutFeedback onPress={() => props.onBack()}>
+      <Text style={[styles.titleBarTitle, { color: props.titleColor }]}>
+        {props.title || '抄表任务'}
+      </Text>
+      <TouchableWithoutFeedback
+        onPress={() => props.onRightClick && props?.onRightClick()}>
         <Image
           style={styles.titleBarBackButton}
           source={
             props.rightIcon ||
-            require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')
+            require('../../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')
           }
         />
       </TouchableWithoutFeedback>
@@ -42,10 +52,6 @@ export default function BooksBackSearchTitleBar(props: Props) {
 const paddingScreen = scaleSize(30);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'transparent',
-  },
   titleBar: {
     backgroundColor: 'transparent',
     // paddingTop: (StatusBar.currentHeight || 0) + scaleHeight(20),

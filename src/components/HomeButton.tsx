@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { Text, StyleSheet, Image } from 'react-native';
 import { ImageSource } from 'react-native-vector-icons/Icon';
 import {
   scaleSize,
@@ -13,13 +13,13 @@ type Props = {
   colorTop: string;
   iconSource: ImageSource;
   title: string;
-  onPress: () => void;
+  onPress?: () => void;
 };
 export default function HomeButton(props: Props) {
   return (
     <TouchableNativeFeedback
       style={styles.homeButtonContainer}
-      onPress={props.onPress}>
+      onPress={() => props.onPress && props.onPress()}>
       <Image style={styles.homeButtonIcon} source={props.iconSource} />
       <Text style={styles.homeButtonTitle}>{props.title}</Text>
     </TouchableNativeFeedback>
