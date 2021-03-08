@@ -487,6 +487,39 @@
         }
       }
     },
+    "/api/app/charge/readingMonth": {
+      "get": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "查询当前抄表年月",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/app/login/login": {
       "post": {
         "tags": [
@@ -1020,6 +1053,104 @@
         }
       }
     },
+    "/api/app/mobileReading/calcBudgetAmount": {
+      "post": {
+        "tags": [
+          "MobileReading"
+        ],
+        "summary": "预算开账金额",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaCalcBudgetAmountInput"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaCalcBudgetAmountInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaCalcBudgetAmountInput"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdaCalcBudgetAmountInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "number",
+                  "format": "double"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "format": "double"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "number",
+                  "format": "double"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/mobileReading/makeOut": {
+      "post": {
+        "tags": [
+          "MobileReading"
+        ],
+        "summary": "抄表完成后直接开账",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadingDataDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadingDataDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadingDataDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadingDataDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/app/mobileSystem/settings": {
       "get": {
         "tags": [
@@ -1134,7 +1265,7 @@
           },
           "bookCode": {
             "type": "string",
-            "description": "册本编码 创建由[Sequence]获取",
+            "description": "册本编码",
             "nullable": true
           },
           "bookName": {
@@ -1143,9 +1274,9 @@
             "nullable": true
           },
           "readCycle": {
-            "type": "integer",
+            "type": "string",
             "description": "抄表周期",
-            "format": "int32"
+            "nullable": true
           },
           "remark": {
             "type": "string",
@@ -2695,6 +2826,38 @@
         },
         "additionalProperties": false,
         "description": "Pda日志上传"
+      },
+      "PdaCalcBudgetAmountInput": {
+        "type": "object",
+        "properties": {
+          "custId": {
+            "type": "integer",
+            "description": "客户编号",
+            "format": "int32"
+          },
+          "reading": {
+            "type": "integer",
+            "description": "本次抄码",
+            "format": "int32"
+          },
+          "readStateId": {
+            "type": "integer",
+            "description": "抄表状态",
+            "format": "int32"
+          },
+          "readWater": {
+            "type": "integer",
+            "description": "抄见水量",
+            "format": "int32"
+          },
+          "readDate": {
+            "type": "string",
+            "description": "抄表时间",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "预算 开账接口请求"
       },
       "SysSettingDto": {
         "type": "object",

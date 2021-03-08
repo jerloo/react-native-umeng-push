@@ -488,6 +488,48 @@ export const ChargeApiAxiosParamCreator = function (configuration?: Configuratio
         },
         /**
          * 
+         * @summary 查询当前抄表年月
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppChargeReadingMonthGet: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/app/charge/readingMonth`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 获取抄表员基础信息
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -716,6 +758,19 @@ export const ChargeApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 查询当前抄表年月
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiAppChargeReadingMonthGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<number>> {
+            const localVarAxiosArgs = await ChargeApiAxiosParamCreator(configuration).apiAppChargeReadingMonthGet(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary 获取抄表员基础信息
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -839,6 +894,15 @@ export const ChargeApiFactory = function (configuration?: Configuration, basePat
          */
         apiAppChargeReadStatesGet(options?: any): AxiosPromise<PdaReadStateDtoListResultDto> {
             return ChargeApiFp(configuration).apiAppChargeReadStatesGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 查询当前抄表年月
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppChargeReadingMonthGet(options?: any): AxiosPromise<number> {
+            return ChargeApiFp(configuration).apiAppChargeReadingMonthGet(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -967,6 +1031,16 @@ export class ChargeApi extends BaseAPI {
      */
     public apiAppChargeReadStatesGet(options?: any) {
         return ChargeApiFp(this.configuration).apiAppChargeReadStatesGet(options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @summary 查询当前抄表年月
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChargeApi
+     */
+    public apiAppChargeReadingMonthGet(options?: any) {
+        return ChargeApiFp(this.configuration).apiAppChargeReadingMonthGet(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 

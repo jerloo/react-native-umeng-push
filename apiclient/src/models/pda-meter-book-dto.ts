@@ -30,7 +30,7 @@ export interface PdaMeterBookDto {
      */
     bookId?: any;
     /**
-     * 册本编码 创建由[Sequence]获取
+     * 册本编码
      * @type {string}
      * @memberof PdaMeterBookDto
      */
@@ -43,7 +43,7 @@ export interface PdaMeterBookDto {
     bookName?: any;
     /**
      * 抄表周期
-     * @type {number}
+     * @type {string}
      * @memberof PdaMeterBookDto
      */
     readCycle?: any;

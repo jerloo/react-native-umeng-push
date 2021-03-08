@@ -16,13 +16,14 @@ import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 import BooksBackTitleBar from '../components/BooksBackTitleBar';
 import BookItem from '../components/BookItem';
 import center from '../data';
-import { Toast } from '@ant-design/react-native';
+import { Modal, Toast } from '@ant-design/react-native';
 import { PdaMeterBookDtoHolder } from '../data/holders';
 import CircleCheckBox from '../components/CircleCheckBox';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import SwipeButton from '../components/SwipeButton';
 import db from '../data/database';
 import { NumbersType } from '../data/models';
+import { getBillMonth } from '../utils/billMonthUtils';
 
 export default function BooksScreen({ navigation }: any) {
   const [bookItems, setBookItems] = useState<PdaMeterBookDtoHolder[]>([]);
@@ -99,28 +100,48 @@ export default function BooksScreen({ navigation }: any) {
     setBookItems([...bookItems]);
   };
 
-  const refresh = () => {
+  const fetchRemote = async () => {
+    const booksResult = await center.getBookList();
+    if (booksResult instanceof String) {
+      Toast.fail(booksResult as string);
+    } else {
+      const items = (booksResult as PdaMeterBookDtoHolder[]).map((value) => {
+        value.checked = false;
+        return value;
+      });
+      setBookItems(items);
+    }
+  };
+
+  const refresh = async () => {
     if (loading) {
       return;
     }
 
     setLoading(true);
-    center
-      .getBookList()
-      .then((res) => {
-        setLoading(false);
-
-        if (res instanceof String) {
-          Toast.fail(res as string);
-        } else {
-          const items = (res as PdaMeterBookDtoHolder[]).map((value) => {
-            value.checked = false;
-            return value;
-          });
-          setBookItems(items);
-        }
-      })
-      .catch(() => setLoading(false));
+    const billMonthResult = await center.getReadingMonth();
+    if (billMonthResult instanceof String) {
+      Toast.fail(billMonthResult as string);
+    } else {
+      const billMonthLocal = await getBillMonth();
+      if (!billMonthLocal) {
+        await fetchRemote();
+      } else if (billMonthLocal !== billMonthResult) {
+        Modal.alert(
+          '提示',
+          '当前抄表周期与手机内不一致，是否清楚不一致数据？',
+          [
+            {
+              text: '取消',
+              onPress: () => console.log('cancel'),
+              style: 'cancel',
+            },
+            { text: '确认', onPress: () => console.log('ok') },
+          ],
+        );
+      }
+    }
+    setLoading(false);
   };
 
   const download = () => {

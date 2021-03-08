@@ -11,6 +11,7 @@ export * from './pda-arrearage-dto';
 export * from './pda-arrearage-dto-paged-result-dto';
 export * from './pda-arrearage-input-dto';
 export * from './pda-billing-info';
+export * from './pda-calc-budget-amount-input';
 export * from './pda-charge-details';
 export * from './pda-charge-list-dto';
 export * from './pda-charge-list-dto-list-result-dto';

@@ -83,6 +83,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colorWhite,
+    borderBottomColor: '#F9F9F9',
+    borderBottomWidth: scaleSize(2),
   },
   sortIndex: {
     backgroundColor: colorWhite,
