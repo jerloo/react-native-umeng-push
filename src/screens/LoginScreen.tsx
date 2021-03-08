@@ -19,7 +19,7 @@ import Input from '../components/Input';
 import { l } from '../utils/logUtils';
 import AuthContext from '../utils/contextUtls';
 
-export default function LoginScreen({ navigation }: { navigation: any }) {
+export default function LoginScreen() {
   const [remember, setRemember] = React.useState(true);
   const [passwordVisible, setPasswordVisible] = React.useState(true);
 

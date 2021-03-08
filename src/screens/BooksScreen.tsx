@@ -40,18 +40,18 @@ export default function BooksScreen({ navigation }: any) {
     });
   }, []);
 
-  const fetchLocal = () => {
-    center.offline.getBookList().then((res) => {
-      if (res instanceof String) {
-        Toast.fail(res as string);
-      } else {
-        const items = (res as PdaMeterBookDtoHolder[]).map((value) => {
-          value.checked = false;
-          return value;
-        });
-        setBookItems(items);
-      }
-    });
+  const fetchLocal = async () => {
+    try {
+      const res = await center.offline.getBookList();
+      const items = (res as PdaMeterBookDtoHolder[]).map((value) => {
+        value.checked = false;
+        return value;
+      });
+      console.log(items);
+      setBookItems(items);
+    } catch (e) {
+      Toast.fail(e);
+    }
   };
 
   useEffect(() => {
@@ -77,21 +77,6 @@ export default function BooksScreen({ navigation }: any) {
     }
   };
 
-  const renderBookItem = (info: ListRenderItemInfo<PdaMeterBookDtoHolder>) => {
-    return (
-      <TouchableOpacity
-        activeOpacity={1.0}
-        style={styles.item}
-        onPress={() => bookItemClick(info.item)}>
-        <BookItem
-          key={info.item.bookId}
-          holder={info.item}
-          onCheckClick={() => bookItemCheckClick(info.item)}
-        />
-      </TouchableOpacity>
-    );
-  };
-
   const allBooksClick = () => {
     const allChecked = !bookItems.find((item) => item.checked === false);
     bookItems.forEach((item) => {
@@ -101,15 +86,16 @@ export default function BooksScreen({ navigation }: any) {
   };
 
   const fetchRemote = async () => {
-    const booksResult = await center.getBookList();
-    if (booksResult instanceof String) {
-      Toast.fail(booksResult as string);
-    } else {
+    try {
+      const booksResult = await center.getBookList();
       const items = (booksResult as PdaMeterBookDtoHolder[]).map((value) => {
         value.checked = false;
         return value;
       });
+      console.log('fetchRemote', items);
       setBookItems(items);
+    } catch (e) {
+      Toast.fail(e);
     }
   };
 
@@ -119,10 +105,8 @@ export default function BooksScreen({ navigation }: any) {
     }
 
     setLoading(true);
-    const billMonthResult = await center.getReadingMonth();
-    if (billMonthResult instanceof String) {
-      Toast.fail(billMonthResult as string);
-    } else {
+    try {
+      const billMonthResult = await center.getReadingMonth();
       const billMonthLocal = await getBillMonth();
       if (!billMonthLocal) {
         await fetchRemote();
@@ -136,26 +120,49 @@ export default function BooksScreen({ navigation }: any) {
               onPress: () => console.log('cancel'),
               style: 'cancel',
             },
-            { text: '确认', onPress: () => console.log('ok') },
+            {
+              text: '确认',
+              onPress: async () => {
+                await db.deleteBooks();
+                await fetchRemote();
+              },
+            },
           ],
         );
       }
+    } catch (e) {
+      Toast.fail(e);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  const download = () => {
+  const download = async () => {
     setLoading(true);
-    center
-      .getBookDataByIds(
+    try {
+      await center.getBookDataByIds(
         bookItems.filter((value) => value.checked).map((it) => it.bookId),
-      )
-      .then(() => {
-        console.log('下载数据完成');
-        fetchLocal();
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      );
+    } catch (e) {
+      fetchLocal();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderBookItem = (info: ListRenderItemInfo<PdaMeterBookDtoHolder>) => {
+    return (
+      <TouchableOpacity
+        activeOpacity={1.0}
+        style={styles.item}
+        onPress={() => bookItemClick(info.item)}>
+        <BookItem
+          holder={info.item}
+          onCheckClick={() => bookItemCheckClick(info.item)}
+        />
+      </TouchableOpacity>
+    );
   };
 
   return (

@@ -11,20 +11,20 @@ import { api } from '../utils/apiUtils';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class OnlineApiService implements ApiService {
-  async getReadingMonth(): Promise<number | string> {
+  async getReadingMonth(): Promise<number | null> {
     try {
       const result = await api.chargeApi.apiAppChargeReadingMonthGet();
       if (result.status < 400) {
         return result.data;
       }
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     } catch (e) {
       console.log(e);
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     }
   }
 
-  async getCustDetails(custIds: number[]): Promise<string | PdaCustDto> {
+  async getCustDetails(custIds: number[]): Promise<PdaCustDto> {
     try {
       const result = await api.chargeApi.apiAppChargeCustDetailsByCustIdPost({
         custId: custIds,
@@ -33,28 +33,28 @@ export default class OnlineApiService implements ApiService {
         console.log('获取客户详情', (result.data.items || []).length);
         return result.data.items || [];
       }
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     } catch (e) {
       console.log(e);
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     }
   }
 
-  async getReadStates(): Promise<string | PdaReadStateDto[]> {
+  async getReadStates(): Promise<PdaReadStateDto[]> {
     try {
       const result = await api.chargeApi.apiAppChargeReadStatesGet();
       if (result.status < 400) {
         console.log('获取抄表状态', (result.data.items || []).length);
         return result.data.items || [];
       }
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     } catch (e) {
       console.log(e);
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     }
   }
 
-  async getBookDataByIds(ids: number[]): Promise<string | PdaReadDataDto[]> {
+  async getBookDataByIds(ids: number[]): Promise<PdaReadDataDto[]> {
     try {
       const result = await api.chargeApi.apiAppChargeReadDataByBookIdsPost({
         bookIds: ids,
@@ -63,43 +63,40 @@ export default class OnlineApiService implements ApiService {
         console.log('获取测本数量', (result.data.items || []).length);
         return result.data.items || [];
       }
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     } catch (e) {
       console.log(e);
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     }
   }
 
-  async getBookList(): Promise<string | PdaMeterBookDtoHolder[]> {
+  async getBookList(): Promise<PdaMeterBookDtoHolder[]> {
     try {
       const result = await api.chargeApi.apiAppChargeBookListGet();
       if (result.status < 400) {
         return result.data.items;
       }
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     } catch (e) {
       console.log(e);
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     }
   }
 
-  async logout(): Promise<string | boolean> {
+  async logout(): Promise<boolean> {
     try {
       const result = await api.loginApi.apiAppLoginLogoutPost();
       if (result.status < 400) {
         return true;
       }
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     } catch (e) {
       console.log(e);
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     }
   }
 
-  async uploadLogFile(
-    fileName: string,
-    fileUrl: string,
-  ): Promise<string | boolean> {
+  async uploadLogFile(fileName: string, fileUrl: string): Promise<boolean> {
     try {
       const result = await api.logApi.apiAppMobileReadingUploadMobileLogFilePost(
         {
@@ -115,13 +112,13 @@ export default class OnlineApiService implements ApiService {
       if (result.status < 400) {
         return true;
       }
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     } catch {
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     }
   }
 
-  async updateName(name: string): Promise<string | boolean> {
+  async updateName(name: string): Promise<boolean> {
     try {
       const result = await api.chargeApi.apiAppChargeUserPut(name);
       if (result.status < 400) {
@@ -136,17 +133,17 @@ export default class OnlineApiService implements ApiService {
           });
           return true;
         } else {
-          return SERVER_ERROR;
+          throw new Error(SERVER_ERROR);
         }
       }
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     } catch (e) {
       console.log(e);
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     }
   }
 
-  async updatePhoneNumber(phoneNumber: string): Promise<string | boolean> {
+  async updatePhoneNumber(phoneNumber: string): Promise<boolean> {
     try {
       const result = await api.chargeApi.apiAppChargeUserPut(
         undefined,
@@ -164,19 +161,19 @@ export default class OnlineApiService implements ApiService {
           });
           return true;
         } else {
-          return SERVER_ERROR;
+          throw new Error(SERVER_ERROR);
         }
       }
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     } catch {
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     }
   }
 
   async changePassword(
     currentPassword: string,
     newPassword: string,
-  ): Promise<string | boolean> {
+  ): Promise<boolean> {
     try {
       const result = await api.chargeApi.apiAppChargeChangePasswordPut(
         currentPassword,
@@ -185,16 +182,13 @@ export default class OnlineApiService implements ApiService {
       if (result.status < 400) {
         return true;
       }
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     } catch {
-      return SERVER_ERROR;
+      throw new Error(SERVER_ERROR);
     }
   }
 
-  async login(
-    payload: LoginInput,
-    autoLogin: boolean,
-  ): Promise<string | boolean> {
+  async login(payload: LoginInput, autoLogin: boolean): Promise<boolean> {
     try {
       const loginResult = await api.loginApi.apiAppLoginLoginPost(payload);
       if (loginResult.status < 400) {
@@ -215,15 +209,15 @@ export default class OnlineApiService implements ApiService {
           return true;
         } else {
           console.log(loginResult);
-          return SERVER_ERROR;
+          throw new Error(SERVER_ERROR);
         }
       } else {
         console.log(loginResult);
-        return USERNAME_PWD_ERROR;
+        throw new Error(USERNAME_PWD_ERROR);
       }
     } catch (e) {
       console.log(e);
-      return USERNAME_PWD_ERROR;
+      throw new Error(USERNAME_PWD_ERROR);
     }
   }
 }

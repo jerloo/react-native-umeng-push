@@ -19,14 +19,13 @@ export default function BookTaskScreen({ route, navigation }: any) {
   const [bookDataItems, setBookDataItems] = useState<PdaReadDataDtoHolder[]>(
     [],
   );
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const { bookId } = route.params;
-
-    center.offline.getBookDataByIds([bookId]).then((res) => {
-      if (res instanceof String) {
-        Toast.fail(res as string);
-      } else {
+    const fetchLocal = async () => {
+      try {
+        const { bookId } = route.params;
+        const res = await center.offline.getBookDataByIds([bookId]);
         const items = (res as PdaReadDataDto[]).map((value) => {
           const data: PdaReadDataDtoHolder = {
             item: value,
@@ -35,9 +34,30 @@ export default function BookTaskScreen({ route, navigation }: any) {
           return data;
         });
         setBookDataItems(items);
+      } catch (e) {
+        Toast.fail(e);
       }
-    });
+    };
+
+    fetchLocal();
   }, [route.params]);
+
+  const refresh = async () => {
+    setLoading(true);
+    try {
+      const res = await center.getBookDataByIds([route.params.bookId]);
+      const items = (res as PdaReadDataDto[]).map((value) => {
+        const data: PdaReadDataDtoHolder = {
+          item: value,
+          showExtra: false,
+        };
+        return data;
+      });
+      setBookDataItems(items);
+    } catch (e) {
+      Toast.fail(e);
+    }
+  };
 
   const renderBookItem = (info: ListRenderItemInfo<PdaReadDataDtoHolder>) => {
     return (
@@ -92,6 +112,7 @@ export default function BookTaskScreen({ route, navigation }: any) {
             onSortClick={() =>
               navigation.navigate('BookTaskSort', route.params)
             }
+            onRefreshClick={() => refresh()}
             title={`${route.params.title}册本`}
           />
           <SearchBox

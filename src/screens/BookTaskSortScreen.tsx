@@ -24,10 +24,9 @@ export default function BookTaskSortScreen({ route, navigation }: any) {
     const { bookId, title } = route.params;
     console.log(bookId, title);
 
-    center.offline.getBookDataByIds([bookId]).then((res) => {
-      if (res instanceof String) {
-        Toast.fail(res as string);
-      } else {
+    const fetchLocal = async () => {
+      try {
+        const res = await center.offline.getBookDataByIds([bookId]);
         const items = (res as PdaReadDataDto[]).map((value) => {
           const data: PdaReadDataDtoHolder = {
             item: value,
@@ -36,8 +35,12 @@ export default function BookTaskSortScreen({ route, navigation }: any) {
           return data;
         });
         setBookSortItems(items);
+      } catch (e) {
+        Toast.fail(e);
       }
-    });
+    };
+
+    fetchLocal();
   }, [route.params]);
 
   const renderBookItem = (info: ListRenderItemInfo<PdaReadDataDtoHolder>) => {

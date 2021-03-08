@@ -1,7 +1,6 @@
 import SQLite from 'react-native-sqlite-storage';
 import { PdaReadDataDto } from '../../apiclient/src/models';
 import {
-  MobileFileDtoHolder,
   PdaBillingInfoHolder,
   PdaCustInfoHolder,
   PdaMeterBookDtoHolder,
@@ -237,12 +236,13 @@ class DataBase {
             ],
           )
             .then(() => {
-              console.log(`保存抄表任务[${holders.length}]条`);
+              console.log(`保存抄表任务${item}`);
             })
             .catch((err) => {
               this.errorCB(err);
             });
         });
+        console.log(`保存抄表任务[${holders.length}]条`);
       })
       .catch((err) => {
         this.errorCB(err);
@@ -488,6 +488,12 @@ class DataBase {
     );
   };
 
+  deleteReadData = async (ids: number[]) => {
+    await this.db?.executeSql(
+      `DELETE FROM BookDatas WHERE bookId in (${ids.join(',')})`,
+    );
+  };
+
   getBookTotalData = async () => {
     const result = await this.db?.executeSql(
       'SELECT sum(readingNumber) as readingNumber, sum(totalNumber) as totalNumber, sum(uploadedNumber) as uploadedNumber FROM Books',
@@ -506,6 +512,10 @@ class DataBase {
       totalNumber: items[0].totalNumber || 0,
       uploadedNumber: items[0].uploadedNumber || 0,
     };
+  };
+
+  deleteBooks = async () => {
+    await this.db?.executeSql('DELETE FROM Books');
   };
 }
 

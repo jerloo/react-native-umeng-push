@@ -11,7 +11,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
 import { scaleSize } from 'react-native-responsive-design';
-import { getSession, UserSession } from '../utils/sesstionUtils';
 import {
   PdaBillingInfo,
   PdaCustDto,
@@ -26,26 +25,20 @@ import { Tabs } from '@ant-design/react-native';
 import dayjs from 'dayjs';
 
 export default function CustDetailsScreen({ route, navigation }: any) {
-  const [session, setSession] = useState<UserSession>();
   const [details, setDetails] = useState<PdaCustDto>();
-
-  useEffect(() => {
-    getSession().then((s) => {
-      setSession(s || undefined);
-    });
-  }, []);
 
   useEffect(() => {
     const { custId } = route.params;
 
-    center.online.getCustDetails([custId]).then((res) => {
-      if (res instanceof String) {
-        Toast.fail(res as string);
-      } else {
-        console.log(res);
+    const fetchRemote = async () => {
+      try {
+        const res = await center.online.getCustDetails([custId]);
         setDetails((res as PdaCustDto[])[0]);
+      } catch (e) {
+        Toast.fail(e);
       }
-    });
+    };
+    fetchRemote();
   }, [route.params]);
 
   const line = () => {

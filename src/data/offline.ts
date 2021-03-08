@@ -11,59 +11,53 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
-  async getReadStates(): Promise<string | PdaReadStateDto[]> {
+  async getReadStates(): Promise<PdaReadStateDto[]> {
     throw new Error('Method not implemented.');
   }
 
-  getCustDetails(custIds: number[]): Promise<string | PdaCustDto> {
+  async getCustDetails(_custIds: number[]): Promise<PdaCustDto> {
     throw new Error('Method not implemented.');
   }
 
-  async getReadingMonth(): Promise<string | number> {
-    return (await getBillMonth()) || '错误';
+  async getReadingMonth(): Promise<number | null> {
+    return await getBillMonth();
   }
 
-  async getBookDataByIds(ids: number[]): Promise<string | PdaReadDataDto[]> {
+  async getBookDataByIds(ids: number[]): Promise<PdaReadDataDto[]> {
     return db.getBookDataByIds(ids);
   }
 
-  async getBookList(): Promise<string | PdaMeterBookDtoHolder[]> {
+  async getBookList(): Promise<PdaMeterBookDtoHolder[]> {
     return db.getBooks();
   }
 
-  async logout(): Promise<string | boolean> {
+  async logout(): Promise<boolean> {
     return true;
   }
 
-  async uploadLogFile(
-    _fileName: string,
-    _fileUrl: string,
-  ): Promise<string | boolean> {
-    return NO_NETWORK_ERROR;
+  async uploadLogFile(_fileName: string, _fileUrl: string): Promise<boolean> {
+    throw new Error(NO_NETWORK_ERROR);
   }
 
-  async updateName(_name: string): Promise<string | boolean> {
-    return NO_NETWORK_ERROR;
+  async updateName(_name: string): Promise<boolean> {
+    throw new Error(NO_NETWORK_ERROR);
   }
 
-  async updatePhoneNumber(_phoneNumber: string): Promise<string | boolean> {
-    return NO_NETWORK_ERROR;
+  async updatePhoneNumber(_phoneNumber: string): Promise<boolean> {
+    throw new Error(NO_NETWORK_ERROR);
   }
 
   async changePassword(
     _currentPassword: string,
     _newPassword: string,
-  ): Promise<string | boolean> {
-    return NO_NETWORK_ERROR;
+  ): Promise<boolean> {
+    throw new Error(NO_NETWORK_ERROR);
   }
 
-  async login(
-    payload: LoginInput,
-    _autoLogin: boolean,
-  ): Promise<string | boolean> {
+  async login(payload: LoginInput, _autoLogin: boolean): Promise<boolean> {
     const savedSession = await getSession();
     if (savedSession === null || savedSession.tenantName === '') {
-      return NO_NETWORK_ERROR;
+      throw new Error(NO_NETWORK_ERROR);
     }
     if (
       savedSession?.tenantName === payload.tenantName &&
@@ -72,6 +66,6 @@ export default class OfflineApiService implements ApiService {
     ) {
       return true;
     }
-    return USERNAME_PWD_ERROR;
+    throw new Error(USERNAME_PWD_ERROR);
   }
 }

@@ -1,9 +1,13 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
 export const getBillMonth = async () => {
-  return await AsyncStorage.getItem('billMonth');
+  const result = await AsyncStorage.getItem('billMonth');
+  if (!result) {
+    return null;
+  }
+  return parseInt(result, 10);
 };
 
-export const setBillMonth = async (billMonth: string) => {
-  await AsyncStorage.setItem('billMonth', billMonth);
+export const setBillMonth = async (billMonth: number) => {
+  await AsyncStorage.setItem('billMonth', billMonth.toString());
 };

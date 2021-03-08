@@ -48,7 +48,11 @@ export default function ProfileScreen({ navigation }: any) {
       session!!.autoLogin = false;
       await setSession(session!!);
     }
-    await center.logout();
+    try {
+      await center.logout();
+    } catch (e) {
+      Toast.fail(e);
+    }
     navigation.goBack();
   };
 

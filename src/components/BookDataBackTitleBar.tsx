@@ -5,15 +5,16 @@ import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 import { colorWhite } from '../styles';
 
 interface Props {
-  onBack: () => void;
-  onSortClick: () => void;
+  onBack?: () => void;
+  onSortClick?: () => void;
+  onRefreshClick?: () => void;
   title?: string;
 }
 
 export default function BookDataBackTitleBar(props: Props) {
   return (
     <View style={styles.titleBar}>
-      <TouchableWithoutFeedback onPress={() => props.onBack()}>
+      <TouchableWithoutFeedback onPress={() => props.onBack && props.onBack()}>
         <Image
           style={styles.titleBarBackButton}
           source={require('../assets/qietu/cebenxiangqing/book_details_icon_back_normal.png')}
@@ -24,13 +25,14 @@ export default function BookDataBackTitleBar(props: Props) {
       <View style={styles.rightContainer}>
         <TouchableWithoutFeedback
           style={{ marginEnd: scaleSize(18) }}
-          onPress={() => props.onBack()}>
+          onPress={() => props.onRefreshClick && props.onRefreshClick()}>
           <Image
             style={styles.titleBarBackButton}
             source={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}
           />
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => props.onSortClick()}>
+        <TouchableWithoutFeedback
+          onPress={() => props.onSortClick && props.onSortClick()}>
           <Image
             style={styles.titleBarBackButton}
             source={require('../assets/qietu/cebenxiangqing/book_details_icon_adjustment_normal.png')}
