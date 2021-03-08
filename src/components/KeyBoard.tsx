@@ -2,7 +2,9 @@ import * as React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 import { colorWhite } from '../styles';
-
+import StateButton from './StateButton';
+import { PdaReadStateDto } from '../../apiclient/src/models';
+import { ScrollView } from 'react-native-gesture-handler';
 interface Props {
   onNumberClick: (value: number) => void;
   onNextClick: () => void;
@@ -10,11 +12,32 @@ interface Props {
   onConfirmClick: () => void;
   onPhotoClick: () => void;
   onBackClick: () => void;
+  onStateSelect: () => void;
 }
 
 export default function KeyBoard(props: Props) {
+  const [selectState, setSelectState] = React.useState<PdaReadStateDto>();
+  const onStateButtonClick = () => {};
+
   return (
     <View style={styles.container}>
+      <View style={styles.offenStates}>
+        <ScrollView horizontal style={styles.offenStatesWrapper}>
+          <StateButton selected title="正常" />
+          <StateButton title="正常" />
+          <StateButton title="正常" />
+          <StateButton title="正常" />
+          <StateButton title="正常" />
+          <StateButton title="正常" />
+          <StateButton title="正常" />
+          <StateButton title="正常" />
+          <StateButton title="正常" />
+          <StateButton title="正常" />
+        </ScrollView>
+        <View style={styles.stateSettings}>
+          {/* <Image source={require('')} /> */}
+        </View>
+      </View>
       <View style={styles.row}>
         <TouchableOpacity
           style={styles.cell}
@@ -170,5 +193,18 @@ const styles = StyleSheet.create({
   },
   vd: {
     width: scaleSize(6),
+  },
+  offenStates: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: scaleSize(21),
+    paddingBottom: scaleSize(10),
+    paddingHorizontal: scaleSize(30),
+  },
+  offenStatesWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    // alignItems: 'center',
   },
 });
