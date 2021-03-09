@@ -58,7 +58,11 @@ class CenterService implements ApiService {
   }
 
   async getReadStates(): Promise<PdaReadStateDto[]> {
-    throw new Error('Method not implemented.');
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.getReadStates();
+    }
+    return this.offline.getReadStates();
   }
 
   async getBookDataByIds(ids: number[]): Promise<PdaReadDataDto[]> {

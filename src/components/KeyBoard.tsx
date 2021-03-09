@@ -5,6 +5,8 @@ import { colorWhite } from '../styles';
 import StateButton from './StateButton';
 import { PdaReadStateDto } from '../../apiclient/src/models';
 import { ScrollView } from 'react-native-gesture-handler';
+import { getReadStateSettings, ReadStateStorage } from '../utils/settingsUtils';
+
 interface Props {
   onNumberClick?: (value: number) => void;
   onNextClick?: () => void;
@@ -12,31 +14,34 @@ interface Props {
   onConfirmClick?: () => void;
   onPhotoClick?: () => void;
   onBackClick?: () => void;
-  onStateSelect?: () => void;
+  onStateSelect?: (item: PdaReadStateDto) => void;
+  onSettingsOpen?: () => void;
+  readStates?: ReadStateStorage;
+  selectState?: PdaReadStateDto;
 }
 
 export default function KeyBoard(props: Props) {
-  const [selectState, setSelectState] = React.useState<PdaReadStateDto>();
-  const onStateButtonClick = () => {};
-
   return (
     <View style={styles.container}>
       <View style={styles.offenStates}>
         <ScrollView horizontal style={styles.offenStatesWrapper}>
-          <StateButton selected title="正常" />
-          <StateButton title="正常" />
-          <StateButton title="正常" />
-          <StateButton title="正常" />
-          <StateButton title="正常" />
-          <StateButton title="正常" />
-          <StateButton title="正常" />
-          <StateButton title="正常" />
-          <StateButton title="正常" />
-          <StateButton title="正常" />
+          {props.readStates?.offens.map((it) => (
+            <StateButton
+              key={it.id}
+              selected={props.selectState?.id === it.id}
+              title={it.stateName}
+              onClick={() => props.onStateSelect && props.onStateSelect(it)}
+            />
+          ))}
         </ScrollView>
-        <View style={styles.stateSettings}>
-          {/* <Image source={require('')} /> */}
-        </View>
+        <TouchableOpacity
+          style={styles.settingsButton}
+          onPress={props.onSettingsOpen}>
+          <Image
+            style={styles.settingsIcon}
+            source={require('../assets/qietu/chaobiaoluru/enter_icon_intercalate_normal.png')}
+          />
+        </TouchableOpacity>
       </View>
       <View style={styles.row}>
         <TouchableOpacity
@@ -207,5 +212,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     // alignItems: 'center',
   },
-  stateSettings: {},
+  settingsButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingStart: scaleSize(26),
+  },
+  settingsIcon: {
+    width: scaleSize(40),
+    height: scaleSize(40),
+  },
 });

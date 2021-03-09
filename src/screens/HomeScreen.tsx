@@ -19,6 +19,11 @@ import {
 } from 'react-native-responsive-design';
 import { getSession, UserSession } from '../utils/sesstionUtils';
 import SearchBox from '../components/SearchBox';
+import center from '../data';
+import {
+  getReadStateSettings,
+  setReadStateSettings,
+} from '../utils/settingsUtils';
 
 export default function HomeScreen({ navigation }: any) {
   const [session, setSession] = useState<UserSession>();
@@ -27,6 +32,22 @@ export default function HomeScreen({ navigation }: any) {
     getSession().then((s) => {
       setSession(s || undefined);
     });
+  }, []);
+
+  const fetchStateSettings = async () => {
+    try {
+      const localStateSettings = await getReadStateSettings();
+      if (!localStateSettings) {
+        const remoteStates = await center.getReadStates();
+        setReadStateSettings(remoteStates);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchStateSettings();
   }, []);
 
   return (

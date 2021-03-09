@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { scaleSize } from 'react-native-responsive-design';
-import { PdaReadDataDto } from '../../apiclient/src/models';
+import { PdaReadDataDto, PdaReadStateDto } from '../../apiclient/src/models';
 import { colorWhite } from '../styles';
 import Tag from '../components/Tag';
 import KeyBoard from '../components/KeyBoard';
@@ -21,12 +21,33 @@ import LocationButton from '../components/LocationButton';
 import Attachments from '../components/Attachments';
 import Modal from 'react-native-smart-modal';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
+import NewReadSettings from '../components/NewReadSettings';
+import {
+  getReadStateSettings,
+  getReadStateSettingsItems,
+  ReadStateStorage,
+} from '../utils/settingsUtils';
 
 export default function NewReadScreen({ route, navigation }: any) {
   const { data } = route.params;
   const [newData, setNewData] = useState<PdaReadDataDto>(data);
   const [attachmentsModalVisible, setAttachmentsModalVisible] = useState(false);
   const [settingsModalVisible, setSettingsModalVisible] = useState(false);
+
+  const [selectState, setSelectState] = React.useState<PdaReadStateDto>();
+
+  const [readStates, setReadStates] = React.useState<ReadStateStorage>();
+  React.useEffect(() => {
+    getReadStateSettings().then((r) => {
+      if (r) {
+        setReadStates(r);
+
+        getReadStateSettingsItems().then((items) => {
+          setSelectState(items.find((it) => it.stateName === '正常'));
+        });
+      }
+    });
+  }, []);
 
   const setValue = (value: string) => {
     setNewData({
@@ -143,7 +164,21 @@ export default function NewReadScreen({ route, navigation }: any) {
         animationOut="slideOutRight"
         onChange={setSettingsModalVisible}>
         <View style={styles.settingsModalContent}>
-          <Attachments files={[]} />
+          <NewReadSettings
+            selectedState={selectState}
+            onSelected={(item) => {
+              setSelectState(item);
+              setSettingsModalVisible(false);
+            }}
+            onSaved={() => {
+              setSettingsModalVisible(false);
+              getReadStateSettings().then((r) => {
+                if (r) {
+                  setReadStates(r);
+                }
+              });
+            }}
+          />
         </View>
       </Modal>
     );
@@ -268,6 +303,10 @@ export default function NewReadScreen({ route, navigation }: any) {
               onConfirmClick={saveData}
               onNextClick={() => {}}
               onPreClick={() => {}}
+              onSettingsOpen={() => setSettingsModalVisible(true)}
+              readStates={readStates}
+              selectState={selectState}
+              onStateSelect={(item) => setSelectState(item)}
             />
           ) : null}
         </View>

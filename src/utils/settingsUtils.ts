@@ -114,17 +114,63 @@ const json = `{
   ]
 }`;
 
-interface ReadStateStorage {
-  offen: PdaReadStateDto[];
-  normal: PdaReadStateDto[];
+interface ReadStateGroupItem extends PdaReadStateDto {
+  children: PdaReadStateDto[];
 }
+
+export interface ReadStateStorage {
+  offens: PdaReadStateDto[];
+  groups: ReadStateGroupItem[];
+}
+
+export const setOffensReadStatesId = async (ids: number[]) => {
+  await AsyncStorage.setItem('offensReadStatesId', JSON.stringify(ids));
+};
+
+export const getOffesReadStatesId = async () => {
+  const content = await AsyncStorage.getItem('offensReadStatesId');
+  return content ? (JSON.parse(content) as number[]) : null;
+};
+
+const defaultOffenNames = ['正常', '其他', '失灵', '暂估', '门闭', '表坏'];
 
 export const getReadStateSettings = async () => {
   const content = await AsyncStorage.getItem('readStates');
-  return content ? (JSON.parse(content) as PdaReadStateDto[]) : [];
+  const items = content ? (JSON.parse(content) as PdaReadStateDto[]) : null;
+
+  if (!items) {
+    return null;
+  }
+
+  let offenReadStatesId = (await getOffesReadStatesId()) || [];
+  if (!offenReadStatesId || offenReadStatesId.length === 0) {
+    offenReadStatesId = items
+      .filter((it) => defaultOffenNames.indexOf(it.stateName) > -1)
+      .map((it) => it.id);
+  }
+  const offens = items.filter((it) => offenReadStatesId.indexOf(it.id) > -1);
+  const normals = items.filter(
+    (it) => defaultOffenNames.indexOf(it.stateName) < 0,
+  );
+  const groups = (normals.filter(
+    (it) => it.parentId === 0,
+  ) as ReadStateGroupItem[]).map((it) => {
+    it.children = normals.filter((i) => i.parentId === it.id);
+    return it;
+  });
+  const state: ReadStateStorage = {
+    offens: offens,
+    groups: groups,
+  };
+  return state;
 };
 
 export const setReadStateSettings = async (items: PdaReadStateDto[]) => {
   const content = JSON.stringify(items);
   await AsyncStorage.setItem('readStates', content);
+};
+
+export const getReadStateSettingsItems = async () => {
+  const content = await AsyncStorage.getItem('readStates');
+  return content ? (JSON.parse(content) as PdaReadStateDto[]) : [];
 };
