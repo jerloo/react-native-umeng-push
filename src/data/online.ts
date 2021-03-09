@@ -2,6 +2,7 @@ import {
   LoginInput,
   MeterReaderDto,
   PdaCustDto,
+  PdaCustListDto,
   PdaReadDataDto,
   PdaReadingCollectDto,
   PdaReadStateDto,
@@ -13,6 +14,19 @@ import { api } from '../utils/apiUtils';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class OnlineApiService implements ApiService {
+  async homeQuery(key: string): Promise<PdaCustListDto[]> {
+    try {
+      const result = await api.chargeApi.apiAppChargeCustListGet(key);
+      if (result.status < 400) {
+        return result.data.items || [];
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
   async getAllPdaUsers(): Promise<MeterReaderDto[]> {
     try {
       const result = await api.paymentApi.apiAppMobilePaymentPdaUserGet();

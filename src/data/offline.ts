@@ -2,6 +2,7 @@ import {
   LoginInput,
   MeterReaderDto,
   PdaCustDto,
+  PdaCustListDto,
   PdaReadDataDto,
   PdaReadingCollectDto,
   PdaReadStateDto,
@@ -13,6 +14,10 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
+  async homeQuery(key: string): Promise<PdaCustListDto[]> {
+    throw new Error('Method not implemented.');
+  }
+
   async getAllPdaUsers(): Promise<MeterReaderDto[]> {
     throw new Error(NO_NETWORK_ERROR);
   }

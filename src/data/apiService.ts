@@ -2,6 +2,7 @@ import {
   LoginInput,
   MeterReaderDto,
   PdaCustDto,
+  PdaCustListDto,
   PdaReadDataDto,
   PdaReadingCollectDto,
   PdaReadStateDto,
@@ -28,7 +29,8 @@ export default interface ApiService {
     billMonth: number,
   ): Promise<PdaReadingCollectDto[]>;
   getAllPdaUsers(): Promise<MeterReaderDto[]>;
-};
+  homeQuery(key: string): Promise<PdaCustListDto[]>;
+}
 
 export const NETWORK_ERROR = '网络错误，请稍后再试';
 export const SERVER_ERROR = '服务器错误，请稍后再试';

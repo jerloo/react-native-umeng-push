@@ -5,6 +5,7 @@ import {
   PdaCustDto,
   PdaReadingCollectDto,
   MeterReaderDto,
+  PdaCustListDto,
 } from '../../apiclient/src/models';
 import NetInfo from '@react-native-community/netinfo';
 import db from './database';
@@ -20,6 +21,14 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+
+  async homeQuery(key: string): Promise<PdaCustListDto[]> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.homeQuery(key);
+    }
+    return this.offline.homeQuery(key);
   }
 
   async getAllPdaUsers(): Promise<MeterReaderDto[]> {

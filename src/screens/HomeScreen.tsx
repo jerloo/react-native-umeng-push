@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,13 +19,13 @@ import {
   setSpText2,
 } from 'react-native-responsive-design';
 import { getSession, UserSession } from '../utils/sesstionUtils';
-import SearchBox from '../components/SearchBox';
 import center from '../data';
 import {
   getReadStateSettings,
   setReadStateSettings,
 } from '../utils/settingsUtils';
 import { useNavigation } from '@react-navigation/core';
+import SearchBoxView from '../components/SearchBoxView';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -72,7 +73,11 @@ export default function HomeScreen() {
             <Text style={styles.userName}>{session?.userInfo.name}</Text>
           </View>
         </TouchableWithoutFeedback>
-        <SearchBox />
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => navigation.navigate('Search')}>
+          <SearchBoxView />
+        </TouchableOpacity>
       </SafeAreaView>
       <ScrollView>
         <View style={styles.mainContainer}>
