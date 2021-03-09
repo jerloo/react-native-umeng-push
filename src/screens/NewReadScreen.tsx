@@ -29,6 +29,7 @@ import {
 } from '../utils/settingsUtils';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
+import { launchCamera } from 'react-native-image-picker';
 
 export default function NewReadScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'NewRead'>>();
@@ -65,6 +66,10 @@ export default function NewReadScreen() {
   const saveData = () => {};
 
   const openLighting = () => {};
+
+  const addNewAttachment = (uri: string) => {
+    console.log(uri);
+  };
 
   const renderStateExtra = () => {
     return (
@@ -307,7 +312,11 @@ export default function NewReadScreen() {
                 console.log('onNumberClick', n);
                 setValue(`${newData.reading || ''}${n}`);
               }}
-              onPhotoClick={() => {}}
+              onPhotoClick={() =>
+                navigation.navigate('Camera', {
+                  callback: addNewAttachment,
+                })
+              }
               onConfirmClick={saveData}
               onNextClick={() => {}}
               onPreClick={() => {}}

@@ -29,6 +29,7 @@ import NewReadScreen from './src/screens/NewReadScreen';
 import CustDetailsScreen from './src/screens/CustDetailsScreen';
 import { PortalProvider } from 'react-native-portal-view';
 import ReadingCollectScreen from './src/screens/ReadingCollectScreen';
+import CameraScreen from './src/screens/CameraScreen';
 
 const Stack = createStackNavigator();
 
@@ -167,6 +168,11 @@ function App() {
                     <Stack.Screen
                       name="ReadingCollect"
                       component={ReadingCollectScreen}
+                      options={{ header: () => null }}
+                    />
+                    <Stack.Screen
+                      name="Camera"
+                      component={CameraScreen}
                       options={{ header: () => null }}
                     />
                   </>

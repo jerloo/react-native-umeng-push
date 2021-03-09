@@ -16,4 +16,7 @@ export type MainStackParamList = {
     custId: number;
     title: string;
   };
+  Camera: {
+    callback: (uri: string) => void;
+  };
 };
