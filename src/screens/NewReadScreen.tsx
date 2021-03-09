@@ -31,8 +31,8 @@ export default function NewReadScreen({ route, navigation }: any) {
   const setValue = (value: string) => {
     setNewData({
       ...newData,
-      reading: parseInt(value, 10),
-      readWater: newData.reading - newData.lastReading,
+      reading: parseInt(value, 10) || undefined,
+      readWater: newData.reading - newData.lastReading || undefined,
     });
   };
 
@@ -60,12 +60,12 @@ export default function NewReadScreen({ route, navigation }: any) {
         <View style={styles.extraRow}>
           <View style={styles.extraRowPart}>
             <Text style={styles.extraLabel}>本期抄码</Text>
-            <Text style={styles.extraValue}>{newData.reading}</Text>
+            <Text style={styles.extraValue}>{newData.reading || ''}</Text>
           </View>
 
           <View style={styles.extraRowPart}>
             <Text style={styles.extraLabel}>本次水量</Text>
-            <Text style={styles.extraValue}>{newData.readWater}</Text>
+            <Text style={styles.extraValue}>{newData.readWater || ''}</Text>
           </View>
         </View>
         <View style={styles.extraRow}>
@@ -249,7 +249,10 @@ export default function NewReadScreen({ route, navigation }: any) {
           {newData.recordState === 0 || newData.recordState === 1 ? (
             <KeyBoard
               onBackClick={() => {
-                if (newData.reading.toString().length !== 0) {
+                if (
+                  newData.reading &&
+                  newData.reading.toString().length !== 0
+                ) {
                   setValue(
                     newData.reading
                       .toString()
@@ -258,7 +261,8 @@ export default function NewReadScreen({ route, navigation }: any) {
                 }
               }}
               onNumberClick={(n) => {
-                setValue(`${newData.reading}${n}`);
+                console.log('onNumberClick', n);
+                setValue(`${newData.reading || ''}${n}`);
               }}
               onPhotoClick={() => {}}
               onConfirmClick={saveData}
