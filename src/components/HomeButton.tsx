@@ -1,27 +1,33 @@
 import * as React from 'react';
-import { Text, StyleSheet, Image } from 'react-native';
-import { ImageSource } from 'react-native-vector-icons/Icon';
+import {
+  Text,
+  StyleSheet,
+  Image,
+  TouchableNativeFeedback,
+  ImageSourcePropType,
+  View,
+} from 'react-native';
 import {
   scaleSize,
   scaleHeight,
   setSpText2,
 } from 'react-native-responsive-design';
-import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
 type Props = {
   colorLeft: string;
   colorTop: string;
-  iconSource: ImageSource;
+  iconSource: ImageSourcePropType;
   title: string;
   onPress?: () => void;
 };
+
 export default function HomeButton(props: Props) {
   return (
-    <TouchableNativeFeedback
-      style={styles.homeButtonContainer}
-      onPress={() => props.onPress && props.onPress()}>
-      <Image style={styles.homeButtonIcon} source={props.iconSource} />
-      <Text style={styles.homeButtonTitle}>{props.title}</Text>
+    <TouchableNativeFeedback onPress={() => props.onPress && props.onPress()}>
+      <View style={styles.homeButtonContainer}>
+        <Image style={styles.homeButtonIcon} source={props.iconSource} />
+        <Text style={styles.homeButtonTitle}>{props.title}</Text>
+      </View>
     </TouchableNativeFeedback>
   );
 }
