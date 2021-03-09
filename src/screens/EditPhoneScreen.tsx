@@ -11,8 +11,11 @@ import {
 import EditTitleBar from '../components/titlebars/EditTitleBar';
 import { getSession, UserSession } from '../utils/sesstionUtils';
 import center from '../data';
+import { useNavigation } from '@react-navigation/core';
 
-export default function EditPhoneScreen({ navigation }: any) {
+export default function EditPhoneScreen() {
+  const navigation = useNavigation();
+
   const [session, sSession] = useState<UserSession>();
   const [newPhone, setNewPhone] = useState('');
 
@@ -28,14 +31,19 @@ export default function EditPhoneScreen({ navigation }: any) {
 
   const onSave = async () => {
     const key = Toast.loading('保存中', 0);
-    const result = await center.updatePhoneNumber(newPhone);
-    if (result === true) {
+    try {
+      const result = await center.updatePhoneNumber(newPhone);
+      if (result === true) {
+        Toast.remove(key);
+        Toast.success('修改成功');
+        navigation.goBack();
+      } else {
+        Toast.remove(key);
+        Toast.fail('修改失败');
+      }
+    } catch (e) {
       Toast.remove(key);
-      Toast.success('修改成功');
-      navigation.goBack();
-    } else {
-      Toast.remove(key);
-      Toast.fail(result as string);
+      Toast.fail(e);
     }
   };
 

@@ -10,8 +10,11 @@ import {
 import EditTitleBar from '../components/titlebars/EditTitleBar';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
+import { useNavigation } from '@react-navigation/core';
 
-export default function EditPasswordScreen({ navigation }: any) {
+export default function EditPasswordScreen() {
+  const navigation = useNavigation();
+
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPasword, setConfirmPassword] = useState('');

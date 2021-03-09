@@ -24,8 +24,11 @@ import db from '../data/database';
 import { NumbersType } from '../data/models';
 import { getBillMonth } from '../utils/billMonthUtils';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
+import { useNavigation } from '@react-navigation/core';
 
-export default function BooksScreen({ navigation }: any) {
+export default function BooksScreen() {
+  const navigation = useNavigation();
+
   const [bookItems, setBookItems] = useState<PdaMeterBookDtoHolder[]>([]);
   const [totalNumbers, setTotalNumbers] = useState<NumbersType>({
     readingNumber: 0,
@@ -324,6 +327,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: colorWhite,
+    borderTopColor: '#F9F9F9',
+    borderTopWidth: scaleSize(1),
   },
   bottomLabel: {
     color: '#5598F4',

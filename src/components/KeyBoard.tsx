@@ -5,7 +5,7 @@ import { colorWhite } from '../styles';
 import StateButton from './StateButton';
 import { PdaReadStateDto } from '../../apiclient/src/models';
 import { ScrollView } from 'react-native-gesture-handler';
-import { getReadStateSettings, ReadStateStorage } from '../utils/settingsUtils';
+import { ReadStateStorage } from '../utils/settingsUtils';
 
 interface Props {
   onNumberClick?: (value: number) => void;

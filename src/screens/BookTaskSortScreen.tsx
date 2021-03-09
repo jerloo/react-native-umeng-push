@@ -10,12 +10,17 @@ import { PdaReadDataDto } from '../../apiclient/src/models';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
 import BookSortItem from '../components/BookSortItem';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
 import { PdaReadDataDtoHolder } from '../data/holders';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SwipeButton from '../components/SwipeButton';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import { MainStackParamList } from './routeParams';
 
-export default function BookTaskSortScreen({ route, navigation }: any) {
+export default function BookTaskSortScreen() {
+  const route = useRoute<RouteProp<MainStackParamList, 'BookTaskSort'>>();
+  const navigation = useNavigation();
+
   const [BookSortItems, setBookSortItems] = useState<PdaReadDataDtoHolder[]>(
     [],
   );
@@ -57,13 +62,14 @@ export default function BookTaskSortScreen({ route, navigation }: any) {
 
   const onSearchButtonClick = () => {};
 
-  const closeRow = (rowMap, rowKey) => {
+  const closeRow = (rowMap: RowMap<PdaReadDataDtoHolder>, rowKey: number) => {
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
+      console.log('关闭');
     }
   };
 
-  const topRow = (rowMap, rowKey) => {
+  const topRow = (rowMap: RowMap<PdaReadDataDtoHolder>, rowKey: number) => {
     closeRow(rowMap, rowKey);
     let newData = [...BookSortItems];
     newData.forEach((item) => {

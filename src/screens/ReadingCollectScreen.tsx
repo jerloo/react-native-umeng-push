@@ -26,8 +26,11 @@ import { sum } from '../utils/sumUtils';
 import ReadingCollectItem from '../components/ReadingCollectItem';
 import Modal from 'react-native-smart-modal';
 import { Modal as AntModal } from '@ant-design/react-native';
+import { useNavigation } from '@react-navigation/core';
 
-export default function ReadingCollectScreen({ navigation }: any) {
+export default function ReadingCollectScreen() {
+  const navigation = useNavigation();
+
   const [items, setItems] = useState<PdaReadingCollectDto[]>();
   const [loading, setLoading] = useState(false);
   const [pdaUsers, setPdaUsers] = useState<MeterReaderDto[]>([]);

@@ -14,8 +14,13 @@ import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import SearchBox from '../components/SearchBox';
 import { Tabs } from '@ant-design/react-native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import { MainStackParamList } from './routeParams';
 
-export default function BookTaskScreen({ route, navigation }: any) {
+export default function BookTaskScreen() {
+  const route = useRoute<RouteProp<MainStackParamList, 'BookTask'>>();
+  const navigation = useNavigation();
+
   const [bookDataItems, setBookDataItems] = useState<PdaReadDataDtoHolder[]>(
     [],
   );

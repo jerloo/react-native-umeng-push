@@ -29,7 +29,7 @@ export default function LoginScreen() {
 
   const [loading, setLoading] = React.useState(false);
 
-  const { signIn } = React.useContext(AuthContext);
+  const { signIn }: any = React.useContext(AuthContext);
 
   var loadingButton = React.useRef<AnimatedLoadingButton>(null);
 
@@ -49,21 +49,28 @@ export default function LoginScreen() {
     l.debug(`Start submit login ${t} ${u} ${p}`);
     loadingButton?.current?.setLoading(true);
     setLoading(true);
-    const result = await center.login(
-      {
-        tenantName: t,
-        userName: u,
-        passWord: p,
-      },
-      remember,
-    );
-    if (result === true) {
-      loadingButton.current?.setLoading(false);
-      l.debug(`Login success ${t} ${u} ${p}`);
-      signIn();
-      // navigation.replace('Home');
-    } else {
-      Toast.fail(result as string);
+    try {
+      const result = await center.login(
+        {
+          tenantName: t,
+          userName: u,
+          passWord: p,
+        },
+        remember,
+      );
+      if (result === true) {
+        loadingButton.current?.setLoading(false);
+        l.debug(`Login success ${t} ${u} ${p}`);
+        signIn();
+        // navigation.replace('Home');
+      } else {
+        setTimeout(() => {
+          loadingButton.current?.setLoading(false);
+          setLoading(false);
+        }, 1000);
+      }
+    } catch (e) {
+      Toast.fail(e);
       setTimeout(() => {
         loadingButton.current?.setLoading(false);
         setLoading(false);

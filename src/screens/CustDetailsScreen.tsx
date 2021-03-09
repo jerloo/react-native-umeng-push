@@ -24,8 +24,13 @@ import { Toast } from '@ant-design/react-native';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import { Tabs } from '@ant-design/react-native';
 import dayjs from 'dayjs';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import { MainStackParamList } from './routeParams';
 
-export default function CustDetailsScreen({ route, navigation }: any) {
+export default function CustDetailsScreen() {
+  const navigation = useNavigation();
+  const route = useRoute<RouteProp<MainStackParamList, 'CustDetails'>>();
+
   const [details, setDetails] = useState<PdaCustDto>();
 
   useEffect(() => {
@@ -41,6 +46,19 @@ export default function CustDetailsScreen({ route, navigation }: any) {
     };
     fetchRemote();
   }, [route.params]);
+
+  const refresh = async () => {
+    const key = Toast.loading('加载中');
+    const { custId } = route.params;
+    try {
+      const res = await center.online.getCustDetails([custId]);
+      setDetails((res as PdaCustDto[])[0]);
+    } catch (e) {
+      Toast.fail(e);
+    } finally {
+      Toast.remove(key);
+    }
+  };
 
   const line = () => {
     return (
@@ -206,15 +224,15 @@ export default function CustDetailsScreen({ route, navigation }: any) {
       />
 
       <LinearGradient
-        colors={['#4888E3', '#2567E5']}
+        colors={['#3273E4', '#3273E4']}
         style={styles.topContainer}>
         <SafeAreaView>
           <CommonTitleBarEx
             onBack={() => navigation.goBack()}
-            onRight1Click={() =>
-              navigation.navigate('BookTaskSort', route.params)
-            }
-            title={`${route.params.title}册本`}
+            right2Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}
+            onRight2Click={refresh}
+            title={`${route.params.title}`}
+            titleColor={colorWhite}
           />
         </SafeAreaView>
       </LinearGradient>

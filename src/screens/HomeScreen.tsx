@@ -24,8 +24,11 @@ import {
   getReadStateSettings,
   setReadStateSettings,
 } from '../utils/settingsUtils';
+import { useNavigation } from '@react-navigation/core';
 
-export default function HomeScreen({ navigation }: any) {
+export default function HomeScreen() {
+  const navigation = useNavigation();
+
   const [session, setSession] = useState<UserSession>();
 
   useEffect(() => {

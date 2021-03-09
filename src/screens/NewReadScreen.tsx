@@ -27,8 +27,13 @@ import {
   getReadStateSettingsItems,
   ReadStateStorage,
 } from '../utils/settingsUtils';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import { MainStackParamList } from './routeParams';
 
-export default function NewReadScreen({ route, navigation }: any) {
+export default function NewReadScreen() {
+  const route = useRoute<RouteProp<MainStackParamList, 'NewRead'>>();
+  const navigation = useNavigation();
+
   const { data } = route.params;
   const [newData, setNewData] = useState<PdaReadDataDto>(data);
   const [attachmentsModalVisible, setAttachmentsModalVisible] = useState(false);
@@ -190,7 +195,10 @@ export default function NewReadScreen({ route, navigation }: any) {
         <TouchableOpacity
           style={styles.cornerContainer}
           onPress={() =>
-            navigation.navigate('CustDetails', { custId: newData.custId })
+            navigation.navigate('CustDetails', {
+              custId: newData.custId,
+              title: `${newData.bookCode}(${newData.custId})`,
+            })
           }>
           <Text style={styles.corner}>用户详情</Text>
           <View style={styles.colorBlank} />

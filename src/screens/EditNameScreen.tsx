@@ -12,8 +12,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import EditTitleBar from '../components/titlebars/EditTitleBar';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
+import { useNavigation } from '@react-navigation/core';
 
-export default function EditNameScreen({ navigation }: any) {
+export default function EditNameScreen() {
+  const navigation = useNavigation();
+
   const [name, setName] = useState('');
 
   const fetchSession = async () => {
@@ -28,14 +31,21 @@ export default function EditNameScreen({ navigation }: any) {
 
   const onSave = async () => {
     const key = Toast.loading('保存中', 0);
-    const result = await center.updateName(name);
-    if (result === true) {
+    try {
+      const result = await center.updateName(name);
+      if (result === true) {
+        Toast.remove(key);
+        Toast.success('修改成功');
+        navigation.goBack();
+      } else {
+        Toast.remove(key);
+        Toast.fail('修改失败');
+      }
+    } catch (e) {
       Toast.remove(key);
-      Toast.success('修改成功');
-      navigation.goBack();
-    } else {
+      Toast.fail(e);
+    } finally {
       Toast.remove(key);
-      Toast.fail(result as string);
     }
   };
 

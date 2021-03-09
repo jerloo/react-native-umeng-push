@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { PdaReadStateDto } from '../../apiclient/src/models';
 
-const json = `{
+`{
   "items": [
     {
       "stateCode": "1001",

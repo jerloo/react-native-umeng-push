@@ -24,8 +24,11 @@ import NetInfo from '@react-native-community/netinfo';
 import DeviceInfo from 'react-native-device-info';
 import dayjs from 'dayjs';
 import { NO_NETWORK_ERROR } from '../data/apiService';
+import { useNavigation } from '@react-navigation/core';
 
-export default function ProfileScreen({ navigation }: any) {
+export default function ProfileScreen() {
+  const navigation = useNavigation();
+
   const [session, sSession] = useState<UserSession>();
   const [uploadLogVisible, setUploadLogVisible] = useState(false);
   const [checkVersionVisible, setCheckVersionVisible] = useState(false);
