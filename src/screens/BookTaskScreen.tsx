@@ -48,6 +48,7 @@ export default function BookTaskScreen({ route, navigation }: any) {
     }
 
     setLoading(true);
+    const key = Toast.loading('下载中');
     try {
       const res = await center.getBookDataByIds([route.params.bookId]);
       const items = (res as PdaReadDataDto[]).map((value) => {
@@ -60,6 +61,9 @@ export default function BookTaskScreen({ route, navigation }: any) {
       setBookDataItems(items);
     } catch (e) {
       Toast.fail(e);
+    } finally {
+      setLoading(false);
+      Toast.remove(key);
     }
   };
 

@@ -144,8 +144,9 @@ export default function BooksScreen({ navigation }: any) {
       await center.getBookDataByIds(
         bookItems.filter((value) => value.checked).map((it) => it.bookId),
       );
-    } catch (e) {
       fetchLocal();
+    } catch (e) {
+      Toast.fail(e);
     } finally {
       setLoading(false);
     }
