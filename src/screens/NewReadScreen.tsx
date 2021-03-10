@@ -105,8 +105,12 @@ export default function NewReadScreen() {
   };
 
   const saveData = async () => {
-    await db.updateReadData([newData]);
-    Toast.success('保存成功');
+    if (!newData.reading) {
+      Toast.fail('请先抄表');
+    } else {
+      await db.updateReadData([newData]);
+      Toast.success('保存成功');
+    }
   };
 
   const openLighting = () => {};

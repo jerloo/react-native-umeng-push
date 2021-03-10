@@ -15,7 +15,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import { ThemeProvider } from 'react-native-elements';
 
-import { Provider } from '@ant-design/react-native';
+import { Provider, Toast } from '@ant-design/react-native';
 import ProfileScreen from './src/screens/ProfileScreen';
 import EditNameScreen from './src/screens/EditNameScreen';
 import EditPhoneScreen from './src/screens/EditPhoneScreen';
@@ -31,6 +31,8 @@ import { PortalProvider } from 'react-native-portal-view';
 import ReadingCollectScreen from './src/screens/ReadingCollectScreen';
 import CameraScreen from './src/screens/CameraScreen';
 import SearchScreen from './src/screens/SearchScreen';
+
+Toast.config({ duration: 0.5 });
 
 const Stack = createStackNavigator();
 
