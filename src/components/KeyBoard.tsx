@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import { scaleSize } from 'react-native-responsive-design';
+import { scaleHeight, scaleSize } from 'react-native-responsive-design';
 import { colorWhite } from '../styles';
 import StateButton from './StateButton';
 import { PdaReadStateDto } from '../../apiclient/src/models';
@@ -17,7 +17,7 @@ interface Props {
   onStateSelect?: (item: PdaReadStateDto) => void;
   onSettingsOpen?: () => void;
   readStates?: ReadStateStorage;
-  selectState?: PdaReadStateDto;
+  selectStateId?: number;
 }
 
 export default function KeyBoard(props: Props) {
@@ -28,7 +28,7 @@ export default function KeyBoard(props: Props) {
           {props.readStates?.offens.map((it) => (
             <StateButton
               key={it.id}
-              selected={props.selectState?.id === it.id}
+              selected={props.selectStateId === it.id}
               title={it.stateName}
               onClick={() => props.onStateSelect && props.onStateSelect(it)}
             />
@@ -148,12 +148,13 @@ export default function KeyBoard(props: Props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#E6E6E6',
+    paddingBottom: scaleHeight(10),
   },
   row: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: scaleSize(6),
+    marginTop: scaleHeight(6),
   },
   cell: {
     display: 'flex',
@@ -161,10 +162,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
-    height: scaleSize(104),
+    height: scaleHeight(104),
     flex: 1,
     borderRadius: scaleSize(10),
-    marginVertical: scaleSize(6),
+    marginVertical: scaleHeight(6),
     marginHorizontal: scaleSize(9),
   },
   number: {
@@ -203,8 +204,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: scaleSize(21),
-    paddingBottom: scaleSize(10),
+    paddingTop: scaleHeight(21),
+    paddingBottom: scaleHeight(10),
     paddingHorizontal: scaleSize(30),
   },
   offenStatesWrapper: {

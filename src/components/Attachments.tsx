@@ -15,26 +15,33 @@ interface Props {
   files: MobileFileDto[];
   onTakePhoto: () => void;
   onPhotoClick: (item: MobileFileDto) => void;
+  onPhotoDeleteClick: (item: MobileFileDto) => void;
 }
 
 export default function Attachments({
   files,
   onTakePhoto,
   onPhotoClick,
+  onPhotoDeleteClick,
 }: Props) {
   const renderItem = (info: ListRenderItemInfo<MobileFileDto>) => {
     return (
       <>
         {info.index < files.length ? (
-          <TouchableOpacity
-            style={styles.itemContainer}
-            onPress={() => onPhotoClick(info.item)}>
-            <Image style={styles.image} source={{ uri: info.item.filePath }} />
-            <Image
-              style={styles.deleteIcon}
-              source={require('../assets/qietu/chaobiaoluru/enter_icon_idelete_normal.png')}
-            />
-          </TouchableOpacity>
+          <View style={styles.itemContainer}>
+            <TouchableOpacity onPress={() => onPhotoClick(info.item)}>
+              <Image
+                style={styles.image}
+                source={{ uri: info.item.filePath }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => onPhotoDeleteClick(info.item)}>
+              <Image
+                style={styles.deleteIcon}
+                source={require('../assets/qietu/chaobiaoluru/enter_icon_idelete_normal.png')}
+              />
+            </TouchableOpacity>
+          </View>
         ) : (
           <TouchableOpacity
             style={styles.takeImageContainer}

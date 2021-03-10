@@ -12,7 +12,7 @@ import StateButtonEx from './StateButtonEx';
 interface Props {
   onSaved: () => void;
   onSelected: (item: PdaReadStateDto) => void;
-  selectedState?: PdaReadStateDto;
+  selectedStateId?: number;
 }
 
 export default function NewReadSettings(props: Props) {
@@ -114,7 +114,7 @@ export default function NewReadSettings(props: Props) {
             title={it.stateName}
             onClick={() => moveFromOffen(it)}
             icon={editing ? 'remove' : 'none'}
-            selected={it.id === props.selectedState?.id}
+            selected={it.id === props.selectedStateId}
           />
         ))}
       </View>
@@ -129,7 +129,7 @@ export default function NewReadSettings(props: Props) {
                 title={i.stateName}
                 onClick={() => addToOffen(i)}
                 icon={editing ? 'add' : 'none'}
-                selected={it.id === props.selectedState?.id}
+                selected={it.id === props.selectedStateId}
               />
             ))}
           </View>

@@ -11,12 +11,8 @@ import {
   TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { scaleSize } from 'react-native-responsive-design';
-import {
-  MobileFileDto,
-  PdaReadDataDto,
-  PdaReadStateDto,
-} from '../../apiclient/src/models';
+import { scaleHeight, scaleSize } from 'react-native-responsive-design';
+import { MobileFileDto, PdaReadDataDto } from '../../apiclient/src/models';
 import { colorWhite } from '../styles';
 import Tag from '../components/Tag';
 import KeyBoard from '../components/KeyBoard';
@@ -46,9 +42,8 @@ export default function NewReadScreen() {
   const [newData, setNewData] = useState<PdaReadDataDto>(data);
   const [attachmentsModalVisible, setAttachmentsModalVisible] = useState(false);
   const [settingsModalVisible, setSettingsModalVisible] = useState(false);
-
-  const [selectState, setSelectState] = React.useState<PdaReadStateDto>();
-
+  const [previewModalVisible, setPreviewModalVisible] = useState(false);
+  const [currentPreviewFile, setCurrentPreviewFile] = useState<MobileFileDto>();
   const [readStates, setReadStates] = React.useState<ReadStateStorage>();
   const [amount, setAmount] = useState(0);
 
@@ -73,17 +68,20 @@ export default function NewReadScreen() {
         ).then((details) => {
           if (details) {
             console.log('数据库获取', details);
-            setNewData(details);
 
             if (!details.readStateId) {
               getReadStateSettingsItems().then((items) => {
-                setSelectState(items.find((it) => it.stateName === '正常'));
+                const readState = items.find((it) => it.stateName === '正常');
+                details.readStateId = readState?.id;
+                setNewData(details);
               });
             } else {
               getReadStateSettingsItems().then((items) => {
-                setSelectState(
-                  items.find((it) => it.id === details.readStateId),
+                const readState = items.find(
+                  (it) => it.id === details.readStateId,
                 );
+                details.readStateId = readState?.id;
+                setNewData(details);
               });
             }
           }
@@ -123,7 +121,12 @@ export default function NewReadScreen() {
   };
 
   const onPhotoClick = (item: MobileFileDto) => {
-    console.log('onPhotoClick', item);
+    setNewData(newData);
+    setCurrentPreviewFile(item);
+    setPreviewModalVisible(true);
+  };
+
+  const onPhotoDeleteClick = (item: MobileFileDto) => {
     newData.terminalFiles = (newData.terminalFiles as MobileFileDto[]).filter(
       (it) => it.filePath !== item.filePath,
     );
@@ -132,6 +135,10 @@ export default function NewReadScreen() {
   };
 
   const calcBudgetAmount = async () => {
+    if (!newData.reading) {
+      Toast.fail('请先抄表');
+      return;
+    }
     const key = Toast.loading('计算中');
     try {
       const result = await center.calcBudgetAmount({
@@ -186,7 +193,14 @@ export default function NewReadScreen() {
           </View>
 
           <View style={[styles.extraRowPart, { justifyContent: 'flex-end' }]}>
-            <TouchableOpacity style={styles.tableValueButton}>
+            <TouchableOpacity
+              style={styles.tableValueButton}
+              onPress={() =>
+                navigation.navigate('CustDetails', {
+                  custId: newData.custId,
+                  title: `${newData.bookCode}(${newData.custId})`,
+                })
+              }>
               <Text style={styles.tableValueButtonText}>往期</Text>
             </TouchableOpacity>
           </View>
@@ -222,6 +236,30 @@ export default function NewReadScreen() {
     return '';
   };
 
+  const renderPreviewModal = () => {
+    return (
+      <Modal
+        visible={previewModalVisible && !!currentPreviewFile?.filePath}
+        fullScreen
+        horizontalLayout="right"
+        animationIn="slideInRight"
+        animationOut="slideOutRight"
+        onChange={setPreviewModalVisible}>
+        <View
+          style={{
+            backgroundColor: colorWhite,
+            height: '100%',
+            paddingTop: StatusBar.currentHeight,
+          }}>
+          <Image
+            style={{ width: '100%' }}
+            source={{ uri: currentPreviewFile?.filePath }}
+          />
+        </View>
+      </Modal>
+    );
+  };
+
   const renderAttachmentsModal = () => {
     return (
       <Modal
@@ -240,6 +278,7 @@ export default function NewReadScreen() {
           }}>
           <Attachments
             onPhotoClick={onPhotoClick}
+            onPhotoDeleteClick={onPhotoDeleteClick}
             onTakePhoto={() => {
               setAttachmentsModalVisible(false);
               navigation.navigate('Camera', {
@@ -264,9 +303,8 @@ export default function NewReadScreen() {
         onChange={setSettingsModalVisible}>
         <View style={styles.settingsModalContent}>
           <NewReadSettings
-            selectedState={selectState}
+            selectedStateId={newData.readStateId}
             onSelected={(item) => {
-              setSelectState(item);
               setSettingsModalVisible(false);
               console.log('readStateId', item.id);
               setNewData({ ...newData, readStateId: item.id });
@@ -416,10 +454,8 @@ export default function NewReadScreen() {
               onPreClick={() => {}}
               onSettingsOpen={() => setSettingsModalVisible(true)}
               readStates={readStates}
-              selectState={selectState}
+              selectStateId={newData.readStateId}
               onStateSelect={(item) => {
-                setSelectState(item);
-                console.log('readStateId', item.id);
                 setNewData({ ...newData, readStateId: item.id });
               }}
             />
@@ -428,6 +464,7 @@ export default function NewReadScreen() {
       </SafeAreaView>
       {renderAttachmentsModal()}
       {renderSettingsModal()}
+      {renderPreviewModal()}
     </View>
   );
 }
@@ -458,7 +495,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colorWhite,
     marginHorizontal: scaleSize(30),
-    marginTop: scaleSize(12),
+    marginTop: scaleHeight(12),
     display: 'flex',
     flexDirection: 'column',
     borderRadius: scaleSize(8),
@@ -497,7 +534,7 @@ const styles = StyleSheet.create({
     fontSize: scaleSize(24),
     color: colorWhite,
     backgroundColor: '#7AAFFD',
-    paddingVertical: scaleSize(8),
+    paddingVertical: scaleHeight(8),
     paddingHorizontal: scaleSize(18),
   },
   contentWrapper: {
@@ -514,7 +551,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginTop: scaleSize(10),
+    marginTop: scaleHeight(10),
   },
   description: {
     fontSize: scaleSize(26),
@@ -524,13 +561,13 @@ const styles = StyleSheet.create({
   iconLocation: {
     width: scaleSize(26),
     height: scaleSize(33),
-    marginTop: scaleSize(5),
+    marginTop: scaleHeight(5),
   },
   tags: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: scaleSize(24),
+    marginVertical: scaleHeight(24),
   },
   table: {
     display: 'flex',
@@ -542,15 +579,15 @@ const styles = StyleSheet.create({
   tableLabel: {
     color: '#666666',
     fontSize: scaleSize(28),
-    marginTop: scaleSize(24),
-    marginBottom: scaleSize(6),
+    marginTop: scaleHeight(24),
+    marginBottom: scaleHeight(6),
   },
   tableValue: {
     color: '#333333',
     fontSize: scaleSize(28),
     marginStart: scaleSize(30),
-    marginTop: scaleSize(24),
-    marginBottom: scaleSize(6),
+    marginTop: scaleHeight(24),
+    marginBottom: scaleHeight(6),
   },
   tableValueRow: {
     display: 'flex',
@@ -572,7 +609,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: scaleSize(17),
+    paddingVertical: scaleHeight(17),
     paddingHorizontal: scaleSize(30),
     backgroundColor: '#F5F5F4',
   },
@@ -611,7 +648,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: scaleSize(24),
+    marginTop: scaleHeight(24),
   },
   extraRowPart: {
     display: 'flex',
@@ -654,7 +691,7 @@ const styles = StyleSheet.create({
   contentTopDesc: {
     display: 'flex',
     flexDirection: 'row',
-    marginTop: scaleSize(10),
+    marginTop: scaleHeight(10),
   },
   contentTopDescLabel: {
     fontSize: scaleSize(24),
@@ -669,7 +706,7 @@ const styles = StyleSheet.create({
     backgroundColor: colorWhite,
     marginStart: scaleSize(16),
     height: scaleSize(60),
-    paddingVertical: scaleSize(12),
+    paddingVertical: scaleHeight(12),
     paddingHorizontal: scaleSize(18),
     flex: 1,
   },
