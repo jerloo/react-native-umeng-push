@@ -121,7 +121,6 @@ export default function NewReadScreen() {
   };
 
   const onPhotoClick = (item: MobileFileDto) => {
-    setNewData(newData);
     setCurrentPreviewFile(item);
     setPreviewModalVisible(true);
   };
@@ -130,7 +129,7 @@ export default function NewReadScreen() {
     newData.terminalFiles = (newData.terminalFiles as MobileFileDto[]).filter(
       (it) => it.filePath !== item.filePath,
     );
-    setNewData(newData);
+    setNewData({ ...newData });
     setAttachmentsModalVisible(false);
   };
 
@@ -242,20 +241,20 @@ export default function NewReadScreen() {
         visible={previewModalVisible && !!currentPreviewFile?.filePath}
         fullScreen
         horizontalLayout="right"
-        animationIn="slideInRight"
-        animationOut="slideOutRight"
+        animationIn="zoomIn"
+        animationOut="zoomOut"
+        style={{ justifyContent: 'center', alignItems: 'center' }}
         onChange={setPreviewModalVisible}>
-        <View
+        <Image
           style={{
-            backgroundColor: colorWhite,
-            height: '100%',
-            paddingTop: StatusBar.currentHeight,
-          }}>
-          <Image
-            style={{ width: '100%' }}
-            source={{ uri: currentPreviewFile?.filePath }}
-          />
-        </View>
+            width: '100%',
+            minHeight: 300,
+            backgroundColor: 'black',
+            alignSelf: 'center',
+          }}
+          resizeMode="contain"
+          source={{ uri: currentPreviewFile?.filePath }}
+        />
       </Modal>
     );
   };
