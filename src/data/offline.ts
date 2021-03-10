@@ -1,6 +1,7 @@
 import {
   LoginInput,
   MeterReaderDto,
+  PdaCalcBudgetAmountInput,
   PdaCustDto,
   PdaCustListDto,
   PdaReadDataDto,
@@ -14,8 +15,12 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
-  async homeQuery(key: string): Promise<PdaCustListDto[]> {
-    throw new Error('Method not implemented.');
+  async calcBudgetAmount(_input: PdaCalcBudgetAmountInput): Promise<number> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
+  async homeQuery(_key: string): Promise<PdaCustListDto[]> {
+    throw new Error(NO_NETWORK_ERROR);
   }
 
   async getAllPdaUsers(): Promise<MeterReaderDto[]> {
@@ -42,7 +47,7 @@ export default class OfflineApiService implements ApiService {
   }
 
   async getBookDataByIds(ids: number[]): Promise<PdaReadDataDto[]> {
-    return db.getBookDataByIds(ids);
+    return db.getBookDataByBookIds(ids);
   }
 
   async getBookList(): Promise<PdaMeterBookDtoHolder[]> {

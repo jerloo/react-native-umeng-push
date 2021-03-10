@@ -35,6 +35,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
 import db from '../data/database';
 import { Toast } from '@ant-design/react-native';
+import center from '../data';
 
 export default function NewReadScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'NewRead'>>();
@@ -49,6 +50,7 @@ export default function NewReadScreen() {
   const [selectState, setSelectState] = React.useState<PdaReadStateDto>();
 
   const [readStates, setReadStates] = React.useState<ReadStateStorage>();
+  const [amount, setAmount] = useState(0);
 
   React.useEffect(() => {
     try {
@@ -57,26 +59,50 @@ export default function NewReadScreen() {
       setNewData(data);
     } catch (e) {}
 
-    console.log('data', data);
+    console.log('列表传过来', data);
   }, [data]);
 
   React.useEffect(() => {
     getReadStateSettings().then((r) => {
       if (r) {
         setReadStates(r);
+        db.getBookDataDetails(
+          route.params.data.custId,
+          route.params.data.billMonth,
+          route.params.data.readTimes,
+        ).then((details) => {
+          if (details) {
+            console.log('数据库获取', details);
+            setNewData(details);
 
-        getReadStateSettingsItems().then((items) => {
-          setSelectState(items.find((it) => it.stateName === '正常'));
+            if (!details.readStateId) {
+              getReadStateSettingsItems().then((items) => {
+                setSelectState(items.find((it) => it.stateName === '正常'));
+              });
+            } else {
+              getReadStateSettingsItems().then((items) => {
+                setSelectState(
+                  items.find((it) => it.id === details.readStateId),
+                );
+              });
+            }
+          }
         });
       }
     });
-  }, []);
+  }, [
+    data.readStateId,
+    route.params.data.billMonth,
+    route.params.data.custId,
+    route.params.data.readTimes,
+  ]);
 
   const setValue = (value: string) => {
     setNewData({
       ...newData,
       reading: parseInt(value, 10) || undefined,
       readWater: newData.reading - newData.lastReading || undefined,
+      readDate: new Date(),
     });
   };
 
@@ -103,6 +129,24 @@ export default function NewReadScreen() {
     );
     setNewData(newData);
     setAttachmentsModalVisible(false);
+  };
+
+  const calcBudgetAmount = async () => {
+    const key = Toast.loading('计算中');
+    try {
+      const result = await center.calcBudgetAmount({
+        custId: newData.custId,
+        readDate: newData.readDate,
+        readStateId: newData.readStateId,
+        readWater: newData.readWater,
+        reading: newData.reading,
+      });
+      setAmount(result);
+    } catch (e) {
+      Toast.fail(e.message);
+    } finally {
+      Toast.remove(key);
+    }
   };
 
   const renderStateExtra = () => {
@@ -150,11 +194,13 @@ export default function NewReadScreen() {
         <View style={styles.extraRow}>
           <View style={styles.extraRowPart}>
             <Text style={styles.extraLabel}>预算金额</Text>
-            <Text style={styles.extraValue}>{0}</Text>
+            <Text style={styles.extraValue}>{amount}</Text>
           </View>
 
           <View style={[styles.extraRowPart, { justifyContent: 'flex-end' }]}>
-            <TouchableOpacity style={styles.tableValueButton}>
+            <TouchableOpacity
+              style={styles.tableValueButton}
+              onPress={calcBudgetAmount}>
               <Text style={styles.tableValueButtonText}>预算</Text>
             </TouchableOpacity>
           </View>
@@ -222,6 +268,8 @@ export default function NewReadScreen() {
             onSelected={(item) => {
               setSelectState(item);
               setSettingsModalVisible(false);
+              console.log('readStateId', item.id);
+              setNewData({ ...newData, readStateId: item.id });
             }}
             onSaved={() => {
               setSettingsModalVisible(false);
@@ -325,6 +373,10 @@ export default function NewReadScreen() {
               <TextInput
                 style={styles.remark}
                 placeholder="点击添加备注(100字以内)"
+                onChangeText={(text) =>
+                  setNewData({ ...newData, readRemark: text })
+                }
+                value={newData.readRemark}
               />
               <TouchableOpacity
                 style={styles.lightButton}
@@ -365,7 +417,11 @@ export default function NewReadScreen() {
               onSettingsOpen={() => setSettingsModalVisible(true)}
               readStates={readStates}
               selectState={selectState}
-              onStateSelect={(item) => setSelectState(item)}
+              onStateSelect={(item) => {
+                setSelectState(item);
+                console.log('readStateId', item.id);
+                setNewData({ ...newData, readStateId: item.id });
+              }}
             />
           ) : null}
         </View>

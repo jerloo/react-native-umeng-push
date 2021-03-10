@@ -48,7 +48,7 @@ export interface AccessTokenProvider {
 export class ApiClient {
   loginApi: LoginApi;
   chargeApi: ChargeApi;
-  logApi: MobileReadingApi;
+  mobileReadingApi: MobileReadingApi;
   paymentApi: MobilePaymentApi;
 
   provider: AccessTokenProvider;
@@ -73,7 +73,7 @@ export class ApiClient {
       basePath,
       axiosInstance,
     );
-    this.logApi = new MobileReadingApi(
+    this.mobileReadingApi = new MobileReadingApi(
       {
         apiKey: provider.get,
       },

@@ -1,5 +1,5 @@
 import SQLite from 'react-native-sqlite-storage';
-import { PdaReadDataDto } from '../../apiclient/src/models';
+import { MobileFileDto, PdaReadDataDto } from '../../apiclient/src/models';
 import {
   PdaBillingInfoHolder,
   PdaCustInfoHolder,
@@ -413,7 +413,7 @@ class DataBase {
     return result?.[0].rows.raw() || [];
   };
 
-  getBookDataByIds = async (ids: number[]) => {
+  getBookDataByBookIds = async (ids: number[]) => {
     const result = await this.db?.executeSql(
       `SELECT * FROM BookDatas WHERE bookId in (${ids.join(
         ',',
@@ -421,6 +421,28 @@ class DataBase {
       [],
     );
     return result?.[0].rows.raw() || [];
+  };
+
+  getBookDataDetails = async (
+    custId: number,
+    billMonth: number,
+    readTimes: number,
+  ) => {
+    const result = await this.db?.executeSql(
+      'SELECT * FROM BookDatas WHERE custId = ? AND billMonth = ? AND readTimes = ?',
+      [custId, billMonth, readTimes],
+    );
+    const data =
+      result?.[0].rows.length !== 0
+        ? (result?.[0].rows.raw()[0] as PdaReadDataDto)
+        : null;
+
+    if (data === null) {
+      return null;
+    }
+    data.terminalFiles =
+      (JSON.parse(data.terminalFiles as string) as MobileFileDto[]) || [];
+    return data;
   };
 
   saveReadData = async (items: PdaReadDataDto[]) => {
@@ -482,8 +504,9 @@ class DataBase {
   updateReadData = async (items: PdaReadDataDto[]) => {
     await this.db?.transaction((tx) => {
       items.forEach((item) => {
+        console.log('保存报表录入', item);
         tx.executeSql(
-          `UPDATE BookDatas SET terminalFiles = ?, reading = ?, readWater = ?, readDate = ?, readStateId = ?
+          `UPDATE BookDatas SET terminalFiles = ?, reading = ?, readWater = ?, readDate = ?, readStateId = ?, readRemark = ?
             WHERE billMonth = ? AND custId = ? AND readTimes = ?`,
           [
             JSON.stringify(item.terminalFiles),
@@ -491,6 +514,7 @@ class DataBase {
             item.readWater,
             item.readDate,
             item.readStateId,
+            item.readRemark,
             item.billMonth,
             item.custId,
             item.readTimes,

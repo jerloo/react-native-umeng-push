@@ -6,6 +6,7 @@ import {
   PdaReadingCollectDto,
   MeterReaderDto,
   PdaCustListDto,
+  PdaCalcBudgetAmountInput,
 } from '../../apiclient/src/models';
 import NetInfo from '@react-native-community/netinfo';
 import db from './database';
@@ -21,6 +22,14 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+
+  async calcBudgetAmount(input: PdaCalcBudgetAmountInput): Promise<number> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.calcBudgetAmount(input);
+    }
+    return this.offline.calcBudgetAmount(input);
   }
 
   async homeQuery(key: string): Promise<PdaCustListDto[]> {

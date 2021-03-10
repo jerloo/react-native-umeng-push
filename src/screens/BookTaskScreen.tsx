@@ -157,6 +157,7 @@ export default function BookTaskScreen() {
         tabBarInactiveTextColor="#333333">
         <FlatList<PdaReadDataDtoHolder>
           style={styles.items}
+          initialNumToRender={10}
           data={bookDataItems.filter((it) => !it.item.reading)}
           renderItem={renderBookItem}
           ItemSeparatorComponent={() => (
@@ -171,6 +172,7 @@ export default function BookTaskScreen() {
         />
         <FlatList<PdaReadDataDtoHolder>
           style={styles.items}
+          initialNumToRender={10}
           data={bookDataItems.filter((it) => !!it.item.reading)}
           renderItem={renderBookItem}
           ItemSeparatorComponent={() => (
@@ -185,6 +187,7 @@ export default function BookTaskScreen() {
         />
         <FlatList<PdaReadDataDtoHolder>
           style={styles.items}
+          initialNumToRender={10}
           data={bookDataItems}
           renderItem={renderBookItem}
           ItemSeparatorComponent={() => (

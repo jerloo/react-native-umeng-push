@@ -63,7 +63,7 @@ test('Test 上传日志文件', async () => {
     },
     function (err, ed) {
       console.log(err || ed);
-      api.logApi
+      api.mobileReadingApi
         .apiAppMobileLogUploadMobileLogFilePost({
           deviceCode: '1-1-1-1',
           logFiles: [

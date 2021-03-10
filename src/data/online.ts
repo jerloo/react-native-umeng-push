@@ -1,6 +1,7 @@
 import {
   LoginInput,
   MeterReaderDto,
+  PdaCalcBudgetAmountInput,
   PdaCustDto,
   PdaCustListDto,
   PdaReadDataDto,
@@ -14,6 +15,20 @@ import { api } from '../utils/apiUtils';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class OnlineApiService implements ApiService {
+  async calcBudgetAmount(input: PdaCalcBudgetAmountInput): Promise<number> {
+    try {
+      const result = await api.mobileReadingApi.apiAppMobileReadingCalcBudgetAmountPost(
+        input,
+      );
+      if (result.status < 400) {
+        return result.data;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
   async homeQuery(key: string): Promise<PdaCustListDto[]> {
     try {
       const result = await api.chargeApi.apiAppChargeCustListGet(key);
@@ -146,7 +161,7 @@ export default class OnlineApiService implements ApiService {
 
   async uploadLogFile(fileName: string, fileUrl: string): Promise<boolean> {
     try {
-      const result = await api.logApi.apiAppMobileReadingUploadMobileLogFilePost(
+      const result = await api.mobileReadingApi.apiAppMobileReadingUploadMobileLogFilePost(
         {
           deviceCode: '1-1-1-1',
           logFiles: [
