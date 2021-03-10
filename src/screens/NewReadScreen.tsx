@@ -33,12 +33,15 @@ import {
 } from '../utils/settingsUtils';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
+import db from '../data/database';
+import { Toast } from '@ant-design/react-native';
 
 export default function NewReadScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'NewRead'>>();
   const navigation = useNavigation();
 
   const { data } = route.params;
+
   const [newData, setNewData] = useState<PdaReadDataDto>(data);
   const [attachmentsModalVisible, setAttachmentsModalVisible] = useState(false);
   const [settingsModalVisible, setSettingsModalVisible] = useState(false);
@@ -46,6 +49,17 @@ export default function NewReadScreen() {
   const [selectState, setSelectState] = React.useState<PdaReadStateDto>();
 
   const [readStates, setReadStates] = React.useState<ReadStateStorage>();
+
+  React.useEffect(() => {
+    try {
+      data.terminalFiles =
+        (JSON.parse(data.terminalFiles as string) as MobileFileDto[]) || [];
+      setNewData(data);
+    } catch (e) {}
+
+    console.log('data', data);
+  }, [data]);
+
   React.useEffect(() => {
     getReadStateSettings().then((r) => {
       if (r) {
@@ -66,7 +80,10 @@ export default function NewReadScreen() {
     });
   };
 
-  const saveData = () => {};
+  const saveData = async () => {
+    await db.updateReadData([newData]);
+    Toast.success('保存成功');
+  };
 
   const openLighting = () => {};
 
@@ -85,6 +102,7 @@ export default function NewReadScreen() {
       (it) => it.filePath !== item.filePath,
     );
     setNewData(newData);
+    setAttachmentsModalVisible(false);
   };
 
   const renderStateExtra = () => {
@@ -334,7 +352,6 @@ export default function NewReadScreen() {
                 }
               }}
               onNumberClick={(n) => {
-                console.log('onNumberClick', n);
                 setValue(`${newData.reading || ''}${n}`);
               }}
               onPhotoClick={() =>

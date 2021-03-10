@@ -18,7 +18,6 @@ export default function StateButtonEx({
 }: Props) {
   const style = selected ? [styles.basic, styles.active] : [styles.basic];
   const _onClick = () => {
-    console.log('_onClick');
     onClick && onClick();
   };
   return (

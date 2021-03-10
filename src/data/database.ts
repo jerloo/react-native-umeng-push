@@ -432,7 +432,7 @@ class DataBase {
             item.billMonth,
             item.custId,
             item.readTimes,
-            item.terminalFiles.join('|||'),
+            JSON.stringify(item.terminalFiles),
             item.oweNumber,
             item.bookId,
             item.bookCode,
@@ -471,6 +471,29 @@ class DataBase {
             item.highWater,
             item.lowWater,
             item.dataState,
+          ],
+        ).catch((e) => {
+          console.log('插入下载测本数据失败', e);
+        });
+      });
+    });
+  };
+
+  updateReadData = async (items: PdaReadDataDto[]) => {
+    await this.db?.transaction((tx) => {
+      items.forEach((item) => {
+        tx.executeSql(
+          `UPDATE BookDatas SET terminalFiles = ?, reading = ?, readWater = ?, readDate = ?, readStateId = ?
+            WHERE billMonth = ? AND custId = ? AND readTimes = ?`,
+          [
+            JSON.stringify(item.terminalFiles),
+            item.reading,
+            item.readWater,
+            item.readDate,
+            item.readStateId,
+            item.billMonth,
+            item.custId,
+            item.readTimes,
           ],
         ).catch((e) => {
           console.log('插入下载测本数据失败', e);
