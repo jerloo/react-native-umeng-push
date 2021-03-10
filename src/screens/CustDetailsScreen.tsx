@@ -41,7 +41,7 @@ export default function CustDetailsScreen() {
         const res = await center.online.getCustDetails([custId]);
         setDetails((res as PdaCustDto[])[0]);
       } catch (e) {
-        Toast.fail(e);
+        Toast.fail(e.message);
       }
     };
     fetchRemote();
@@ -54,7 +54,7 @@ export default function CustDetailsScreen() {
       const res = await center.online.getCustDetails([custId]);
       setDetails((res as PdaCustDto[])[0]);
     } catch (e) {
-      Toast.fail(e);
+      Toast.fail(e.message);
     } finally {
       Toast.remove(key);
     }

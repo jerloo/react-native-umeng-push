@@ -37,7 +37,7 @@ export default function SearchScreen() {
       const result = await center.homeQuery(queryKey);
       setItems(result);
     } catch (e) {
-      Toast.fail(e);
+      Toast.fail(e.message);
     } finally {
       Toast.remove(key);
     }

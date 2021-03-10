@@ -53,7 +53,7 @@ export default function ProfileScreen() {
     try {
       await center.logout();
     } catch (e) {
-      Toast.fail(e);
+      Toast.fail(e.message);
     }
     navigation.goBack();
   };

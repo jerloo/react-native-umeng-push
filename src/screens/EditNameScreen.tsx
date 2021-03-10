@@ -43,7 +43,7 @@ export default function EditNameScreen() {
       }
     } catch (e) {
       Toast.remove(key);
-      Toast.fail(e);
+      Toast.fail(e.message);
     } finally {
       Toast.remove(key);
     }

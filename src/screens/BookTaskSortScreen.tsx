@@ -41,7 +41,7 @@ export default function BookTaskSortScreen() {
         });
         setBookSortItems(items);
       } catch (e) {
-        Toast.fail(e);
+        Toast.fail(e.message);
       }
     };
 

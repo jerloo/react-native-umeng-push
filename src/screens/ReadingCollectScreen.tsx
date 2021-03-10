@@ -48,7 +48,7 @@ export default function ReadingCollectScreen() {
         setCurrentUser(users[0]);
       }
     } catch (e) {
-      Toast.fail(e);
+      Toast.fail(e.message);
     }
   };
 
@@ -66,7 +66,7 @@ export default function ReadingCollectScreen() {
       setItems(result);
       Toast.remove(key);
     } catch (e) {
-      Toast.fail(e);
+      Toast.fail(e.message);
       setLoading(false);
       Toast.remove(key);
     } finally {

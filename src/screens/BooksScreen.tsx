@@ -53,7 +53,7 @@ export default function BooksScreen() {
       console.log(items);
       setBookItems(items);
     } catch (e) {
-      Toast.fail(e);
+      Toast.fail(e.message);
     }
   };
 
@@ -98,7 +98,7 @@ export default function BooksScreen() {
       console.log('fetchRemote', items);
       setBookItems(items);
     } catch (e) {
-      Toast.fail(e);
+      Toast.fail(e.message);
     }
   };
 
@@ -134,7 +134,7 @@ export default function BooksScreen() {
         );
       }
     } catch (e) {
-      Toast.fail(e);
+      Toast.fail(e.message);
       setLoading(false);
     } finally {
       setLoading(false);
@@ -149,7 +149,7 @@ export default function BooksScreen() {
       );
       fetchLocal();
     } catch (e) {
-      Toast.fail(e);
+      Toast.fail(e.message);
     } finally {
       setLoading(false);
     }

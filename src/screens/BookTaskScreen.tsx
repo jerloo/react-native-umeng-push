@@ -40,7 +40,7 @@ export default function BookTaskScreen() {
         });
         setBookDataItems(items);
       } catch (e) {
-        Toast.fail(e);
+        Toast.fail(e.message);
       }
     };
 
@@ -65,7 +65,7 @@ export default function BookTaskScreen() {
       });
       setBookDataItems(items);
     } catch (e) {
-      Toast.fail(e);
+      Toast.fail(e.message);
     } finally {
       setLoading(false);
       Toast.remove(key);
