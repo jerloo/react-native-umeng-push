@@ -166,6 +166,7 @@ export default function BookTaskScreen() {
           contentInset={{ bottom: 100 }}
           contentContainerStyle={{
             paddingBottom: scaleSize(30),
+            paddingTop: scaleSize(18),
           }}
         />
         <FlatList<PdaReadDataDtoHolder>
@@ -179,6 +180,7 @@ export default function BookTaskScreen() {
           contentInset={{ bottom: 100 }}
           contentContainerStyle={{
             paddingBottom: scaleSize(30),
+            paddingTop: scaleSize(18),
           }}
         />
         <FlatList<PdaReadDataDtoHolder>
@@ -192,6 +194,7 @@ export default function BookTaskScreen() {
           contentInset={{ bottom: 100 }}
           contentContainerStyle={{
             paddingBottom: scaleSize(30),
+            paddingTop: scaleSize(18),
           }}
         />
       </Tabs>

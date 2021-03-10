@@ -166,4 +166,5 @@ class CenterService implements ApiService {
   }
 }
 
-export default new CenterService();
+const center = new CenterService();
+export default center;

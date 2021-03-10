@@ -12,7 +12,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { scaleSize } from 'react-native-responsive-design';
-import { PdaReadDataDto, PdaReadStateDto } from '../../apiclient/src/models';
+import {
+  MobileFileDto,
+  PdaReadDataDto,
+  PdaReadStateDto,
+} from '../../apiclient/src/models';
 import { colorWhite } from '../styles';
 import Tag from '../components/Tag';
 import KeyBoard from '../components/KeyBoard';
@@ -29,7 +33,6 @@ import {
 } from '../utils/settingsUtils';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
-import { launchCamera } from 'react-native-image-picker';
 
 export default function NewReadScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'NewRead'>>();
@@ -67,8 +70,21 @@ export default function NewReadScreen() {
 
   const openLighting = () => {};
 
-  const addNewAttachment = (uri: string) => {
-    console.log(uri);
+  const addNewAttachment = (result: MobileFileDto) => {
+    console.log(result);
+    if (!newData.terminalFiles) {
+      newData.terminalFiles = [result];
+    } else if (newData.terminalFiles instanceof Array) {
+      newData.terminalFiles.push(result);
+    }
+  };
+
+  const onPhotoClick = (item: MobileFileDto) => {
+    console.log('onPhotoClick', item);
+    newData.terminalFiles = (newData.terminalFiles as MobileFileDto[]).filter(
+      (it) => it.filePath !== item.filePath,
+    );
+    setNewData(newData);
   };
 
   const renderStateExtra = () => {
@@ -158,7 +174,16 @@ export default function NewReadScreen() {
             height: '100%',
             paddingTop: StatusBar.currentHeight,
           }}>
-          <Attachments files={[]} />
+          <Attachments
+            onPhotoClick={onPhotoClick}
+            onTakePhoto={() => {
+              setAttachmentsModalVisible(false);
+              navigation.navigate('Camera', {
+                callback: addNewAttachment,
+              });
+            }}
+            files={newData.terminalFiles}
+          />
         </View>
       </Modal>
     );

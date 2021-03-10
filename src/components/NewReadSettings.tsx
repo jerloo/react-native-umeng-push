@@ -205,7 +205,8 @@ const styles = StyleSheet.create({
     borderWidth: scaleSize(1),
     borderRadius: scaleSize(2),
     borderColor: '#DEDEDE',
-    minHeight: scaleSize(210),
+    // minHeight: scaleSize(210),
+    flexWrap: 'wrap',
   },
   groupBox: {
     display: 'flex',

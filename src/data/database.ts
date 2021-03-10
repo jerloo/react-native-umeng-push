@@ -8,7 +8,7 @@ import {
   PdaReadingRecordHolder,
 } from './holders';
 
-SQLite.DEBUG(true);
+// SQLite.DEBUG(true);
 SQLite.enablePromise(true);
 
 const database_name = 'mobile-read-app.db';
@@ -236,7 +236,7 @@ class DataBase {
             ],
           )
             .then(() => {
-              console.log(`保存抄表任务${item}`);
+              console.log(`保存抄表任务${item.bookId}`);
             })
             .catch((err) => {
               this.errorCB(err);
@@ -425,9 +425,7 @@ class DataBase {
 
   saveReadData = async (items: PdaReadDataDto[]) => {
     await this.db?.transaction((tx) => {
-      console.log(items);
       items.forEach((item) => {
-        console.log(item);
         tx.executeSql(
           'INSERT INTO BookDatas VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
           [

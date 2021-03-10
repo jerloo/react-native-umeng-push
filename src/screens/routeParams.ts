@@ -1,4 +1,4 @@
-import { PdaReadDataDto } from '../../apiclient/src/models';
+import { MobileFileDto, PdaReadDataDto } from '../../apiclient/src/models';
 
 export type MainStackParamList = {
   NewRead: {
@@ -17,6 +17,6 @@ export type MainStackParamList = {
     title: string;
   };
   Camera: {
-    callback: (uri: string) => void;
+    callback: (result: MobileFileDto) => void;
   };
 };

@@ -50,7 +50,6 @@ export default function BooksScreen() {
         value.checked = false;
         return value;
       });
-      console.log(items);
       setBookItems(items);
     } catch (e) {
       Toast.fail(e.message);
@@ -95,7 +94,6 @@ export default function BooksScreen() {
         value.checked = false;
         return value;
       });
-      console.log('fetchRemote', items);
       setBookItems(items);
     } catch (e) {
       Toast.fail(e.message);
@@ -312,7 +310,7 @@ const styles = StyleSheet.create({
   items: {
     // backgroundColor: colorWhite,
     // marginTop: scaleSize(100),
-    marginTop: scaleSize(100),
+    marginTop: scaleSize(110),
   },
   item: {
     paddingHorizontal: scaleSize(30),

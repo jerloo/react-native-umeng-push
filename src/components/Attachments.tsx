@@ -5,24 +5,57 @@ import {
   StyleSheet,
   Text,
   View,
+  FlatList,
+  TouchableOpacity,
 } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
 import { scaleSize } from 'react-native-responsive-design';
 import { MobileFileDto } from '../../apiclient/src/models';
 
 interface Props {
   files: MobileFileDto[];
+  onTakePhoto: () => void;
+  onPhotoClick: (item: MobileFileDto) => void;
 }
 
-export default function Attachments({ files }: Props) {
+export default function Attachments({
+  files,
+  onTakePhoto,
+  onPhotoClick,
+}: Props) {
   const renderItem = (info: ListRenderItemInfo<MobileFileDto>) => {
-    return <Image source={info.item.filePath} />;
+    return (
+      <>
+        {info.index < files.length ? (
+          <TouchableOpacity
+            style={styles.itemContainer}
+            onPress={() => onPhotoClick(info.item)}>
+            <Image style={styles.image} source={{ uri: info.item.filePath }} />
+            <Image
+              style={styles.deleteIcon}
+              source={require('../assets/qietu/chaobiaoluru/enter_icon_idelete_normal.png')}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.takeImageContainer}
+            onPress={() => onTakePhoto()}>
+            <Image
+              style={styles.takeImage}
+              source={require('../assets/qietu/chaobiaoluru/enter_icon_camera2_normal.png')}
+            />
+          </TouchableOpacity>
+        )}
+      </>
+    );
   };
 
   const renderItems = () => {
+    console.log(files);
     return (
       <FlatList<MobileFileDto>
-        data={files}
+        style={styles.items}
+        data={[...files, { fileName: 'ADD' }]}
+        numColumns={3}
         renderItem={renderItem}
         keyExtractor={(item) => item.filePath}
       />
@@ -37,7 +70,7 @@ export default function Attachments({ files }: Props) {
           source={require('../assets/qietu/chaobiaoluru/enter_icon_enclosure_normal.png')}
         />
         <Text style={styles.title}>附件</Text>
-        <Text style={styles.subTitle}>（共{}个）</Text>
+        <Text style={styles.subTitle}>（共{files.length}个）</Text>
       </View>
 
       <Text style={styles.blockTitle}>图片</Text>
@@ -85,5 +118,35 @@ const styles = StyleSheet.create({
     marginTop: scaleSize(25),
     marginBottom: scaleSize(18),
     marginHorizontal: scaleSize(23),
+  },
+  image: {
+    width: scaleSize(140),
+    height: scaleSize(170),
+    margin: scaleSize(10),
+    borderRadius: scaleSize(4),
+  },
+  items: {
+    marginHorizontal: scaleSize(20),
+  },
+  itemContainer: {},
+  takeImageContainer: {
+    width: scaleSize(140),
+    height: scaleSize(170),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#EDECEC',
+    borderRadius: scaleSize(4),
+    margin: scaleSize(9),
+  },
+  deleteIcon: {
+    position: 'absolute',
+    width: scaleSize(29),
+    height: scaleSize(27),
+    right: 5,
+    top: 5,
+  },
+  takeImage: {
+    width: scaleSize(50),
+    height: scaleSize(42),
   },
 });

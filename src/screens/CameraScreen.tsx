@@ -4,6 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { scaleSize } from 'react-native-responsive-design';
+import { MobileFileDto } from '../../apiclient/src/models';
 import { colorWhite } from '../styles';
 import { MainStackParamList } from './routeParams';
 
@@ -21,7 +22,11 @@ export default function CameraScreen() {
     const options = { quality: 0.5, base64: true };
     const data = await camera?.current?.takePictureAsync(options);
     if (data?.uri) {
-      route.params.callback(data?.uri);
+      const result: MobileFileDto = {
+        fileName: data?.uri,
+        filePath: data?.uri,
+      };
+      route.params.callback(result);
       navigation.goBack();
     }
   };
@@ -48,7 +53,11 @@ export default function CameraScreen() {
       maxFileSize: MAX_FILE_SIZE,
     });
     if (data?.uri) {
-      route.params.callback(data?.uri);
+      const result: MobileFileDto = {
+        fileName: data?.uri,
+        filePath: data?.uri,
+      };
+      route.params.callback(result);
       navigation.goBack();
     }
   };
