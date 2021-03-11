@@ -16,39 +16,33 @@ import { colorWhite } from '../styles';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 import {
   MeterReaderDto,
-  PdaArrearageDto,
   PdaArrearageInputDto,
   PdaMeterBookDto,
+  PdaPaymentCollect,
+  PdaPaymentCollectDto,
+  PdaPaymentCollectInput,
 } from '../../apiclient/src/models';
 import center from '../data';
 import { Toast, Modal as AntModal, DatePicker } from '@ant-design/react-native';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
-import SearchBox from '../components/SearchBox';
-import {
-  NavigationProp,
-  RouteProp,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/core';
+import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
-import ArrearageItem from '../components/ArrearageItem';
-import dayjs from 'dayjs';
 import Modal from 'react-native-smart-modal';
+import PaymentCollectItem from '../components/PaymentCollectItem';
+import dayjs from 'dayjs';
 
 const PAGE_SIZE = 30;
 
-export default function ArrearagesScreen() {
-  const route = useRoute<RouteProp<MainStackParamList, 'BookTask'>>();
+export default function PaymentCollectScreen() {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const defaultBillMonth = parseInt(dayjs().format('YYYYMM'), 10);
-  const [total, setTotal] = useState(0);
-  const [items, setItems] = useState<PdaArrearageDto[]>([]);
+  const [data, setData] = useState<PdaPaymentCollectDto>();
   const [loading, setLoading] = useState(false);
-  const [params, setParams] = useState<PdaArrearageInputDto>({
+  const [params, setParams] = useState<PdaPaymentCollectInput>({
     maxResultCount: PAGE_SIZE,
-    beginMonth: defaultBillMonth,
-    endMonth: defaultBillMonth,
+    beginDate: defaultBillMonth,
+    endDate: defaultBillMonth,
   });
   const [snapshot, setSnapshot] = useState<PdaArrearageInputDto>({
     maxResultCount: PAGE_SIZE,
@@ -103,9 +97,8 @@ export default function ArrearagesScreen() {
 
     setLoading(true);
     try {
-      const res = await center.getArrearageList(ps);
-      setItems(res.items);
-      setTotal(res.totalCount);
+      const res = await center.getPaymentCollect(ps);
+      setData(res);
       setParams(ps);
     } catch (e) {
       Toast.fail(e.message);
@@ -120,9 +113,8 @@ export default function ArrearagesScreen() {
     ps.maxResultCount = PAGE_SIZE;
 
     try {
-      const res = await center.getArrearageList(ps);
-      setItems([...items, res.items]);
-      setTotal(res.totalCount);
+      const res = await center.getPaymentCollect(ps);
+      setData(res);
       setParams(ps);
     } catch (e) {
       Toast.fail(e.message);
@@ -158,15 +150,15 @@ export default function ArrearagesScreen() {
   };
 
   const onStartPick = (dt: Date) => {
-    const value = parseInt(dayjs(dt).format('YYYYMM'), 10);
+    const value = parseInt(dayjs(dt).format('YYYYMMDD'), 10);
     console.log('onPickBillMonth', value);
-    setParams({ ...params, beginMonth: value });
+    setParams({ ...params, beginDate: value });
   };
 
   const onEndPick = (dt: Date) => {
-    const value = parseInt(dayjs(dt).format('YYYYMM'), 10);
+    const value = parseInt(dayjs(dt).format('YYYYMMDD'), 10);
     console.log('onPickBillMonth', value);
-    setParams({ ...params, endMonth: value });
+    setParams({ ...params, endDate: value });
   };
 
   const resetQueryParams = async () => {
@@ -234,17 +226,17 @@ export default function ArrearagesScreen() {
               <Text style={styles.settingsSubTitle}>财务年月</Text>
               <View style={styles.settingsDatePickers}>
                 <DatePicker
-                  value={dayjs(params.beginMonth, 'YYYYMM').toDate()}
+                  value={dayjs(params.beginDate, 'YYYYMMDD').toDate()}
                   mode="month"
                   defaultDate={new Date()}
                   minDate={new Date(2015, 7, 6)}
                   maxDate={new Date(2026, 11, 3)}
                   onChange={onStartPick}
-                  format="YYYY-MM">
+                  format="YYYY-MM-DD">
                   <TouchableOpacity
                     style={[styles.settingsInput, { width: scaleSize(196) }]}>
                     <Text style={styles.settingsInputText}>
-                      {params.beginMonth}
+                      {params.beginDate}
                     </Text>
                     <Image
                       style={styles.settingsInputIcon}
@@ -254,17 +246,17 @@ export default function ArrearagesScreen() {
                 </DatePicker>
                 <Text>至</Text>
                 <DatePicker
-                  value={dayjs(params.endMonth, 'YYYYMM').toDate()}
+                  value={dayjs(params.endDate, 'YYYYMMDD').toDate()}
                   mode="month"
                   defaultDate={new Date()}
                   minDate={new Date(2015, 7, 6)}
                   maxDate={new Date(2026, 11, 3)}
                   onChange={onEndPick}
-                  format="YYYY-MM">
+                  format="YYYY-MM-DD">
                   <TouchableOpacity
                     style={[styles.settingsInput, { width: scaleSize(196) }]}>
                     <Text style={styles.settingsInputText}>
-                      {params.endMonth}
+                      {params.endDate}
                     </Text>
                     <Image
                       style={styles.settingsInputIcon}
@@ -292,16 +284,17 @@ export default function ArrearagesScreen() {
     );
   };
 
-  const renderItem = (info: ListRenderItemInfo<PdaArrearageDto>) => {
+  const renderItem = (info: ListRenderItemInfo<PdaPaymentCollect>) => {
     return (
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('Payment', {
-            custId: info.item.custId,
-            custCode: info.item.custCode,
-          })
+        onPress={
+          () => console.log('onClick')
+          // navigation.navigate('Payment', {
+          //   custId: info.item.custId,
+          //   custCode: info.item.custCode,
+          // })
         }>
-        <ArrearageItem data={info.item} />
+        <PaymentCollectItem data={info.item} />
       </TouchableOpacity>
     );
   };
@@ -327,26 +320,38 @@ export default function ArrearagesScreen() {
             right1Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}
             onRight1Click={() => refresh()}
             right2Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_adjustment_normal.png')}
-            title={'欠费查询'}
+            title={'收费统计'}
             titleColor={colorWhite}
           />
-          <SearchBox
-            style={styles.searchContainer}
-            placeholderTextColor={colorWhite}
-          />
+          <View style={styles.topBox}>
+            <View style={styles.topItem}>
+              <Text style={styles.topItemValue}>
+                {data?.totalActualMoney || '-'}
+              </Text>
+              <Text style={styles.topItemLabel}>实收金额</Text>
+            </View>
+            <View style={styles.topItem}>
+              <Text style={styles.topItemValue}>
+                {data?.totalSoldMoney || '-'}
+              </Text>
+              <Text style={styles.topItemLabel}>销账金额</Text>
+            </View>
+          </View>
         </SafeAreaView>
       </LinearGradient>
 
-      <FlatList<PdaArrearageDto>
+      <FlatList<PdaPaymentCollect>
         style={styles.items}
         initialNumToRender={10}
-        data={items}
+        data={data?.paymentCollects || []}
         refreshing={loading}
         renderItem={renderItem}
         ItemSeparatorComponent={() => (
           <View style={{ height: scaleSize(18) }} />
         )}
-        keyExtractor={(item) => item.custId.toString()}
+        keyExtractor={(item) =>
+          `${item.actualMoney}-${item.depositIn}-${item.depositOut}-${item.payDate}-${item.soldMoney}`
+        }
         contentInset={{ bottom: 100 }}
         contentContainerStyle={{
           paddingBottom: scaleSize(30),
@@ -368,7 +373,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   topContainer: {
-    paddingBottom: scaleSize(30),
+    height: scaleSize(210),
   },
   topBox: {
     backgroundColor: colorWhite,

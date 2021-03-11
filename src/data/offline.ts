@@ -8,6 +8,8 @@ import {
   PdaChargeListDto,
   PdaCustDto,
   PdaCustListDto,
+  PdaPaymentCollectDto,
+  PdaPaymentCollectInput,
   PdaPaymentInput,
   PdaReadDataDto,
   PdaReadingCollectDto,
@@ -21,6 +23,11 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
+  async getPaymentCollect(
+    _input: PdaPaymentCollectInput,
+  ): Promise<PdaPaymentCollectDto> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
   async getAlipayQrCodeUrl(_custCode: string): Promise<string> {
     throw new Error(NO_NETWORK_ERROR);
   }

@@ -8,6 +8,8 @@ import {
   PdaChargeListDto,
   PdaCustDto,
   PdaCustListDto,
+  PdaPaymentCollectDto,
+  PdaPaymentCollectInput,
   PdaPaymentInput,
   PdaReadDataDto,
   PdaReadingCollectDto,
@@ -48,7 +50,10 @@ export default interface ApiService {
   getAlipayQrCodeUrl(custCode: string): Promise<string>;
   getWechatQrCodeUrl(custCode: string): Promise<string>;
   getCashPaymentDetails(input: PdaPaymentInput): Promise<void>;
-};
+  getPaymentCollect(
+    input: PdaPaymentCollectInput,
+  ): Promise<PdaPaymentCollectDto>;
+}
 
 export const NETWORK_ERROR = '网络错误，请稍后再试';
 export const SERVER_ERROR = '服务器错误，请稍后再试';

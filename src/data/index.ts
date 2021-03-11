@@ -13,6 +13,8 @@ import {
   PdaChargeListDto,
   PdaArrearageDtoPagedResultDto,
   PdaPaymentInput,
+  PdaPaymentCollectInput,
+  PdaPaymentCollectDto,
 } from '../../apiclient/src/models';
 import NetInfo from '@react-native-community/netinfo';
 import db from './database';
@@ -28,6 +30,16 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+
+  async getPaymentCollect(
+    input: PdaPaymentCollectInput,
+  ): Promise<PdaPaymentCollectDto> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.getPaymentCollect(input);
+    }
+    return this.offline.getPaymentCollect(input);
   }
 
   async getAlipayQrCodeUrl(custCode: string): Promise<string> {

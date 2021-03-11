@@ -8,6 +8,8 @@ import {
   PdaChargeListDto,
   PdaCustDto,
   PdaCustListDto,
+  PdaPaymentCollectDto,
+  PdaPaymentCollectInput,
   PdaPaymentInput,
   PdaReadDataDto,
   PdaReadingCollectDto,
@@ -21,6 +23,23 @@ import { api } from '../utils/apiUtils';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class OnlineApiService implements ApiService {
+  async getPaymentCollect(
+    input: PdaPaymentCollectInput,
+  ): Promise<PdaPaymentCollectDto> {
+    try {
+      const result = await api.paymentApi.apiAppMobilePaymentGetPaymentCollectPost(
+        input,
+      );
+      if (result.status < 400) {
+        return result.data;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
   async getAlipayQrCodeUrl(custCode: string): Promise<string> {
     try {
       const result = await api.paymentApi.apiAppMobilePaymentPaymentByAlipayPost(

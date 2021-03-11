@@ -123,6 +123,7 @@ export default function HomeScreen() {
               colorTop="#E98649"
               title="收费汇总"
               iconSource={require('../assets/shouye-shoufeihuizong.png')}
+              onPress={() => navigation.navigate('PaymentCollect')}
             />
             <View style={{ width: scaleSize(220), height: scaleSize(220) }} />
           </View>
