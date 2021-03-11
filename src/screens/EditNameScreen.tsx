@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { StatusBar, StyleSheet, View, TextInput } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+  StatusBar,
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import {
   scaleHeight,
   scaleSize,

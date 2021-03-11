@@ -5,8 +5,8 @@ import {
   Text,
   StyleSheet,
   StatusBar,
+  TouchableOpacity,
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
   scaleHeight,
   scaleSize,

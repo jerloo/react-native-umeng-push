@@ -6,8 +6,8 @@ import {
   ImageSourcePropType,
   StyleProp,
   ViewStyle,
+  TouchableOpacity,
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { scaleSize } from 'react-native-responsive-design';
 import { colorWhite } from '../styles';
 

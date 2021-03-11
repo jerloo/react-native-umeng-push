@@ -1,9 +1,15 @@
 import { Toast } from '@ant-design/react-native';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Image, StatusBar, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import { BottomSheet, ListItem } from 'react-native-elements';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
   scaleHeight,
   scaleSize,

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { StatusBar, StyleSheet, Text, View, TextInput } from 'react-native';
 import {
   scaleHeight,
   scaleSize,

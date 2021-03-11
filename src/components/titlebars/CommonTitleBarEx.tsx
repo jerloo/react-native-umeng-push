@@ -5,8 +5,8 @@ import {
   Text,
   StyleSheet,
   ImageSourcePropType,
+  TouchableOpacity,
 } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 import { colorWhite } from '../../styles';
 
@@ -25,7 +25,7 @@ export default function CommonTitleBarEx(props: Props) {
   return (
     <View style={styles.titleBar}>
       <View style={styles.rightContainer}>
-        <TouchableWithoutFeedback
+        <TouchableOpacity
           style={styles.button}
           onPress={() => props.onBack && props.onBack()}>
           <Image
@@ -35,12 +35,12 @@ export default function CommonTitleBarEx(props: Props) {
               require('../../assets/qietu/cebenxiangqing/book_details_icon_back_normal.png')
             }
           />
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback
+        </TouchableOpacity>
+        <TouchableOpacity
           style={styles.button}
           onPress={() => props.onBack && props.onBack()}>
           <View style={styles.titleBarBackButton} />
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </View>
 
       <Text
@@ -52,7 +52,7 @@ export default function CommonTitleBarEx(props: Props) {
       </Text>
       <View style={styles.rightContainer}>
         {props.right1Icon ? (
-          <TouchableWithoutFeedback
+          <TouchableOpacity
             style={styles.button}
             onPress={() => props.onRight1Click && props.onRight1Click()}>
             <Image
@@ -62,12 +62,12 @@ export default function CommonTitleBarEx(props: Props) {
                 require('../../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')
               }
             />
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         ) : (
           <View style={styles.titleBarBackButton} />
         )}
         {props.right2Icon ? (
-          <TouchableWithoutFeedback
+          <TouchableOpacity
             style={styles.button}
             onPress={() => props.onRight2Click && props.onRight2Click()}>
             <Image
@@ -77,7 +77,7 @@ export default function CommonTitleBarEx(props: Props) {
                 require('../../assets/qietu/cebenxiangqing/book_details_icon_adjustment_normal.png')
               }
             />
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         ) : (
           <View style={styles.titleBarBackButton} />
         )}

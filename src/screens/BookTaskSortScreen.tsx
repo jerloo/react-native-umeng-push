@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { View, StyleSheet, StatusBar, ListRenderItemInfo } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  StatusBar,
+  ListRenderItemInfo,
+  TouchableOpacity,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
@@ -12,7 +18,6 @@ import { Toast } from '@ant-design/react-native';
 import BookSortItem from '../components/BookSortItem';
 import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
 import { PdaReadDataDtoHolder } from '../data/holders';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import SwipeButton from '../components/SwipeButton';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';

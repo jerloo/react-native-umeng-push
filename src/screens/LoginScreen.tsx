@@ -1,6 +1,12 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Image, StatusBar } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  StatusBar,
+  TouchableOpacity,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { colorWhite } from '../styles';
 import Icon from 'react-native-vector-icons/Ionicons';

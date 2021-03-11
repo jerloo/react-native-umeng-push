@@ -5,8 +5,8 @@ import {
   Image,
   ImageSourcePropType,
   View,
+  TouchableOpacity,
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
   scaleSize,
   scaleHeight,

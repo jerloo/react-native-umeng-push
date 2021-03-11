@@ -11,7 +11,10 @@ import {
   TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { scaleHeight, scaleSize } from 'react-native-responsive-design';
+import {
+  scaleHeight as defaultScaleHeight,
+  scaleSize,
+} from 'react-native-responsive-design';
 import { MobileFileDto, PdaReadDataDto } from '../../apiclient/src/models';
 import { colorWhite } from '../styles';
 import Tag from '../components/Tag';
@@ -40,6 +43,10 @@ import center from '../data';
 import { isMobileReadingCanCharge } from '../utils/systemSettingsUtils';
 import { calcReadWater, judgeReadWater } from '../utils/readWaterUtils';
 import { Modal as AntModal } from '@ant-design/react-native';
+
+let scaleHeight = defaultScaleHeight;
+scaleHeight = scaleSize;
+
 export default function NewReadScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'NewRead'>>();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();

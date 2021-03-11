@@ -1,6 +1,12 @@
 import React from 'react';
-import { View, Image, Text, StyleSheet, StatusBar } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  StatusBar,
+  TouchableOpacity,
+} from 'react-native';
 import {
   scaleHeight,
   scaleSize,
@@ -15,14 +21,12 @@ interface Props {
 export function CommonTitleBar(props: Props) {
   return (
     <View style={styles.titleBar}>
-      <TouchableWithoutFeedback
-        style={styles.button}
-        onPress={() => props.onBack()}>
+      <TouchableOpacity style={styles.button} onPress={() => props.onBack()}>
         <Image
           style={styles.titleBarBackButton}
           source={require('../../assets/btn_back.png')}
         />
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
 
       <Text style={styles.titleBarTitle}>{props.title || '个人信息'}</Text>
       <View style={styles.titleBarBackButton} />

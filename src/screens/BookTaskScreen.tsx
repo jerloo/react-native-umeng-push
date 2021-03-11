@@ -1,6 +1,13 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { View, StyleSheet, StatusBar, ListRenderItemInfo } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  StatusBar,
+  ListRenderItemInfo,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
@@ -10,7 +17,6 @@ import center from '../data';
 import { Toast } from '@ant-design/react-native';
 import BookDataItem from '../components/BookReadItem';
 import { PdaReadDataDtoHolder } from '../data/holders';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import SearchBox from '../components/SearchBox';
 import { Tabs } from '@ant-design/react-native';

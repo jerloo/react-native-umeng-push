@@ -1,10 +1,16 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import { scaleHeight, scaleSize } from 'react-native-responsive-design';
 import { colorWhite } from '../styles';
 import StateButton from './StateButton';
 import { PdaReadStateDto } from '../../apiclient/src/models';
-import { ScrollView } from 'react-native-gesture-handler';
 import { ReadStateStorage } from '../utils/settingsUtils';
 
 interface Props {
