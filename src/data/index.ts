@@ -7,6 +7,12 @@ import {
   MeterReaderDto,
   PdaCustListDto,
   PdaCalcBudgetAmountInput,
+  PdaArrearageInputDto,
+  SysSettingDto,
+  PdaArrearageChargesInputDto,
+  PdaChargeListDto,
+  PdaArrearageDtoPagedResultDto,
+  PdaPaymentInput,
 } from '../../apiclient/src/models';
 import NetInfo from '@react-native-community/netinfo';
 import db from './database';
@@ -22,6 +28,58 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+
+  async getAlipayQrCodeUrl(custCode: string): Promise<string> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.getAlipayQrCodeUrl(custCode);
+    }
+    return this.offline.getAlipayQrCodeUrl(custCode);
+  }
+
+  async getWechatQrCodeUrl(custCode: string): Promise<string> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.getWechatQrCodeUrl(custCode);
+    }
+    return this.offline.getWechatQrCodeUrl(custCode);
+  }
+
+  async getCashPaymentDetails(input: PdaPaymentInput): Promise<void> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.getCashPaymentDetails(input);
+    }
+    return this.offline.getCashPaymentDetails(input);
+  }
+
+  async getArrearageList(
+    input: PdaArrearageInputDto,
+  ): Promise<PdaArrearageDtoPagedResultDto> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.getArrearageList(input);
+    }
+    return this.offline.getArrearageList(input);
+  }
+
+  async getSystemSettings(): Promise<SysSettingDto[]> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.getSystemSettings();
+    }
+    return this.offline.getSystemSettings();
+  }
+
+  async getArrearageChargeList(
+    input: PdaArrearageChargesInputDto,
+  ): Promise<PdaChargeListDto[]> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.getArrearageChargeList(input);
+    }
+    return this.offline.getArrearageChargeList(input);
   }
 
   async calcBudgetAmount(input: PdaCalcBudgetAmountInput): Promise<number> {

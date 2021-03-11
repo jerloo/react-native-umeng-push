@@ -454,7 +454,7 @@ class DataBase {
             item.billMonth,
             item.custId,
             item.readTimes,
-            JSON.stringify(item.terminalFiles),
+            JSON.stringify(item.terminalFiles || []),
             item.oweNumber,
             item.bookId,
             item.bookCode,

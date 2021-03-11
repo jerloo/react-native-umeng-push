@@ -3,10 +3,10 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableNativeFeedback,
   ImageSourcePropType,
   View,
 } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
   scaleSize,
   scaleHeight,
@@ -23,12 +23,12 @@ type Props = {
 
 export default function HomeButton(props: Props) {
   return (
-    <TouchableNativeFeedback onPress={() => props.onPress && props.onPress()}>
+    <TouchableOpacity onPress={() => props.onPress && props.onPress()}>
       <View style={styles.homeButtonContainer}>
         <Image style={styles.homeButtonIcon} source={props.iconSource} />
         <Text style={styles.homeButtonTitle}>{props.title}</Text>
       </View>
-    </TouchableNativeFeedback>
+    </TouchableOpacity>
   );
 }
 

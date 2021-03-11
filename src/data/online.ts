@@ -1,12 +1,18 @@
 import {
   LoginInput,
   MeterReaderDto,
+  PdaArrearageChargesInputDto,
+  PdaArrearageDtoPagedResultDto,
+  PdaArrearageInputDto,
   PdaCalcBudgetAmountInput,
+  PdaChargeListDto,
   PdaCustDto,
   PdaCustListDto,
+  PdaPaymentInput,
   PdaReadDataDto,
   PdaReadingCollectDto,
   PdaReadStateDto,
+  SysSettingDto,
 } from '../../apiclient/src/models';
 import { getSession, setSession } from '../utils/sesstionUtils';
 import ApiService, { SERVER_ERROR, USERNAME_PWD_ERROR } from './apiService';
@@ -15,6 +21,98 @@ import { api } from '../utils/apiUtils';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class OnlineApiService implements ApiService {
+  async getAlipayQrCodeUrl(custCode: string): Promise<string> {
+    try {
+      const result = await api.paymentApi.apiAppMobilePaymentPaymentByAlipayPost(
+        custCode,
+      );
+      if (result.status < 400) {
+        return result.data;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
+  async getWechatQrCodeUrl(custCode: string): Promise<string> {
+    try {
+      const result = await api.paymentApi.apiAppMobilePaymentPaymentByWeChatPost(
+        custCode,
+      );
+      if (result.status < 400) {
+        return result.data;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
+  async getCashPaymentDetails(input: PdaPaymentInput): Promise<void> {
+    try {
+      const result = await api.paymentApi.apiAppMobilePaymentPaymentByCashPost(
+        input,
+      );
+      if (result.status < 400) {
+        return result.data;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
+  async getArrearageList(
+    input: PdaArrearageInputDto,
+  ): Promise<PdaArrearageDtoPagedResultDto> {
+    try {
+      const result = await api.chargeApi.apiAppChargeGetArrearageListPost(
+        input,
+      );
+      if (result.status < 400) {
+        return result.data;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
+  async getArrearageChargeList(
+    input: PdaArrearageChargesInputDto,
+  ): Promise<PdaChargeListDto[]> {
+    try {
+      const result = await api.chargeApi.apiAppChargeGetArrearageChargeListPost(
+        input,
+      );
+      if (result.status < 400) {
+        return result.data.items;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
+  async getSystemSettings(): Promise<SysSettingDto[]> {
+    try {
+      const result = await api.mobileSystemApi.apiAppMobileSystemSettingsGet();
+      if (result.status < 400) {
+        return result.data.items;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
   async calcBudgetAmount(input: PdaCalcBudgetAmountInput): Promise<number> {
     try {
       const result = await api.mobileReadingApi.apiAppMobileReadingCalcBudgetAmountPost(
@@ -258,9 +356,8 @@ export default class OnlineApiService implements ApiService {
         const token =
           loginResult.data.tokenType + ' ' + loginResult.data.accessToken;
         console.log('token', token);
-        const p1 = await api.provider.set(token);
-        const p2 = AsyncStorage.setItem('token', token);
-        const pall = await Promise.all([p1, p2]);
+        await api.provider.set(token);
+        await AsyncStorage.setItem('token', token);
         const infoResult = await api.chargeApi.apiAppChargeUserInfoGet();
         if (infoResult.status < 400) {
           setSession({

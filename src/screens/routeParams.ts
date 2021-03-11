@@ -1,6 +1,15 @@
 import { MobileFileDto, PdaReadDataDto } from '../../apiclient/src/models';
 
 export type MainStackParamList = {
+  Home: {};
+  Profile: {};
+  EditName: {};
+  EditPhone: {};
+  EditPassword: {};
+  Books: {};
+  ReadingCollect: {};
+  Search: {};
+  Arrearages: {};
   NewRead: {
     data: PdaReadDataDto;
   };
@@ -18,5 +27,9 @@ export type MainStackParamList = {
   };
   Camera: {
     callback: (result: MobileFileDto) => void;
+  };
+  Payment: {
+    custId: number;
+    custCode: string;
   };
 };

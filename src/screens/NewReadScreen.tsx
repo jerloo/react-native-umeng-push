@@ -27,15 +27,22 @@ import {
   getReadStateSettingsItems,
   ReadStateStorage,
 } from '../utils/settingsUtils';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
 import db from '../data/database';
 import { Toast } from '@ant-design/react-native';
 import center from '../data';
-
+import { isMobileReadingCanCharge } from '../utils/systemSettingsUtils';
+import { calcReadWater, judgeReadWater } from '../utils/readWaterUtils';
+import { Modal as AntModal } from '@ant-design/react-native';
 export default function NewReadScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'NewRead'>>();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const { data } = route.params;
 
@@ -46,6 +53,11 @@ export default function NewReadScreen() {
   const [currentPreviewFile, setCurrentPreviewFile] = useState<MobileFileDto>();
   const [readStates, setReadStates] = React.useState<ReadStateStorage>();
   const [amount, setAmount] = useState(0);
+  const [canCharge, setCanCharge] = useState(false);
+
+  React.useEffect(() => {
+    isMobileReadingCanCharge().then((flag) => setCanCharge(flag));
+  }, []);
 
   React.useEffect(() => {
     try {
@@ -102,14 +114,36 @@ export default function NewReadScreen() {
       readWater: newData.reading - newData.lastReading || undefined,
       readDate: new Date(),
     });
+    setAmount(0);
   };
+
+  const preItem = () => {};
+  const nextItem = () => {};
 
   const saveData = async () => {
     if (!newData.reading) {
       Toast.fail('请先抄表');
+    } else if (!newData.readStateId) {
+      Toast.fail('请选择抄表状态');
     } else {
-      await db.updateReadData([newData]);
-      Toast.success('保存成功');
+      const water = calcReadWater(newData);
+      const result = judgeReadWater(water, newData);
+      if (!result) {
+        await db.updateReadData([newData]);
+        Toast.success('保存成功');
+      } else {
+        await db.updateReadData([newData]);
+        AntModal.alert('重新选择', result, [
+          {
+            text: '否',
+            onPress: nextItem,
+          },
+          {
+            text: '是',
+            onPress: () => console.log('cancel'),
+          },
+        ]);
+      }
     }
   };
 
@@ -142,20 +176,27 @@ export default function NewReadScreen() {
       Toast.fail('请先抄表');
       return;
     }
-    const key = Toast.loading('计算中');
-    try {
-      const result = await center.calcBudgetAmount({
+    if (amount === 0) {
+      const key = Toast.loading('计算中');
+      try {
+        const result = await center.calcBudgetAmount({
+          custId: newData.custId,
+          readDate: newData.readDate,
+          readStateId: newData.readStateId,
+          readWater: newData.readWater,
+          reading: newData.reading,
+        });
+        setAmount(result);
+      } catch (e) {
+        Toast.fail(e.message);
+      } finally {
+        Toast.remove(key);
+      }
+    } else {
+      navigation.navigate('Payment', {
         custId: newData.custId,
-        readDate: newData.readDate,
-        readStateId: newData.readStateId,
-        readWater: newData.readWater,
-        reading: newData.reading,
+        custCode: newData.custCode,
       });
-      setAmount(result);
-    } catch (e) {
-      Toast.fail(e.message);
-    } finally {
-      Toast.remove(key);
     }
   };
 
@@ -172,7 +213,7 @@ export default function NewReadScreen() {
           <View style={styles.extraRowPart}>
             <Text style={styles.extraLabel}>上次水量</Text>
             <Text style={[styles.extraValue, { color: '#333333' }]}>
-              {newData.lastReadWater}
+              {newData.lastReadWater === 0 ? '' : newData.lastReadWater}
             </Text>
           </View>
         </View>
@@ -211,14 +252,16 @@ export default function NewReadScreen() {
         <View style={styles.extraRow}>
           <View style={styles.extraRowPart}>
             <Text style={styles.extraLabel}>预算金额</Text>
-            <Text style={styles.extraValue}>{amount}</Text>
+            <Text style={styles.extraValue}>{amount === 0 ? '' : amount}</Text>
           </View>
 
           <View style={[styles.extraRowPart, { justifyContent: 'flex-end' }]}>
             <TouchableOpacity
               style={styles.tableValueButton}
               onPress={calcBudgetAmount}>
-              <Text style={styles.tableValueButtonText}>预算</Text>
+              <Text style={styles.tableValueButtonText}>
+                {amount === 0 ? '预算' : canCharge ? '收费' : '预算'}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -453,8 +496,8 @@ export default function NewReadScreen() {
                 })
               }
               onConfirmClick={saveData}
-              onNextClick={() => {}}
-              onPreClick={() => {}}
+              onNextClick={nextItem}
+              onPreClick={preItem}
               onSettingsOpen={() => setSettingsModalVisible(true)}
               readStates={readStates}
               selectStateId={newData.readStateId}

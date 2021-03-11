@@ -4,7 +4,7 @@ import { scaleSize } from 'react-native-responsive-design';
 
 interface Props {
   checked: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   title?: string;
 }
 

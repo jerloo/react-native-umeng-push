@@ -31,10 +31,13 @@ import { PortalProvider } from 'react-native-portal-view';
 import ReadingCollectScreen from './src/screens/ReadingCollectScreen';
 import CameraScreen from './src/screens/CameraScreen';
 import SearchScreen from './src/screens/SearchScreen';
+import PaymentScreen from './src/screens/PaymentScreen';
+import ArrearagesScreen from './src/screens/ArrearagesScreen';
+import { MainStackParamList } from './src/screens/routeParams';
 
 Toast.config({ duration: 0.5 });
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<MainStackParamList>();
 
 function App() {
   const [state, dispatch] = React.useReducer(
@@ -181,6 +184,16 @@ function App() {
                     <Stack.Screen
                       name="Search"
                       component={SearchScreen}
+                      options={{ header: () => null }}
+                    />
+                    <Stack.Screen
+                      name="Payment"
+                      component={PaymentScreen}
+                      options={{ header: () => null }}
+                    />
+                    <Stack.Screen
+                      name="Arrearages"
+                      component={ArrearagesScreen}
                       options={{ header: () => null }}
                     />
                   </>

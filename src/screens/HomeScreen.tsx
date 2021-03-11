@@ -20,12 +20,10 @@ import {
 } from 'react-native-responsive-design';
 import { getSession, UserSession } from '../utils/sesstionUtils';
 import center from '../data';
-import {
-  getReadStateSettings,
-  setReadStateSettings,
-} from '../utils/settingsUtils';
+import { setReadStateSettings } from '../utils/settingsUtils';
 import { useNavigation } from '@react-navigation/core';
 import SearchBoxView from '../components/SearchBoxView';
+import { setSystemSettings } from '../utils/systemSettingsUtils';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -40,11 +38,17 @@ export default function HomeScreen() {
 
   const fetchStateSettings = async () => {
     try {
-      const localStateSettings = await getReadStateSettings();
-      if (!localStateSettings) {
-        const remoteStates = await center.getReadStates();
-        setReadStateSettings(remoteStates);
-      }
+      const remoteStates = await center.online.getReadStates();
+      setReadStateSettings(remoteStates);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const fetchSystemSettings = async () => {
+    try {
+      const remoteSettings = await center.online.getSystemSettings();
+      setSystemSettings(remoteSettings);
     } catch (e) {
       console.log(e);
     }
@@ -52,6 +56,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     fetchStateSettings();
+    fetchSystemSettings();
   }, []);
 
   return (
@@ -95,6 +100,7 @@ export default function HomeScreen() {
               colorTop="#EFB541"
               title="欠费查询"
               iconSource={require('../assets/shouye_qianfeichaxun.png')}
+              onPress={() => navigation.navigate('Arrearages')}
             />
             <HomeButton
               colorLeft="#4CABFF"

@@ -9,6 +9,7 @@ import {
 
 interface Props {
   onBack: () => void;
+  title?: string;
 }
 
 export function CommonTitleBar(props: Props) {
@@ -23,7 +24,7 @@ export function CommonTitleBar(props: Props) {
         />
       </TouchableWithoutFeedback>
 
-      <Text style={styles.titleBarTitle}>个人信息</Text>
+      <Text style={styles.titleBarTitle}>{props.title || '个人信息'}</Text>
       <View style={styles.titleBarBackButton} />
     </View>
   );

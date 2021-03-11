@@ -1,12 +1,18 @@
 import {
   LoginInput,
   MeterReaderDto,
+  PdaArrearageChargesInputDto,
+  PdaArrearageDtoPagedResultDto,
+  PdaArrearageInputDto,
   PdaCalcBudgetAmountInput,
+  PdaChargeListDto,
   PdaCustDto,
   PdaCustListDto,
+  PdaPaymentInput,
   PdaReadDataDto,
   PdaReadingCollectDto,
   PdaReadStateDto,
+  SysSettingDto,
 } from '../../apiclient/src/models';
 import { getBillMonth } from '../utils/billMonthUtils';
 import { getSession } from '../utils/sesstionUtils';
@@ -15,6 +21,34 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
+  async getAlipayQrCodeUrl(_custCode: string): Promise<string> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
+  async getWechatQrCodeUrl(_custCode: string): Promise<string> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
+  async getCashPaymentDetails(_input: PdaPaymentInput): Promise<void> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
+  async getArrearageList(
+    _input: PdaArrearageInputDto,
+  ): Promise<PdaArrearageDtoPagedResultDto> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
+  async getArrearageChargeList(
+    _input: PdaArrearageChargesInputDto,
+  ): Promise<PdaChargeListDto[]> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
+  async getSystemSettings(): Promise<SysSettingDto[]> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
   async calcBudgetAmount(_input: PdaCalcBudgetAmountInput): Promise<number> {
     throw new Error(NO_NETWORK_ERROR);
   }
