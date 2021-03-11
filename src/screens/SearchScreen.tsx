@@ -50,7 +50,7 @@ export default function SearchScreen() {
     getSearchHistory().then((data) => setHistoryItems(data));
 
     navigation.navigate('CustDetails', {
-      custId: item.custCode,
+      custId: item.id,
       title: item.bookCode,
     });
   };
