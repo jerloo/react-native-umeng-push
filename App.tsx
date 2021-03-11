@@ -35,6 +35,7 @@ import PaymentScreen from './src/screens/PaymentScreen';
 import ArrearagesScreen from './src/screens/ArrearagesScreen';
 import { MainStackParamList } from './src/screens/routeParams';
 import PaymentCollectScreen from './src/screens/PaymentCollectScreen';
+import PaymentSubtotalScreen from './src/screens/PaymentSubtotalScreen';
 
 Toast.config({ duration: 0.5 });
 
@@ -200,6 +201,11 @@ function App() {
                     <Stack.Screen
                       name="PaymentCollect"
                       component={PaymentCollectScreen}
+                      options={{ header: () => null }}
+                    />
+                    <Stack.Screen
+                      name="PaymentSubtotal"
+                      component={PaymentSubtotalScreen}
                       options={{ header: () => null }}
                     />
                   </>

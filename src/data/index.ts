@@ -15,6 +15,7 @@ import {
   PdaPaymentInput,
   PdaPaymentCollectInput,
   PdaPaymentCollectDto,
+  PdaPaySubtotalsDto,
 } from '../../apiclient/src/models';
 import NetInfo from '@react-native-community/netinfo';
 import db from './database';
@@ -30,6 +31,16 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+
+  async getPaymentSubtotal(
+    input: PdaPaymentCollectInput,
+  ): Promise<PdaPaySubtotalsDto> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.getPaymentSubtotal(input);
+    }
+    return this.offline.getPaymentSubtotal(input);
   }
 
   async getPaymentCollect(

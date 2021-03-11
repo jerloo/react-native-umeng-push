@@ -11,6 +11,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+
+import { PdaPaymentSubtotalPagedResultDto } from "./pda-payment-subtotal-paged-result-dto";
+
 /**
  * 收费明细
  * @export
@@ -40,5 +43,5 @@ export interface PdaPaySubtotalsDto {
      * @type {PdaPaymentSubtotalPagedResultDto}
      * @memberof PdaPaySubtotalsDto
      */
-    paySubtotals?: any;
+    paySubtotals?: PdaPaymentSubtotalPagedResultDto;
 }

@@ -107,6 +107,7 @@ export default function HomeScreen() {
               colorTop="#4CABFF"
               title="收费明细"
               iconSource={require('../assets/shouye-shoufeimingxi.png')}
+              onPress={() => navigation.navigate('PaymentSubtotal')}
             />
           </View>
 

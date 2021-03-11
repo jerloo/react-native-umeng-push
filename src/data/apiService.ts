@@ -11,6 +11,7 @@ import {
   PdaPaymentCollectDto,
   PdaPaymentCollectInput,
   PdaPaymentInput,
+  PdaPaySubtotalsDto,
   PdaReadDataDto,
   PdaReadingCollectDto,
   PdaReadStateDto,
@@ -53,6 +54,9 @@ export default interface ApiService {
   getPaymentCollect(
     input: PdaPaymentCollectInput,
   ): Promise<PdaPaymentCollectDto>;
+  getPaymentSubtotal(
+    input: PdaPaymentCollectInput,
+  ): Promise<PdaPaySubtotalsDto>;
 }
 
 export const NETWORK_ERROR = '网络错误，请稍后再试';

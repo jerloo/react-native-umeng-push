@@ -11,6 +11,7 @@ import {
   PdaPaymentCollectDto,
   PdaPaymentCollectInput,
   PdaPaymentInput,
+  PdaPaySubtotalsDto,
   PdaReadDataDto,
   PdaReadingCollectDto,
   PdaReadStateDto,
@@ -23,6 +24,23 @@ import { api } from '../utils/apiUtils';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class OnlineApiService implements ApiService {
+  async getPaymentSubtotal(
+    input: PdaPaymentCollectInput,
+  ): Promise<PdaPaySubtotalsDto> {
+    try {
+      const result = await api.paymentApi.apiAppMobilePaymentGetPaymentSubtotalPost(
+        input,
+      );
+      if (result.status < 400) {
+        return result.data;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
   async getPaymentCollect(
     input: PdaPaymentCollectInput,
   ): Promise<PdaPaymentCollectDto> {

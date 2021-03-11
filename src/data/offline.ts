@@ -11,6 +11,7 @@ import {
   PdaPaymentCollectDto,
   PdaPaymentCollectInput,
   PdaPaymentInput,
+  PdaPaySubtotalsDto,
   PdaReadDataDto,
   PdaReadingCollectDto,
   PdaReadStateDto,
@@ -23,6 +24,12 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
+  async getPaymentSubtotal(
+    _input: PdaPaymentCollectInput,
+  ): Promise<PdaPaySubtotalsDto> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
   async getPaymentCollect(
     _input: PdaPaymentCollectInput,
   ): Promise<PdaPaymentCollectDto> {

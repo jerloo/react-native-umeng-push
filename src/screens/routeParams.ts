@@ -33,4 +33,5 @@ export type MainStackParamList = {
     custCode: string;
   };
   PaymentCollect: {};
+  PaymentSubtotal: {};
 };
