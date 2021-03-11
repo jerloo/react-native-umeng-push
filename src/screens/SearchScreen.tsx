@@ -28,7 +28,10 @@ export default function SearchScreen() {
   const [queryKey, setQueryKey] = useState('');
 
   React.useEffect(() => {
-    getSearchHistory().then((data) => setHistoryItems(data));
+    getSearchHistory().then((data) => {
+      setHistoryItems(data);
+      console.log('最近搜索', data);
+    });
   }, []);
 
   const query = async () => {
@@ -99,7 +102,7 @@ export default function SearchScreen() {
 
       <FlatList<PdaCustListDto>
         style={styles.items}
-        data={items}
+        data={items.length === 0 ? historyItems : items}
         renderItem={renderBookItem}
         ItemSeparatorComponent={() => (
           <View style={{ height: scaleSize(18) }} />
@@ -158,7 +161,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingHorizontal: scaleSize(30),
+    paddingHorizontal: scaleSize(40),
   },
   itemPartText: {
     color: '#333333',
@@ -216,6 +219,6 @@ const styles = StyleSheet.create({
     fontSize: scaleSize(40),
     color: '#333333',
     marginTop: scaleSize(30),
-    marginStart: scaleSize(56),
+    marginStart: scaleSize(40),
   },
 });
