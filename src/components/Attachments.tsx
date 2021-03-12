@@ -24,10 +24,13 @@ export default function Attachments({
   onPhotoClick,
   onPhotoDeleteClick,
 }: Props) {
-  const renderItem = (info: ListRenderItemInfo<MobileFileDto>) => {
+  const renderPhotoItem = (
+    info: ListRenderItemInfo<MobileFileDto>,
+    items: MobileFileDto[],
+  ) => {
     return (
       <>
-        {info.index < files.length ? (
+        {info.index < items.length ? (
           <View style={styles.itemContainer}>
             <TouchableOpacity onPress={() => onPhotoClick(info.item)}>
               <Image
@@ -35,7 +38,9 @@ export default function Attachments({
                 source={{ uri: info.item.filePath }}
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => onPhotoDeleteClick(info.item)}>
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={() => onPhotoDeleteClick(info.item)}>
               <Image
                 style={styles.deleteIcon}
                 source={require('../assets/qietu/chaobiaoluru/enter_icon_idelete_normal.png')}
@@ -56,14 +61,68 @@ export default function Attachments({
     );
   };
 
-  const renderItems = () => {
-    console.log(files);
+  const renderVideoItem = (
+    info: ListRenderItemInfo<MobileFileDto>,
+    items: MobileFileDto[],
+  ) => {
+    return (
+      <>
+        {info.index < items.length ? (
+          <View style={styles.itemContainer}>
+            <TouchableOpacity onPress={() => onPhotoClick(info.item)}>
+              <Image
+                style={styles.image}
+                source={{ uri: info.item.filePath }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => onPhotoDeleteClick(info.item)}
+              style={styles.deleteButton}>
+              <Image
+                style={styles.deleteIcon}
+                source={require('../assets/qietu/chaobiaoluru/enter_icon_idelete_normal.png')}
+              />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TouchableOpacity
+            style={styles.takeImageContainer}
+            onPress={() => onTakePhoto()}>
+            <Image
+              style={styles.takeImage}
+              source={require('../assets/qietu/chaobiaoluru/enter_icon_camera2_normal.png')}
+            />
+          </TouchableOpacity>
+        )}
+      </>
+    );
+  };
+
+  const renderPhotosItems = () => {
+    const items = files.filter(
+      (it) => !(it.filePath || ('' as string)).endsWith('.mp4'),
+    );
     return (
       <FlatList<MobileFileDto>
         style={styles.items}
-        data={[...files, { fileName: 'ADD' }]}
+        data={[...items, { fileName: 'ADD' }]}
         numColumns={3}
-        renderItem={renderItem}
+        renderItem={(item) => renderPhotoItem(item, items)}
+        keyExtractor={(item) => item.filePath}
+      />
+    );
+  };
+
+  const renderVideosItems = () => {
+    const items = files.filter((it) =>
+      (it.filePath || ('' as string)).endsWith('.mp4'),
+    );
+    return (
+      <FlatList<MobileFileDto>
+        style={styles.items}
+        data={[...items, { fileName: 'ADD' }]}
+        numColumns={3}
+        renderItem={(item) => renderVideoItem(item, items)}
         keyExtractor={(item) => item.filePath}
       />
     );
@@ -82,11 +141,11 @@ export default function Attachments({
 
       <Text style={styles.blockTitle}>图片</Text>
 
-      {renderItems()}
+      {renderPhotosItems()}
 
       <Text style={styles.blockTitle}>视频</Text>
 
-      {renderItems()}
+      {renderVideosItems()}
     </View>
   );
 }
@@ -145,12 +204,16 @@ const styles = StyleSheet.create({
     borderRadius: scaleSize(4),
     margin: scaleSize(9),
   },
-  deleteIcon: {
+  deleteButton: {
     position: 'absolute',
     width: scaleSize(29),
     height: scaleSize(27),
     right: 5,
     top: 5,
+  },
+  deleteIcon: {
+    width: scaleSize(29),
+    height: scaleSize(27),
   },
   takeImage: {
     width: scaleSize(50),

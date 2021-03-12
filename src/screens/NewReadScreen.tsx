@@ -45,6 +45,7 @@ import { isMobileReadingCanCharge } from '../utils/systemSettingsUtils';
 import { calcReadWater, judgeReadWater } from '../utils/readWaterUtils';
 import { Modal as AntModal } from '@ant-design/react-native';
 import { meterState, recordState } from '../utils/stateConverter';
+import Video from 'react-native-video';
 
 let scaleHeight = defaultScaleHeight;
 scaleHeight = scaleSize;
@@ -52,6 +53,7 @@ scaleHeight = scaleSize;
 export default function NewReadScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'NewRead'>>();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+  const player = React.useRef<Video>();
 
   const { data } = route.params;
 
@@ -322,16 +324,32 @@ export default function NewReadScreen() {
         animationOut="zoomOut"
         style={{ justifyContent: 'center', alignItems: 'center' }}
         onChange={setPreviewModalVisible}>
-        <Image
-          style={{
-            width: '100%',
-            minHeight: 300,
-            backgroundColor: 'black',
-            alignSelf: 'center',
-          }}
-          resizeMode="contain"
-          source={{ uri: currentPreviewFile?.filePath }}
-        />
+        {currentPreviewFile?.filePath?.endsWith('.mp4') ? (
+          <Video
+            source={{ uri: currentPreviewFile?.filePath }} // Can be a URL or a local file.
+            ref={player} // Store reference
+            // onBuffer={this.onBuffer} // Callback when remote video is buffering
+            // onError={this.videoError} // Callback when video cannot be loaded
+            style={{
+              width: '100%',
+              minHeight: 300,
+              backgroundColor: 'black',
+              alignSelf: 'center',
+            }}
+            resizeMode="contain"
+          />
+        ) : (
+          <Image
+            style={{
+              width: '100%',
+              minHeight: 300,
+              backgroundColor: 'black',
+              alignSelf: 'center',
+            }}
+            resizeMode="contain"
+            source={{ uri: currentPreviewFile?.filePath }}
+          />
+        )}
       </Modal>
     );
   };

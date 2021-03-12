@@ -22,13 +22,13 @@ export interface MobileFileDto {
      * @type {string}
      * @memberof MobileFileDto
      */
-    fileName?: any;
+    fileName?: string;
     /**
      * 文件地址
      * @type {string}
      * @memberof MobileFileDto
      */
-    filePath?: any;
+    filePath?: string;
     /**
      * 文件大小
      * @type {number}
