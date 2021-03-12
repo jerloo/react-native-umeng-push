@@ -27,6 +27,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
 import ArrearageItem from '../components/ArrearageItem';
 import dayjs from 'dayjs';
+import { getSession, UserSession } from '../utils/sesstionUtils';
 
 const PAGE_SIZE = 30;
 
@@ -34,6 +35,8 @@ export default function PaymentSubtotalScreen() {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const defaultBillMonth = parseInt(dayjs().format('YYYYMM'), 10);
+  const [session, setSession] = useState<UserSession>();
+
   const [total, setTotal] = useState(0);
   const [data, setData] = useState<PdaPaySubtotalsDto>();
   const [loading, setLoading] = useState(false);
@@ -43,6 +46,10 @@ export default function PaymentSubtotalScreen() {
     endMonth: defaultBillMonth,
   });
 
+  useEffect(() => {
+    getSession().then((it) => setSession(it || undefined));
+  }, []);
+
   const refresh = async () => {
     if (loading) {
       return;
@@ -51,6 +58,7 @@ export default function PaymentSubtotalScreen() {
     const ps = params;
     ps.skipCount = 0;
     ps.maxResultCount = PAGE_SIZE;
+    ps.meterReaderId = session?.userInfo.id;
 
     setLoading(true);
     try {

@@ -25,6 +25,7 @@ import CircleCheckBox from '../components/CircleCheckBox';
 import { getMobileReadingChargeWay } from '../utils/systemSettingsUtils';
 import Modal from 'react-native-smart-modal';
 import { Toast } from '@ant-design/react-native';
+import QRCode from 'react-native-qrcode-svg';
 
 export default function PaymentScreen() {
   const navigation = useNavigation();
@@ -132,66 +133,20 @@ export default function PaymentScreen() {
 
   const renderCashContent = () => {
     return (
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'absolute',
-          alignSelf: 'center',
-          paddingTop: scaleSize(179),
-          width: '100%',
-          paddingHorizontal: scaleSize(41),
-        }}>
-        <Text style={{ color: '#333333', fontSize: scaleSize(28) }}>
-          应缴金额
-        </Text>
-        <Text
-          style={{
-            color: '#666666',
-            fontSize: scaleSize(28),
-            marginTop: scaleSize(12),
-            paddingVertical: scaleSize(4),
-            paddingHorizontal: scaleSize(18),
-            backgroundColor: '#EBEBEB',
-            borderRadius: scaleSize(5),
-            borderWidth: scaleSize(1),
-            borderColor: '#B2B2B2',
-          }}>
+      <View style={styles.cashContent}>
+        <Text style={styles.cashContentTitle}>应缴金额</Text>
+        <Text style={styles.cashContentAmount}>
           {sum(paymentBills?.map((it) => it.extendedAmount) || []) +
-            sum(paymentBills?.map((it) => it.lateFee))}
+            sum(paymentBills?.map((it) => it.lateFee) || [])}
         </Text>
-        <Text
-          style={{
-            color: '#333333',
-            fontSize: scaleSize(28),
-            marginTop: scaleSize(24),
-          }}>
-          实收金额
-        </Text>
-        <View
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            flexDirection: 'row',
-            marginTop: scaleSize(12),
-            paddingVertical: scaleSize(4),
-            paddingHorizontal: scaleSize(18),
-            borderRadius: scaleSize(5),
-            borderWidth: scaleSize(1),
-            borderColor: '#B2B2B2',
-          }}>
+        <Text style={styles.cashContentActualAmountTitle}>实收金额</Text>
+        <View style={styles.cashContentActualAmountContainer}>
           <TextInput
             onChangeText={(text) => {
               setCashRealValue(text);
             }}
             value={cashRealValue}
-            style={{
-              color: '#EE2E1E',
-              fontSize: scaleSize(28),
-              padding: 0,
-              flex: 1,
-              width: '100%',
-            }}
+            style={styles.cashContentActualAmountInput}
           />
           <TouchableOpacity
             onPress={() => setCashRealValue('')}
@@ -205,15 +160,7 @@ export default function PaymentScreen() {
 
         <TouchableOpacity
           onPress={onCashConfirm}
-          style={{
-            backgroundColor: '#4888E3',
-            marginTop: scaleSize(60),
-            paddingHorizontal: scaleSize(134),
-            paddingVertical: scaleSize(6),
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: scaleSize(27),
-          }}>
+          style={styles.cashConfirmButton}>
           <Text
             style={{
               fontSize: scaleSize(26),
@@ -228,30 +175,11 @@ export default function PaymentScreen() {
 
   const renderQrcode = () => {
     return (
-      <View
-        style={{
-          position: 'absolute',
-          alignSelf: 'center',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}>
-        <Image
-          source={{ uri: qrCodeUrl }}
-          style={{
-            backgroundColor: '#CCCCCC',
-            width: scaleSize(240),
-            height: scaleSize(240),
-            marginTop: scaleSize(179),
-          }}
-        />
-        <Text
-          style={{
-            fontSize: scaleSize(34),
-            color: '#333333',
-            marginTop: scaleSize(24),
-            fontWeight: 'bold',
-          }}>
+      <View style={styles.qrContainer}>
+        <View style={styles.qrWrapper}>
+          <QRCode size={scaleSize(240)} value={qrCodeUrl} />
+        </View>
+        <Text style={styles.qrText}>
           {payWay === '1' ? '微信' : '支付宝'}支付码
         </Text>
       </View>
@@ -266,18 +194,9 @@ export default function PaymentScreen() {
         horizontalLayout="right"
         animationIn="zoomIn"
         animationOut="zoomOut"
-        style={{ justifyContent: 'center', alignItems: 'center' }}
+        style={styles.paymentModal}
         onChange={setPaymentVisible}>
-        <View
-          style={{
-            width: scaleSize(443),
-            height: scaleSize(546),
-            alignSelf: 'center',
-            justifyContent: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}>
+        <View style={styles.paymentModalContent}>
           <View style={styles.modalWrapper}>
             <Image
               style={{
@@ -506,4 +425,89 @@ const styles = StyleSheet.create({
     color: colorWhite,
   },
   modalWrapper: {},
+  cashContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'absolute',
+    alignSelf: 'center',
+    paddingTop: scaleSize(179),
+    width: '100%',
+    paddingHorizontal: scaleSize(41),
+  },
+  cashContentTitle: {
+    color: '#333333',
+    fontSize: scaleSize(28),
+  },
+  cashContentAmount: {
+    color: '#666666',
+    fontSize: scaleSize(28),
+    marginTop: scaleSize(12),
+    paddingVertical: scaleSize(4),
+    paddingHorizontal: scaleSize(18),
+    backgroundColor: '#EBEBEB',
+    borderRadius: scaleSize(5),
+    borderWidth: scaleSize(1),
+    borderColor: '#B2B2B2',
+  },
+  cashContentActualAmountTitle: {
+    color: '#333333',
+    fontSize: scaleSize(28),
+    marginTop: scaleSize(24),
+  },
+  cashContentActualAmountContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: scaleSize(12),
+    paddingVertical: scaleSize(4),
+    paddingHorizontal: scaleSize(18),
+    borderRadius: scaleSize(5),
+    borderWidth: scaleSize(1),
+    borderColor: '#B2B2B2',
+  },
+  cashContentActualAmountInput: {
+    color: '#EE2E1E',
+    fontSize: scaleSize(28),
+    padding: 0,
+    flex: 1,
+    width: '100%',
+  },
+  cashConfirmButton: {
+    backgroundColor: '#4888E3',
+    marginTop: scaleSize(60),
+    paddingHorizontal: scaleSize(134),
+    paddingVertical: scaleSize(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: scaleSize(27),
+  },
+  paymentModal: { justifyContent: 'center', alignItems: 'center' },
+  paymentModalContent: {
+    width: scaleSize(443),
+    height: scaleSize(546),
+    alignSelf: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  qrContainer: {
+    position: 'absolute',
+    alignSelf: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  qrWrapper: {
+    backgroundColor: '#CCCCCC',
+    width: scaleSize(240),
+    height: scaleSize(240),
+    marginTop: scaleSize(179),
+  },
+  qrText: {
+    fontSize: scaleSize(34),
+    color: '#333333',
+    marginTop: scaleSize(24),
+    fontWeight: 'bold',
+  },
 });
