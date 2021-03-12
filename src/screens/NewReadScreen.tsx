@@ -324,6 +324,19 @@ export default function NewReadScreen() {
     return '';
   };
 
+  const meterState = (n: string) => {
+    if (n === '0') {
+      return '正常';
+    } else if (n === '1') {
+      return '新装';
+    } else if (n === '2') {
+      return '换表';
+    } else if (n === '3') {
+      return '拆下';
+    }
+    return '';
+  };
+
   const renderPreviewModal = () => {
     return (
       <Modal
@@ -450,12 +463,14 @@ export default function NewReadScreen() {
             <Text style={styles.description}>{newData.custAddress}</Text>
           </View>
           <View style={styles.tags}>
-            <Tag
-              title="欠费"
-              borderColor="#F5D28C"
-              textColor="#EAAF38"
-              style={{ marginEnd: scaleSize(16) }}
-            />
+            {newData.oweNumber > 0 ? (
+              <Tag
+                title="欠费"
+                borderColor="#F5D28C"
+                textColor="#EAAF38"
+                style={{ marginEnd: scaleSize(16) }}
+              />
+            ) : null}
             <Tag
               title={recordState(newData.recordState)}
               borderColor="#C2C2C2"
@@ -463,7 +478,7 @@ export default function NewReadScreen() {
               style={{ marginEnd: scaleSize(16) }}
             />
             <Tag
-              title="换表"
+              title={meterState(newData.meterState)}
               borderColor="#B6CEFB"
               textColor="#63A3FC"
               style={{ marginEnd: scaleSize(16) }}
@@ -754,6 +769,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     flex: 1,
+    flexWrap: 'wrap',
   },
   extraLabel: {
     color: '#666666',
