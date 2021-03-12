@@ -116,12 +116,13 @@ export default function ArrearagesScreen() {
 
   const nextPage = async () => {
     const ps = params;
+
     ps.skipCount = ps.skipCount || 0 + PAGE_SIZE;
     ps.maxResultCount = PAGE_SIZE;
 
     try {
       const res = await center.getArrearageList(ps);
-      setItems([...items, res.items]);
+      setItems([...items, ...res.items]);
       setTotal(res.totalCount);
       setParams(ps);
     } catch (e) {

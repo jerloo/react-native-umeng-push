@@ -64,7 +64,6 @@ export default function BooksScreen() {
     bookItems.forEach((item) => {
       if (item.bookId === holder.bookId) {
         item.checked = !item.checked;
-        console.log('更改状态', item);
       }
     });
     setBookItems([...bookItems]);

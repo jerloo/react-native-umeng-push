@@ -36,7 +36,7 @@ const PAGE_SIZE = 30;
 export default function PaymentCollectScreen() {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
-  const defaultBillMonth = parseInt(dayjs().format('YYYYMM'), 10);
+  const defaultBillMonth = parseInt(dayjs().format('YYYYMMDD'), 10);
   const [data, setData] = useState<PdaPaymentCollectDto>();
   const [loading, setLoading] = useState(false);
   const [params, setParams] = useState<PdaPaymentCollectInput>({
@@ -70,10 +70,10 @@ export default function PaymentCollectScreen() {
 
   const fetchBooks = async () => {
     try {
-      const data = await center.online.getBookList();
-      setBooks(data);
-      if (data.length > 0) {
-        setCurrentBook(data[0]);
+      const result = await center.online.getBookList();
+      setBooks(result);
+      if (result.length > 0) {
+        setCurrentBook(result[0]);
       }
     } catch (e) {
       Toast.fail(e.message);

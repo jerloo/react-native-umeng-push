@@ -181,7 +181,7 @@ export default function PaymentSubtotalScreen() {
             onBack={() => navigation.goBack()}
             onRight2Click={refresh}
             right2Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}
-            title={'欠费查询'}
+            title={'收费明细'}
             titleColor={colorWhite}
           />
           <SearchBox
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   topContainer: {
-    height: scaleSize(280),
+    height: scaleSize(300),
   },
   topBox: {
     backgroundColor: colorWhite,
