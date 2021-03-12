@@ -9,6 +9,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Keyboard,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -61,6 +62,40 @@ export default function NewReadScreen() {
   const [readStates, setReadStates] = React.useState<ReadStateStorage>();
   const [amount, setAmount] = useState(0);
   const [canCharge, setCanCharge] = useState(false);
+  const [keyboardVisible, setKeyBoardVisible] = useState(true);
+
+  const keyboardWillShow = (_event: any) => {
+    // Animated.timing(this.imageHeight, {
+    //   duration: event.duration,
+    //   toValue: IMAGE_HEIGHT_SMALL,
+    // }).start();
+    setKeyBoardVisible(false);
+    console.log('setKeyBoardVisible false');
+  };
+
+  const keyboardWillHide = (_event: any) => {
+    // Animated.timing(this.imageHeight, {
+    //   duration: event.duration,
+    //   toValue: IMAGE_HEIGHT,
+    // }).start();
+    setKeyBoardVisible(true);
+  };
+
+  React.useEffect(() => {
+    const keyboardWillShowSub = Keyboard.addListener(
+      'keyboardWillShow',
+      keyboardWillShow,
+    );
+    const keyboardWillHideSub = Keyboard.addListener(
+      'keyboardWillHide',
+      keyboardWillHide,
+    );
+
+    return function () {
+      keyboardWillShowSub.remove();
+      keyboardWillHideSub.remove();
+    };
+  }, []);
 
   React.useEffect(() => {
     isMobileReadingCanCharge().then((flag) => setCanCharge(flag));
@@ -485,7 +520,8 @@ export default function NewReadScreen() {
             </View>
           </View>
 
-          {newData.recordState === 0 || newData.recordState === 1 ? (
+          {(newData.recordState === 0 || newData.recordState === 1) &&
+          keyboardVisible ? (
             <KeyBoard
               onBackClick={() => {
                 if (
