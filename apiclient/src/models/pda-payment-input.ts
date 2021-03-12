@@ -11,6 +11,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+
+import { FeeId } from "./fee-id";
+
 /**
  * Pda 现金收费
  * @export
@@ -28,7 +31,7 @@ export interface PdaPaymentInput {
      * @type {Array&lt;FeeId&gt;}
      * @memberof PdaPaymentInput
      */
-    feeIds?: any;
+    paymnetMobileFeeInput?: FeeId[];
     /**
      * 实收金额
      * @type {number}

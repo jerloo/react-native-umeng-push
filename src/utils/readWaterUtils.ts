@@ -20,8 +20,23 @@ export const roundCalc = (data: PdaReadDataDto) => {
   return data.reading - data.lastReading + data.replaceWater;
 };
 
+const CALCS: {
+  [key: number]: (data: PdaReadDataDto) => number;
+} = {
+  1: normalCalc,
+  2: overCircleCalc,
+  4: reverseCalc,
+  5: noWatterCalc,
+  6: roundCalc,
+};
+
 export const calcReadWater = (data: PdaReadDataDto) => {
-  return normalCalc(data);
+  try {
+    const fn = CALCS[data.readStateId];
+    return fn(data);
+  } catch (e) {
+    return normalCalc(data);
+  }
 };
 
 export const judgeReadWater = (value: number, data: PdaReadDataDto) => {

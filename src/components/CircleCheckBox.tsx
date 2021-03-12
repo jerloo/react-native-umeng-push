@@ -1,11 +1,20 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, StyleSheet, Text } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Text,
+  ImageSourcePropType,
+} from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 
 interface Props {
   checked: boolean;
   onClick?: () => void;
   title?: string;
+  iconNormal?: ImageSourcePropType;
+  iconSelected?: ImageSourcePropType;
 }
 
 export default function CircleCheckBox(props: Props) {
@@ -15,14 +24,20 @@ export default function CircleCheckBox(props: Props) {
         <View style={[styles.rememberIconContainer]}>
           <Image
             style={styles.rememberIcon}
-            source={require('../assets/qietu/chaobiaorenwu/meter_reading_task_icon_unselectde_slelected.png')}
+            source={
+              props.iconSelected ||
+              require('../assets/qietu/chaobiaorenwu/meter_reading_task_icon_unselectde_slelected.png')
+            }
           />
         </View>
       ) : (
         <View style={[styles.rememberIconContainer]}>
           <Image
             style={styles.rememberIcon}
-            source={require('../assets/qietu/chaobiaorenwu/meter_reading_task_icon_unselectde_normal.png')}
+            source={
+              props.iconNormal ||
+              require('../assets/qietu/chaobiaorenwu/meter_reading_task_icon_unselectde_normal.png')
+            }
           />
         </View>
       )}

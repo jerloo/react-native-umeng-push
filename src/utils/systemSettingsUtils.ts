@@ -31,11 +31,10 @@ export const isMobileReadingCanCharge = async () => {
 };
 
 export const getMobileReadingChargeWay = async () => {
-  const result = (await getSystemSettingByKey(MobileReadingCanCharge))?.value;
+  const result = (await getSystemSettingByKey(MobileReadingChargeWay))?.value;
   if (!result) {
     return null;
   }
-  console.log('getMobileReadingChargeWay');
   return (result as string).split(',');
 };
 

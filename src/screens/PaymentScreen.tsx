@@ -16,7 +16,7 @@ import { scaleSize } from 'react-native-responsive-design';
 import { CommonTitleBar } from '../components/titlebars/CommonTitleBar';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { colorWhite } from '../styles';
-import { PdaChargeListDto } from '../../apiclient/src/models';
+import { FeeId, PdaChargeListDto } from '../../apiclient/src/models';
 import { sum } from '../utils/sumUtils';
 import PaymentItem from '../components/PaymentItem';
 import center from '../data';
@@ -35,7 +35,7 @@ export default function PaymentScreen() {
   const [ways, setWays] = useState<string[]>();
   const [paymentVisible, setPaymentVisible] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState<string>();
-  const [cashRealValue, setCashRealValue] = useState<number>();
+  const [cashRealValue, setCashRealValue] = useState<string>('');
 
   useEffect(() => {
     center
@@ -47,7 +47,6 @@ export default function PaymentScreen() {
 
   useEffect(() => {
     getMobileReadingChargeWay().then((items) => {
-      console.log('getMobileReadingChargeWay', items);
       setWays(items || []);
     });
   }, []);
@@ -69,18 +68,31 @@ export default function PaymentScreen() {
   };
 
   const onCashConfirm = async () => {
+    if (!cashRealValue) {
+      Toast.fail('请先输入实收金额');
+      return;
+    }
     const key = Toast.loading('收款中');
     try {
       await center.getCashPaymentDetails({
-        actualMoney: cashRealValue,
+        actualMoney: parseFloat(cashRealValue),
         chargeWay: '1',
         custCode: route.params.custCode,
+        paymnetMobileFeeInput:
+          paymentBills?.map((it) => {
+            const item: FeeId = {
+              feedId: it.feeId,
+            };
+            return item;
+          }) || [],
       });
       setPaymentVisible(false);
     } catch (e) {
-      Toast.fail(e.message);
+      Toast.fail('收款失败');
     } finally {
       Toast.remove(key);
+      Toast.success('收款成功');
+      navigation.goBack();
     }
   };
 
@@ -91,12 +103,22 @@ export default function PaymentScreen() {
         onPress={() => setPayWay(info.item)}>
         <View style={styles.paywayRowLeft}>
           <Image
-            source={require('../assets/qietu/shoufei/charge_icon_cash_normal.png')}
+            source={
+              info.item === '1'
+                ? require('../assets/qietu/shoufei/charge_icon_cash_normal.png')
+                : info.item === '2'
+                ? require('../assets/qietu/shoufei/charge_icon_WaChat_normal.png')
+                : require('../assets/qietu/shoufei/charge_icon_Alipay_normal.png')
+            }
             style={styles.paywayIcon}
           />
-          <Text style={styles.paywayTitle}>现金</Text>
+          <Text style={styles.paywayTitle}>
+            {info.item === '1' ? '现金' : info.item === '2' ? '微信' : '支付宝'}
+          </Text>
         </View>
         <CircleCheckBox
+          iconNormal={require('../assets/qietu/shoufei/turnpike_ic_pick_normal.png')}
+          iconSelected={require('../assets/qietu/shoufei/turnpike_ic_pick_selected.png')}
           checked={payWay === info.item}
           onClick={() => setPayWay(info.item)}
         />
@@ -131,7 +153,8 @@ export default function PaymentScreen() {
             borderWidth: scaleSize(1),
             borderColor: '#B2B2B2',
           }}>
-          48.00
+          {sum(paymentBills?.map((it) => it.extendedAmount) || []) +
+            sum(paymentBills?.map((it) => it.lateFee))}
         </Text>
         <Text
           style={{
@@ -155,12 +178,16 @@ export default function PaymentScreen() {
           }}>
           <TextInput
             onChangeText={(text) => {
-              if (text) {
-                setCashRealValue(parseFloat(text));
-              }
+              setCashRealValue(text);
             }}
-            value={cashRealValue ? cashRealValue.toString() : ''}
-            style={{ color: '#EE2E1E', fontSize: scaleSize(28), padding: 0 }}
+            value={cashRealValue}
+            style={{
+              color: '#EE2E1E',
+              fontSize: scaleSize(28),
+              padding: 0,
+              flex: 1,
+              width: '100%',
+            }}
           />
           <Image style={{ width: scaleSize(20), height: scaleSize(20) }} />
         </View>
@@ -311,7 +338,10 @@ export default function PaymentScreen() {
 
           <View style={styles.total}>
             <Text style={styles.totalTitle}>应缴总金额</Text>
-            <Text style={styles.totalValue}>¥48.00</Text>
+            <Text style={styles.totalValue}>
+              {sum(paymentBills?.map((it) => it.extendedAmount) || []) +
+                sum(paymentBills?.map((it) => it.lateFee) || [])}
+            </Text>
           </View>
 
           <View style={styles.payways}>

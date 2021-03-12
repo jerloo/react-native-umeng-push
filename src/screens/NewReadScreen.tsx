@@ -118,7 +118,7 @@ export default function NewReadScreen() {
     setNewData({
       ...newData,
       reading: parseInt(value, 10) || undefined,
-      readWater: newData.reading - newData.lastReading || undefined,
+      readWater: calcReadWater(newData),
       readDate: new Date(),
     });
     setAmount(0);
@@ -509,7 +509,12 @@ export default function NewReadScreen() {
               readStates={readStates}
               selectStateId={newData.readStateId}
               onStateSelect={(item) => {
-                setNewData({ ...newData, readStateId: item.id });
+                setNewData({
+                  ...newData,
+                  readStateId: item.id,
+                  readWater: calcReadWater(newData),
+                  readDate: new Date(),
+                });
               }}
             />
           ) : null}

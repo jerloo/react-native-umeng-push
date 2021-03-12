@@ -63,13 +63,15 @@ export default function PaymentItem({ data }: Props) {
           </View>
           <View style={styles.detailsCol}>
             <View style={styles.detailsLabels}>
-              <Text style={styles.detailsLabel}>上期抄码：</Text>
-              <Text style={styles.detailsLabel}>本期抄码：</Text>
-              <Text style={styles.detailsLabel}>账单金额：</Text>
+              <Text style={styles.detailsLabel}>抄见水量：</Text>
+              <Text style={styles.detailsLabel}>抄表日期：</Text>
+              <Text style={[styles.detailsLabel, { textAlign: 'right' }]}>
+                违约金：
+              </Text>
             </View>
             <View style={styles.detailsValues}>
-              <Text style={styles.detailsValue}>{data.lastReading}</Text>
-              <Text style={styles.detailsValue}>{data.reading}</Text>
+              <Text style={styles.detailsValue}>{data.readWater}</Text>
+              <Text style={styles.detailsValue}>{data.readingDate}</Text>
               <Text style={styles.detailsValue}>{data.lateFee}</Text>
             </View>
           </View>
@@ -107,7 +109,7 @@ export default function PaymentItem({ data }: Props) {
       onPress={() => setExpand(!expand)}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{data.billMonth}账单</Text>
-        <Text style={styles.amount}>{sum(data.extendedAmount)}</Text>
+        <Text style={styles.amount}>{data.extendedAmount}</Text>
       </View>
 
       {expand ? renderExpand() : null}

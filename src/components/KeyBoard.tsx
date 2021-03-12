@@ -7,11 +7,17 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import { scaleHeight, scaleSize } from 'react-native-responsive-design';
+import {
+  scaleHeight as defaultScaleHeight,
+  scaleSize,
+} from 'react-native-responsive-design';
 import { colorWhite } from '../styles';
 import StateButton from './StateButton';
 import { PdaReadStateDto } from '../../apiclient/src/models';
 import { ReadStateStorage } from '../utils/settingsUtils';
+
+let scaleHeight = defaultScaleHeight;
+scaleHeight = scaleSize;
 
 interface Props {
   onNumberClick?: (value: number) => void;
@@ -80,6 +86,12 @@ export default function KeyBoard(props: Props) {
       <View style={styles.row}>
         <TouchableOpacity
           style={styles.cell}
+          onPress={() => props.onNumberClick && props.onNumberClick(4)}>
+          <Text style={styles.number}>4</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.cell}
           onPress={() => props.onNumberClick && props.onNumberClick(5)}>
           <Text style={styles.number}>5</Text>
         </TouchableOpacity>
@@ -88,12 +100,6 @@ export default function KeyBoard(props: Props) {
           style={styles.cell}
           onPress={() => props.onNumberClick && props.onNumberClick(6)}>
           <Text style={styles.number}>6</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.cell}
-          onPress={() => props.onNumberClick && props.onNumberClick(7)}>
-          <Text style={styles.number}>7</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.cell, { backgroundColor: '#D0D1D3' }]}>
