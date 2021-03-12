@@ -160,7 +160,8 @@ export default function BookTaskScreen() {
         ]}
         tabBarUnderlineStyle={{ height: scaleSize(6) }}
         tabBarActiveTextColor="#4B92F4"
-        tabBarInactiveTextColor="#333333">
+        tabBarInactiveTextColor="#333333"
+        tabBarTextStyle={{ fontSize: scaleSize(36) }}>
         <FlatList<PdaReadDataDtoHolder>
           style={styles.items}
           initialNumToRender={10}

@@ -44,6 +44,7 @@ import center from '../data';
 import { isMobileReadingCanCharge } from '../utils/systemSettingsUtils';
 import { calcReadWater, judgeReadWater } from '../utils/readWaterUtils';
 import { Modal as AntModal } from '@ant-design/react-native';
+import { meterState, recordState } from '../utils/stateConverter';
 
 let scaleHeight = defaultScaleHeight;
 scaleHeight = scaleSize;
@@ -309,32 +310,6 @@ export default function NewReadScreen() {
         </View>
       </View>
     );
-  };
-
-  const recordState = (n: number) => {
-    if (n === 0) {
-      return '未抄';
-    } else if (n === 1) {
-      return '已抄';
-    } else if (n === 2) {
-      return '已复核';
-    } else if (n === 3) {
-      return '已开账';
-    }
-    return '';
-  };
-
-  const meterState = (n: string) => {
-    if (n === '0') {
-      return '正常';
-    } else if (n === '1') {
-      return '新装';
-    } else if (n === '2') {
-      return '换表';
-    } else if (n === '3') {
-      return '拆下';
-    }
-    return '';
   };
 
   const renderPreviewModal = () => {
