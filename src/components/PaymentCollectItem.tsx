@@ -2,6 +2,7 @@ import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 import { PdaPaymentCollect } from '../../apiclient/src/models';
+import { colorWhite } from '../styles';
 
 interface Props {
   data: PdaPaymentCollect;
@@ -39,10 +40,16 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
+    backgroundColor: colorWhite,
+    borderRadius: scaleSize(10),
+    marginHorizontal: scaleSize(30),
+    paddingHorizontal: scaleSize(38),
+    paddingVertical: scaleSize(28),
   },
   line: {
     height: scaleSize(1),
     backgroundColor: '#DEDEDE',
+    marginTop: scaleSize(12),
   },
   payDate: {
     fontSize: scaleSize(34),
@@ -53,11 +60,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: scaleSize(24),
   },
   col: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
   },
   label: {
     fontSize: scaleSize(28),
@@ -66,5 +75,6 @@ const styles = StyleSheet.create({
   value: {
     fontSize: scaleSize(28),
     color: '#2660ED',
+    marginStart: scaleSize(18),
   },
 });

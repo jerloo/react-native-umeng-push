@@ -94,6 +94,7 @@ export default function PaymentCollectScreen() {
     const ps = params;
     ps.skipCount = 0;
     ps.maxResultCount = PAGE_SIZE;
+    ps.meterReaderId = currentUser?.id;
 
     setLoading(true);
     try {
@@ -111,10 +112,20 @@ export default function PaymentCollectScreen() {
     const ps = params;
     ps.skipCount = ps.skipCount || 0 + PAGE_SIZE;
     ps.maxResultCount = PAGE_SIZE;
+    ps.meterReaderId = currentUser?.id;
 
     try {
       const res = await center.getPaymentCollect(ps);
-      setData(res);
+      const newData: PdaPaymentCollectDto = {
+        ...data,
+        paymentCollects: {
+          items: [
+            ...(data?.paymentCollects?.items || []),
+            ...(res.paymentCollects?.items || []),
+          ],
+        },
+      };
+      setData(newData);
       setParams(ps);
     } catch (e) {
       Toast.fail(e.message);
@@ -343,7 +354,7 @@ export default function PaymentCollectScreen() {
       <FlatList<PdaPaymentCollect>
         style={styles.items}
         initialNumToRender={10}
-        data={data?.paymentCollects || []}
+        data={data?.paymentCollects?.items || []}
         refreshing={loading}
         renderItem={renderItem}
         ItemSeparatorComponent={() => (
@@ -402,7 +413,7 @@ const styles = StyleSheet.create({
   items: {
     // backgroundColor: colorWhite,
     // marginTop: scaleSize(100),
-    // marginTop: scaleSize(100),
+    marginTop: scaleSize(80),
   },
   item: {
     // marginHorizontal: scaleSize(30),

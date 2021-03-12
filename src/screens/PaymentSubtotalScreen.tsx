@@ -16,7 +16,8 @@ import { colorWhite } from '../styles';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 import {
   PdaArrearageDto,
-  PdaArrearageInputDto,
+  PdaPaymentCollectInput,
+  PdaPaymentSubtotal,
   PdaPaySubtotalsDto,
 } from '../../apiclient/src/models';
 import center from '../data';
@@ -25,25 +26,24 @@ import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import SearchBox from '../components/SearchBox';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
-import ArrearageItem from '../components/ArrearageItem';
 import dayjs from 'dayjs';
 import { getSession, UserSession } from '../utils/sesstionUtils';
+import SubtotalItem from '../components/SubtotalItem';
 
 const PAGE_SIZE = 30;
 
 export default function PaymentSubtotalScreen() {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
-  const defaultBillMonth = parseInt(dayjs().format('YYYYMM'), 10);
+  const defaultBillMonth = parseInt(dayjs().format('YYYYMMDD'), 10);
   const [session, setSession] = useState<UserSession>();
 
-  const [total, setTotal] = useState(0);
   const [data, setData] = useState<PdaPaySubtotalsDto>();
   const [loading, setLoading] = useState(false);
-  const [params, setParams] = useState<PdaArrearageInputDto>({
+  const [params, setParams] = useState<PdaPaymentCollectInput>({
     maxResultCount: PAGE_SIZE,
-    beginMonth: defaultBillMonth,
-    endMonth: defaultBillMonth,
+    beginDate: defaultBillMonth,
+    endDate: defaultBillMonth,
   });
 
   useEffect(() => {
@@ -79,7 +79,16 @@ export default function PaymentSubtotalScreen() {
 
     try {
       const res = await center.getPaymentSubtotal(ps);
-      setData(res);
+      const newData: PdaPaySubtotalsDto = {
+        ...data,
+        paySubtotals: {
+          items: [
+            ...(data?.paySubtotals?.items || []),
+            ...(res.paySubtotals?.items || []),
+          ],
+        },
+      };
+      setData(newData);
       setParams(ps);
     } catch (e) {
       Toast.fail(e.message);
@@ -87,15 +96,15 @@ export default function PaymentSubtotalScreen() {
   };
 
   const onStartPick = (dt: Date) => {
-    const value = parseInt(dayjs(dt).format('YYYYMM'), 10);
+    const value = parseInt(dayjs(dt).format('YYYYMMDD'), 10);
     console.log('onPickBillMonth', value);
-    setParams({ ...params, beginMonth: value });
+    setParams({ ...params, beginDate: value });
   };
 
   const onEndPick = (dt: Date) => {
-    const value = parseInt(dayjs(dt).format('YYYYMM'), 10);
+    const value = parseInt(dayjs(dt).format('YYYYMMDD'), 10);
     console.log('onPickBillMonth', value);
-    setParams({ ...params, endMonth: value });
+    setParams({ ...params, endDate: value });
   };
 
   const renderQuery = () => {
@@ -104,7 +113,7 @@ export default function PaymentSubtotalScreen() {
         <Text style={styles.settingsSubTitle}>收费时间</Text>
         <View style={styles.settingsDatePickers}>
           <DatePicker
-            value={dayjs(params.beginMonth, 'YYYYMM').toDate()}
+            value={dayjs(params.beginDate, 'YYYYMMDD').toDate()}
             mode="month"
             defaultDate={new Date()}
             minDate={new Date(2015, 7, 6)}
@@ -114,7 +123,7 @@ export default function PaymentSubtotalScreen() {
             <TouchableOpacity
               style={[styles.settingsInput, { width: scaleSize(196) }]}>
               <Text style={styles.settingsInputText}>
-                {dayjs(params.beginMonth.toString(), 'YYYYMMDD').format(
+                {dayjs(params.beginDate.toString(), 'YYYYMMDD').format(
                   'YYYY-MM-DD',
                 )}
               </Text>
@@ -126,7 +135,7 @@ export default function PaymentSubtotalScreen() {
           </DatePicker>
           <Text>至</Text>
           <DatePicker
-            value={dayjs(params.endMonth, 'YYYYMM').toDate()}
+            value={dayjs(params.endDate, 'YYYYMMDD').toDate()}
             mode="month"
             defaultDate={new Date()}
             minDate={new Date(2015, 7, 6)}
@@ -136,7 +145,7 @@ export default function PaymentSubtotalScreen() {
             <TouchableOpacity
               style={[styles.settingsInput, { width: scaleSize(196) }]}>
               <Text style={styles.settingsInputText}>
-                {dayjs(params.endMonth.toString(), 'YYYYMMDD').format(
+                {dayjs(params.endDate.toString(), 'YYYYMMDD').format(
                   'YYYY-MM-DD',
                 )}
               </Text>
@@ -151,7 +160,7 @@ export default function PaymentSubtotalScreen() {
     );
   };
 
-  const renderItem = (info: ListRenderItemInfo<PdaArrearageDto>) => {
+  const renderItem = (info: ListRenderItemInfo<PdaPaymentSubtotal>) => {
     return (
       <TouchableOpacity
         onPress={() =>
@@ -160,7 +169,7 @@ export default function PaymentSubtotalScreen() {
             custCode: info.item.custCode,
           })
         }>
-        <ArrearageItem data={info.item} />
+        <SubtotalItem data={info.item} />
       </TouchableOpacity>
     );
   };

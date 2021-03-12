@@ -415,18 +415,23 @@ export default function NewReadScreen() {
             <Text style={styles.description}>{newData.custAddress}</Text>
           </View>
           <View style={styles.tags}>
-            <Tag title="欠费" borderColor="#F5D28C" textColor="#EAAF38" />
+            <Tag
+              title="欠费"
+              borderColor="#F5D28C"
+              textColor="#EAAF38"
+              style={{ marginEnd: scaleSize(16) }}
+            />
             <Tag
               title={recordState(newData.recordState)}
               borderColor="#C2C2C2"
               textColor="#666666"
-              style={{ marginStart: scaleSize(16) }}
+              style={{ marginEnd: scaleSize(16) }}
             />
             <Tag
               title="换表"
               borderColor="#B6CEFB"
               textColor="#63A3FC"
-              style={{ marginStart: scaleSize(16) }}
+              style={{ marginEnd: scaleSize(16) }}
             />
           </View>
           {renderStateExtra()}
