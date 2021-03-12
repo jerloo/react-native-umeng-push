@@ -52,18 +52,22 @@ export default function PaymentScreen() {
   }, []);
 
   const onPayButtonClick = async () => {
-    if (payWay === '1') {
-      setPaymentVisible(true);
-    } else if (payWay === '2') {
-      const result = await center.getWechatQrCodeUrl(route.params.custCode);
-      setQrCodeUrl(result);
-      setPaymentVisible(true);
-    } else if (payWay === '3') {
-      const result = await center.getAlipayQrCodeUrl(route.params.custCode);
-      setQrCodeUrl(result);
-      setPaymentVisible(true);
-    } else {
-      Toast.fail('请先选择付费方式');
+    try {
+      if (payWay === '1') {
+        setPaymentVisible(true);
+      } else if (payWay === '2') {
+        const result = await center.getWechatQrCodeUrl(route.params.custCode);
+        setQrCodeUrl(result);
+        setPaymentVisible(true);
+      } else if (payWay === '3') {
+        const result = await center.getAlipayQrCodeUrl(route.params.custCode);
+        setQrCodeUrl(result);
+        setPaymentVisible(true);
+      } else {
+        Toast.fail('请先选择付费方式');
+      }
+    } catch (e) {
+      Toast.fail('暂不支持');
     }
   };
 
@@ -189,7 +193,14 @@ export default function PaymentScreen() {
               width: '100%',
             }}
           />
-          <Image style={{ width: scaleSize(20), height: scaleSize(20) }} />
+          <TouchableOpacity
+            onPress={() => setCashRealValue('')}
+            style={{ padding: scaleSize(10) }}>
+            <Image
+              source={require('../assets/qietu/dengluye/logon_icon_cancel.png')}
+              style={{ width: scaleSize(20), height: scaleSize(20) }}
+            />
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity
@@ -241,7 +252,7 @@ export default function PaymentScreen() {
             marginTop: scaleSize(24),
             fontWeight: 'bold',
           }}>
-          支付宝支付码
+          {payWay === '1' ? '微信' : '支付宝'}支付码
         </Text>
       </View>
     );
