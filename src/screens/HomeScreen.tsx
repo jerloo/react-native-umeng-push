@@ -34,7 +34,7 @@ export default function HomeScreen() {
     getSession().then((s) => {
       setSession(s || undefined);
     });
-  }, []);
+  });
 
   const fetchStateSettings = async () => {
     try {
