@@ -135,6 +135,8 @@ export default function BooksScreen() {
             },
           ],
         );
+      } else {
+        await fetchRemote();
       }
     } catch (e) {
       Toast.fail(e.message);

@@ -144,11 +144,7 @@ class CenterService implements ApiService {
   async getReadingMonth(): Promise<number | null> {
     const netInfo = await NetInfo.fetch();
     if (netInfo.isInternetReachable === true) {
-      const result = await this.online.getReadingMonth();
-      if (result) {
-        setBillMonth(result);
-      }
-      return result;
+      return await this.online.getReadingMonth();
     }
     return this.offline.getReadingMonth();
   }

@@ -24,6 +24,7 @@ import { setReadStateSettings } from '../utils/settingsUtils';
 import { useNavigation } from '@react-navigation/core';
 import SearchBoxView from '../components/SearchBoxView';
 import { setSystemSettings } from '../utils/systemSettingsUtils';
+import { setBillMonth } from '../utils/billMonthUtils';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -56,7 +57,10 @@ export default function HomeScreen() {
 
   const fetchBillMonth = async () => {
     try {
-      await center.getReadingMonth();
+      const result = await center.getReadingMonth();
+      if (result) {
+        setBillMonth(result);
+      }
     } catch (e) {
       console.log(e);
     }
