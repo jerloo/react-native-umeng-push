@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   ImageSourcePropType,
+  ImageStyle,
 } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 
@@ -15,15 +16,17 @@ interface Props {
   title?: string;
   iconNormal?: ImageSourcePropType;
   iconSelected?: ImageSourcePropType;
+  iconStyle?: ImageStyle;
 }
 
 export default function CircleCheckBox(props: Props) {
+  const imgStyle = props.iconStyle ? props.iconStyle : styles.rememberIcon;
   return (
     <TouchableOpacity style={styles.container} onPress={props.onClick}>
       {props.checked ? (
         <View style={[styles.rememberIconContainer]}>
           <Image
-            style={styles.rememberIcon}
+            style={imgStyle}
             source={
               props.iconSelected ||
               require('../assets/qietu/chaobiaorenwu/meter_reading_task_icon_unselectde_slelected.png')
@@ -33,7 +36,7 @@ export default function CircleCheckBox(props: Props) {
       ) : (
         <View style={[styles.rememberIconContainer]}>
           <Image
-            style={styles.rememberIcon}
+            style={imgStyle}
             source={
               props.iconNormal ||
               require('../assets/qietu/chaobiaorenwu/meter_reading_task_icon_unselectde_normal.png')
