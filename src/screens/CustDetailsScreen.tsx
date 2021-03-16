@@ -8,6 +8,7 @@ import {
   Text,
   FlatList,
   ScrollView,
+  Image,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -27,12 +28,14 @@ import dayjs from 'dayjs';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
 import PureInput from '../components/PureInput';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function CustDetailsScreen() {
   const navigation = useNavigation();
   const route = useRoute<RouteProp<MainStackParamList, 'CustDetails'>>();
 
   const [details, setDetails] = useState<PdaCustDto>();
+  const [onlyShowOwe, setOnlyShowOwe] = useState(false);
 
   useEffect(() => {
     const { data } = route.params;
@@ -233,7 +236,7 @@ export default function CustDetailsScreen() {
   const renderPayRecord = (info: ListRenderItemInfo<PdaPayRecord>) => {
     return (
       <View style={styles.listItem}>
-        <Text style={styles.listItemText}>
+        <Text style={[styles.listItemText, { flex: 2 }]}>
           {dayjs(info.item.payDate).format('YYYY-MM-DD')}
         </Text>
         <Text style={styles.listItemText}>{info.item.cashier}</Text>
@@ -249,6 +252,17 @@ export default function CustDetailsScreen() {
         {headers.map((value) => (
           <Text style={styles.listItemText}>{value}</Text>
         ))}
+      </View>
+    );
+  };
+
+  const renderPayHeader = () => {
+    return (
+      <View style={[styles.listItem, styles.listItemDark]}>
+        <Text style={[styles.listItemText, { flex: 2 }]}>缴费时间</Text>
+        <Text style={styles.listItemText}>收费渠道</Text>
+        <Text style={styles.listItemText}>实缴金额</Text>
+        <Text style={styles.listItemText}>余额</Text>
       </View>
     );
   };
@@ -332,9 +346,6 @@ export default function CustDetailsScreen() {
           <FlatList<PdaReadingRecord>
             data={details?.readingRecords}
             renderItem={renderReadingRecord}
-            ItemSeparatorComponent={() => (
-              <View style={{ height: scaleSize(18) }} />
-            )}
             keyExtractor={(item) => 'read-' + item.readingDate.toString()}
             contentInset={{ bottom: 100 }}
             contentContainerStyle={{
@@ -369,14 +380,38 @@ export default function CustDetailsScreen() {
             </View>
           </View>
 
+          <TouchableOpacity
+            style={styles.rememberContainer}
+            onPress={() => {
+              setOnlyShowOwe(!onlyShowOwe);
+            }}>
+            {onlyShowOwe ? (
+              <View style={[styles.rememberIconContainer]}>
+                <Image
+                  style={styles.rememberIcon}
+                  source={require('../assets/login_remember_checked.png')}
+                />
+              </View>
+            ) : (
+              <View style={[styles.rememberIconContainer]}>
+                <Image
+                  style={styles.rememberIcon}
+                  source={require('../assets/login_remember_unchecked.png')}
+                />
+              </View>
+            )}
+            <Text style={styles.rememberTitle}>仅显示欠费</Text>
+          </TouchableOpacity>
+
           {renderHeader(['账务年月', '开账水量', '账单金额', '违约金'])}
 
           <FlatList<PdaBillingInfo>
-            data={details?.billingInfos}
+            data={
+              onlyShowOwe
+                ? details?.billingInfos?.filter((it) => it.payState === 0)
+                : details?.billingInfos
+            }
             renderItem={renderBillingRecord}
-            ItemSeparatorComponent={() => (
-              <View style={{ height: scaleSize(18) }} />
-            )}
             keyExtractor={(item) => 'read-' + item.billMonth.toString()}
             contentInset={{ bottom: 100 }}
             contentContainerStyle={{
@@ -401,14 +436,11 @@ export default function CustDetailsScreen() {
             </View>
           </View>
 
-          {renderHeader(['缴费时间', '收费渠道', '实缴金额', '余额'])}
+          {renderPayHeader()}
 
           <FlatList<PdaPayRecord>
             data={details?.payRecords}
             renderItem={renderPayRecord}
-            ItemSeparatorComponent={() => (
-              <View style={{ height: scaleSize(18) }} />
-            )}
             keyExtractor={(item) => 'read-' + item.payDate.toString()}
             contentInset={{ bottom: 100 }}
             contentContainerStyle={{
@@ -512,5 +544,31 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  rememberContainer: {
+    borderWidth: 0,
+    width: '100%',
+    marginStart: 0,
+    backgroundColor: 'transparent',
+    // backgroundColor: 'blue',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: scaleSize(30),
+    paddingStart: scaleSize(30),
+    marginBottom: scaleSize(16),
+  },
+  rememberIcon: {
+    width: scaleSize(24),
+    height: scaleSize(24),
+  },
+  rememberIconContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  rememberTitle: {
+    fontSize: scaleSize(24),
+    marginStart: scaleSize(16),
   },
 });
