@@ -114,16 +114,18 @@ export default function BookReadItem(props: Props) {
               />
             ) : null}
           </View>
-          <View
-            style={[
-              styles.extraRowPart,
-              { justifyContent: 'flex-end', marginEnd: scaleSize(30) },
-            ]}>
-            <Text style={styles.dateLabel}>抄表日期：</Text>
-            <Text style={styles.dateValue}>
-              {dayjs(props.item.lastReadDate).format('YYYY-MM-DD')}
-            </Text>
-          </View>
+          {props.item.recordState !== 0 ? (
+            <View
+              style={[
+                styles.extraRowPart,
+                { justifyContent: 'flex-end', marginEnd: scaleSize(30) },
+              ]}>
+              <Text style={styles.dateLabel}>抄表日期：</Text>
+              <Text style={styles.dateValue}>
+                {dayjs(props.item.lastReadDate).format('YYYY-MM-DD')}
+              </Text>
+            </View>
+          ) : null}
         </View>
       </View>
     </View>
