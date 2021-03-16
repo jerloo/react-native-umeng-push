@@ -17,12 +17,15 @@ interface Props {
   iconNormal?: ImageSourcePropType;
   iconSelected?: ImageSourcePropType;
   iconStyle?: ImageStyle;
+  disabled: boolean;
 }
 
 export default function CircleCheckBox(props: Props) {
   const imgStyle = props.iconStyle ? props.iconStyle : styles.rememberIcon;
   return (
-    <TouchableOpacity style={styles.container} onPress={props.onClick}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => !props.disabled && props.onClick && props?.onClick()}>
       {props.checked ? (
         <View style={[styles.rememberIconContainer]}>
           <Image

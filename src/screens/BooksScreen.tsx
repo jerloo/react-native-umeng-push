@@ -249,11 +249,11 @@ export default function BooksScreen() {
         ItemSeparatorComponent={() => (
           <View style={{ height: scaleSize(18) }} />
         )}
-        disableLeftSwipe={true}
         closeOnRowPress={true}
         closeOnRowBeginSwipe={true}
         closeOnScroll={true}
         swipeToOpenPercent={30}
+        disableRightSwipe
         renderHiddenItem={(_data, _rowMap) => (
           <View style={styles.rowHidden}>
             <SwipeButton
@@ -268,8 +268,8 @@ export default function BooksScreen() {
             />
           </View>
         )}
-        leftOpenValue={scaleSize(-240)}
-        rightOpenValue={scaleSize(240)}
+        leftOpenValue={scaleSize(240)}
+        rightOpenValue={scaleSize(-240)}
         keyExtractor={(item) => item.bookCode.toString()}
         contentInset={{ bottom: 100 }}
         contentContainerStyle={{

@@ -43,15 +43,18 @@ export default function CommonTitleBarEx(props: Props) {
         </TouchableOpacity>
       </View>
 
-      <Text
-        numberOfLines={1}
-        ellipsizeMode="middle"
-        style={[
-          styles.titleBarTitle,
-          { color: props.titleColor && props.titleColor },
-        ]}>
-        {props.title || '抄表任务'}
-      </Text>
+      <View style={styles.titleContainer}>
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="middle"
+          style={[
+            styles.titleBarTitle,
+            { color: props.titleColor && props.titleColor },
+          ]}>
+          {props.title || '抄表任务'}
+        </Text>
+      </View>
+
       <View style={styles.rightContainer}>
         {props.right1Icon ? (
           <TouchableOpacity
@@ -113,11 +116,19 @@ const styles = StyleSheet.create({
     height: scaleSize(32),
     // alignSelf: 'flex-start',
   },
+  titleContainer: {
+    display: 'flex',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
   titleBarTitle: {
     fontSize: setSpText2(40),
     color: colorWhite,
-    flex: 1,
-    // alignSelf: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   rightContainer: {
     display: 'flex',

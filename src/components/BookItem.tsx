@@ -22,6 +22,7 @@ export default function BookItem(props: Props) {
             height: scaleSize(38),
             marginTop: scaleSize(16),
           }}
+          disabled={props.holder.downloaded}
         />
         <Text style={styles.bookName}>{props.holder.bookName}</Text>
         <Text style={styles.geyuechao}>{props.holder.readCycle}</Text>
