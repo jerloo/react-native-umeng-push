@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
   titleBarTitle: {
     fontSize: setSpText2(40),
     color: colorWhite,
+    flex: 1,
     // alignSelf: 'center',
   },
 });

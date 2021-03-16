@@ -32,7 +32,10 @@ export default function BooksBackTitleBar(props: Props) {
         />
       </TouchableWithoutFeedback>
 
-      <Text style={[styles.titleBarTitle, { color: props.titleColor }]}>
+      <Text
+        numberOfLines={1}
+        ellipsizeMode="middle"
+        style={[styles.titleBarTitle, { color: props.titleColor }]}>
         {props.title || '抄表任务'}
       </Text>
       <TouchableWithoutFeedback
@@ -70,6 +73,7 @@ const styles = StyleSheet.create({
   titleBarTitle: {
     fontSize: setSpText2(40),
     color: colorWhite,
+    flex: 1,
     // alignSelf: 'center',
   },
 });

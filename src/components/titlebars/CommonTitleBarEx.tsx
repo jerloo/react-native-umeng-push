@@ -44,6 +44,8 @@ export default function CommonTitleBarEx(props: Props) {
       </View>
 
       <Text
+        numberOfLines={1}
+        ellipsizeMode="middle"
         style={[
           styles.titleBarTitle,
           { color: props.titleColor && props.titleColor },
@@ -114,6 +116,7 @@ const styles = StyleSheet.create({
   titleBarTitle: {
     fontSize: setSpText2(40),
     color: colorWhite,
+    flex: 1,
     // alignSelf: 'center',
   },
   rightContainer: {

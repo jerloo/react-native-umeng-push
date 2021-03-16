@@ -18,10 +18,11 @@ import { PdaCustListDto } from '../../apiclient/src/models';
 import { getSearchHistory, setSearchHistory } from '../utils/searchUtils';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
-import { useNavigation } from '@react-navigation/core';
+import { NavigationProp, useNavigation } from '@react-navigation/core';
+import { MainStackParamList } from './routeParams';
 
 export default function SearchScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const [historyItems, setHistoryItems] = useState<PdaCustListDto[]>([]);
   const [items, setItems] = useState<PdaCustListDto[]>([]);
@@ -53,8 +54,13 @@ export default function SearchScreen() {
     getSearchHistory().then((data) => setHistoryItems(data));
 
     navigation.navigate('CustDetails', {
-      custId: item.id,
-      title: item.bookCode,
+      data: {
+        bookCode: item.bookCode,
+        custName: item.custName,
+        custId: item.id,
+        custCode: item.bookCode,
+        custAddress: item.custAddress,
+      },
     });
   };
 
