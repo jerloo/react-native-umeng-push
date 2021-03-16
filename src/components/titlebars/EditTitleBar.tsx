@@ -29,7 +29,7 @@ export default function EditTitleBar(props: Props) {
 
       <Text style={styles.titleBarTitle}>{props.title}</Text>
       <TouchableOpacity
-        onPress={() => props.onDone()}
+        onPress={() => props.canDone && props.onDone()}
         style={[
           styles.titleBarDoneButton,
           props.canDone && styles.titleBarDoneEnabledButton,
