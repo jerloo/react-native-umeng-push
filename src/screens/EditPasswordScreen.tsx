@@ -19,12 +19,16 @@ export default function EditPasswordScreen() {
   const [confirmPasword, setConfirmPassword] = useState('');
 
   const onSave = async () => {
-    // if (!/^(?=.*?[0-9])(?=.*?[a-z])[0-9a-z]{8,}$/.test(newPassword)) {
-    //   Toast.fail('密码必须至少8位字符，同时需包含字母和数字');
-    //   return;
-    // }
+    if (!/^(?=.*?[0-9])(?=.*?[a-zA-Z])[0-9a-zA-Z]{8,}$/.test(newPassword)) {
+      Toast.fail('密码必须至少8位字符，同时需包含字母和数字');
+      return;
+    }
     if (oldPassword === newPassword) {
       Toast.fail('新密码和旧密码不能相同');
+      return;
+    }
+    if (newPassword !== confirmPasword) {
+      Toast.fail('新密码与确认密码不一致');
       return;
     }
     const key = Toast.loading('保存中', 0);
