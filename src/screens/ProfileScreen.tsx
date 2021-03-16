@@ -90,28 +90,43 @@ export default function ProfileScreen() {
     // 上传 与 暂停后续传对象
     // 注意如果是续传，请务必跟初始上传使用同一个 uploadRequest 对象
     try {
-      console.log(
-        '开始调取腾讯云COS获取凭证 ',
-        dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      );
+      const startAt = new Date();
+      console.log('开始上传 ', dayjs(startAt).format('YYYY-MM-DD HH:mm:ss'));
       const uploadResult = await CosXmlReactNative.upload(
         uploadRequest,
         (processedBytes: number, targetBytes: number) => {
           // 回调进度
-          console.log('put Progress callback : ', processedBytes, targetBytes);
+          console.log(
+            'put Progress callback : ',
+            processedBytes,
+            targetBytes,
+            dayjs().format('YYYY-MM-DD HH:mm:ss'),
+          );
           // setProgress(processedBytes / targetBytes);
         },
       );
+      const endAt = new Date();
+      console.log('结束上传', dayjs(endAt).format('YYYY-MM-DD HH:mm:ss'));
+      console.log('上传文件耗时', (endAt.getTime() - startAt.getTime()) / 1000);
+      const startRecord = new Date();
       console.log(
-        '结束调取腾讯云COS获取凭证，并开始上传 ',
-        dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        '开始调取上传接口添加文件记录 ',
+        dayjs(startRecord).format('YYYY-MM-DD HH:mm:ss'),
       );
       // info 包含上传结果
       const result = await center.uploadLogFile(
         currentLogFileName,
         uploadResult.Location,
       );
-      console.log('结束上传 ', dayjs().format('YYYY-MM-DD HH:mm:ss'));
+      const endRecord = new Date();
+      console.log(
+        '结束调取上传接口添加文件记录 ',
+        dayjs(endRecord).format('YYYY-MM-DD HH:mm:ss'),
+      );
+      console.log(
+        '调取添加文件记录接口耗时',
+        (endRecord.getTime() - startRecord.getTime()) / 1000,
+      );
       Toast.remove(key);
       if (result === true) {
         Toast.success('上传成功');

@@ -32,7 +32,6 @@ CosXmlReactNative.initWithSessionCredentialCallback(
       '完成请求获取临时凭证接口',
       dayjs().format('YYYY-MM-DD HH:mm:ss'),
     );
-    console.log(response);
     const credentials = response.data.Credentials;
     const expiredTime = response.data.ExpiredTime;
     const sessionCredentials = {

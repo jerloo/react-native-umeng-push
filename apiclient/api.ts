@@ -36,7 +36,7 @@ axiosInstance.interceptors.response.use(
     axiosLogger.logResponse(response);
     // process.env.NODE_ENV !== 'production' && console.log(response);
     process.env.NODE_ENV !== 'production' &&
-      console.log(`总耗时：${response.duration / 1000}s`);
+      console.log(`API请求耗时：${response.duration / 1000}s`);
     return response;
   },
   function (error) {

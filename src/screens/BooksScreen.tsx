@@ -81,6 +81,20 @@ export default function BooksScreen() {
         bookId: holder.bookId,
         title: holder.bookCode,
       });
+    } else {
+      Modal.alert('提示', '当前任务未下载，是否立刻下载', [
+        {
+          text: '取消',
+          onPress: () => console.log('取消'),
+          style: { color: '#666666' },
+        },
+        {
+          text: '确认下载',
+          onPress: async () => {
+            downloadByBookId(holder.bookId);
+          },
+        },
+      ]);
     }
   };
 
@@ -141,6 +155,18 @@ export default function BooksScreen() {
     } catch (e) {
       Toast.fail(e.message);
       setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const downloadByBookId = async (bookId: number) => {
+    setLoading(true);
+    try {
+      await center.getBookDataByIds([bookId]);
+      fetchLocal();
+    } catch (e) {
+      Toast.fail(e.message);
     } finally {
       setLoading(false);
     }
