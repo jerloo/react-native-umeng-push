@@ -36,10 +36,16 @@ export default function BooksScreen() {
     uploadedNumber: 0,
   });
   const [loading, setLoading] = useState(false);
+  const [currentBillMonth, setCurrentBillMonth] = useState<number>();
 
   useEffect(() => {
     db.getBookTotalData().then((result) => {
       setTotalNumbers(result);
+    });
+    getBillMonth().then((r) => {
+      if (r) {
+        setCurrentBillMonth(r);
+      }
     });
   }, []);
 
@@ -181,7 +187,7 @@ export default function BooksScreen() {
           <CommonTitleBarEx
             onBack={() => navigation.goBack()}
             onRight2Click={refresh}
-            title="抄表任务"
+            title={`抄表任务(${currentBillMonth || ''})`}
             titleColor={colorWhite}
             right2Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}
           />

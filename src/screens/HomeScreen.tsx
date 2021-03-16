@@ -54,7 +54,16 @@ export default function HomeScreen() {
     }
   };
 
+  const fetchBillMonth = async () => {
+    try {
+      await center.getReadingMonth();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
+    fetchBillMonth();
     fetchStateSettings();
     fetchSystemSettings();
   }, []);

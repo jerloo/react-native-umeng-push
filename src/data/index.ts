@@ -23,6 +23,7 @@ import { PdaMeterBookDtoHolder } from './holders';
 import ApiService from './apiService';
 import OfflineApiService from './offline';
 import OnlineApiService from './online';
+import { setBillMonth } from '../utils/billMonthUtils';
 
 class CenterService implements ApiService {
   offline: OfflineApiService;
@@ -143,7 +144,11 @@ class CenterService implements ApiService {
   async getReadingMonth(): Promise<number | null> {
     const netInfo = await NetInfo.fetch();
     if (netInfo.isInternetReachable === true) {
-      return this.online.getReadingMonth();
+      const result = await this.online.getReadingMonth();
+      if (result) {
+        setBillMonth(result);
+      }
+      return result;
     }
     return this.offline.getReadingMonth();
   }
