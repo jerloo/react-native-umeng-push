@@ -20,9 +20,10 @@ export default function BookItem(props: Props) {
         />
         <Text style={styles.bookName}>{props.holder.bookName}</Text>
         <Text style={styles.geyuechao}>{props.holder.readCycle}</Text>
-        {props.holder.downloaded ? (
-          <Text style={styles.downloaded}>已下载</Text>
-        ) : null}
+
+        <Text style={styles.downloaded}>
+          {props.holder.downloaded ? '已下载' : '未下载'}
+        </Text>
       </View>
       <View style={styles.detailsContainer}>
         <View style={styles.detailsBox}>
