@@ -101,7 +101,7 @@ export default function CustDetailsScreen() {
           {line()}
           <Text style={styles.tableLabel}>水表厂家</Text>
           {line()}
-          <Text style={styles.tableLabel}>换标日期</Text>
+          <Text style={styles.tableLabel}>换表日期</Text>
           {line()}
           <Text style={styles.tableLabel}>立户日期</Text>
         </View>
