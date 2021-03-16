@@ -26,7 +26,7 @@ import { Tabs } from '@ant-design/react-native';
 import dayjs from 'dayjs';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
-import { TextInput } from 'react-native-gesture-handler';
+import PureInput from '../components/PureInput';
 
 export default function CustDetailsScreen() {
   const navigation = useNavigation();
@@ -70,94 +70,137 @@ export default function CustDetailsScreen() {
   const renderBasicInfo = () => {
     return (
       <View style={styles.table}>
-        <View style={styles.tableLeft}>
+        <View style={styles.tableRow}>
           <Text style={styles.tableLabel}>客户户号</Text>
-          {line()}
-          <Text style={styles.tableLabel}>用户名称</Text>
-          {line()}
-          <Text style={styles.tableLabel}>客户地址</Text>
-          {line()}
-          <Text style={styles.tableLabel}>营业站点</Text>
-          {line()}
-          <Text style={styles.tableLabel}>预存余额</Text>
-          {line()}
-          <Text style={styles.tableLabel}>联系方式</Text>
-          {line()}
-          <Text style={styles.tableLabel}>缴费方式</Text>
-          {line()}
-          <Text style={styles.tableLabel}>客户类型</Text>
-          {line()}
-          <Text style={styles.tableLabel}>用水性质</Text>
-          {line()}
-          <Text style={styles.tableLabel}>年累积量</Text>
-          {line()}
-          <Text style={styles.tableLabel}>当前底码</Text>
-          {line()}
-          <Text style={styles.tableLabel}>安装位置</Text>
-          {line()}
-          <Text style={styles.tableLabel}>表钢印号</Text>
-          {line()}
-          <Text style={styles.tableLabel}>水表口径</Text>
-          {line()}
-          <Text style={styles.tableLabel}>水表厂家</Text>
-          {line()}
-          <Text style={styles.tableLabel}>换表日期</Text>
-          {line()}
-          <Text style={styles.tableLabel}>立户日期</Text>
-        </View>
-        <View style={styles.tableRight}>
           <Text style={styles.tableValue}>{route.params.data.custCode}</Text>
-          {line()}
+        </View>
+        {line()}
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>用户名称</Text>
           <Text style={styles.tableValue}>{details?.custInfo?.custName}</Text>
-          {line()}
+        </View>
+        {line()}
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>客户地址</Text>
           <Text style={styles.tableValue}>
             {details?.custInfo?.custAddress}
           </Text>
-          {line()}
+        </View>
+        {line()}
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>营业站点</Text>
           <Text style={styles.tableValue}>{details?.custInfo?.orgName}</Text>
-          {line()}
+        </View>
+        {line()}
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>预存余额</Text>
           <Text style={[styles.tableValue, styles.redText]}>
             {details?.custInfo?.deposit}
           </Text>
-          {line()}
-          <TextInput
-            style={[styles.tableValue, styles.blackText]}
+        </View>
+        {line()}
+        <View style={[styles.tableRow, { marginTop: scaleSize(18) }]}>
+          <Text style={[styles.tableLabel, { marginTop: 0 }]}>联系方式</Text>
+          <PureInput
+            style={{
+              marginTop: 0,
+              marginBottom: 0,
+              marginStart: scaleSize(30),
+              padding: 0,
+              flex: 1,
+            }}
+            returnKeyType="done"
+            fontColor="#999999"
+            fontSize={scaleSize(28)}
             defaultValue={details?.custInfo?.mobile}
+            onEndEditing={(text) => {
+              const newDetails = { ...details };
+              if (newDetails.custInfo) {
+                newDetails.custInfo.mobile = text;
+              }
+              setDetails(newDetails);
+            }}
           />
-
-          {line()}
+        </View>
+        {line()}
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>缴费方式</Text>
           <Text style={styles.tableValue}>{details?.custInfo?.payMethod}</Text>
-          {line()}
+        </View>
+        {line()}
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>客户类型</Text>
           <Text style={styles.tableValue}>{details?.custInfo?.custType}</Text>
-          {line()}
+        </View>
+        {line()}
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>用水性质</Text>
           <Text style={styles.tableValue}>{details?.custInfo?.priceCode}</Text>
-          {line()}
+        </View>
+        {line()}
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>年累积量</Text>
           <Text style={styles.tableValue}>
             {details?.custInfo?.yearTotalWater}
           </Text>
-          {line()}
+        </View>
+        {line()}
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>当前底码</Text>
           <Text style={styles.tableValue}>{details?.custInfo?.reading}</Text>
-          {line()}
-          <Text style={[styles.tableValue, styles.blackText]}>
-            {details?.custInfo?.installLocation}
-          </Text>
-          {line()}
-          <Text style={[styles.tableValue, styles.blackText]}>
-            {details?.custInfo?.steelMark}
-          </Text>
-          {line()}
+        </View>
+        {line()}
+        <View style={[styles.tableRow, { marginTop: scaleSize(18) }]}>
+          <Text style={[styles.tableLabel, { marginTop: 0 }]}>安装位置</Text>
+          <PureInput
+            style={{
+              marginTop: 0,
+              marginBottom: 0,
+              marginStart: scaleSize(30),
+              padding: 0,
+              flex: 1,
+            }}
+            defaultValue={details?.custInfo?.installLocation}
+            returnKeyType="done"
+          />
+        </View>
+        {line()}
+        <View style={[styles.tableRow, { marginTop: scaleSize(18) }]}>
+          <Text style={[styles.tableLabel, { marginTop: 0 }]}>表钢印号</Text>
+          <PureInput
+            style={{
+              marginBottom: 0,
+              marginStart: scaleSize(30),
+              padding: 0,
+              flex: 1,
+            }}
+            defaultValue={details?.custInfo?.steelMark}
+            returnKeyType="done"
+          />
+        </View>
+        {line()}
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>水表口径</Text>
           <Text style={styles.tableValue}>{details?.custInfo?.caliber}</Text>
-          {line()}
+        </View>
+        {line()}
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>水表厂家</Text>
           <Text style={styles.tableValue}>{details?.custInfo?.producer}</Text>
-          {line()}
+        </View>
+        {line()}
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>换表日期</Text>
           <Text style={styles.tableValue}>
             {dayjs(details?.custInfo?.replaceDate).format('YYYY-MM-DD')}
           </Text>
-          {line()}
+        </View>
+        {line()}
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>立户日期</Text>
           <Text style={styles.tableValue}>
             {dayjs(details?.custInfo?.buildDate).format('YYYY-MM-DD')}
           </Text>
-          {line()}
         </View>
       </View>
     );
@@ -393,7 +436,7 @@ const styles = StyleSheet.create({
   },
   table: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
   tableRight: {
     flex: 1,
@@ -464,5 +507,10 @@ const styles = StyleSheet.create({
   },
   blackText: {
     color: '#333333',
+  },
+  tableRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

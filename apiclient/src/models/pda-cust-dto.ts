@@ -13,6 +13,7 @@
  */
 
 import { PdaBillingInfo } from "./pda-billing-info";
+import { PdaCustInfo } from "./pda-cust-info";
 import { PdaPayRecord } from "./pda-pay-record";
 import { PdaReadingRecord } from "./pda-reading-record";
 
@@ -33,7 +34,7 @@ export interface PdaCustDto {
      * @type {PdaCustInfo}
      * @memberof PdaCustDto
      */
-    custInfo?: any;
+    custInfo?: PdaCustInfo;
     /**
      * 
      * @type {Array&lt;PdaReadingRecord&gt;}
