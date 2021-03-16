@@ -64,15 +64,13 @@ export default function SearchScreen() {
         activeOpacity={1.0}
         style={styles.item}
         onPress={() => onClick(info.item)}>
-        <Text style={styles.itemPartText}>{info.item.bookCode}</Text>
+        <Text style={styles.itemPartText}>{info.item.custCode}</Text>
         <View style={styles.itemPartLine} />
         <Text style={styles.itemPartText}>{info.item.custName}</Text>
         <View style={styles.itemPartLine} />
         <Text style={styles.itemPartText}>{info.item.custAddress}</Text>
         <View style={styles.itemPartLine} />
-        <Text style={styles.itemPartText}>{info.item.custCode}</Text>
-        <View style={styles.itemPartLine} />
-        <Text style={styles.itemPartText}>{info.item.id}</Text>
+        <Text style={styles.itemPartText}>{info.item.bookCode}</Text>
       </TouchableOpacity>
     );
   };
