@@ -46,6 +46,7 @@ import { calcReadWater, judgeReadWater } from '../utils/readWaterUtils';
 import { Modal as AntModal } from '@ant-design/react-native';
 import { meterState, recordState } from '../utils/stateConverter';
 import Video from 'react-native-video';
+import PureInput from '../components/PureInput';
 
 let scaleHeight = defaultScaleHeight;
 scaleHeight = scaleSize;
@@ -156,7 +157,7 @@ export default function NewReadScreen() {
     setNewData({
       ...newData,
       reading: parseInt(value, 10) || undefined,
-      readWater: calcReadWater(newData),
+      readWater: value && value !== '' ? calcReadWater(newData) : '',
       readDate: new Date(),
     });
     setAmount(0);
@@ -262,10 +263,23 @@ export default function NewReadScreen() {
             </Text>
           </View>
         </View>
-        <View style={styles.extraRow}>
+        <View style={[styles.extraRow]}>
           <View style={styles.extraRowPart}>
             <Text style={styles.extraLabel}>本期抄码</Text>
-            <Text style={styles.extraValue}>{newData.reading || ''}</Text>
+            <TextInput
+              showSoftInputOnFocus={false}
+              style={[
+                styles.extraValue,
+                {
+                  flex: 1,
+                  padding: 0,
+                  margin: 0,
+                },
+              ]}
+              defaultValue={newData.reading || ''}
+              value={(newData.reading || '').toString()}
+              autoFocus={true}
+            />
           </View>
 
           <View style={styles.extraRowPart}>
@@ -754,6 +768,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: scaleHeight(24),
+    alignItems: 'center',
   },
   extraRowPart: {
     display: 'flex',
@@ -761,6 +776,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flex: 1,
     flexWrap: 'wrap',
+    alignItems: 'center',
   },
   extraLabel: {
     color: '#666666',
