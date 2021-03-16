@@ -280,6 +280,7 @@ export default function BooksScreen() {
       <View style={styles.bottomContainer}>
         <CircleCheckBox
           title="全选"
+          iconStyle={{ width: scaleSize(38), height: scaleSize(38) }}
           onClick={allBooksClick}
           checked={!bookItems.find((item) => item.checked === false)}
         />

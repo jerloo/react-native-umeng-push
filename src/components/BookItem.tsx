@@ -17,7 +17,11 @@ export default function BookItem(props: Props) {
         <CircleCheckBox
           checked={props.holder.checked}
           onClick={props.onCheckClick}
-          iconStyle={{ width: scaleSize(38), height: scaleSize(38) }}
+          iconStyle={{
+            width: scaleSize(38),
+            height: scaleSize(38),
+            marginTop: scaleSize(16),
+          }}
         />
         <Text style={styles.bookName}>{props.holder.bookName}</Text>
         <Text style={styles.geyuechao}>{props.holder.readCycle}</Text>

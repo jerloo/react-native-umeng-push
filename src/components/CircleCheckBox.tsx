@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingEnd: scaleSize(18),
     paddingStart: scaleSize(34),
-    paddingTop: scaleSize(16),
+    // paddingTop: scaleSize(16),
   },
   title: {
     fontSize: scaleSize(32),
