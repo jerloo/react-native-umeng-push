@@ -23,7 +23,7 @@ import {
   getObjectKey,
 } from '../utils/logUtils';
 import { getSession, setSession, UserSession } from '../utils/sesstionUtils';
-import CosXmlReactNative from '../utils/uploadUtils';
+import CosXmlReactNative, { COS_BUCKET_NAME } from '../utils/uploadUtils';
 import center from '../data';
 import Caches from 'react-native-caches';
 import NetInfo from '@react-native-community/netinfo';
@@ -75,7 +75,7 @@ export default function ProfileScreen() {
     const objectName = await getObjectKey();
     console.log('log file object name', objectName);
     const uploadRequest = {
-      bucket: 'mobilereadapp-1259078701',
+      bucket: `${COS_BUCKET_NAME}-1259078701`,
       object: objectName,
       // 文件本地 Uri 或者 路径
       fileUri: 'file://' + currentLogFilePath,

@@ -4,6 +4,8 @@ import CosXmlReactNative from 'cos-xml-react-native';
 import dayjs from 'dayjs';
 import { getSession } from './sesstionUtils';
 
+export const COS_BUCKET_NAME = 'mobilereadapptest';
+
 CosXmlReactNative.initWithSessionCredentialCallback(
   {
     region: 'ap-shanghai',
@@ -18,7 +20,7 @@ CosXmlReactNative.initWithSessionCredentialCallback(
     );
     // 请求临时密钥
     const response = await axios.get(
-      `http://fileservice.yuncloudtech.cn/api/app/files/tempSecretKey?FileSource=2&Bucket=mobilereadapptest&Prefix=${prefix}`,
+      `http://fileservice.yuncloudtech.cn/api/app/files/tempSecretKey?FileSource=2&Bucket=${COS_BUCKET_NAME}&Prefix=${prefix}`,
       {
         headers: {
           Authorization: token,
