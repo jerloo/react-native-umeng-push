@@ -257,7 +257,7 @@ export default function BooksScreen() {
         />
         <View style={styles.bottomRight}>
           <Text style={styles.bottomLabel}>
-            已选测本(
+            已选册本(
             {bookItems.filter((item) => item.checked === true).length})
           </Text>
           <TouchableOpacity style={styles.btnDone} onPress={download}>
