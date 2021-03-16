@@ -286,8 +286,7 @@ export default function NewReadScreen() {
               style={styles.tableValueButton}
               onPress={() =>
                 navigation.navigate('CustDetails', {
-                  custId: newData.custId,
-                  title: `${newData.bookCode}(${newData.custId})`,
+                  data: newData,
                 })
               }>
               <Text style={styles.tableValueButtonText}>往期</Text>
@@ -424,8 +423,7 @@ export default function NewReadScreen() {
           style={styles.cornerContainer}
           onPress={() =>
             navigation.navigate('CustDetails', {
-              custId: newData.custId,
-              title: `${newData.bookCode}(${newData.custId})`,
+              data: newData,
             })
           }>
           <Text style={styles.corner}>用户详情</Text>
@@ -439,8 +437,8 @@ export default function NewReadScreen() {
 
             <View style={styles.contentTopBottom}>
               <View style={styles.titleContainer}>
-                <Text style={styles.title}>{newData.bookCode}</Text>
-                <Text style={styles.subTitle}>({newData.custId})</Text>
+                <Text style={styles.title}>{newData.custName}</Text>
+                <Text style={styles.subTitle}>({newData.custCode})</Text>
               </View>
               <View style={styles.contentTopDesc}>
                 <Text style={styles.contentTopDescLabel}>水表信息：</Text>

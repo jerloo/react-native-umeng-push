@@ -26,6 +26,7 @@ import { Tabs } from '@ant-design/react-native';
 import dayjs from 'dayjs';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
+import { TextInput } from 'react-native-gesture-handler';
 
 export default function CustDetailsScreen() {
   const navigation = useNavigation();
@@ -34,11 +35,11 @@ export default function CustDetailsScreen() {
   const [details, setDetails] = useState<PdaCustDto>();
 
   useEffect(() => {
-    const { custId } = route.params;
+    const { data } = route.params;
 
     const fetchRemote = async () => {
       try {
-        const res = await center.online.getCustDetails([custId]);
+        const res = await center.online.getCustDetails([data.custId]);
         setDetails((res as PdaCustDto[])[0]);
       } catch (e) {
         Toast.fail(e.message);
@@ -49,9 +50,9 @@ export default function CustDetailsScreen() {
 
   const refresh = async () => {
     const key = Toast.loading('加载中');
-    const { custId } = route.params;
+    const { data } = route.params;
     try {
-      const res = await center.online.getCustDetails([custId]);
+      const res = await center.online.getCustDetails([data.custId]);
       setDetails((res as PdaCustDto[])[0]);
     } catch (e) {
       Toast.fail(e.message);
@@ -105,7 +106,7 @@ export default function CustDetailsScreen() {
           <Text style={styles.tableLabel}>立户日期</Text>
         </View>
         <View style={styles.tableRight}>
-          <Text style={styles.tableValue}>{details?.custId}</Text>
+          <Text style={styles.tableValue}>{route.params.data.custCode}</Text>
           {line()}
           <Text style={styles.tableValue}>{details?.custInfo?.custName}</Text>
           {line()}
@@ -119,9 +120,11 @@ export default function CustDetailsScreen() {
             {details?.custInfo?.deposit}
           </Text>
           {line()}
-          <Text style={[styles.tableValue, styles.blackText]}>
-            {details?.custInfo?.mobile}
-          </Text>
+          <TextInput
+            style={[styles.tableValue, styles.blackText]}
+            defaultValue={details?.custInfo?.mobile}
+          />
+
           {line()}
           <Text style={styles.tableValue}>{details?.custInfo?.payMethod}</Text>
           {line()}
@@ -231,7 +234,7 @@ export default function CustDetailsScreen() {
             onBack={() => navigation.goBack()}
             right2Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}
             onRight2Click={refresh}
-            title={`${route.params.title}`}
+            title={`${route.params.data.custName}(${route.params.data.custCode})`}
             titleColor={colorWhite}
           />
         </SafeAreaView>

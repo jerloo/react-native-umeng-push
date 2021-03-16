@@ -20,8 +20,8 @@ export default function BookSortItem(props: Props) {
 
         <View style={styles.rightContainer}>
           <View style={styles.rightTop}>
-            <Text style={styles.title}>{props.item.bookCode}</Text>
-            <Text style={styles.subTitle}>({props.item.custId})</Text>
+            <Text style={styles.title}>{props.item.custName}</Text>
+            <Text style={styles.subTitle}>({props.item.custCode})</Text>
           </View>
           <View style={styles.rightBottom}>
             <Image
