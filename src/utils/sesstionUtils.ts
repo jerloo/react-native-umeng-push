@@ -6,6 +6,7 @@ export interface UserSession {
   password: string;
   autoLogin: boolean;
   userInfo: PdaMeterReaderDto;
+  logout: boolean;
 }
 
 export const setSession = (session: UserSession) => {

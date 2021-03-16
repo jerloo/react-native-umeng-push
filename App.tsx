@@ -115,7 +115,7 @@ function App() {
           <NavigationContainer>
             <AuthContext.Provider value={authContext}>
               <Stack.Navigator>
-                {state.session == null ? (
+                {state.session == null || state.isSignout ? (
                   <Stack.Screen
                     name="Login"
                     component={LoginScreen}

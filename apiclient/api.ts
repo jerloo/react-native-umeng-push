@@ -63,7 +63,9 @@ export class ApiClient {
 
   constructor(basePath: string, provider: AccessTokenProvider) {
     this.loginApi = new LoginApi(
-      { basePath: basePath },
+      {
+        apiKey: provider.get,
+      },
       basePath,
       axiosInstance,
     );

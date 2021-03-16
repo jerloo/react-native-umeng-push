@@ -31,6 +31,7 @@ import DeviceInfo from 'react-native-device-info';
 import dayjs from 'dayjs';
 import { NO_NETWORK_ERROR } from '../data/apiService';
 import { useNavigation } from '@react-navigation/core';
+import AuthContext from '../utils/contextUtls';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -39,6 +40,7 @@ export default function ProfileScreen() {
   const [uploadLogVisible, setUploadLogVisible] = useState(false);
   const [checkVersionVisible, setCheckVersionVisible] = useState(false);
   const [clearCacheVisible, setClearCacheVisible] = useState(false);
+  const { signOut }: any = React.useContext(AuthContext);
 
   const fetchSession = async () => {
     const s = await getSession();
@@ -56,12 +58,15 @@ export default function ProfileScreen() {
       session!!.autoLogin = false;
       await setSession(session!!);
     }
+    const key = Toast.loading('正在退出');
     try {
       await center.logout();
     } catch (e) {
       Toast.fail(e.message);
+    } finally {
+      Toast.remove(key);
     }
-    navigation.goBack();
+    signOut();
   };
 
   const uploadLog = async () => {
