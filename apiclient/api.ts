@@ -18,12 +18,12 @@ const axiosInstance = Axios.create({
 axiosInstance.interceptors.request.use(
   function (config) {
     config.metadata = { startTime: new Date() };
-    axiosLogger.logRequest(config);
+    process.env.NODE_ENV !== 'production' && axiosLogger.logRequest(config);
     return config;
   },
   function (error) {
     process.env.NODE_ENV !== 'production' && console.log(error);
-    axiosLogger.logErrorDetails(error);
+    process.env.NODE_ENV !== 'production' && axiosLogger.logErrorDetails(error);
     return Promise.reject(error);
   },
 );
@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
     response.config.metadata.endTime = new Date();
     response.duration =
       response.config.metadata.endTime - response.config.metadata.startTime;
-    axiosLogger.logResponse(response);
+    process.env.NODE_ENV !== 'production' && axiosLogger.logResponse(response);
     // process.env.NODE_ENV !== 'production' && console.log(response);
     process.env.NODE_ENV !== 'production' &&
       console.log(`API请求耗时：${response.duration / 1000}s`);
@@ -43,7 +43,7 @@ axiosInstance.interceptors.response.use(
     error.config.metadata.endTime = new Date();
     error.duration =
       error.config.metadata.endTime - error.config.metadata.startTime;
-    axiosLogger.logErrorDetails(error);
+    process.env.NODE_ENV !== 'production' && axiosLogger.logErrorDetails(error);
     return Promise.reject(error);
   },
 );

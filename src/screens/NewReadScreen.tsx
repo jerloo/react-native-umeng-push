@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -70,11 +70,10 @@ export default function NewReadScreen() {
   const [readStateItems, setReadStateItems] = useState<PdaReadStateDto[]>([]);
   const [amount, setAmount] = useState(0);
   const [canCharge, setCanCharge] = useState(false);
-  const [keyboardVisible, setKeyBoardVisible] = useState(true);
   const [attachments, setAttachments] = useState<AttachmentDbItem[]>([]);
   const [bookDataItems, setBookDataItems] = useState<PdaReadDataDto[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchLocal = async () => {
       try {
         const { bookId } = data;
@@ -88,18 +87,18 @@ export default function NewReadScreen() {
     fetchLocal();
   }, [data]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     isMobileReadingCanCharge().then((flag) => setCanCharge(flag));
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     db.getAttachments(data.custId, data.readTimes, data.billMonth).then((r) => {
       console.log('获取附件', r);
       setAttachments(r);
     });
   }, [data]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     getReadStateSettings().then((r) => {
       if (r) {
         setReadStates(r);
@@ -602,49 +601,43 @@ export default function NewReadScreen() {
             </View>
           </View>
 
-          {(newData.recordState === 0 || newData.recordState === 1) &&
-          keyboardVisible ? (
-            <KeyBoard
-              onBackClick={() => {
-                if (
-                  newData.reading &&
-                  newData.reading.toString().length !== 0
-                ) {
-                  setValue(
-                    newData.reading
-                      .toString()
-                      .substring(0, newData.reading.toString().length - 1),
-                  );
-                }
-              }}
-              onNumberClick={(n) => {
-                setValue(`${newData.reading || ''}${n}`);
-              }}
-              onPhotoClick={() =>
-                navigation.navigate('Camera', {
-                  callback: addNewAttachment,
-                })
+          <KeyBoard
+            onBackClick={() => {
+              if (newData.reading && newData.reading.toString().length !== 0) {
+                setValue(
+                  newData.reading
+                    .toString()
+                    .substring(0, newData.reading.toString().length - 1),
+                );
               }
-              onConfirmClick={saveData}
-              onNextClick={nextItem}
-              onPreClick={preItem}
-              onSettingsOpen={() => setSettingsModalVisible(true)}
-              readStates={readStates}
-              selectStateId={newData.readStateId}
-              onStateSelect={(item) => {
-                console.log('onStateSelect', item);
-                const valueData = {
-                  ...newData,
-                  readStateId: item.id,
-                  readDate: new Date(),
-                };
-                setNewData({
-                  ...valueData,
-                  readWater: calcReadWater(valueData, readStateItems),
-                });
-              }}
-            />
-          ) : null}
+            }}
+            onNumberClick={(n) => {
+              setValue(`${newData.reading || ''}${n}`);
+            }}
+            onPhotoClick={() =>
+              navigation.navigate('Camera', {
+                callback: addNewAttachment,
+              })
+            }
+            onConfirmClick={saveData}
+            onNextClick={nextItem}
+            onPreClick={preItem}
+            onSettingsOpen={() => setSettingsModalVisible(true)}
+            readStates={readStates}
+            selectStateId={newData.readStateId}
+            onStateSelect={(item) => {
+              console.log('onStateSelect', item);
+              const valueData = {
+                ...newData,
+                readStateId: item.id,
+                readDate: new Date(),
+              };
+              setNewData({
+                ...valueData,
+                readWater: calcReadWater(valueData, readStateItems),
+              });
+            }}
+          />
         </View>
       </SafeAreaView>
       {renderAttachmentsModal()}

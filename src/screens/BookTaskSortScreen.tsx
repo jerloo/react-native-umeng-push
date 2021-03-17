@@ -35,7 +35,7 @@ export default function BookTaskSortScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'BookTaskSort'>>();
   const navigation = useNavigation();
 
-  const [BookSortItems, setBookSortItems] = useState<PdaReadDataDtoHolder[]>(
+  const [bookSortItems, setBookSortItems] = useState<PdaReadDataDtoHolder[]>(
     [],
   );
   const itemRefs = new Map<number, SwipeableItem<PdaReadDataDtoHolder>>();
@@ -63,11 +63,11 @@ export default function BookTaskSortScreen() {
     fetchLocal();
   }, [route.params]);
 
-  const saveSort = async () => {
+  const saveSort = React.useCallback(async () => {
     const key = Toast.loading('修改中');
     try {
       await center.updateBookSort(
-        BookSortItems.map((it) => {
+        bookSortItems.map((it) => {
           const result: BookSortIndexDto = {
             custId: it.item.custId,
             bookSortIndex: it.item.bookSortIndex,
@@ -82,7 +82,7 @@ export default function BookTaskSortScreen() {
     } finally {
       Toast.remove(key);
     }
-  };
+  }, [bookSortItems, navigation]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -106,7 +106,7 @@ export default function BookTaskSortScreen() {
 
       return () =>
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    }, []),
+    }, [navigation, saveSort]),
   );
 
   const closeRow = (item: PdaReadDataDtoHolder) => {
@@ -118,7 +118,7 @@ export default function BookTaskSortScreen() {
 
   const topRow = (item: PdaReadDataDtoHolder) => {
     closeRow(item);
-    let newData = [...BookSortItems];
+    let newData = [...bookSortItems];
     const topItem = newData.find((it) => it.item.custId === item.item.custId);
     if (topItem) {
       topItem.item.bookSortIndex = 1;
@@ -225,7 +225,7 @@ export default function BookTaskSortScreen() {
       </LinearGradient>
 
       <DraggableFlatList<PdaReadDataDtoHolder>
-        data={BookSortItems}
+        data={bookSortItems}
         renderItem={renderItem}
         ItemSeparatorComponent={() => (
           <View style={{ height: scaleSize(18) }} />

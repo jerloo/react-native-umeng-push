@@ -85,6 +85,8 @@ export default function ProfileScreen() {
       // 文件本地 Uri 或者 路径
       fileUri: 'file://' + currentLogFilePath,
     };
+    // const files = await RNFS.readDir(uploadRequest.fileUri);
+    // files.forEach((item) => console.log('日志文件大小', item.size));
 
     const key = Toast.loading('上传中', 0);
     // 上传 与 暂停后续传对象
