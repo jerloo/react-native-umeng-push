@@ -10,6 +10,17 @@ export const getReadStates = async () => {
   return [];
 };
 
+export const getAlgorithmByReadStateId = (
+  readStateId: number,
+  readStates: PdaReadStateDto[],
+) => {
+  const result = readStates.find((it) => it.id === readStateId);
+  if (!result) {
+    return readStates.find((it) => it.stateName === '正常')?.meterReadAlgorithm;
+  }
+  return result.meterReadAlgorithm;
+};
+
 export const saveReadStates = async (states: PdaReadStateDto[]) => {
   await AsyncStorage.setItem('readStates', JSON.stringify(states));
 };

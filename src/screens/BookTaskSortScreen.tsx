@@ -136,9 +136,9 @@ export default function BookTaskSortScreen() {
             />
           </View>
         )}
-        leftOpenValue={scaleSize(-240)}
-        rightOpenValue={scaleSize(240)}
-        disableLeftSwipe={true}
+        leftOpenValue={scaleSize(240)}
+        rightOpenValue={scaleSize(-240)}
+        disableRightSwipe={true}
       />
     </View>
   );

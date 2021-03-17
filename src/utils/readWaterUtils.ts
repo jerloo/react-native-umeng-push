@@ -1,4 +1,5 @@
-import { PdaReadDataDto } from '../../apiclient/src/models';
+import { PdaReadDataDto, PdaReadStateDto } from '../../apiclient/src/models';
+import { getAlgorithmByReadStateId } from './readStatesUtils';
 
 export const normalCalc = (data: PdaReadDataDto) => {
   const result = data.reading - data.lastReading + data.replaceWater;
@@ -51,15 +52,21 @@ const CALCS: {
   6: roundCalc,
 };
 
-export const calcReadWater = (data: PdaReadDataDto) => {
+export const calcReadWater = (
+  data: PdaReadDataDto,
+  readStates: PdaReadStateDto[],
+) => {
   try {
-    if (data.readStateId && [1, 2, 4, 5, 6].indexOf(data.readStateId) > -1) {
-      const fn = CALCS[data.readStateId];
+    const algorithm = getAlgorithmByReadStateId(data.readStateId, readStates);
+    console.log('抄表算法数值', algorithm);
+    if (algorithm && [1, 2, 4, 5, 6].indexOf(algorithm) > -1) {
+      const fn = CALCS[algorithm];
       return fn(data);
     } else {
       return normalCalc(data);
     }
   } catch (e) {
+    console.log('calcReadWater', e);
     return normalCalc(data);
   }
 };

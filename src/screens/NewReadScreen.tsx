@@ -9,14 +9,17 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Keyboard,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   scaleHeight as defaultScaleHeight,
   scaleSize,
 } from 'react-native-responsive-design';
-import { MobileFileDto, PdaReadDataDto } from '../../apiclient/src/models';
+import {
+  MobileFileDto,
+  PdaReadDataDto,
+  PdaReadStateDto,
+} from '../../apiclient/src/models';
 import { colorWhite } from '../styles';
 import Tag from '../components/Tag';
 import KeyBoard from '../components/KeyBoard';
@@ -47,7 +50,6 @@ import { Modal as AntModal } from '@ant-design/react-native';
 import { meterState, recordState } from '../utils/stateConverter';
 import Video from 'react-native-video';
 import { AttachmentDbItem } from '../data/models';
-import { PdaReadDataDtoHolder } from '../data/holders';
 
 let scaleHeight = defaultScaleHeight;
 scaleHeight = scaleSize;
@@ -65,6 +67,7 @@ export default function NewReadScreen() {
   const [previewModalVisible, setPreviewModalVisible] = useState(false);
   const [currentPreviewFile, setCurrentPreviewFile] = useState<MobileFileDto>();
   const [readStates, setReadStates] = React.useState<ReadStateStorage>();
+  const [readStateItems, setReadStateItems] = useState<PdaReadStateDto[]>([]);
   const [amount, setAmount] = useState(0);
   const [canCharge, setCanCharge] = useState(false);
   const [keyboardVisible, setKeyBoardVisible] = useState(true);
@@ -109,18 +112,21 @@ export default function NewReadScreen() {
             console.log('数据库获取', details);
 
             if (!details.readStateId) {
+              console.log('不存在抄表状态');
               getReadStateSettingsItems().then((items) => {
                 const readState = items.find((it) => it.stateName === '正常');
                 details.readStateId = readState?.id;
                 setNewData(details);
+                setReadStateItems(items);
               });
             } else {
               getReadStateSettingsItems().then((items) => {
-                const readState = items.find(
-                  (it) => it.id === details.readStateId,
-                );
-                details.readStateId = readState?.id;
-                setNewData(details);
+                // const readState = items.find(
+                //   (it) => it.id === details.readStateId,
+                // );
+                // details.readStateId = readState?.id;
+                // setNewData(details);
+                setReadStateItems(items);
               });
             }
           }
@@ -138,7 +144,8 @@ export default function NewReadScreen() {
     const valueData = { ...newData, reading: parseInt(value, 10) || undefined };
     setNewData({
       ...valueData,
-      readWater: value && value !== '' ? calcReadWater(valueData) : '',
+      readWater:
+        value && value !== '' ? calcReadWater(valueData, readStateItems) : '',
       readDate: new Date(),
     });
     setAmount(0);
@@ -173,7 +180,7 @@ export default function NewReadScreen() {
   };
 
   const checkData = async () => {
-    const water = calcReadWater(newData);
+    const water = calcReadWater(newData, readStateItems);
     const result = judgeReadWater(water, newData);
 
     if (!result) {
@@ -213,7 +220,7 @@ export default function NewReadScreen() {
       Toast.fail('请选择抄表状态');
       return;
     } else {
-      const water = calcReadWater(newData);
+      const water = calcReadWater(newData, readStateItems);
       const result = judgeReadWater(water, newData);
       newData.recordState = 1;
       if (!result) {
@@ -625,6 +632,7 @@ export default function NewReadScreen() {
               readStates={readStates}
               selectStateId={newData.readStateId}
               onStateSelect={(item) => {
+                console.log('onStateSelect', item);
                 const valueData = {
                   ...newData,
                   readStateId: item.id,
@@ -632,7 +640,7 @@ export default function NewReadScreen() {
                 };
                 setNewData({
                   ...valueData,
-                  readWater: calcReadWater(valueData),
+                  readWater: calcReadWater(valueData, readStateItems),
                 });
               }}
             />
