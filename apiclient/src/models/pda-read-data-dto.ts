@@ -64,31 +64,31 @@ export interface PdaReadDataDto {
      * @type {number}
      * @memberof PdaReadDataDto
      */
-    bookSortIndex?: any;
+    bookSortIndex?: number;
     /**
      * 客户编号
      * @type {string}
      * @memberof PdaReadDataDto
      */
-    custCode?: any;
+    custCode?: string;
     /**
      * 客户名称
      * @type {string}
      * @memberof PdaReadDataDto
      */
-    custName?: any;
+    custName?: string;
     /**
      * 客户地址
      * @type {string}
      * @memberof PdaReadDataDto
      */
-    custAddress?: any;
+    custAddress?: string;
     /**
      * 客户状态
      * @type {string}
      * @memberof PdaReadDataDto
      */
-    custState?: any;
+    custState?: string;
     /**
      * 预存款余额
      * @type {number}

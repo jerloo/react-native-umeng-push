@@ -36,6 +36,11 @@ export default function BookTaskScreen() {
     [],
   );
   const [loading, setLoading] = useState(false);
+  const tabRef = React.useRef<Tabs>();
+  const [tabIndex, setTabIndex] = useState(0);
+  const f1Ref = React.useRef<FlatList>();
+  const f2Ref = React.useRef<FlatList>();
+  const f3Ref = React.useRef<FlatList>();
 
   useEffect(() => {
     const fetchLocal = async () => {
@@ -105,6 +110,47 @@ export default function BookTaskScreen() {
     }
   };
 
+  const getItemLayout = (data, index) => ({
+    length: scaleSize(240 + 18),
+    offset: scaleSize(240 + 18) * index,
+    index,
+  });
+
+  const findIndex = (data: PdaReadDataDtoHolder[], text: string) => {
+    console.log(data.map((it) => it.item.custCode));
+    return data.findIndex(
+      (it) =>
+        (it.item.custName || '').indexOf(text) > -1 ||
+        (it.item.custCode?.toString() || '').indexOf(text) > -1 ||
+        (it.item.custAddress || '').indexOf(text) > -1 ||
+        it.item.bookSortIndex?.toString() === text,
+    );
+  };
+
+  const onSearch = (text: string) => {
+    if (tabIndex === 0) {
+      const data = bookDataItems.filter((it) => it.item.recordState === 0);
+      const index = findIndex(data, text);
+      if (index > -1) {
+        console.log(index);
+        f1Ref.current?.scrollToIndex({ animated: true, index });
+      }
+    } else if (tabIndex === 1) {
+      const data = bookDataItems.filter((it) => it.item.recordState !== 0);
+      const index = findIndex(data, text);
+      if (index > -1) {
+        console.log(index);
+        f2Ref.current?.scrollToIndex({ animated: true, index });
+      }
+    } else if (tabIndex === 2) {
+      const index = findIndex(bookDataItems, text);
+      if (index > -1) {
+        console.log(index);
+        f3Ref.current?.scrollToIndex({ animated: true, index });
+      }
+    }
+  };
+
   const renderBookItem = (info: ListRenderItemInfo<PdaReadDataDtoHolder>) => {
     return (
       <TouchableOpacity
@@ -167,11 +213,13 @@ export default function BookTaskScreen() {
           <SearchBox
             style={styles.searchContainer}
             placeholderTextColor={colorWhite}
+            onSearch={onSearch}
           />
         </SafeAreaView>
       </LinearGradient>
 
       <Tabs
+        ref={tabRef}
         tabs={[
           {
             title: `未抄(${
@@ -188,11 +236,14 @@ export default function BookTaskScreen() {
         tabBarUnderlineStyle={{ height: scaleSize(6) }}
         tabBarActiveTextColor="#4B92F4"
         tabBarInactiveTextColor="#333333"
-        tabBarTextStyle={{ fontSize: scaleSize(36) }}>
+        tabBarTextStyle={{ fontSize: scaleSize(36) }}
+        onChange={(tab, index) => {
+          setTabIndex(index);
+        }}>
         <FlatList<PdaReadDataDtoHolder>
           style={styles.items}
           initialNumToRender={10}
-          data={bookDataItems.filter((it) => !it.item.reading)}
+          data={bookDataItems.filter((it) => it.item.recordState === 0)}
           renderItem={renderBookItem}
           ItemSeparatorComponent={() => (
             <View style={{ height: scaleSize(18) }} />
@@ -203,11 +254,13 @@ export default function BookTaskScreen() {
             paddingBottom: scaleSize(30),
             paddingTop: scaleSize(18),
           }}
+          ref={f1Ref}
+          getItemLayout={getItemLayout}
         />
         <FlatList<PdaReadDataDtoHolder>
           style={styles.items}
           initialNumToRender={10}
-          data={bookDataItems.filter((it) => !!it.item.reading)}
+          data={bookDataItems.filter((it) => it.item.recordState !== 0)}
           renderItem={renderBookItem}
           ItemSeparatorComponent={() => (
             <View style={{ height: scaleSize(18) }} />
@@ -218,6 +271,7 @@ export default function BookTaskScreen() {
             paddingBottom: scaleSize(30),
             paddingTop: scaleSize(18),
           }}
+          ref={f2Ref}
         />
         <FlatList<PdaReadDataDtoHolder>
           style={styles.items}
@@ -233,6 +287,7 @@ export default function BookTaskScreen() {
             paddingBottom: scaleSize(30),
             paddingTop: scaleSize(18),
           }}
+          ref={f3Ref}
         />
       </Tabs>
     </View>

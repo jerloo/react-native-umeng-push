@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
+    height: scaleSize(240),
   },
   mainContainer: {
     flex: 1,

@@ -17,6 +17,7 @@ interface Props {
   placeholderTextColor?: string;
   placeholder?: string;
   icon?: ImageSourcePropType;
+  onSearch?: (text: string) => void;
 }
 
 export default function SearchBox(props: Props) {
@@ -37,6 +38,9 @@ export default function SearchBox(props: Props) {
           underlineColorAndroid="transparent"
           placeholder={props.placeholder || '户号/户名/地址/册本号'}
           placeholderTextColor={props.placeholderTextColor || '#BFC9E3'}
+          onEndEditing={(e) =>
+            props.onSearch && props.onSearch(e.nativeEvent.text)
+          }
         />
       </View>
     </View>
