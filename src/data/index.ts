@@ -16,6 +16,7 @@ import {
   PdaPaymentCollectInput,
   PdaPaymentCollectDto,
   PdaPaySubtotalsDto,
+  UploadReadingDataDto,
 } from '../../apiclient/src/models';
 import NetInfo from '@react-native-community/netinfo';
 import db from './database';
@@ -23,7 +24,6 @@ import { PdaMeterBookDtoHolder } from './holders';
 import ApiService from './apiService';
 import OfflineApiService from './offline';
 import OnlineApiService from './online';
-import { setBillMonth } from '../utils/billMonthUtils';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
 
 class CenterService implements ApiService {
@@ -33,6 +33,14 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+
+  async uploadReadingData(input: UploadReadingDataDto): Promise<void> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.uploadReadingData(input);
+    }
+    return this.offline.uploadReadingData(input);
   }
 
   async updateCustInfo(input: CustInfoModifyInputDto): Promise<void> {

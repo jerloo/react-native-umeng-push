@@ -118,9 +118,13 @@ export default function BooksScreen() {
   };
 
   const allBooksClick = () => {
-    const allChecked = !bookItems.find((item) => item.checked === false);
+    const allChecked = !bookItems
+      .filter((it) => !it.downloaded)
+      .find((item) => item.checked === false);
     bookItems.forEach((item) => {
-      item.checked = !allChecked;
+      if (!item.downloaded) {
+        item.checked = !allChecked;
+      }
     });
     setBookItems([...bookItems]);
   };

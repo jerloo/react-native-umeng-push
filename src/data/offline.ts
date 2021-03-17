@@ -16,6 +16,7 @@ import {
   PdaReadingCollectDto,
   PdaReadStateDto,
   SysSettingDto,
+  UploadReadingDataDto,
 } from '../../apiclient/src/models';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
 import { getBillMonth } from '../utils/billMonthUtils';
@@ -25,9 +26,14 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
+  async uploadReadingData(_input: UploadReadingDataDto): Promise<void> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
   async updateCustInfo(_input: CustInfoModifyInputDto): Promise<void> {
     throw new Error(NO_NETWORK_ERROR);
   }
+
   async getPaymentSubtotal(
     _input: PdaPaymentCollectInput,
   ): Promise<PdaPaySubtotalsDto> {

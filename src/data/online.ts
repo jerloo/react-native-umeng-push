@@ -16,6 +16,7 @@ import {
   PdaReadingCollectDto,
   PdaReadStateDto,
   SysSettingDto,
+  UploadReadingDataDto,
 } from '../../apiclient/src/models';
 import { getSession, setSession } from '../utils/sesstionUtils';
 import ApiService, { SERVER_ERROR, USERNAME_PWD_ERROR } from './apiService';
@@ -23,8 +24,24 @@ import { PdaMeterBookDtoHolder } from './holders';
 import { api } from '../utils/apiUtils';
 import AsyncStorage from '@react-native-community/async-storage';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
+import DeviceInfo from 'react-native-device-info';
 
 export default class OnlineApiService implements ApiService {
+  async uploadReadingData(input: UploadReadingDataDto): Promise<void> {
+    try {
+      const result = await api.mobileReadingApi.apiAppMobileReadingUploadReadingDatePost(
+        input,
+      );
+      if (result.status < 400) {
+        return result.data;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
   async updateCustInfo(input: CustInfoModifyInputDto): Promise<void> {
     try {
       const result = await api.chargeApi.apiAppChargeCustInfoModifyPost(input);
@@ -312,7 +329,7 @@ export default class OnlineApiService implements ApiService {
     try {
       const result = await api.mobileReadingApi.apiAppMobileReadingUploadMobileLogFilePost(
         {
-          deviceCode: '1-1-1-1',
+          deviceCode: DeviceInfo.getUniqueId(),
           logFiles: [
             {
               logFileName: fileName,

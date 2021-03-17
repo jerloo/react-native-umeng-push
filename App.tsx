@@ -37,7 +37,7 @@ import { MainStackParamList } from './src/screens/routeParams';
 import PaymentCollectScreen from './src/screens/PaymentCollectScreen';
 import PaymentSubtotalScreen from './src/screens/PaymentSubtotalScreen';
 
-Toast.config({ duration: 0.5 });
+// Toast.config({ duration: 0.5 });
 
 const Stack = createStackNavigator<MainStackParamList>();
 

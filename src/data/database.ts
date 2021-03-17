@@ -498,7 +498,7 @@ class DataBase {
       )}) ORDER BY bookSortIndex ASC`,
       [],
     );
-    return result?.[0].rows.raw() || [];
+    return (result?.[0].rows.raw() as PdaReadDataDto[]) || [];
   };
 
   getBookDataDetails = async (
@@ -628,6 +628,13 @@ class DataBase {
   markBookDownloaded = async (ids: number[]) => {
     return this.db?.executeSql(
       `UPDATE Books SET downloaded = ? WHERE bookId in (${ids.join(',')})`,
+      [true],
+    );
+  };
+
+  markBookUploaded = async (ids: number[]) => {
+    return this.db?.executeSql(
+      `UPDATE Books SET uploaded = ? WHERE bookId in (${ids.join(',')})`,
       [true],
     );
   };

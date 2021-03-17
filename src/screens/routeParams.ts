@@ -1,4 +1,8 @@
-import { MobileFileDto, PdaReadDataDto } from '../../apiclient/src/models';
+import {
+  MobileFileDto,
+  PdaCustListDto,
+  PdaReadDataDto,
+} from '../../apiclient/src/models';
 
 export type MainStackParamList = {
   Home: {};
@@ -22,7 +26,7 @@ export type MainStackParamList = {
     title: string;
   };
   CustDetails: {
-    data: PdaReadDataDto;
+    data: PdaReadDataDto | PdaCustListDto;
   };
   Camera: {
     callback: (result: MobileFileDto) => void;
