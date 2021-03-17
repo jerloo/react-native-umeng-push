@@ -1,4 +1,4 @@
-export const recordState = (n: number) => {
+export const recordState = (n: number | undefined) => {
   if (n === 0) {
     return '未抄';
   } else if (n === 1) {

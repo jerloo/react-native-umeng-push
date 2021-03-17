@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import SQLite from 'react-native-sqlite-storage';
 import { MobileFileDto, PdaReadDataDto } from '../../apiclient/src/models';
 import {
@@ -506,23 +507,44 @@ class DataBase {
       items.forEach((item) => {
         console.log('保存报表录入', item);
         tx.executeSql(
-          `UPDATE BookDatas SET terminalFiles = ?, reading = ?, readWater = ?, readDate = ?, readStateId = ?, readRemark = ?
+          `UPDATE BookDatas SET terminalFiles = ?, reading = ?, readWater = ?, 
+                readDate = ?, readStateId = ?, readRemark = ?, recordState = ?
             WHERE billMonth = ? AND custId = ? AND readTimes = ?`,
           [
             JSON.stringify(item.terminalFiles),
             item.reading,
             item.readWater,
-            item.readDate,
+            dayjs(item.readDate).format('YYYY-MM-DDTHH:mm:ss'),
             item.readStateId,
             item.readRemark,
+            item.recordState,
             item.billMonth,
             item.custId,
             item.readTimes,
           ],
         ).catch((e) => {
-          console.log('插入下载测本数据失败', e);
+          console.log('保存抄表录入数据失败', e);
         });
       });
+    });
+  };
+
+  updateReadingNumberByBookId = async (bookId: number) => {
+    await this.db?.transaction((tx) => {
+      tx.executeSql(
+        'SELECT count(1) as count FROM BookDatas WHERE bookId = ? AND recordState <> ?',
+        [bookId, 0],
+        (t, result) => {
+          const count = result.rows.raw()[0].count;
+          console.log('coun', count);
+          tx.executeSql('UPDATE Books SET readingNumber = ? WHERE bookId = ?', [
+            count,
+            bookId,
+          ]).catch((e) => {
+            console.log('更新抄表统计数据失败', e);
+          });
+        },
+      );
     });
   };
 

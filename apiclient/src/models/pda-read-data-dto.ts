@@ -226,7 +226,7 @@ export interface PdaReadDataDto {
      * @type {number}
      * @memberof PdaReadDataDto
      */
-    recordState?: any;
+    recordState?: number;
     /**
      * 换表水量
      * @type {number}

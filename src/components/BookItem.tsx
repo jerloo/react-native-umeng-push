@@ -42,7 +42,9 @@ export default function BookItem(props: Props) {
         </View>
         <View style={styles.detailsBox}>
           <Text style={styles.detailsLabel}>已上传：</Text>
-          <Text style={styles.detailsValue}>{props.holder.readingNumber}</Text>
+          <Text style={styles.detailsValue}>
+            {props.holder.uploadedNumber || 0}
+          </Text>
         </View>
       </View>
     </View>

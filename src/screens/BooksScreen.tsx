@@ -24,7 +24,7 @@ import db from '../data/database';
 import { NumbersType } from '../data/models';
 import { getBillMonth } from '../utils/billMonthUtils';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
-import { useNavigation } from '@react-navigation/core';
+import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import Modal from 'react-native-smart-modal';
 
 export default function BooksScreen() {
@@ -68,6 +68,15 @@ export default function BooksScreen() {
   useEffect(() => {
     fetchLocal();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      db.getBookTotalData().then((result) => {
+        setTotalNumbers(result);
+      });
+      fetchLocal();
+    }, []),
+  );
 
   const bookItemCheckClick = (holder: PdaMeterBookDtoHolder) => {
     bookItems.forEach((item) => {

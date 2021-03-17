@@ -20,7 +20,12 @@ import { PdaReadDataDtoHolder } from '../data/holders';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import SearchBox from '../components/SearchBox';
 import { Tabs } from '@ant-design/react-native';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import {
+  RouteProp,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
 
 export default function BookTaskScreen() {
@@ -52,6 +57,28 @@ export default function BookTaskScreen() {
 
     fetchLocal();
   }, [route.params]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchLocal = async () => {
+        try {
+          const { bookId } = route.params;
+          const res = await center.offline.getBookDataByIds([bookId]);
+          const items = (res as PdaReadDataDto[]).map((value) => {
+            const data: PdaReadDataDtoHolder = {
+              item: value,
+              showExtra: false,
+            };
+            return data;
+          });
+          setBookDataItems(items);
+        } catch (e) {
+          Toast.fail(e.message);
+        }
+      };
+      fetchLocal();
+    }, [route.params]),
+  );
 
   const refresh = async () => {
     if (loading) {
@@ -148,12 +175,12 @@ export default function BookTaskScreen() {
         tabs={[
           {
             title: `未抄(${
-              bookDataItems.filter((it) => !it.item.reading).length
+              bookDataItems.filter((it) => it.item.recordState === 0).length
             })`,
           },
           {
             title: `已抄(${
-              bookDataItems.filter((it) => !!it.item.reading).length
+              bookDataItems.filter((it) => it.item.recordState !== 0).length
             })`,
           },
           { title: `全部(${bookDataItems.length})` },

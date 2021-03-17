@@ -169,20 +169,32 @@ export default function NewReadScreen() {
   const saveData = async () => {
     if (!newData.reading) {
       Toast.fail('请先抄表');
+      return;
+    } else if (newData.reading > newData.rangeValue) {
+      Toast.fail('本次抄码不能大于水表的量程');
+      return;
     } else if (!newData.readStateId) {
       Toast.fail('请选择抄表状态');
+      return;
     } else {
       const water = calcReadWater(newData);
       const result = judgeReadWater(water, newData);
+      newData.recordState = 1;
       if (!result) {
+        newData.readWater = water;
         await db.updateReadData([newData]);
+        await db.updateReadingNumberByBookId(newData.bookId);
         Toast.success('保存成功');
       } else {
-        await db.updateReadData([newData]);
         AntModal.alert('重新选择', result, [
           {
             text: '否',
-            onPress: nextItem,
+            onPress: async () => {
+              newData.readWater = water;
+              await db.updateReadData([newData]);
+              await db.updateReadingNumberByBookId(newData.bookId);
+              nextItem();
+            },
           },
           {
             text: '是',
