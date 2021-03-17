@@ -28,12 +28,15 @@ export function CommonTitleBar(props: Props) {
         />
       </TouchableOpacity>
 
-      <Text
-        numberOfLines={1}
-        ellipsizeMode="middle"
-        style={styles.titleBarTitle}>
-        {props.title || '个人信息'}
-      </Text>
+      <View style={styles.titleContainer}>
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="middle"
+          style={styles.titleBarTitle}>
+          {props.title || '个人信息'}
+        </Text>
+      </View>
+
       <View style={styles.titleBarBackButton} />
     </View>
   );
@@ -64,10 +67,16 @@ const styles = StyleSheet.create({
   titleBarTitle: {
     fontSize: setSpText2(40),
     color: '#333333',
-    flex: 1,
     // alignSelf: 'center',
   },
   button: {
     padding: scaleSize(10),
+  },
+  titleContainer: {
+    display: 'flex',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 });

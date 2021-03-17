@@ -27,12 +27,15 @@ export default function EditTitleBar(props: Props) {
         <Text style={styles.titleBarBackButton}>取消</Text>
       </TouchableWithoutFeedback>
 
-      <Text
-        numberOfLines={1}
-        ellipsizeMode="middle"
-        style={styles.titleBarTitle}>
-        {props.title}
-      </Text>
+      <View style={styles.titleContainer}>
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="middle"
+          style={styles.titleBarTitle}>
+          {props.title}
+        </Text>
+      </View>
+
       <TouchableOpacity
         activeOpacity={props.canDone ? 0.2 : 1.0}
         onPress={() => props.canDone && props.onDone()}
@@ -77,7 +80,6 @@ const styles = StyleSheet.create({
   titleBarTitle: {
     fontSize: setSpText2(40),
     color: '#333333',
-    flex: 1,
     // alignSelf: 'center',
   },
   titleBarDoneButton: {
@@ -95,5 +97,12 @@ const styles = StyleSheet.create({
   },
   titleBarDoneEnabledText: {
     color: '#FFFFFF',
+  },
+  titleContainer: {
+    display: 'flex',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 });

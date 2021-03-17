@@ -32,12 +32,14 @@ export default function BooksBackTitleBar(props: Props) {
         />
       </TouchableWithoutFeedback>
 
-      <Text
-        numberOfLines={1}
-        ellipsizeMode="middle"
-        style={[styles.titleBarTitle, { color: props.titleColor }]}>
-        {props.title || '抄表任务'}
-      </Text>
+      <View style={styles.titleContainer}>
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="middle"
+          style={[styles.titleBarTitle, { color: props.titleColor }]}>
+          {props.title || '抄表任务'}
+        </Text>
+      </View>
       <TouchableWithoutFeedback
         onPress={() => props.onRightClick && props?.onRightClick()}>
         <Image
@@ -73,7 +75,13 @@ const styles = StyleSheet.create({
   titleBarTitle: {
     fontSize: setSpText2(40),
     color: colorWhite,
+    alignSelf: 'center',
+  },
+  titleContainer: {
+    display: 'flex',
     flex: 1,
-    // alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 });
