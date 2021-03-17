@@ -26,6 +26,8 @@ import { getBillMonth } from '../utils/billMonthUtils';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import Modal from 'react-native-smart-modal';
+import { ReadingDataDto } from '../../apiclient/src/models';
+import DeviceInfo from 'react-native-device-info';
 
 export default function BooksScreen() {
   const navigation = useNavigation();
@@ -136,6 +138,32 @@ export default function BooksScreen() {
     }
   };
 
+  const uploadReadingData = async () => {
+    const ids = bookItems.filter((it) => it.downloaded).map((it) => it.bookId);
+    const readingDatas = await db.getBookDataByBookIds(ids);
+    const inputItems = readingDatas.map((it) => {
+      const item: ReadingDataDto = {
+        billMonth: it.billMonth,
+        custId: it.custId,
+        readTimes: it.readTimes,
+        reading: it.reading,
+        childReading: it.childReading,
+        readWater: it.readWater,
+        readDate: it.readDate,
+        readStateId: it.readStateId,
+        highLowState: it.highLowState,
+        isEstimate: it.isEstimate,
+        readRemark: it.readRemark,
+      };
+      return item;
+    });
+    await center.uploadReadingData({
+      deviceCode: DeviceInfo.getUniqueId(),
+      readingDates: inputItems,
+    });
+    await db.markBookUploaded(ids);
+  };
+
   const refresh = async () => {
     if (loading) {
       return;
@@ -146,6 +174,7 @@ export default function BooksScreen() {
       const billMonthResult = await center.getReadingMonth();
       const billMonthLocal = await getBillMonth();
       if (!billMonthLocal) {
+        await uploadReadingData();
         await fetchRemote();
       } else if (billMonthLocal !== billMonthResult) {
         AntModal.alert(
@@ -160,6 +189,7 @@ export default function BooksScreen() {
             {
               text: '确认',
               onPress: async () => {
+                await uploadReadingData();
                 await db.deleteBooks();
                 await fetchRemote();
               },
@@ -167,6 +197,7 @@ export default function BooksScreen() {
           ],
         );
       } else {
+        await uploadReadingData();
         await fetchRemote();
       }
     } catch (e) {
@@ -218,8 +249,21 @@ export default function BooksScreen() {
   ) => {
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
-      await db.deleteBookById(rowKey);
-      fetchLocal();
+      AntModal.alert('提示', '是否确认删除？', [
+        {
+          text: '取消',
+          style: { color: '#666666' },
+        },
+        {
+          text: '确认删除',
+          style: { color: 'red' },
+          onPress: async () => {
+            await db.deleteBookById(rowKey);
+            Toast.success('删除成功');
+            fetchLocal();
+          },
+        },
+      ]);
     }
   };
 
