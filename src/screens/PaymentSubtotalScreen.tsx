@@ -45,6 +45,7 @@ export default function PaymentSubtotalScreen() {
     beginDate: defaultBillMonth,
     endDate: defaultBillMonth,
   });
+  const fRef = React.useRef<FlatList>();
 
   useEffect(() => {
     getSession().then((it) => setSession(it || undefined));
@@ -105,6 +106,28 @@ export default function PaymentSubtotalScreen() {
     const value = parseInt(dayjs(dt).format('YYYYMMDD'), 10);
     console.log('onPickBillMonth', value);
     setParams({ ...params, endDate: value });
+  };
+
+  const getItemLayout = (data, index) => ({
+    length: scaleSize(439 + 18),
+    offset: scaleSize(439 + 18) * index,
+    index,
+  });
+
+  const findIndex = (d: PdaArrearageDto[], text: string) => {
+    return d.findIndex(
+      (it) =>
+        (it.custName || '').indexOf(text) > -1 ||
+        (it.custCode?.toString() || '').indexOf(text) > -1 ||
+        (it.custAddress || '').indexOf(text) > -1,
+    );
+  };
+
+  const onSearch = (text: string) => {
+    const index = findIndex(data?.paySubtotals?.items, text);
+    if (index > -1) {
+      fRef.current?.scrollToIndex({ animated: true, index });
+    }
   };
 
   const renderQuery = () => {
@@ -196,6 +219,7 @@ export default function PaymentSubtotalScreen() {
           <SearchBox
             style={styles.searchContainer}
             placeholderTextColor={colorWhite}
+            onSearch={onSearch}
           />
           <View style={styles.topBox}>
             <View style={styles.topItem}>
@@ -219,6 +243,7 @@ export default function PaymentSubtotalScreen() {
       {renderQuery()}
 
       <FlatList<PdaArrearageDto>
+        ref={fRef}
         style={styles.items}
         initialNumToRender={10}
         data={data?.paySubtotals?.items || []}
