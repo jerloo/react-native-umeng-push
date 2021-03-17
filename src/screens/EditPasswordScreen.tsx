@@ -13,6 +13,8 @@ import { useNavigation } from '@react-navigation/core';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PasswordInput from '../components/PasswordInput';
 
+const PASSWORD_REG = /^(?=.*?[0-9])(?=.*?[a-zA-Z]).{8,}$/;
+
 export default function EditPasswordScreen() {
   const navigation = useNavigation();
 
@@ -24,11 +26,7 @@ export default function EditPasswordScreen() {
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const onSave = async () => {
-    if (
-      !/^(?=.*?[0-9])(?=.*?[a-zA-Z])[0-9a-zA-Z\d@$!%*#?&]{8,}$/.test(
-        newPassword,
-      )
-    ) {
+    if (!PASSWORD_REG.test(newPassword)) {
       Toast.fail('密码必须至少8位字符，同时需包含字母和数字');
       return;
     }
