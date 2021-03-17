@@ -58,7 +58,7 @@ export default function SearchScreen() {
         bookCode: item.bookCode,
         custName: item.custName,
         custId: item.id,
-        custCode: item.bookCode,
+        custCode: item.custCode,
         custAddress: item.custAddress,
       },
     });
