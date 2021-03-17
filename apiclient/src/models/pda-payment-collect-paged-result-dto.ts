@@ -11,9 +11,6 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-
-import { PdaPaymentCollect } from "./pda-payment-collect";
-
 /**
  * 
  * @export
@@ -31,5 +28,5 @@ export interface PdaPaymentCollectPagedResultDto {
      * @type {Array&lt;PdaPaymentCollect&gt;}
      * @memberof PdaPaymentCollectPagedResultDto
      */
-    items?: PdaPaymentCollect[];
+    items?: any;
 }

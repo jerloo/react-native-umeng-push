@@ -247,6 +247,45 @@
         }
       }
     },
+    "/api/app/charge/custInfoModify": {
+      "post": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "修改客户基础资料",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustInfoModifyInputDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustInfoModifyInputDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustInfoModifyInputDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustInfoModifyInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/app/charge/custList": {
       "get": {
         "tags": [
@@ -717,7 +756,7 @@
         "tags": [
           "MobilePayment"
         ],
-        "summary": "查询全部Pda收费员",
+        "summary": "查询全部Pda操作员",
         "responses": {
           "200": {
             "description": "Success",
@@ -1139,6 +1178,61 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/ReadingDataDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/app/mobileReading/updateBookSortIndex": {
+      "post": {
+        "tags": [
+          "MobileReading"
+        ],
+        "summary": "Pda册本序号调整",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BookSortIndexDto"
+                },
+                "description": ""
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BookSortIndexDto"
+                },
+                "description": ""
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BookSortIndexDto"
+                },
+                "description": ""
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BookSortIndexDto"
+                },
+                "description": ""
               }
             }
           },
@@ -1847,6 +1941,51 @@
         },
         "additionalProperties": false
       },
+      "CustInfoModifyInputDto": {
+        "required": [
+          "custId"
+        ],
+        "type": "object",
+        "properties": {
+          "custId": {
+            "type": "integer",
+            "description": "客户编号",
+            "format": "int32"
+          },
+          "oldMobile": {
+            "type": "string",
+            "description": "旧-联系方式",
+            "nullable": true
+          },
+          "oldSteelMark": {
+            "type": "string",
+            "description": "旧-钢印号",
+            "nullable": true
+          },
+          "oldInstallLocation": {
+            "type": "string",
+            "description": "旧-安装位置",
+            "nullable": true
+          },
+          "newMobile": {
+            "type": "string",
+            "description": "新-联系方式",
+            "nullable": true
+          },
+          "newSteelMark": {
+            "type": "string",
+            "description": "新-钢印号",
+            "nullable": true
+          },
+          "newInstallLocation": {
+            "type": "string",
+            "description": "新-安装位置",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Pda 更新客户基础信息"
+      },
       "PdaCustListDto": {
         "type": "object",
         "properties": {
@@ -2317,7 +2456,7 @@
             "type": "string",
             "description": "客户编号"
           },
-          "feeIds": {
+          "paymnetMobileFeeInput": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/FeeId"
@@ -2858,6 +2997,23 @@
         },
         "additionalProperties": false,
         "description": "预算 开账接口请求"
+      },
+      "BookSortIndexDto": {
+        "type": "object",
+        "properties": {
+          "custId": {
+            "type": "integer",
+            "description": "客户编号",
+            "format": "int32"
+          },
+          "bookSortIndex": {
+            "type": "integer",
+            "description": "册内序号",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "册内序号调整"
       },
       "SysSettingDto": {
         "type": "object",

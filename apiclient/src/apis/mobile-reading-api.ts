@@ -16,6 +16,7 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import { BookSortIndexDto } from '../models';
 import { PdaCalcBudgetAmountInput } from '../models';
 import { ReadingDataDto } from '../models';
 import { UploadMobileLogFileDto } from '../models';
@@ -92,6 +93,57 @@ export const MobileReadingApiAxiosParamCreator = function (configuration?: Confi
                 throw new RequiredError('body','Required parameter body was null or undefined when calling apiAppMobileReadingMakeOutPost.');
             }
             const localVarPath = `/api/app/mobileReading/makeOut`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Pda册本序号调整
+         * @param {Array&lt;BookSortIndexDto&gt;} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppMobileReadingUpdateBookSortIndexPost: async (body: Array<BookSortIndexDto>, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling apiAppMobileReadingUpdateBookSortIndexPost.');
+            }
+            const localVarPath = `/api/app/mobileReading/updateBookSortIndex`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -373,6 +425,20 @@ export const MobileReadingApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Pda册本序号调整
+         * @param {Array&lt;BookSortIndexDto&gt;} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiAppMobileReadingUpdateBookSortIndexPost(body: Array<BookSortIndexDto>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await MobileReadingApiAxiosParamCreator(configuration).apiAppMobileReadingUpdateBookSortIndexPost(body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary pda日志上传
          * @param {UploadMobileLogFileDto} body 
          * @param {*} [options] Override http request option.
@@ -458,6 +524,16 @@ export const MobileReadingApiFactory = function (configuration?: Configuration, 
         },
         /**
          * 
+         * @summary Pda册本序号调整
+         * @param {Array&lt;BookSortIndexDto&gt;} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppMobileReadingUpdateBookSortIndexPost(body: Array<BookSortIndexDto>, options?: any): AxiosPromise<void> {
+            return MobileReadingApiFp(configuration).apiAppMobileReadingUpdateBookSortIndexPost(body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary pda日志上传
          * @param {UploadMobileLogFileDto} body 
          * @param {*} [options] Override http request option.
@@ -527,6 +603,17 @@ export class MobileReadingApi extends BaseAPI {
      */
     public apiAppMobileReadingMakeOutPost(body: ReadingDataDto, options?: any) {
         return MobileReadingApiFp(this.configuration).apiAppMobileReadingMakeOutPost(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @summary Pda册本序号调整
+     * @param {Array&lt;BookSortIndexDto&gt;} body 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MobileReadingApi
+     */
+    public apiAppMobileReadingUpdateBookSortIndexPost(body: Array<BookSortIndexDto>, options?: any) {
+        return MobileReadingApiFp(this.configuration).apiAppMobileReadingUpdateBookSortIndexPost(body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 

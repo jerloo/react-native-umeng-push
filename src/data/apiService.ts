@@ -17,6 +17,7 @@ import {
   PdaReadStateDto,
   SysSettingDto,
 } from '../../apiclient/src/models';
+import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default interface ApiService {
@@ -57,7 +58,8 @@ export default interface ApiService {
   getPaymentSubtotal(
     input: PdaPaymentCollectInput,
   ): Promise<PdaPaySubtotalsDto>;
-}
+  updateCustInfo(input: CustInfoModifyInputDto): Promise<void>;
+};
 
 export const NETWORK_ERROR = '网络错误，请稍后再试';
 export const SERVER_ERROR = '服务器错误，请稍后再试';

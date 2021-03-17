@@ -481,7 +481,7 @@ export default function NewReadScreen() {
           </View>
 
           <View style={styles.rightBottom}>
-            <LocationButton />
+            <LocationButton address={newData.custAddress} />
             <Text style={styles.description}>{newData.custAddress}</Text>
           </View>
           <View style={styles.tags}>

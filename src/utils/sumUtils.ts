@@ -3,5 +3,5 @@ export const sum = (array: number[]) => {
   for (let i = 0; i < array.length; i++) {
     s += array[i];
   }
-  return s;
+  return s.toFixed(2);
 };

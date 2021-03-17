@@ -17,6 +17,7 @@ import { scaleSize } from 'react-native-responsive-design';
 import {
   PdaBillingInfo,
   PdaCustDto,
+  PdaCustInfo,
   PdaPayRecord,
   PdaReadingRecord,
 } from '../../apiclient/src/models';
@@ -29,6 +30,8 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
 import PureInput from '../components/PureInput';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { sum } from '../utils/sumUtils';
+import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
 
 export default function CustDetailsScreen() {
   const navigation = useNavigation();
@@ -68,6 +71,27 @@ export default function CustDetailsScreen() {
     return (
       <View style={{ height: scaleSize(1), backgroundColor: '#DEDEDE' }} />
     );
+  };
+
+  const updateBasicInfo = async (custId: number, info: PdaCustInfo) => {
+    const key = Toast.loading('修改中');
+    try {
+      const input: CustInfoModifyInputDto = {
+        custId: custId,
+        oldInstallLocation: details?.custInfo?.installLocation,
+        oldMobile: details?.custInfo?.mobile,
+        oldSteelMark: details?.custInfo?.steelMark,
+        newInstallLocation: info.installLocation,
+        newMobile: info.mobile,
+        newSteelMark: info.steelMark,
+      };
+      await center.updateCustInfo(input);
+      setDetails({ ...details, custInfo: info });
+    } catch (e) {
+      Toast.fail(e.message);
+    } finally {
+      Toast.remove(key);
+    }
   };
 
   const renderBasicInfo = () => {
@@ -116,12 +140,12 @@ export default function CustDetailsScreen() {
             fontColor="#999999"
             fontSize={scaleSize(28)}
             defaultValue={details?.custInfo?.mobile}
-            onEndEditing={(text) => {
-              const newDetails = { ...details };
-              if (newDetails.custInfo) {
-                newDetails.custInfo.mobile = text;
+            onEndEditing={(e) => {
+              const info = { ...details?.custInfo };
+              if (info) {
+                info.mobile = e.nativeEvent.text;
+                updateBasicInfo(details?.custId, info);
               }
-              setDetails(newDetails);
             }}
           />
         </View>
@@ -163,8 +187,17 @@ export default function CustDetailsScreen() {
               padding: 0,
               flex: 1,
             }}
+            fontColor="#999999"
+            fontSize={scaleSize(28)}
             defaultValue={details?.custInfo?.installLocation}
             returnKeyType="done"
+            onEndEditing={(e) => {
+              const info = { ...details?.custInfo };
+              if (info) {
+                info.installLocation = e.nativeEvent.text;
+                updateBasicInfo(details?.custId, info);
+              }
+            }}
           />
         </View>
         {line()}
@@ -177,8 +210,17 @@ export default function CustDetailsScreen() {
               padding: 0,
               flex: 1,
             }}
+            fontColor="#999999"
+            fontSize={scaleSize(28)}
             defaultValue={details?.custInfo?.steelMark}
             returnKeyType="done"
+            onEndEditing={(e) => {
+              const info = { ...details?.custInfo };
+              if (info) {
+                info.steelMark = e.nativeEvent.text;
+                updateBasicInfo(details?.custId, info);
+              }
+            }}
           />
         </View>
         {line()}
@@ -265,14 +307,6 @@ export default function CustDetailsScreen() {
         <Text style={styles.listItemText}>余额</Text>
       </View>
     );
-  };
-
-  const sum = (array: number[]) => {
-    let s = 0;
-    for (let i = 0; i < array.length; i++) {
-      s += array[i];
-    }
-    return s;
   };
 
   return (

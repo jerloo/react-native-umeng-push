@@ -12,33 +12,21 @@
  * Do not edit the class manually.
  */
 /**
- * 收费明细
+ * 册内序号调整
  * @export
- * @interface PdaPaySubtotalsDto
+ * @interface BookSortIndexDto
  */
-export interface PdaPaySubtotalsDto {
+export interface BookSortIndexDto {
     /**
-     * 户数
+     * 客户编号
      * @type {number}
-     * @memberof PdaPaySubtotalsDto
+     * @memberof BookSortIndexDto
      */
-    custCount?: any;
+    custId?: any;
     /**
-     * 实际收费
+     * 册内序号
      * @type {number}
-     * @memberof PdaPaySubtotalsDto
+     * @memberof BookSortIndexDto
      */
-    actualMoney?: any;
-    /**
-     * 实际销账
-     * @type {number}
-     * @memberof PdaPaySubtotalsDto
-     */
-    soldMoney?: any;
-    /**
-     * 
-     * @type {PdaPaymentSubtotalPagedResultDto}
-     * @memberof PdaPaySubtotalsDto
-     */
-    paySubtotals?: any;
+    bookSortIndex?: any;
 }

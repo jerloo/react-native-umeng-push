@@ -24,6 +24,7 @@ import ApiService from './apiService';
 import OfflineApiService from './offline';
 import OnlineApiService from './online';
 import { setBillMonth } from '../utils/billMonthUtils';
+import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
 
 class CenterService implements ApiService {
   offline: OfflineApiService;
@@ -32,6 +33,14 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+
+  async updateCustInfo(input: CustInfoModifyInputDto): Promise<void> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.updateCustInfo(input);
+    }
+    return this.offline.updateCustInfo(input);
   }
 
   async getPaymentSubtotal(

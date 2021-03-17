@@ -333,7 +333,7 @@ export const MobilePaymentApiAxiosParamCreator = function (configuration?: Confi
         },
         /**
          * 
-         * @summary 查询全部Pda收费员
+         * @summary 查询全部Pda操作员
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -468,7 +468,7 @@ export const MobilePaymentApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 查询全部Pda收费员
+         * @summary 查询全部Pda操作员
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -550,7 +550,7 @@ export const MobilePaymentApiFactory = function (configuration?: Configuration, 
         },
         /**
          * 
-         * @summary 查询全部Pda收费员
+         * @summary 查询全部Pda操作员
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -635,7 +635,7 @@ export class MobilePaymentApi extends BaseAPI {
     }
     /**
      * 
-     * @summary 查询全部Pda收费员
+     * @summary 查询全部Pda操作员
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MobilePaymentApi

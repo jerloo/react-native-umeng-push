@@ -5,6 +5,7 @@ import { scaleSize } from 'react-native-responsive-design';
 import { PdaReadDataDto } from '../../apiclient/src/models';
 import { colorWhite } from '../styles';
 import { meterState, recordState } from '../utils/stateConverter';
+import LocationButton from './LocationButton';
 
 interface BookDataTagProps {
   title: string;
@@ -62,10 +63,7 @@ export default function BookReadItem(props: Props) {
             <Text style={styles.subTitle}>({props.item.custCode})</Text>
           </View>
           <View style={styles.rightBottom}>
-            <Image
-              style={styles.iconLocation}
-              source={require('../assets/qietu/cebenxiangqing/book_details_icon_address_normal.png')}
-            />
+            <LocationButton address={props.item.custAddress} />
             <Text style={styles.description}>{props.item.custAddress}</Text>
           </View>
         </View>
