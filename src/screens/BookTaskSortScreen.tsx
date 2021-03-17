@@ -77,13 +77,16 @@ export default function BookTaskSortScreen() {
   const topRow = (rowMap: RowMap<PdaReadDataDtoHolder>, rowKey: number) => {
     closeRow(rowMap, rowKey);
     let newData = [...BookSortItems];
-    newData.forEach((item) => {
-      if (item.item.bookId === rowKey) {
-        item.item.bookSortIndex = 1;
-      }
-    });
-    newData = newData.sort((it) => it.item.bookSortIndex);
-    setBookSortItems(newData);
+    const topItem = newData.find((it) => it.item.custId === rowKey);
+    if (topItem) {
+      topItem.item.bookSortIndex = 1;
+      const others = newData.filter((it) => it.item.custId !== rowKey);
+      others.forEach((it, index) => {
+        it.item.bookSortIndex = index + 2;
+      });
+      newData = [topItem, ...others.sort((it) => it.item.bookSortIndex)];
+      setBookSortItems(newData);
+    }
   };
 
   return (
@@ -126,7 +129,7 @@ export default function BookTaskSortScreen() {
               style={styles.rowHiddenStatic}
               title="置顶"
               icon={require('../assets/qietu/cebenxiangqing/book_details_icon_top_normal.png')}
-              onClick={() => topRow(rowMap, data.item.item.bookId)}
+              onClick={() => topRow(rowMap, data.item.item.custId)}
             />
             <SwipeButton
               style={styles.rowHiddenDelete}
