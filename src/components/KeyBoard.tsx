@@ -102,7 +102,9 @@ export default function KeyBoard(props: Props) {
           <Text style={styles.number}>6</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.cell, { backgroundColor: '#D0D1D3' }]}>
+        <TouchableOpacity
+          onPress={props.onPreClick}
+          style={[styles.cell, { backgroundColor: '#D0D1D3' }]}>
           <Text style={styles.pre}>上一户</Text>
         </TouchableOpacity>
       </View>
@@ -124,7 +126,9 @@ export default function KeyBoard(props: Props) {
           onPress={() => props.onNumberClick && props.onNumberClick(3)}>
           <Text style={styles.number}>3</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.cell, { backgroundColor: '#EAEBEE' }]}>
+        <TouchableOpacity
+          onPress={props.onNextClick}
+          style={[styles.cell, { backgroundColor: '#EAEBEE' }]}>
           <Text style={styles.next}>下一户</Text>
         </TouchableOpacity>
       </View>

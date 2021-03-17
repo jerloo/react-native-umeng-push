@@ -64,7 +64,7 @@ export interface PdaReadDataDto {
      * @type {number}
      * @memberof PdaReadDataDto
      */
-    bookSortIndex?: number;
+    bookSortIndex: number;
     /**
      * 客户编号
      * @type {string}
@@ -178,7 +178,7 @@ export interface PdaReadDataDto {
      * @type {number}
      * @memberof PdaReadDataDto
      */
-    reading?: any;
+    reading?: number;
     /**
      * 本次子表抄码
      * @type {number}

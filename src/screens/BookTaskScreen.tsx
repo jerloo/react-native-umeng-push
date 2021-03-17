@@ -117,7 +117,6 @@ export default function BookTaskScreen() {
   });
 
   const findIndex = (data: PdaReadDataDtoHolder[], text: string) => {
-    console.log(data.map((it) => it.item.custCode));
     return data.findIndex(
       (it) =>
         (it.item.custName || '').indexOf(text) > -1 ||

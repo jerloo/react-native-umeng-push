@@ -47,6 +47,7 @@ import { Modal as AntModal } from '@ant-design/react-native';
 import { meterState, recordState } from '../utils/stateConverter';
 import Video from 'react-native-video';
 import { AttachmentDbItem } from '../data/models';
+import { PdaReadDataDtoHolder } from '../data/holders';
 
 let scaleHeight = defaultScaleHeight;
 scaleHeight = scaleSize;
@@ -68,39 +69,21 @@ export default function NewReadScreen() {
   const [canCharge, setCanCharge] = useState(false);
   const [keyboardVisible, setKeyBoardVisible] = useState(true);
   const [attachments, setAttachments] = useState<AttachmentDbItem[]>([]);
-
-  const keyboardWillShow = (_event: any) => {
-    // Animated.timing(this.imageHeight, {
-    //   duration: event.duration,
-    //   toValue: IMAGE_HEIGHT_SMALL,
-    // }).start();
-    setKeyBoardVisible(false);
-    console.log('setKeyBoardVisible false');
-  };
-
-  const keyboardWillHide = (_event: any) => {
-    // Animated.timing(this.imageHeight, {
-    //   duration: event.duration,
-    //   toValue: IMAGE_HEIGHT,
-    // }).start();
-    setKeyBoardVisible(true);
-  };
+  const [bookDataItems, setBookDataItems] = useState<PdaReadDataDto[]>([]);
 
   React.useEffect(() => {
-    const keyboardWillShowSub = Keyboard.addListener(
-      'keyboardWillShow',
-      keyboardWillShow,
-    );
-    const keyboardWillHideSub = Keyboard.addListener(
-      'keyboardWillHide',
-      keyboardWillHide,
-    );
-
-    return function () {
-      keyboardWillShowSub.remove();
-      keyboardWillHideSub.remove();
+    const fetchLocal = async () => {
+      try {
+        const { bookId } = data;
+        const res = await center.offline.getBookDataByIds([bookId]);
+        setBookDataItems(res);
+      } catch (e) {
+        Toast.fail(e.message);
+      }
     };
-  }, []);
+
+    fetchLocal();
+  }, [data]);
 
   React.useEffect(() => {
     isMobileReadingCanCharge().then((flag) => setCanCharge(flag));
@@ -161,8 +144,63 @@ export default function NewReadScreen() {
     setAmount(0);
   };
 
-  const preItem = () => {};
-  const nextItem = () => {};
+  const preItem = async () => {
+    if (newData.recordState !== 0) {
+      await checkData();
+    }
+    const result = bookDataItems.filter(
+      (it) => it.bookSortIndex < newData.bookSortIndex,
+    );
+    if (result.length > 0) {
+      setNewData(result[result.length - 1]);
+    } else {
+      Toast.info('当前已经是第一条数据');
+    }
+  };
+
+  const nextItem = async () => {
+    if (newData.recordState !== 0) {
+      await checkData();
+    }
+    const result = bookDataItems.filter(
+      (it) => it.bookSortIndex > newData.bookSortIndex,
+    );
+    if (result.length > 0) {
+      setNewData(result[0]);
+    } else {
+      Toast.info('当前已经是最后一条数据');
+    }
+  };
+
+  const checkData = async () => {
+    const water = calcReadWater(newData);
+    const result = judgeReadWater(water, newData);
+
+    if (!result) {
+      if (newData.recordState === 0) {
+        newData.recordState = 1;
+        newData.readWater = water;
+        await db.updateReadData([newData]);
+        await db.updateReadingNumberByBookId(newData.bookId);
+        Toast.success('保存成功');
+      }
+    } else {
+      AntModal.alert('重新选择', result, [
+        {
+          text: '否',
+          onPress: async () => {
+            newData.readWater = water;
+            await db.updateReadData([newData]);
+            await db.updateReadingNumberByBookId(newData.bookId);
+          },
+        },
+        {
+          text: '是',
+          onPress: () => console.log('cancel'),
+        },
+      ]);
+    }
+  };
 
   const saveData = async () => {
     if (!newData.reading) {
@@ -258,7 +296,7 @@ export default function NewReadScreen() {
     } else {
       navigation.navigate('Payment', {
         custId: newData.custId,
-        custCode: newData.custCode,
+        custCode: newData.custCode || '',
       });
     }
   };
@@ -293,7 +331,7 @@ export default function NewReadScreen() {
                   margin: 0,
                 },
               ]}
-              defaultValue={newData.reading || ''}
+              defaultValue={(newData.reading || '').toString()}
               value={(newData.reading || '').toString()}
               autoFocus={true}
             />
