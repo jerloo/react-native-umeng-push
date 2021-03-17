@@ -15,16 +15,17 @@ import { colorWhite } from '../styles';
 import { scaleSize, setSpText2 } from 'react-native-responsive-design';
 import BookItem from '../components/BookItem';
 import center from '../data';
-import { Modal, Toast } from '@ant-design/react-native';
+import { Modal as AntModal, Toast } from '@ant-design/react-native';
 import { PdaMeterBookDtoHolder } from '../data/holders';
 import CircleCheckBox from '../components/CircleCheckBox';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
 import SwipeButton from '../components/SwipeButton';
 import db from '../data/database';
 import { NumbersType } from '../data/models';
 import { getBillMonth } from '../utils/billMonthUtils';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import { useNavigation } from '@react-navigation/core';
+import Modal from 'react-native-smart-modal';
 
 export default function BooksScreen() {
   const navigation = useNavigation();
@@ -37,6 +38,8 @@ export default function BooksScreen() {
   });
   const [loading, setLoading] = useState(false);
   const [currentBillMonth, setCurrentBillMonth] = useState<number>();
+  const [currentBook, setCurrentBook] = useState<PdaMeterBookDtoHolder>();
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     db.getBookTotalData().then((result) => {
@@ -82,7 +85,7 @@ export default function BooksScreen() {
         title: holder.bookCode,
       });
     } else {
-      Modal.alert('提示', '当前任务未下载，是否立刻下载', [
+      AntModal.alert('提示', '当前任务未下载，是否立刻下载', [
         {
           text: '取消',
           onPress: () => console.log('取消'),
@@ -131,7 +134,7 @@ export default function BooksScreen() {
       if (!billMonthLocal) {
         await fetchRemote();
       } else if (billMonthLocal !== billMonthResult) {
-        Modal.alert(
+        AntModal.alert(
           '提示',
           '当前抄表周期与手机内不一致，是否清楚不一致数据？',
           [
@@ -184,6 +187,85 @@ export default function BooksScreen() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const openAna = (rowMap: RowMap<PdaMeterBookDtoHolder>, rowKey: number) => {
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].closeRow();
+    }
+    setModalVisible(true);
+  };
+
+  const deleteItem = async (
+    rowMap: RowMap<PdaMeterBookDtoHolder>,
+    rowKey: number,
+  ) => {
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].closeRow();
+      await db.deleteBookById(rowKey);
+      fetchLocal();
+    }
+  };
+
+  const renderAnaModal = () => {
+    return (
+      <Modal
+        visible={modalVisible}
+        fullScreen
+        horizontalLayout="right"
+        animationIn="zoomIn"
+        animationOut="zoomOut"
+        style={{ justifyContent: 'center', alignItems: 'center' }}
+        onChange={setModalVisible}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>册本数据统计</Text>
+          <View style={styles.modalLineMain} />
+          <View style={styles.modalLineSub} />
+          <View style={styles.modalRow}>
+            <View style={styles.modalCol}>
+              <Text style={styles.modalLabel}>应抄：</Text>
+              <Text style={styles.modalValue}>{currentBook?.totalNumber}</Text>
+            </View>
+            <View style={styles.modalCol}>
+              <Text style={styles.modalLabel}>已抄：</Text>
+              <Text style={styles.modalValue}>
+                {currentBook?.readingNumber}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.modalRow}>
+            <View style={styles.modalCol}>
+              <Text style={styles.modalLabel}>已上传：</Text>
+              <Text style={styles.modalValue}>{currentBook?.totalNumber}</Text>
+            </View>
+            <View style={styles.modalCol} />
+          </View>
+          <View style={styles.modalLine} />
+          <View style={styles.modalRow}>
+            <View style={styles.modalCol}>
+              <Text style={styles.modalLabel}>附件：</Text>
+              <Text style={styles.modalValue}>{currentBook?.totalNumber}</Text>
+            </View>
+            <View style={styles.modalCol}>
+              <Text style={styles.modalLabel}>上传附件：</Text>
+              <Text style={styles.modalValue}>
+                {currentBook?.readingNumber}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.modalLine} />
+          <View style={styles.modalRow}>
+            <View style={styles.modalCol}>
+              <Text style={styles.modalLabel}>抄见水量：</Text>
+              <Text style={styles.modalValue}>
+                {currentBook?.readingNumber}
+              </Text>
+            </View>
+            <View style={styles.modalCol} />
+          </View>
+        </View>
+      </Modal>
+    );
   };
 
   const renderBookItem = (info: ListRenderItemInfo<PdaMeterBookDtoHolder>) => {
@@ -254,23 +336,28 @@ export default function BooksScreen() {
         closeOnScroll={true}
         swipeToOpenPercent={30}
         disableRightSwipe
-        renderHiddenItem={(_data, _rowMap) => (
+        renderHiddenItem={(data, rowMap) => (
           <View style={styles.rowHidden}>
             <SwipeButton
               style={styles.rowHiddenStatic}
               title="统计"
+              onClick={() => {
+                setCurrentBook(data.item);
+                openAna(rowMap, data.item.bookId);
+              }}
               icon={require('../assets/qietu/chaobiaorenwu/meter_reading_task_icon_statistics_normal.png')}
             />
             <SwipeButton
               style={styles.rowHiddenDelete}
               title="删除"
+              onClick={() => deleteItem(rowMap, data.item.bookId)}
               icon={require('../assets/qietu/chaobiaorenwu/meter_reading_task_icon_delete_normal.png')}
             />
           </View>
         )}
         leftOpenValue={scaleSize(240)}
         rightOpenValue={scaleSize(-240)}
-        keyExtractor={(item) => item.bookCode.toString()}
+        keyExtractor={(item) => item.bookId.toString()}
         contentInset={{ bottom: 100 }}
         contentContainerStyle={{
           paddingBottom: scaleSize(30),
@@ -304,6 +391,7 @@ export default function BooksScreen() {
           <Text style={styles.loadingTitle}>数据下载中</Text>
         </View>
       ) : null}
+      {renderAnaModal()}
     </View>
   );
 }
@@ -413,5 +501,58 @@ const styles = StyleSheet.create({
     color: '#2484E8',
     fontSize: scaleSize(14),
     marginTop: scaleSize(-15),
+  },
+  modalContainer: {
+    backgroundColor: colorWhite,
+    borderRadius: scaleSize(8),
+    width: scaleSize(580),
+    height: scaleSize(532),
+  },
+  modalTitle: {
+    fontSize: scaleSize(34),
+    color: '#333333',
+    fontWeight: 'bold',
+    marginHorizontal: scaleSize(40),
+    marginTop: scaleSize(40),
+    marginBottom: scaleSize(10),
+  },
+  modalLineMain: {
+    backgroundColor: '#6F9DFC',
+    height: scaleSize(4),
+    marginHorizontal: scaleSize(34),
+  },
+  modalLineSub: {
+    backgroundColor: '#CCDCFF',
+    height: scaleSize(2),
+    marginTop: scaleSize(4),
+    marginHorizontal: scaleSize(34),
+    marginBottom: scaleSize(40),
+  },
+  modalRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: scaleSize(34),
+  },
+  modalCol: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  modalLabel: {
+    color: '#999999',
+    fontSize: scaleSize(30),
+  },
+  modalValue: {
+    color: '#333333',
+    fontWeight: 'bold',
+    fontSize: scaleSize(30),
+  },
+  modalLine: {
+    backgroundColor: '#DEDEDE',
+    height: scaleSize(1),
+    marginVertical: scaleSize(30),
+    marginHorizontal: scaleSize(30),
   },
 });

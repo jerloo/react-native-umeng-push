@@ -562,6 +562,10 @@ class DataBase {
   deleteBooks = async () => {
     await this.db?.executeSql('DELETE FROM Books');
   };
+
+  deleteBookById = async (bookId: number) => {
+    await this.db?.executeSql('DELETE FROM Books WHERE bookId = ?', [bookId]);
+  };
 }
 
 const db = new DataBase();

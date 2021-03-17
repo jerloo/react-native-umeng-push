@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { StatusBar, StyleSheet, Text, View, TextInput } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, Image } from 'react-native';
 import {
   scaleHeight,
   scaleSize,
@@ -10,6 +10,8 @@ import EditTitleBar from '../components/titlebars/EditTitleBar';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
 import { useNavigation } from '@react-navigation/core';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import PasswordInput from '../components/PasswordInput';
 
 export default function EditPasswordScreen() {
   const navigation = useNavigation();
@@ -17,9 +19,16 @@ export default function EditPasswordScreen() {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPasword, setConfirmPassword] = useState('');
+  const [oldPasswordVisible, setOldPasswordVisible] = useState(false);
+  const [newPasswordVisible, setNewPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const onSave = async () => {
-    if (!/^(?=.*?[0-9])(?=.*?[a-zA-Z])[0-9a-zA-Z]{8,}$/.test(newPassword)) {
+    if (
+      !/^(?=.*?[0-9])(?=.*?[a-zA-Z])[0-9a-zA-Z\d@$!%*#?&]{8,}$/.test(
+        newPassword,
+      )
+    ) {
       Toast.fail('密码必须至少8位字符，同时需包含字母和数字');
       return;
     }
@@ -32,12 +41,17 @@ export default function EditPasswordScreen() {
       return;
     }
     const key = Toast.loading('保存中', 0);
-    const result = await center.changePassword(oldPassword, newPassword);
-    if (result === true) {
-      Toast.remove(key);
-      Toast.success('修改成功');
-      navigation.goBack();
-    } else {
+    try {
+      const result = await center.changePassword(oldPassword, newPassword);
+      if (result === true) {
+        Toast.remove(key);
+        Toast.success('修改成功');
+        navigation.goBack();
+      } else {
+        Toast.remove(key);
+        Toast.fail('修改失败');
+      }
+    } catch (e) {
       Toast.remove(key);
       Toast.fail('修改失败');
     }
@@ -63,9 +77,9 @@ export default function EditPasswordScreen() {
       <View style={styles.block}>
         <View style={styles.blockRowInput}>
           <Text style={styles.textTitleNew}>旧密码</Text>
-          <TextInput
+          <PasswordInput
             textContentType="password"
-            secureTextEntry={true}
+            secureTextEntry={!oldPasswordVisible}
             multiline={false}
             numberOfLines={1}
             underlineColorAndroid="transparent"
@@ -74,14 +88,28 @@ export default function EditPasswordScreen() {
             placeholder="请输入旧密码"
             defaultValue={oldPassword}
             onChangeText={(text) => setOldPassword(text)}
+            rightIcon={
+              <TouchableOpacity
+                onPress={() => setOldPasswordVisible(!oldPasswordVisible)}>
+                <Image
+                  resizeMode="contain"
+                  style={styles.eyeOpen}
+                  source={
+                    !oldPasswordVisible
+                      ? require('../assets/dengluye-mimazhanshi.png')
+                      : require('../assets/dengluye-mimapingbi.png')
+                  }
+                />
+              </TouchableOpacity>
+            }
           />
         </View>
         <View style={styles.divideLine} />
         <View style={styles.blockRowInput}>
           <Text style={styles.textTitleNew}>新密码</Text>
-          <TextInput
+          <PasswordInput
             textContentType="password"
-            secureTextEntry={true}
+            secureTextEntry={!newPasswordVisible}
             multiline={false}
             numberOfLines={1}
             underlineColorAndroid="transparent"
@@ -90,14 +118,28 @@ export default function EditPasswordScreen() {
             placeholder="请输入新密码"
             defaultValue={newPassword}
             onChangeText={(text) => setNewPassword(text)}
+            rightIcon={
+              <TouchableOpacity
+                onPress={() => setNewPasswordVisible(!newPasswordVisible)}>
+                <Image
+                  resizeMode="contain"
+                  style={styles.eyeOpen}
+                  source={
+                    !newPasswordVisible
+                      ? require('../assets/dengluye-mimazhanshi.png')
+                      : require('../assets/dengluye-mimapingbi.png')
+                  }
+                />
+              </TouchableOpacity>
+            }
           />
         </View>
         <View style={styles.divideLine} />
         <View style={styles.blockRowInput}>
           <Text style={styles.textTitleNew}>确认密码</Text>
-          <TextInput
+          <PasswordInput
             textContentType="password"
-            secureTextEntry={true}
+            secureTextEntry={!confirmPasswordVisible}
             multiline={false}
             numberOfLines={1}
             underlineColorAndroid="transparent"
@@ -106,6 +148,22 @@ export default function EditPasswordScreen() {
             placeholder="请输入新密码"
             defaultValue={confirmPasword}
             onChangeText={(text) => setConfirmPassword(text)}
+            rightIcon={
+              <TouchableOpacity
+                onPress={() =>
+                  setConfirmPasswordVisible(!confirmPasswordVisible)
+                }>
+                <Image
+                  resizeMode="contain"
+                  style={styles.eyeOpen}
+                  source={
+                    !confirmPasswordVisible
+                      ? require('../assets/dengluye-mimazhanshi.png')
+                      : require('../assets/dengluye-mimapingbi.png')
+                  }
+                />
+              </TouchableOpacity>
+            }
           />
         </View>
 
@@ -171,10 +229,9 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     fontSize: setSpText2(32),
-    // backgroundColor: 'black',
-    paddingHorizontal: 0,
-    marginStart: scaleSize(30),
     flex: 1,
+    paddingVertical: 0,
+    marginVertical: 0,
   },
   remark: {
     fontSize: setSpText2(28),
@@ -182,5 +239,9 @@ const styles = StyleSheet.create({
     marginTop: scaleHeight(24),
     paddingBottom: scaleHeight(32),
     marginHorizontal: paddingScreen,
+  },
+  eyeOpen: {
+    width: scaleSize(32),
+    height: scaleHeight(20),
   },
 });
