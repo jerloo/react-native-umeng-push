@@ -22,7 +22,7 @@ import {
   PdaReadingRecord,
 } from '../../apiclient/src/models';
 import center from '../data';
-import { Toast } from '@ant-design/react-native';
+import { Modal, Toast } from '@ant-design/react-native';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import { Tabs } from '@ant-design/react-native';
 import dayjs from 'dayjs';
@@ -87,11 +87,64 @@ export default function CustDetailsScreen() {
       };
       await center.updateCustInfo(input);
       setDetails({ ...details, custInfo: info });
+      Toast.success('修改成功');
     } catch (e) {
       Toast.fail(e.message);
     } finally {
       Toast.remove(key);
     }
+  };
+
+  const showInstallLocationInput = async () => {
+    Modal.prompt(
+      '安装位置',
+      '',
+      (text) => {
+        const info = { ...details?.custInfo };
+        if (info) {
+          info.installLocation = text;
+          updateBasicInfo(details?.custId, info);
+        }
+      },
+      'default',
+      details?.custInfo?.installLocation,
+    );
+  };
+
+  const showMobileInput = async () => {
+    Modal.prompt(
+      '联系方式',
+      '',
+      (text) => {
+        if (!/^1[0-9]{10}$/.test(text)) {
+          Toast.fail('请输入正确的手机号');
+          return;
+        }
+        const info = { ...details?.custInfo };
+        if (info) {
+          info.mobile = text;
+          updateBasicInfo(details?.custId, info);
+        }
+      },
+      'default',
+      details?.custInfo?.mobile,
+    );
+  };
+
+  const showSteelInput = async () => {
+    Modal.prompt(
+      '表钢印号',
+      '',
+      (text) => {
+        const info = { ...details?.custInfo };
+        if (info) {
+          info.steelMark = text;
+          updateBasicInfo(details?.custId, info);
+        }
+      },
+      'default',
+      details?.custInfo?.steelMark,
+    );
   };
 
   const renderBasicInfo = () => {
@@ -136,17 +189,19 @@ export default function CustDetailsScreen() {
               padding: 0,
               flex: 1,
             }}
+            showSoftInputOnFocus={false}
+            onFocus={showMobileInput}
             returnKeyType="done"
             fontColor="#999999"
             fontSize={scaleSize(28)}
             defaultValue={details?.custInfo?.mobile}
-            onEndEditing={(e) => {
-              const info = { ...details?.custInfo };
-              if (info) {
-                info.mobile = e.nativeEvent.text;
-                updateBasicInfo(details?.custId, info);
-              }
-            }}
+            // onEndEditing={(e) => {
+            //   const info = { ...details?.custInfo };
+            //   if (info) {
+            //     info.mobile = e.nativeEvent.text;
+            //     updateBasicInfo(details?.custId, info);
+            //   }
+            // }}
           />
         </View>
         {line()}
@@ -191,13 +246,14 @@ export default function CustDetailsScreen() {
             fontSize={scaleSize(28)}
             defaultValue={details?.custInfo?.installLocation}
             returnKeyType="done"
-            onEndEditing={(e) => {
-              const info = { ...details?.custInfo };
-              if (info) {
-                info.installLocation = e.nativeEvent.text;
-                updateBasicInfo(details?.custId, info);
-              }
-            }}
+            onFocus={showInstallLocationInput}
+            // onEndEditing={(e) => {
+            //   const info = { ...details?.custInfo };
+            //   if (info) {
+            //     info.installLocation = e.nativeEvent.text;
+            //     updateBasicInfo(details?.custId, info);
+            //   }
+            // }}
           />
         </View>
         {line()}
@@ -210,17 +266,18 @@ export default function CustDetailsScreen() {
               padding: 0,
               flex: 1,
             }}
+            onFocus={showSteelInput}
             fontColor="#999999"
             fontSize={scaleSize(28)}
             defaultValue={details?.custInfo?.steelMark}
             returnKeyType="done"
-            onEndEditing={(e) => {
-              const info = { ...details?.custInfo };
-              if (info) {
-                info.steelMark = e.nativeEvent.text;
-                updateBasicInfo(details?.custId, info);
-              }
-            }}
+            // onEndEditing={(e) => {
+            //   const info = { ...details?.custInfo };
+            //   if (info) {
+            //     info.steelMark = e.nativeEvent.text;
+            //     updateBasicInfo(details?.custId, info);
+            //   }
+            // }}
           />
         </View>
         {line()}
