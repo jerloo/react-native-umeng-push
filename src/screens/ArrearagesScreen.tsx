@@ -61,6 +61,7 @@ export default function ArrearagesScreen() {
   const [currentBook, setCurrentBook] = useState<PdaMeterBookDto>();
 
   const [settingsModalVisible, setSettingsModalVisible] = useState(false);
+  const fRef = React.useRef<FlatList>();
 
   const fetchPdaUsers = async () => {
     try {
@@ -181,6 +182,28 @@ export default function ArrearagesScreen() {
   };
 
   const saveSnapshot = async () => {};
+
+  const getItemLayout = (data, index) => ({
+    length: scaleSize(439 + 18),
+    offset: scaleSize(439 + 18) * index,
+    index,
+  });
+
+  const findIndex = (data: PdaArrearageDto[], text: string) => {
+    return data.findIndex(
+      (it) =>
+        (it.custName || '').indexOf(text) > -1 ||
+        (it.custCode?.toString() || '').indexOf(text) > -1 ||
+        (it.custAddress || '').indexOf(text) > -1,
+    );
+  };
+
+  const onSearch = (text: string) => {
+    const index = findIndex(items, text);
+    if (index > -1) {
+      fRef.current?.scrollToIndex({ animated: true, index });
+    }
+  };
 
   const renderSettingsModal = () => {
     return (
@@ -334,11 +357,13 @@ export default function ArrearagesScreen() {
           <SearchBox
             style={styles.searchContainer}
             placeholderTextColor={colorWhite}
+            onSearch={onSearch}
           />
         </SafeAreaView>
       </LinearGradient>
 
       <FlatList<PdaArrearageDto>
+        ref={fRef}
         style={styles.items}
         initialNumToRender={10}
         data={items}
@@ -355,6 +380,7 @@ export default function ArrearagesScreen() {
         }}
         onRefresh={refresh}
         onEndReached={nextPage}
+        getItemLayout={getItemLayout}
       />
 
       {renderSettingsModal()}
