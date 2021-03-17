@@ -46,7 +46,7 @@ import { calcReadWater, judgeReadWater } from '../utils/readWaterUtils';
 import { Modal as AntModal } from '@ant-design/react-native';
 import { meterState, recordState } from '../utils/stateConverter';
 import Video from 'react-native-video';
-import PureInput from '../components/PureInput';
+import { AttachmentDbItem } from '../data/models';
 
 let scaleHeight = defaultScaleHeight;
 scaleHeight = scaleSize;
@@ -67,6 +67,7 @@ export default function NewReadScreen() {
   const [amount, setAmount] = useState(0);
   const [canCharge, setCanCharge] = useState(false);
   const [keyboardVisible, setKeyBoardVisible] = useState(true);
+  const [attachments, setAttachments] = useState<AttachmentDbItem[]>([]);
 
   const keyboardWillShow = (_event: any) => {
     // Animated.timing(this.imageHeight, {
@@ -106,13 +107,10 @@ export default function NewReadScreen() {
   }, []);
 
   React.useEffect(() => {
-    try {
-      data.terminalFiles =
-        (JSON.parse(data.terminalFiles as string) as MobileFileDto[]) || [];
-      setNewData(data);
-    } catch (e) {}
-
-    console.log('列表传过来', data);
+    db.getAttachments(data.custId, data.readTimes, data.billMonth).then((r) => {
+      console.log('获取附件', r);
+      setAttachments(r);
+    });
   }, [data]);
 
   React.useEffect(() => {
@@ -207,25 +205,32 @@ export default function NewReadScreen() {
 
   const openLighting = () => {};
 
-  const addNewAttachment = (result: MobileFileDto) => {
-    console.log(result);
-    if (!newData.terminalFiles) {
-      newData.terminalFiles = [result];
-    } else if (newData.terminalFiles instanceof Array) {
-      newData.terminalFiles.push(result);
+  const addNewAttachment = async (result: AttachmentDbItem) => {
+    result.bookId = newData.bookId;
+    result.custId = newData.custId;
+    result.readTimes = newData.readTimes;
+    result.billMonth = newData.billMonth;
+    await db.saveAttachments([result]);
+    if (!attachments) {
+      setAttachments([result]);
+    } else if (attachments instanceof Array) {
+      setAttachments([...attachments, result]);
     }
   };
 
-  const onPhotoClick = (item: MobileFileDto) => {
+  const onPhotoClick = (item: AttachmentDbItem) => {
     setCurrentPreviewFile(item);
     setPreviewModalVisible(true);
   };
 
-  const onPhotoDeleteClick = (item: MobileFileDto) => {
-    newData.terminalFiles = (newData.terminalFiles as MobileFileDto[]).filter(
-      (it) => it.filePath !== item.filePath,
+  const onPhotoDeleteClick = async (item: AttachmentDbItem) => {
+    await db.deleteAttachments(
+      newData.custId,
+      newData.readTimes,
+      newData.billMonth,
     );
-    setNewData({ ...newData });
+    const newAtts = attachments.filter((it) => it.filePath !== item.filePath);
+    setAttachments(newAtts);
     setAttachmentsModalVisible(false);
   };
 
@@ -404,7 +409,7 @@ export default function NewReadScreen() {
                 callback: addNewAttachment,
               });
             }}
-            files={newData.terminalFiles}
+            files={attachments}
           />
         </View>
       </Modal>

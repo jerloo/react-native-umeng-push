@@ -9,13 +9,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
-import { MobileFileDto } from '../../apiclient/src/models';
+import { AttachmentDbItem } from '../data/models';
 
 interface Props {
-  files: MobileFileDto[];
+  files: AttachmentDbItem[];
   onTakePhoto: () => void;
-  onPhotoClick: (item: MobileFileDto) => void;
-  onPhotoDeleteClick: (item: MobileFileDto) => void;
+  onPhotoClick: (item: AttachmentDbItem) => void;
+  onPhotoDeleteClick: (item: AttachmentDbItem) => void;
 }
 
 export default function Attachments({
@@ -25,8 +25,8 @@ export default function Attachments({
   onPhotoDeleteClick,
 }: Props) {
   const renderPhotoItem = (
-    info: ListRenderItemInfo<MobileFileDto>,
-    items: MobileFileDto[],
+    info: ListRenderItemInfo<AttachmentDbItem>,
+    items: AttachmentDbItem[],
   ) => {
     return (
       <>
@@ -62,8 +62,8 @@ export default function Attachments({
   };
 
   const renderVideoItem = (
-    info: ListRenderItemInfo<MobileFileDto>,
-    items: MobileFileDto[],
+    info: ListRenderItemInfo<AttachmentDbItem>,
+    items: AttachmentDbItem[],
   ) => {
     return (
       <>
@@ -103,12 +103,14 @@ export default function Attachments({
       (it) => !(it.filePath || ('' as string)).endsWith('.mp4'),
     );
     return (
-      <FlatList<MobileFileDto>
+      <FlatList<AttachmentDbItem>
         style={styles.items}
         data={[...items, { fileName: 'ADD' }]}
         numColumns={3}
         renderItem={(item) => renderPhotoItem(item, items)}
-        keyExtractor={(item) => item.filePath}
+        keyExtractor={(item) =>
+          item.filePath || `${item.custId}${item.readTimes}${item.billMonth}`
+        }
       />
     );
   };
@@ -118,12 +120,14 @@ export default function Attachments({
       (it.filePath || ('' as string)).endsWith('.mp4'),
     );
     return (
-      <FlatList<MobileFileDto>
+      <FlatList<AttachmentDbItem>
         style={styles.items}
         data={[...items, { fileName: 'ADD' }]}
         numColumns={3}
         renderItem={(item) => renderVideoItem(item, items)}
-        keyExtractor={(item) => item.filePath}
+        keyExtractor={(item) =>
+          item.filePath || `${item.custId}${item.readTimes}${item.billMonth}`
+        }
       />
     );
   };

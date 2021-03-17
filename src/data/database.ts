@@ -8,8 +8,9 @@ import {
   PdaPayRecordHolder,
   PdaReadingRecordHolder,
 } from './holders';
+import { AttachmentDbItem, BookAttachmentsTotal } from './models';
 
-// SQLite.DEBUG(true);
+SQLite.DEBUG(true);
 SQLite.enablePromise(true);
 
 const database_name = 'mobile-read-app.db';
@@ -193,7 +194,8 @@ class DataBase {
       deposit INTEGER
     )`);
 
-    tx.executeSql(`CREATE TABLE IF NOT EXISTS Attaments (
+    tx.executeSql(`CREATE TABLE IF NOT EXISTS Attachments (
+      bookId INTEGER,
       custId INTEGER,
       readTimes INTEGER,
       billMonth INTEGER,
@@ -390,6 +392,81 @@ class DataBase {
           )
             .then(() => {
               console.log(`保存缴费信息[${holders.length}]条`);
+            })
+            .catch((err) => {
+              this.errorCB(err);
+            });
+        });
+      })
+      .catch((err) => {
+        this.errorCB(err);
+      });
+  };
+
+  getAttachments = async (
+    custId: number,
+    readTimes: number,
+    billMonth: number,
+  ) => {
+    const result = await this.db?.executeSql(
+      'SELECT * FROM Attachments WHERE custId = ? AND readTimes = ? AND billMonth = ?',
+      [custId, readTimes, billMonth],
+    );
+    return result?.[0].rows.raw() as AttachmentDbItem[];
+  };
+
+  getAttachmentsTotalByBookId = async (bookId: number) => {
+    const result = await this.db?.executeSql(
+      'SELECT count(1) as total, count(uploaded) as uploaded FROM Attachments WHERE bookId = ?',
+      [bookId],
+    );
+    return result?.[0].rows.raw()[0] as BookAttachmentsTotal;
+  };
+
+  getReadWaterTotalByBookId = async (bookId: number) => {
+    const result = await this.db?.executeSql(
+      'SELECT SUM(readWater) as readWater FROM BookDatas WHERE bookId = ?',
+      [bookId],
+    );
+    return result?.[0].rows.raw()[0].readWater as number;
+  };
+
+  deleteAttachments = async (
+    custId: number,
+    readTimes: number,
+    billMonth: number,
+  ) => {
+    await this.db?.executeSql(
+      'DELETE FROM Attachments WHERE custId = ? AND readTimes = ? AND billMonth = ?',
+      [custId, readTimes, billMonth],
+    );
+  };
+
+  saveAttachments = (holders: AttachmentDbItem[]) => {
+    this.db
+      ?.transaction((tx) => {
+        holders.forEach((item) => {
+          tx.executeSql(
+            `INSERT INTO Attachments ('bookId','custId','readTimes',
+                'billMonth','uploaded', 'url', 'fileName', 'filePath', 'fileSize',
+                'fileSource', 'isRemove') 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+              item.bookId,
+              item.custId,
+              item.readTimes,
+              item.billMonth,
+              item.uploaded,
+              item.url,
+              item.fileName,
+              item.filePath,
+              item.fileSize,
+              item.fileSource,
+              item.isRemove,
+            ],
+          )
+            .then(() => {
+              console.log(`保存附件[${holders.length}]条`);
             })
             .catch((err) => {
               this.errorCB(err);

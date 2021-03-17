@@ -21,7 +21,7 @@ import CircleCheckBox from '../components/CircleCheckBox';
 import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
 import SwipeButton from '../components/SwipeButton';
 import db from '../data/database';
-import { NumbersType } from '../data/models';
+import { BookAttachmentsTotal, NumbersType } from '../data/models';
 import { getBillMonth } from '../utils/billMonthUtils';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
@@ -40,6 +40,11 @@ export default function BooksScreen() {
   const [currentBillMonth, setCurrentBillMonth] = useState<number>();
   const [currentBook, setCurrentBook] = useState<PdaMeterBookDtoHolder>();
   const [modalVisible, setModalVisible] = useState(false);
+  const [
+    bookAttachTotal,
+    setBookAttachTotal,
+  ] = useState<BookAttachmentsTotal>();
+  const [readWater, setReadWater] = useState(0);
 
   useEffect(() => {
     db.getBookTotalData().then((result) => {
@@ -203,6 +208,8 @@ export default function BooksScreen() {
       rowMap[rowKey].closeRow();
     }
     setModalVisible(true);
+    db.getAttachmentsTotalByBookId(rowKey).then((r) => setBookAttachTotal(r));
+    db.getReadWaterTotalByBookId(rowKey).then((r) => setReadWater(r));
   };
 
   const deleteItem = async (
@@ -227,6 +234,15 @@ export default function BooksScreen() {
         style={{ justifyContent: 'center', alignItems: 'center' }}
         onChange={setModalVisible}>
         <View style={styles.modalContainer}>
+          <TouchableOpacity
+            style={styles.modalClose}
+            onPress={() => setModalVisible(false)}>
+            <Image
+              style={styles.modalCloseImage}
+              source={require('../assets/qietu/chaobiaoluru/enter_icon_idelete2_normal.png')}
+            />
+          </TouchableOpacity>
+
           <Text style={styles.modalTitle}>册本数据统计</Text>
           <View style={styles.modalLineMain} />
           <View style={styles.modalLineSub} />
@@ -242,10 +258,13 @@ export default function BooksScreen() {
               </Text>
             </View>
           </View>
+          <View style={{ height: scaleSize(24) }} />
           <View style={styles.modalRow}>
             <View style={styles.modalCol}>
               <Text style={styles.modalLabel}>已上传：</Text>
-              <Text style={styles.modalValue}>{currentBook?.totalNumber}</Text>
+              <Text style={styles.modalValue}>
+                {currentBook?.uploadedNumber || 0}
+              </Text>
             </View>
             <View style={styles.modalCol} />
           </View>
@@ -253,12 +272,14 @@ export default function BooksScreen() {
           <View style={styles.modalRow}>
             <View style={styles.modalCol}>
               <Text style={styles.modalLabel}>附件：</Text>
-              <Text style={styles.modalValue}>{currentBook?.totalNumber}</Text>
+              <Text style={styles.modalValue}>
+                {bookAttachTotal?.total || 0}
+              </Text>
             </View>
             <View style={styles.modalCol}>
               <Text style={styles.modalLabel}>上传附件：</Text>
               <Text style={styles.modalValue}>
-                {currentBook?.readingNumber}
+                {bookAttachTotal?.uploaded || 0}
               </Text>
             </View>
           </View>
@@ -266,9 +287,7 @@ export default function BooksScreen() {
           <View style={styles.modalRow}>
             <View style={styles.modalCol}>
               <Text style={styles.modalLabel}>抄见水量：</Text>
-              <Text style={styles.modalValue}>
-                {currentBook?.readingNumber}
-              </Text>
+              <Text style={styles.modalValue}>{readWater}</Text>
             </View>
             <View style={styles.modalCol} />
           </View>
@@ -516,6 +535,18 @@ const styles = StyleSheet.create({
     borderRadius: scaleSize(8),
     width: scaleSize(580),
     height: scaleSize(532),
+    overflow: 'hidden',
+  },
+  modalClose: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    paddingStart: scaleSize(15),
+    paddingBottom: scaleSize(15),
+  },
+  modalCloseImage: {
+    width: scaleSize(50),
+    height: scaleSize(50),
   },
   modalTitle: {
     fontSize: scaleSize(34),
