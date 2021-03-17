@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
+    // height: scaleSize(104),
   },
   mainContainer: {
     flex: 1,
@@ -77,12 +78,14 @@ const styles = StyleSheet.create({
     backgroundColor: colorWhite,
   },
   sortIndex: {
-    backgroundColor: '#E7F2FF',
-    width: scaleSize(150),
-    height: scaleSize(160),
+    // backgroundColor: '#E7F2FF',
+    width: scaleSize(87),
+    height: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    borderEndColor: '#B3D5FC',
+    borderEndWidth: scaleSize(3),
   },
   sortIndexText: {
     color: '#669FEE',

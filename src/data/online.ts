@@ -25,8 +25,24 @@ import { api } from '../utils/apiUtils';
 import AsyncStorage from '@react-native-community/async-storage';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
 import DeviceInfo from 'react-native-device-info';
+import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto';
 
 export default class OnlineApiService implements ApiService {
+  async updateBookSort(input: BookSortIndexDto[]): Promise<void> {
+    try {
+      const result = await api.mobileReadingApi.apiAppMobileReadingUpdateBookSortIndexPost(
+        input,
+      );
+      if (result.status < 400) {
+        return result.data;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
   async uploadReadingData(input: UploadReadingDataDto): Promise<void> {
     try {
       const result = await api.mobileReadingApi.apiAppMobileReadingUploadReadingDatePost(

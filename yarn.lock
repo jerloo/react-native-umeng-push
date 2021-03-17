@@ -6359,6 +6359,11 @@ react-native-device-info@^8.0.1:
   resolved "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-8.0.1.tgz#23a038ab39a9fe3ea8963feb366361ee7c03a2a1"
   integrity sha512-5fIcrEfxsyIJ0HZ/pHd+DeYwC81wi5tupFkPSASYXz/7QhatF8W0W6qR+YlvI6gJVSFNgQKgrPrh18RGMgbZdg==
 
+react-native-draggable-flatlist@^2.5.4:
+  version "2.5.4"
+  resolved "https://registry.npmjs.org/react-native-draggable-flatlist/-/react-native-draggable-flatlist-2.5.4.tgz#31ef421e05a7273495995d11852f5892634ad860"
+  integrity sha512-ylnJFB16hTy6G4Z0b7OWJrmgVh5dvm1YvZ7jGBYtOW1tjgC//QhhRO9YhoNKFzPB32UsFsweU6RNGZTASnw0yQ==
+
 react-native-elements@^3.1.0:
   version "3.1.0"
   resolved "https://registry.npm.taobao.org/react-native-elements/download/react-native-elements-3.1.0.tgz#ff2d6fd0ed91b1ebdd15598c4da1fcb2d5780c5f"
@@ -6523,6 +6528,11 @@ react-native-swipe-list-view@^3.2.6:
   version "3.2.6"
   resolved "https://registry.npmjs.org/react-native-swipe-list-view/-/react-native-swipe-list-view-3.2.6.tgz#dde8f65dcdc24f50fafc05da9e90b139b1c3b185"
   integrity sha512-FIrLzYjdxpMmD1hinP6bLSVS2eR2bhFdFuaqOJ+6/EuWDqZMBQcL4FLbkIwulMOc39JGdGZAxGExJYs7VKiQeQ==
+
+react-native-swipeable-item@^1.5.4:
+  version "1.5.4"
+  resolved "https://registry.npmjs.org/react-native-swipeable-item/-/react-native-swipeable-item-1.5.4.tgz#e003c75195689e177b7b01c7ec2381d2cc065e4f"
+  integrity sha512-Ef782l8pQgVotw9ZoOMY8fnCEiQSoiIBhwRQpNkI9DEYJ7Rpv4JglxnurzAq0AcaJqMxnygHChcKmD3Sz2K7PA==
 
 react-native-swipeout@^2.3.6:
   version "2.3.6"

@@ -18,6 +18,7 @@ import {
   SysSettingDto,
   UploadReadingDataDto,
 } from '../../apiclient/src/models';
+import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
 import { getBillMonth } from '../utils/billMonthUtils';
 import { getSession } from '../utils/sesstionUtils';
@@ -26,6 +27,10 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
+  async updateBookSort(_input: BookSortIndexDto[]): Promise<void> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
   async uploadReadingData(_input: UploadReadingDataDto): Promise<void> {
     throw new Error(NO_NETWORK_ERROR);
   }

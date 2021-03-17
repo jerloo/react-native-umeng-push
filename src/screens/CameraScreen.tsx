@@ -15,7 +15,7 @@ export default function CameraScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'Camera'>>();
   const navigation = useNavigation();
 
-  const camera = React.useRef<RNCamera>();
+  const camera = React.useRef<RNCamera>(null);
   const [timing, setTiming] = React.useState(0);
 
   const takePicture = async () => {
@@ -86,7 +86,7 @@ export default function CameraScreen() {
           onPressOut={() => {
             camera?.current?.stopRecording();
             setTiming(0);
-            clearInterval(timer);
+            timer && clearInterval(timer);
             console.log('停止录像');
           }}>
           <AnimatedCircularProgress

@@ -45,7 +45,7 @@ export default function PaymentSubtotalScreen() {
     beginDate: defaultBillMonth,
     endDate: defaultBillMonth,
   });
-  const fRef = React.useRef<FlatList>();
+  const fRef = React.useRef<FlatList>(null);
 
   useEffect(() => {
     getSession().then((it) => setSession(it || undefined));
@@ -108,7 +108,10 @@ export default function PaymentSubtotalScreen() {
     setParams({ ...params, endDate: value });
   };
 
-  const getItemLayout = (data, index) => ({
+  const getItemLayout = (
+    d: PdaArrearageDto[] | null | undefined,
+    index: number,
+  ) => ({
     length: scaleSize(439 + 18),
     offset: scaleSize(439 + 18) * index,
     index,
@@ -260,6 +263,7 @@ export default function PaymentSubtotalScreen() {
         }}
         onRefresh={refresh}
         onEndReached={nextPage}
+        getItemLayout={getItemLayout}
       />
     </View>
   );

@@ -57,7 +57,7 @@ scaleHeight = scaleSize;
 export default function NewReadScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'NewRead'>>();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
-  const player = React.useRef<Video>();
+  const player = React.useRef<Video>(null);
 
   const { data } = route.params;
 

@@ -24,12 +24,7 @@ import center from '../data';
 import { Toast, Modal as AntModal, DatePicker } from '@ant-design/react-native';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import SearchBox from '../components/SearchBox';
-import {
-  NavigationProp,
-  RouteProp,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/core';
+import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
 import ArrearageItem from '../components/ArrearageItem';
 import dayjs from 'dayjs';
@@ -38,7 +33,6 @@ import Modal from 'react-native-smart-modal';
 const PAGE_SIZE = 30;
 
 export default function ArrearagesScreen() {
-  const route = useRoute<RouteProp<MainStackParamList, 'BookTask'>>();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const defaultBillMonth = parseInt(dayjs().format('YYYYMM'), 10);
@@ -61,7 +55,7 @@ export default function ArrearagesScreen() {
   const [currentBook, setCurrentBook] = useState<PdaMeterBookDto>();
 
   const [settingsModalVisible, setSettingsModalVisible] = useState(false);
-  const fRef = React.useRef<FlatList>();
+  const fRef = React.useRef<FlatList>(null);
 
   const fetchPdaUsers = async () => {
     try {
@@ -183,7 +177,10 @@ export default function ArrearagesScreen() {
 
   const saveSnapshot = async () => {};
 
-  const getItemLayout = (data, index) => ({
+  const getItemLayout = (
+    data: PdaArrearageDto[] | null | undefined,
+    index: number,
+  ) => ({
     length: scaleSize(439 + 18),
     offset: scaleSize(439 + 18) * index,
     index,

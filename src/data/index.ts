@@ -25,6 +25,7 @@ import ApiService from './apiService';
 import OfflineApiService from './offline';
 import OnlineApiService from './online';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
+import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto';
 
 class CenterService implements ApiService {
   offline: OfflineApiService;
@@ -33,6 +34,14 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+
+  async updateBookSort(input: BookSortIndexDto[]): Promise<void> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isInternetReachable === true) {
+      return this.online.updateBookSort(input);
+    }
+    return this.offline.updateBookSort(input);
   }
 
   async uploadReadingData(input: UploadReadingDataDto): Promise<void> {

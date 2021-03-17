@@ -141,7 +141,8 @@ class DataBase {
         lowCoefficient INTEGER,
         highWater INTEGER,
         lowWater INTEGER,
-        dataState INTEGER
+        dataState INTEGER,
+        uploaded boolean
       ); `,
     ).catch((error) => {
       this.errorCB(error);
@@ -501,6 +502,16 @@ class DataBase {
     return (result?.[0].rows.raw() as PdaReadDataDto[]) || [];
   };
 
+  getToUploadBookDataByBookIds = async (ids: number[]) => {
+    const result = await this.db?.executeSql(
+      `SELECT * FROM BookDatas WHERE bookId in (${ids.join(
+        ',',
+      )}) AND recordState = 1 AND uploaded = 1 ORDER BY bookSortIndex ASC`,
+      [],
+    );
+    return (result?.[0].rows.raw() as PdaReadDataDto[]) || [];
+  };
+
   getBookDataDetails = async (
     custId: number,
     billMonth: number,
@@ -527,7 +538,16 @@ class DataBase {
     await this.db?.transaction((tx) => {
       items.forEach((item) => {
         tx.executeSql(
-          'INSERT INTO BookDatas VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+          `INSERT INTO BookDatas VALUES(
+            ?,?,?,?,?,
+            ?,?,?,?,?,
+            ?,?,?,?,?,
+            ?,?,?,?,?,
+            ?,?,?,?,?,
+            ?,?,?,?,?,
+            ?,?,?,?,?,
+            ?,?,?,?,?,
+            ?,?,?)`,
           [
             item.billMonth,
             item.custId,
@@ -571,6 +591,7 @@ class DataBase {
             item.highWater,
             item.lowWater,
             item.dataState,
+            false,
           ],
         ).catch((e) => {
           console.log('插入下载测本数据失败', e);
@@ -585,7 +606,7 @@ class DataBase {
         console.log('保存报表录入', item);
         tx.executeSql(
           `UPDATE BookDatas SET terminalFiles = ?, reading = ?, readWater = ?, 
-                readDate = ?, readStateId = ?, readRemark = ?, recordState = ?
+                readDate = ?, readStateId = ?, readRemark = ?, recordState = ?, uploaded = false
             WHERE billMonth = ? AND custId = ? AND readTimes = ?`,
           [
             JSON.stringify(item.terminalFiles),
@@ -634,7 +655,7 @@ class DataBase {
 
   markBookUploaded = async (ids: number[]) => {
     return this.db?.executeSql(
-      `UPDATE Books SET uploaded = ? WHERE bookId in (${ids.join(',')})`,
+      `UPDATE BookDatas SET uploaded = ? WHERE bookId in (${ids.join(',')})`,
       [true],
     );
   };

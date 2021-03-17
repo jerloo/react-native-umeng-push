@@ -36,11 +36,11 @@ export default function BookTaskScreen() {
     [],
   );
   const [loading, setLoading] = useState(false);
-  const tabRef = React.useRef<Tabs>();
+  const tabRef = React.useRef<Tabs>(null);
   const [tabIndex, setTabIndex] = useState(0);
-  const f1Ref = React.useRef<FlatList>();
-  const f2Ref = React.useRef<FlatList>();
-  const f3Ref = React.useRef<FlatList>();
+  const f1Ref = React.useRef<FlatList<PdaReadDataDtoHolder>>(null);
+  const f2Ref = React.useRef<FlatList<PdaReadDataDtoHolder>>(null);
+  const f3Ref = React.useRef<FlatList<PdaReadDataDtoHolder>>(null);
 
   useEffect(() => {
     const fetchLocal = async () => {
@@ -110,7 +110,10 @@ export default function BookTaskScreen() {
     }
   };
 
-  const getItemLayout = (data, index) => ({
+  const getItemLayout = (
+    data: PdaReadDataDtoHolder[] | null | undefined,
+    index: number,
+  ) => ({
     length: scaleSize(240 + 18),
     offset: scaleSize(240 + 18) * index,
     index,
@@ -219,6 +222,7 @@ export default function BookTaskScreen() {
 
       <Tabs
         ref={tabRef}
+        prerenderingSiblingsNumber={2}
         tabs={[
           {
             title: `未抄(${

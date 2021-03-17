@@ -18,6 +18,7 @@ import {
   SysSettingDto,
   UploadReadingDataDto,
 } from '../../apiclient/src/models';
+import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
 import { PdaMeterBookDtoHolder } from './holders';
 
@@ -61,7 +62,8 @@ export default interface ApiService {
   ): Promise<PdaPaySubtotalsDto>;
   updateCustInfo(input: CustInfoModifyInputDto): Promise<void>;
   uploadReadingData(input: UploadReadingDataDto): Promise<void>;
-}
+  updateBookSort(input: BookSortIndexDto[]): Promise<void>;
+};
 
 export const NETWORK_ERROR = '网络错误，请稍后再试';
 export const SERVER_ERROR = '服务器错误，请稍后再试';

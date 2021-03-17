@@ -3,7 +3,7 @@ import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 
 interface Props {
-  address: string;
+  address?: string;
 }
 
 export default function LocationButton(props: Props) {

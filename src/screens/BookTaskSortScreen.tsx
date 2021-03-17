@@ -4,23 +4,32 @@ import {
   View,
   StyleSheet,
   StatusBar,
-  ListRenderItemInfo,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
-import { scaleSize, setSpText2 } from 'react-native-responsive-design';
+import { scaleSize } from 'react-native-responsive-design';
 import BooksBackTitleBar from '../components/titlebars/BooksBackTitleBar';
 import { PdaReadDataDto } from '../../apiclient/src/models';
 import center from '../data';
-import { Toast } from '@ant-design/react-native';
+import { Modal, Toast } from '@ant-design/react-native';
 import BookSortItem from '../components/BookSortItem';
-import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
+import DraggableFlatList from 'react-native-draggable-flatlist';
+import { RenderItemParams } from 'react-native-draggable-flatlist';
+import SwipeableItem, { UnderlayParams } from 'react-native-swipeable-item';
+
 import { PdaReadDataDtoHolder } from '../data/holders';
 import SwipeButton from '../components/SwipeButton';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import {
+  RouteProp,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
+import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto';
 
 export default function BookTaskSortScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'BookTaskSort'>>();
@@ -29,6 +38,7 @@ export default function BookTaskSortScreen() {
   const [BookSortItems, setBookSortItems] = useState<PdaReadDataDtoHolder[]>(
     [],
   );
+  const itemRefs = new Map<number, SwipeableItem<PdaReadDataDtoHolder>>();
 
   useEffect(() => {
     const { bookId, title } = route.params;
@@ -53,34 +63,68 @@ export default function BookTaskSortScreen() {
     fetchLocal();
   }, [route.params]);
 
-  const renderBookItem = (info: ListRenderItemInfo<PdaReadDataDtoHolder>) => {
-    return (
-      <TouchableOpacity activeOpacity={1.0}>
-        <BookSortItem
-          showExtra={false}
-          item={info.item.item}
-          key={info.item.item.custId}
-        />
-      </TouchableOpacity>
-    );
+  const saveSort = async () => {
+    const key = Toast.loading('修改中');
+    try {
+      await center.updateBookSort(
+        BookSortItems.map((it) => {
+          const result: BookSortIndexDto = {
+            custId: it.item.custId,
+            bookSortIndex: it.item.bookSortIndex,
+          };
+          return result;
+        }),
+      );
+      Toast.success('修改成功');
+      navigation.goBack();
+    } catch (e) {
+      Toast.fail(e.message);
+    } finally {
+      Toast.remove(key);
+    }
   };
 
-  const onSearchButtonClick = () => {};
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        Modal.alert('是否保存册本序号？', '', [
+          {
+            text: '取消',
+            onPress: () => navigation.goBack(),
+          },
+          {
+            text: '保存',
+            onPress: async () => {
+              saveSort();
+            },
+          },
+        ]);
+        return true;
+      };
 
-  const closeRow = (rowMap: RowMap<PdaReadDataDtoHolder>, rowKey: number) => {
-    if (rowMap[rowKey]) {
-      rowMap[rowKey].closeRow();
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, []),
+  );
+
+  const closeRow = (item: PdaReadDataDtoHolder) => {
+    if (itemRefs && itemRefs.get(item.item.custId)) {
+      itemRefs.get(item.item.custId)?.close();
       console.log('关闭');
     }
   };
 
-  const topRow = (rowMap: RowMap<PdaReadDataDtoHolder>, rowKey: number) => {
-    closeRow(rowMap, rowKey);
+  const topRow = (item: PdaReadDataDtoHolder) => {
+    closeRow(item);
     let newData = [...BookSortItems];
-    const topItem = newData.find((it) => it.item.custId === rowKey);
+    const topItem = newData.find((it) => it.item.custId === item.item.custId);
     if (topItem) {
       topItem.item.bookSortIndex = 1;
-      const others = newData.filter((it) => it.item.custId !== rowKey);
+      const others = newData.filter(
+        (it) => it.item.custId !== item.item.custId,
+      );
       others.forEach((it, index) => {
         it.item.bookSortIndex = index + 2;
       });
@@ -88,6 +132,75 @@ export default function BookTaskSortScreen() {
       setBookSortItems(newData);
     }
   };
+
+  const renderUnderlayLeft = ({
+    item,
+  }: UnderlayParams<PdaReadDataDtoHolder>) => (
+    <View style={styles.rowHidden}>
+      <SwipeButton
+        style={styles.rowHiddenStatic}
+        title="置顶"
+        icon={require('../assets/qietu/cebenxiangqing/book_details_icon_top_normal.png')}
+        onClick={() => topRow(item)}
+      />
+      <SwipeButton
+        style={styles.rowHiddenDelete}
+        title="取消"
+        icon={require('../assets/qietu/cebenxiangqing/book_details_icon_cancel_normal.png')}
+        onClick={() => closeRow(item)}
+      />
+    </View>
+  );
+
+  const renderItem = ({
+    item,
+    drag,
+    isActive,
+  }: RenderItemParams<PdaReadDataDtoHolder>) => {
+    return (
+      <SwipeableItem
+        key={item.item.custId}
+        item={item}
+        ref={(ref) => {
+          if (ref && !itemRefs.get(item.item.custId)) {
+            itemRefs.set(item.item.custId, ref);
+          }
+        }}
+        onChange={({ open }) => {
+          if (open) {
+            // Close all other open items
+            [...itemRefs.entries()].forEach(([key, ref]) => {
+              if (key !== item.item.custId && ref) {
+                ref.close();
+              }
+            });
+          }
+        }}
+        overSwipe={20}
+        renderUnderlayLeft={renderUnderlayLeft}
+        // renderUnderlayRight={renderUnderlayRight}
+        snapPointsLeft={[150]}>
+        <View>
+          <TouchableOpacity
+            activeOpacity={isActive ? 0.2 : 1.0}
+            onLongPress={drag}
+            onPress={() => {
+              if (itemRefs && !itemRefs.get(item.item.custId)) {
+                itemRefs.get(item.item.custId)?.close();
+              }
+            }}>
+            <BookSortItem
+              showExtra={false}
+              item={item.item}
+              key={item.item.custId}
+            />
+          </TouchableOpacity>
+        </View>
+      </SwipeableItem>
+    );
+  };
+
+  const onSearchButtonClick = () => {};
 
   return (
     <View style={styles.container}>
@@ -111,10 +224,9 @@ export default function BookTaskSortScreen() {
         </SafeAreaView>
       </LinearGradient>
 
-      <SwipeListView<PdaReadDataDtoHolder>
-        style={styles.items}
+      <DraggableFlatList<PdaReadDataDtoHolder>
         data={BookSortItems}
-        renderItem={renderBookItem}
+        renderItem={renderItem}
         ItemSeparatorComponent={() => (
           <View style={{ height: scaleSize(18) }} />
         )}
@@ -122,26 +234,15 @@ export default function BookTaskSortScreen() {
         contentInset={{ bottom: 100 }}
         contentContainerStyle={{
           paddingBottom: scaleSize(30),
+          paddingTop: scaleSize(18),
         }}
-        renderHiddenItem={(data, rowMap) => (
-          <View style={styles.rowHidden}>
-            <SwipeButton
-              style={styles.rowHiddenStatic}
-              title="置顶"
-              icon={require('../assets/qietu/cebenxiangqing/book_details_icon_top_normal.png')}
-              onClick={() => topRow(rowMap, data.item.item.custId)}
-            />
-            <SwipeButton
-              style={styles.rowHiddenDelete}
-              title="取消"
-              icon={require('../assets/qietu/cebenxiangqing/book_details_icon_cancel_normal.png')}
-              onClick={() => closeRow(rowMap, data.item.item.bookId)}
-            />
-          </View>
-        )}
-        leftOpenValue={scaleSize(240)}
-        rightOpenValue={scaleSize(-240)}
-        disableRightSwipe={true}
+        onDragEnd={({ data }) => {
+          data.forEach((value, index) => {
+            value.item.bookSortIndex = index + 1;
+          });
+          setBookSortItems(data);
+        }}
+        activationDistance={20}
       />
     </View>
   );
@@ -156,71 +257,7 @@ const styles = StyleSheet.create({
   topContainer: {
     paddingBottom: scaleSize(30),
   },
-  topBox: {
-    backgroundColor: colorWhite,
-    borderRadius: scaleSize(4),
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginHorizontal: scaleSize(30),
-    paddingVertical: scaleSize(24),
-  },
-  topItem: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  topItemLabel: {
-    color: '#666666',
-    fontSize: setSpText2(34),
-  },
-  topItemValue: {
-    color: '#333333',
-    fontSize: setSpText2(44),
-    fontWeight: 'bold',
-  },
-  items: {
-    // backgroundColor: colorWhite,
-    // marginTop: scaleSize(100),
-    // marginTop: scaleSize(100),
-  },
-  item: {
-    // marginHorizontal: scaleSize(30),
-    marginTop: scaleSize(18),
-  },
-  bottomContainer: {
-    paddingHorizontal: scaleSize(30),
-    paddingVertical: scaleSize(21),
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: colorWhite,
-  },
-  bottomLabel: {
-    color: '#5598F4',
-    fontSize: scaleSize(28),
-    marginEnd: scaleSize(24),
-  },
-  btnDone: {
-    backgroundColor: '#096BF3',
-    paddingVertical: scaleSize(4),
-    paddingHorizontal: scaleSize(22),
-    borderRadius: scaleSize(6),
-  },
-  btnDoneText: {
-    fontSize: setSpText2(28),
-    color: colorWhite,
-  },
-  bottomRight: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
   rowHidden: {
-    // marginTop: scaleSize(18),
     display: 'flex',
     flex: 1,
     flexDirection: 'row',

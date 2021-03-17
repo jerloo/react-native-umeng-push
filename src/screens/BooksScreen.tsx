@@ -144,7 +144,7 @@ export default function BooksScreen() {
 
   const uploadReadingData = async () => {
     const ids = bookItems.filter((it) => it.downloaded).map((it) => it.bookId);
-    const readingDatas = await db.getBookDataByBookIds(ids);
+    const readingDatas = await db.getToUploadBookDataByBookIds(ids);
     const inputItems = readingDatas.map((it) => {
       const item: ReadingDataDto = {
         billMonth: it.billMonth,
@@ -344,6 +344,27 @@ export default function BooksScreen() {
     );
   };
 
+  const renderLoadingModal = () => {
+    return (
+      <Modal
+        visible={loading}
+        fullScreen
+        horizontalLayout="right"
+        animationIn="zoomIn"
+        animationOut="zoomOut"
+        style={{ justifyContent: 'center', alignItems: 'center' }}
+        onChange={setLoading}>
+        <View style={styles.loading}>
+          <Image
+            style={styles.loadingIcon}
+            source={require('../assets/qietu/chaobiaorenwu/meter_reading_task_picture_normal.png')}
+          />
+          <Text style={styles.loadingTitle}>数据下载中</Text>
+        </View>
+      </Modal>
+    );
+  };
+
   const renderBookItem = (info: ListRenderItemInfo<PdaMeterBookDtoHolder>) => {
     return (
       <TouchableOpacity
@@ -445,7 +466,12 @@ export default function BooksScreen() {
           title="全选"
           iconStyle={{ width: scaleSize(38), height: scaleSize(38) }}
           onClick={allBooksClick}
-          checked={!bookItems.find((item) => item.checked === false)}
+          checked={
+            bookItems.filter((it) => !it.downloaded).length > 0 &&
+            !bookItems
+              .filter((it) => !it.downloaded)
+              .find((item) => item.checked === false)
+          }
         />
         <View style={styles.bottomRight}>
           <Text style={styles.bottomLabel}>
@@ -458,15 +484,7 @@ export default function BooksScreen() {
         </View>
       </View>
 
-      {loading ? (
-        <View style={styles.loading}>
-          <Image
-            style={styles.loadingIcon}
-            source={require('../assets/qietu/chaobiaorenwu/meter_reading_task_picture_normal.png')}
-          />
-          <Text style={styles.loadingTitle}>数据下载中</Text>
-        </View>
-      ) : null}
+      {renderLoadingModal()}
       {renderAnaModal()}
     </View>
   );
