@@ -226,7 +226,7 @@ class CenterService implements ApiService {
         const removeItems = localItems.filter((value) => {
           return !remoteItems.find((it) => it.bookId === value.bookId);
         });
-        if (remoteItems.length > 0) {
+        if (removeItems.length > 0) {
           console.log('远程抄表任务有删除, 删除本地抄表任务');
           await db.deleteBookByIds(removeItems.map((it) => it.bookId));
         }

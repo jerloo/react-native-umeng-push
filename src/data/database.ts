@@ -1,6 +1,10 @@
 import dayjs from 'dayjs';
 import SQLite from 'react-native-sqlite-storage';
-import { MobileFileDto, PdaReadDataDto } from '../../apiclient/src/models';
+import {
+  MobileFileDto,
+  PdaReadDataDto,
+  ReadingDataDto,
+} from '../../apiclient/src/models';
 import {
   PdaBillingInfoHolder,
   PdaCustInfoHolder,
@@ -10,7 +14,7 @@ import {
 } from './holders';
 import { AttachmentDbItem, BookAttachmentsTotal } from './models';
 
-SQLite.DEBUG(true);
+SQLite.DEBUG(process.env.NODE_ENV !== 'production');
 SQLite.enablePromise(true);
 
 const database_name = 'mobile-read-app.db';
@@ -502,12 +506,10 @@ class DataBase {
     return (result?.[0].rows.raw() as PdaReadDataDto[]) || [];
   };
 
-  getToUploadBookDataByBookIds = async (ids: number[]) => {
+  getToUploadBookDatas = async () => {
     const result = await this.db?.executeSql(
-      `SELECT * FROM BookDatas WHERE bookId in (${ids.join(
-        ',',
-      )}) AND recordState = 1 AND uploaded = 1 ORDER BY bookSortIndex ASC`,
-      [],
+      'SELECT * FROM BookDatas WHERE recordState <> 0 AND uploaded = ? ORDER BY bookSortIndex ASC',
+      [false],
     );
     return (result?.[0].rows.raw() as PdaReadDataDto[]) || [];
   };
@@ -655,11 +657,27 @@ class DataBase {
     );
   };
 
-  markBookUploaded = async (ids: number[]) => {
-    return this.db?.executeSql(
-      `UPDATE BookDatas SET uploaded = ? WHERE bookId in (${ids.join(',')})`,
-      [true],
-    );
+  markBookUploaded = (ids: number[], items: ReadingDataDto[]) => {
+    this.db?.transaction((tx) => {
+      items.forEach((item) => {
+        tx.executeSql('UPDATE BookDatas SET uploaded = ? WHERE custId = ?', [
+          true,
+          item.custId,
+        ]);
+      });
+      ids.forEach((id) => {
+        tx.executeSql(
+          'SELECT count(1) as count FROM BookDatas WHERE bookId = ? AND uploaded = 1',
+          [id],
+          (t1, r1) => {
+            tx.executeSql(
+              'UPDATE Books SET uploadedNumber = ? WHERE bookId = ?',
+              [r1.rows.raw()[0].count, id],
+            );
+          },
+        );
+      });
+    });
   };
 
   deleteReadData = async (ids: number[]) => {
@@ -693,7 +711,10 @@ class DataBase {
   };
 
   deleteBookById = async (bookId: number) => {
-    await this.db?.executeSql('DELETE FROM Books WHERE bookId = ?', [bookId]);
+    await this.db?.transaction((tx) => {
+      tx.executeSql('DELETE FROM Books WHERE bookId = ?', [bookId]);
+      tx.executeSql('DELETE FROM BookDatas WHERE bookId = ?', [bookId]);
+    });
   };
 
   deleteBookByIds = async (ids: number[]) => {

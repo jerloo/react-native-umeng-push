@@ -144,7 +144,8 @@ export default function BooksScreen() {
 
   const uploadReadingData = async () => {
     const ids = bookItems.filter((it) => it.downloaded).map((it) => it.bookId);
-    const readingDatas = await db.getToUploadBookDataByBookIds(ids);
+    const readingDatas = await db.getToUploadBookDatas();
+    console.log('准备上传抄表数据', readingDatas.length);
     const inputItems = readingDatas.map((it) => {
       const item: ReadingDataDto = {
         billMonth: it.billMonth,
@@ -165,7 +166,7 @@ export default function BooksScreen() {
       deviceCode: DeviceInfo.getUniqueId(),
       readingDates: inputItems,
     });
-    await db.markBookUploaded(ids);
+    db.markBookUploaded(ids, inputItems);
   };
 
   const refresh = async () => {
