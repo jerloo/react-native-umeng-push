@@ -17,6 +17,7 @@ import {
   PdaPaymentCollectDto,
   PdaPaySubtotalsDto,
   UploadReadingDataDto,
+  UploadReadingFileDto,
 } from '../../apiclient/src/models';
 import NetInfo from '@react-native-community/netinfo';
 import db from './database';
@@ -34,6 +35,14 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+
+  async uploadAttachments(input: UploadReadingFileDto): Promise<void> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isConnected === true) {
+      return this.online.uploadAttachments(input);
+    }
+    return this.offline.uploadAttachments(input);
   }
 
   async updateBookSort(input: BookSortIndexDto[]): Promise<void> {

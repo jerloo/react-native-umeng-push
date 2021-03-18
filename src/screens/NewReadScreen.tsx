@@ -47,11 +47,17 @@ import db from '../data/database';
 import { Toast } from '@ant-design/react-native';
 import center from '../data';
 import { isMobileReadingCanCharge } from '../utils/systemSettingsUtils';
-import { calcReadWater, judgeReadWater } from '../utils/readWaterUtils';
+import {
+  calcReadWater,
+  judgeReadWater,
+  WATER_HIGHER,
+  WATER_LOWER,
+} from '../utils/readWaterUtils';
 import { Modal as AntModal } from '@ant-design/react-native';
 import { meterState, recordState } from '../utils/stateConverter';
 import Video from 'react-native-video';
 import { AttachmentDbItem } from '../data/models';
+import { tryUploadAttachments } from '../utils/attachUtils';
 
 let scaleHeight = defaultScaleHeight;
 scaleHeight = scaleSize;
@@ -195,7 +201,7 @@ export default function NewReadScreen() {
   const checkData = async () => {
     return new Promise<boolean>(async (resolve, reject) => {
       const water = calcReadWater(newData, readStateItems);
-      const result = judgeReadWater(water, newData);
+      const result = judgeReadWater(water, newData, readStateItems);
 
       if (!result) {
         if (newData.recordState === 0) {
@@ -207,21 +213,30 @@ export default function NewReadScreen() {
         }
         resolve(true);
       } else {
-        AntModal.alert('重新选择', result, [
-          {
-            text: '否',
-            onPress: async () => {
-              newData.readWater = water;
-              await db.updateReadData([newData]);
-              await db.updateReadingNumberByBookId(newData.bookId);
-              resolve(true);
+        if (result === WATER_HIGHER || result === WATER_LOWER) {
+          AntModal.alert('重新选择', result, [
+            {
+              text: '否',
+              onPress: async () => {
+                newData.readWater = water;
+                await db.updateReadData([newData]);
+                await db.updateReadingNumberByBookId(newData.bookId);
+                resolve(true);
+              },
             },
-          },
-          {
-            text: '是',
-            onPress: () => resolve(false),
-          },
-        ]);
+            {
+              text: '是',
+              onPress: () => resolve(false),
+            },
+          ]);
+        } else {
+          AntModal.alert('提示', result, [
+            {
+              text: '确定',
+              onPress: () => resolve(false),
+            },
+          ]);
+        }
       }
     });
   };
@@ -239,7 +254,7 @@ export default function NewReadScreen() {
       return;
     } else {
       const water = calcReadWater(newData, readStateItems);
-      const result = judgeReadWater(water, newData);
+      const result = judgeReadWater(water, newData, readStateItems);
       newData.recordState = 1;
       if (!result) {
         newData.readWater = water;
@@ -247,25 +262,47 @@ export default function NewReadScreen() {
         newData.readDate = new Date();
         await db.updateReadData([newData]);
         await db.updateReadingNumberByBookId(newData.bookId);
+        setNewData({ ...newData });
         Toast.success('保存成功');
+        tryUploadAttachments(
+          newData.custId,
+          newData.billMonth,
+          newData.readTimes,
+          attachments,
+        );
       } else {
-        AntModal.alert('重新选择', result, [
-          {
-            text: '否',
-            onPress: async () => {
-              newData.readWater = water;
-              newData.lastReadDate = new Date();
-              newData.readDate = new Date();
-              await db.updateReadData([newData]);
-              await db.updateReadingNumberByBookId(newData.bookId);
-              nextItem(true);
+        if (result === WATER_HIGHER || result === WATER_LOWER) {
+          AntModal.alert('重新选择', result, [
+            {
+              text: '否',
+              onPress: async () => {
+                newData.readWater = water;
+                newData.lastReadDate = new Date();
+                newData.readDate = new Date();
+                await db.updateReadData([newData]);
+                await db.updateReadingNumberByBookId(newData.bookId);
+                setNewData({ ...newData });
+                nextItem(true);
+                tryUploadAttachments(
+                  newData.custId,
+                  newData.billMonth,
+                  newData.readTimes,
+                  attachments,
+                );
+              },
             },
-          },
-          {
-            text: '是',
-            onPress: () => console.log('cancel'),
-          },
-        ]);
+            {
+              text: '是',
+              onPress: () => console.log('cancel'),
+            },
+          ]);
+        } else {
+          AntModal.alert('提示', result, [
+            {
+              text: '确定',
+            },
+          ]);
+        }
       }
     }
   };

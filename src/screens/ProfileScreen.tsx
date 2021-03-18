@@ -71,7 +71,7 @@ export default function ProfileScreen() {
   const uploadLog = async () => {
     setUploadLogVisible(false);
     const netInfo = await NetInfo.fetch();
-    if (netInfo.isInternetReachable !== true) {
+    if (netInfo.isConnected !== true) {
       Toast.fail(NO_NETWORK_ERROR);
       return;
     }

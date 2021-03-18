@@ -71,12 +71,41 @@ export const calcReadWater = (
   }
 };
 
-export const judgeReadWater = (value: number, data: PdaReadDataDto) => {
+export const WATER_HIGHER = '水量偏高，是否重新抄表？';
+export const WATER_LOWER = '水量偏低，是否重新抄表？';
+export const judgeReadWater = (
+  value: number,
+  data: PdaReadDataDto,
+  readStates: PdaReadStateDto[],
+) => {
+  if (data.rangeValue <= data.reading) {
+    return '本次抄码不得大于量程';
+  }
+  const algorithm = getAlgorithmByReadStateId(data.readStateId, readStates);
+  switch (algorithm) {
+    case 1:
+      if (data.reading < data.lastReading) {
+        return '本次抄码不得小于上次抄码';
+      }
+      break;
+    case 2:
+      break;
+    case 4:
+      if (data.reading > data.lastReading) {
+        return '本次抄码不得大于上次抄码';
+      }
+      break;
+    case 6:
+      if (data.reading < data.lastReading) {
+        return '本次抄码不得小于上次抄码';
+      }
+      break;
+  }
   if (value > data.highWater) {
-    return '水量偏高，是否重新抄表？';
+    return WATER_HIGHER;
   }
   if (value < data.lowWater) {
-    return '水量偏低，是否重新抄表？';
+    return WATER_LOWER;
   }
   return null;
 };

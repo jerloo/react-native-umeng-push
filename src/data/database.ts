@@ -428,6 +428,31 @@ class DataBase {
     return result?.[0].rows.raw()[0] as BookAttachmentsTotal;
   };
 
+  updateAttachmentsUploaded = async (
+    custId: number,
+    files: AttachmentDbItem[],
+  ) => {
+    await this.db?.transaction((tx) => {
+      files.forEach((item) => {
+        tx.executeSql(
+          `UPDATE Attachments SET uploaded = 1, url = ?
+            WHERE custId = ? AND billMonth = ? AND readTimes = ? AND filePath = ?`,
+          [
+            item.url,
+            item.custId,
+            item.billMonth,
+            item.readTimes,
+            item.filePath,
+          ],
+        );
+      });
+    });
+    await this.db?.executeSql(
+      'UPDATE Attachments SET uploaded = 1 WHERE custId = ?',
+      [custId],
+    );
+  };
+
   getReadWaterTotalByBookId = async (bookId: number) => {
     const result = await this.db?.executeSql(
       'SELECT SUM(readWater) as readWater FROM BookDatas WHERE bookId = ?',

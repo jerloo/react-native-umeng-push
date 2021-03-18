@@ -17,6 +17,7 @@ import {
   PdaReadStateDto,
   SysSettingDto,
   UploadReadingDataDto,
+  UploadReadingFileDto,
 } from '../../apiclient/src/models';
 import { getSession, setSession } from '../utils/sesstionUtils';
 import ApiService, { SERVER_ERROR, USERNAME_PWD_ERROR } from './apiService';
@@ -28,6 +29,21 @@ import DeviceInfo from 'react-native-device-info';
 import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto';
 
 export default class OnlineApiService implements ApiService {
+  async uploadAttachments(input: UploadReadingFileDto): Promise<void> {
+    try {
+      const result = await api.mobileReadingApi.apiAppMobileReadingUploadReadingFilePost(
+        input,
+      );
+      if (result.status < 400) {
+        return result.data;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
   async updateBookSort(input: BookSortIndexDto[]): Promise<void> {
     try {
       const result = await api.mobileReadingApi.apiAppMobileReadingUpdateBookSortIndexPost(
