@@ -202,6 +202,21 @@ export default function BookTaskSortScreen() {
 
   const onSearchButtonClick = () => {};
 
+  const onBack = () => {
+    Modal.alert('是否保存册本序号？', '', [
+      {
+        text: '取消',
+        onPress: () => navigation.goBack(),
+      },
+      {
+        text: '保存',
+        onPress: async () => {
+          saveSort();
+        },
+      },
+    ]);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -217,7 +232,7 @@ export default function BookTaskSortScreen() {
           <BooksBackTitleBar
             onRightClick={onSearchButtonClick}
             title={`${route.params.title}册本`}
-            onBack={() => navigation.goBack()}
+            onBack={onBack}
             titleColor={colorWhite}
             rightIcon={require('../assets/qietu/cebenxiangqing/book_details_icon_query_normal.png')}
           />
