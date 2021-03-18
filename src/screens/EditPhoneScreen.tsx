@@ -9,11 +9,7 @@ import {
   TextInput,
   Platform,
 } from 'react-native';
-import {
-  scaleHeight,
-  scaleSize,
-  setSpText2,
-} from 'react-native-responsive-design';
+import { scaleHeight, scaleSize } from 'react-native-responsive-design';
 import EditTitleBar from '../components/titlebars/EditTitleBar';
 import { getSession, UserSession } from '../utils/sesstionUtils';
 import center from '../data';
@@ -130,40 +126,36 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: scaleHeight(28),
-    paddingBottom: scaleHeight(12),
   },
   textTitleCurrent: {
     color: '#333333',
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     alignSelf: 'flex-start',
   },
   textPhoneCurrent: {
     color: '#333333',
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     alignSelf: 'flex-start',
     marginStart: scaleSize(30),
   },
   textTitleNew: {
     color: '#333333',
-    fontSize: setSpText2(34),
-    alignSelf: 'flex-start',
+    fontSize: scaleSize(34),
     minWidth: scaleSize(170),
     textAlign: 'right',
-    // backgroundColor: 'black',
-    height: '100%',
     textAlignVertical: 'center',
+  },
+  inputStyle: {
+    fontSize: scaleSize(32),
+    paddingHorizontal: 0,
+    marginStart: scaleSize(30),
+    flex: 1,
+    paddingTop: scaleHeight(12),
+    paddingBottom: scaleHeight(12),
   },
   divideLine: {
     backgroundColor: '#DEDEDE',
     height: 0.8,
     marginHorizontal: paddingScreen,
-  },
-  inputStyle: {
-    fontSize: setSpText2(32),
-    // backgroundColor: 'black',
-    paddingHorizontal: 0,
-    marginStart: scaleSize(30),
-    flex: 1,
   },
 });
