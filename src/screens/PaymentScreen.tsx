@@ -138,8 +138,10 @@ export default function PaymentScreen() {
       <View style={styles.cashContent}>
         <Text style={styles.cashContentTitle}>应缴金额</Text>
         <Text style={styles.cashContentAmount}>
-          {sum(paymentBills?.map((it) => it.extendedAmount) || []) +
-            sum(paymentBills?.map((it) => it.lateFee) || [])}
+          {sum([
+            ...(paymentBills?.map((it) => it.extendedAmount) || []),
+            ...(paymentBills?.map((it) => it.lateFee) || []),
+          ])}
         </Text>
         <Text style={styles.cashContentActualAmountTitle}>实收金额</Text>
         <View style={styles.cashContentActualAmountContainer}>
@@ -277,8 +279,10 @@ export default function PaymentScreen() {
           <View style={styles.total}>
             <Text style={styles.totalTitle}>应缴总金额</Text>
             <Text style={styles.totalValue}>
-              {sum(paymentBills?.map((it) => it.extendedAmount) || []) +
-                sum(paymentBills?.map((it) => it.lateFee) || [])}
+              {sum([
+                ...(paymentBills?.map((it) => it.extendedAmount) || []),
+                ...(paymentBills?.map((it) => it.lateFee) || []),
+              ])}
             </Text>
           </View>
 
