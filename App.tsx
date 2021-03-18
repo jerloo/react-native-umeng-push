@@ -14,8 +14,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import { ThemeProvider } from 'react-native-elements';
-
-import { Provider, Toast } from '@ant-design/react-native';
+import { Provider } from '@ant-design/react-native';
 import ProfileScreen from './src/screens/ProfileScreen';
 import EditNameScreen from './src/screens/EditNameScreen';
 import EditPhoneScreen from './src/screens/EditPhoneScreen';

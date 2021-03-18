@@ -30,13 +30,13 @@ import { useNavigation } from '@react-navigation/core';
 
 export default function ReadingCollectScreen() {
   const navigation = useNavigation();
+  const defaultBillMonth = parseInt(dayjs().format('YYYYMMDD'), 10);
 
   const [items, setItems] = useState<PdaReadingCollectDto[]>();
   const [loading, setLoading] = useState(false);
   const [pdaUsers, setPdaUsers] = useState<MeterReaderDto[]>([]);
   const [currentUser, setCurrentUser] = useState<MeterReaderDto>();
 
-  const defaultBillMonth = parseInt(dayjs().format('YYYYMM'), 10);
   const [billMonth, setBillMonth] = useState<number>(defaultBillMonth);
   const [settingsModalVisible, setSettingsModalVisible] = useState(false);
 
@@ -56,7 +56,7 @@ export default function ReadingCollectScreen() {
     fetchPdaUsers();
   }, []);
 
-  const fetchRemote = async () => {
+  const refresh = async () => {
     if (loading) {
       return;
     }
@@ -97,6 +97,13 @@ export default function ReadingCollectScreen() {
     const value = parseInt(dayjs(dt).format('YYYYMM'), 10);
     console.log('onPickBillMonth', value);
     setBillMonth(value);
+  };
+
+  const resetQueryParams = async () => {
+    setBillMonth(defaultBillMonth);
+    if (pdaUsers.length > 0) {
+      setCurrentUser(pdaUsers[0]);
+    }
   };
 
   const renderSettingsModal = () => {
@@ -157,6 +164,18 @@ export default function ReadingCollectScreen() {
               </View>
             </View>
           </View>
+
+          <View style={styles.buttons}>
+            <TouchableOpacity
+              style={styles.resetButton}
+              onPress={resetQueryParams}>
+              <Text style={styles.resetButtonText}>重置</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.confirmButton} onPress={refresh}>
+              <Text style={styles.confirmButtonText}>确定</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     );
@@ -177,7 +196,7 @@ export default function ReadingCollectScreen() {
           <SafeAreaView edges={['top']}>
             <CommonTitleBarEx
               onBack={() => navigation.goBack()}
-              onRight1Click={fetchRemote}
+              onRight1Click={refresh}
               right2Icon={require('../assets/qietu/qianfeichaxxun/arrearage_inquiry_icon_screen_normal.png')}
               title="抄表统计"
               titleColor={colorWhite}
@@ -411,5 +430,33 @@ const styles = StyleSheet.create({
     backgroundColor: colorWhite,
     height: '100%',
     paddingTop: StatusBar.currentHeight,
+  },
+  resetButton: {
+    backgroundColor: '#EBEBEB',
+    borderRadius: scaleSize(30),
+    paddingVertical: scaleSize(9),
+    paddingHorizontal: scaleSize(50),
+  },
+  resetButtonText: {
+    color: '#333333',
+    fontSize: scaleSize(30),
+  },
+  confirmButton: {
+    backgroundColor: '#508EFF',
+    borderRadius: scaleSize(30),
+    paddingVertical: scaleSize(9),
+    paddingHorizontal: scaleSize(50),
+  },
+  confirmButtonText: {
+    color: colorWhite,
+    fontSize: scaleSize(30),
+  },
+  buttons: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    paddingHorizontal: scaleSize(30),
   },
 });
