@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import {
   scaleHeight,
@@ -13,11 +14,11 @@ import {
   setSpText2,
 } from 'react-native-responsive-design';
 import { getSession } from '../utils/sesstionUtils';
-import Icon from 'react-native-vector-icons/Ionicons';
 import EditTitleBar from '../components/titlebars/EditTitleBar';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
 import { useNavigation } from '@react-navigation/core';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function EditNameScreen() {
   const navigation = useNavigation();
@@ -62,12 +63,14 @@ export default function EditNameScreen() {
         backgroundColor="transparent"
       />
 
-      <EditTitleBar
-        title="姓名修改"
-        canDone={name !== ''}
-        onBack={() => navigation.goBack()}
-        onDone={onSave}
-      />
+      <SafeAreaView edges={['top']}>
+        <EditTitleBar
+          title="姓名修改"
+          canDone={name !== ''}
+          onBack={() => navigation.goBack()}
+          onDone={onSave}
+        />
+      </SafeAreaView>
 
       <View style={styles.block}>
         <TextInput
@@ -81,7 +84,10 @@ export default function EditNameScreen() {
           defaultValue={name}
         />
         <TouchableOpacity onPress={() => setName('')}>
-          <Icon name="close-circle" size={setSpText2(30)} color="#CCCCCC" />
+          <Image
+            style={styles.clearButtonImage}
+            source={require('../assets/qietu/dengluye/logon_icon_cancel.png')}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -140,11 +146,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: paddingScreen,
+    paddingTop: scaleHeight(28),
+    paddingBottom: scaleHeight(12),
   },
   inputStyle: {
     fontSize: setSpText2(34),
     backgroundColor: 'white',
     paddingHorizontal: 0,
     flex: 1,
+  },
+  clearButtonImage: {
+    width: scaleSize(30),
+    height: scaleSize(30),
   },
 });

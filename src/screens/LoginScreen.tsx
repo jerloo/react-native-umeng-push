@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { colorWhite } from '../styles';
-import Icon from 'react-native-vector-icons/Ionicons';
 import AnimatedLoadingButton from 'rn-animated-loading-button';
 import {
   scaleHeight,
@@ -135,6 +134,7 @@ export default function LoginScreen() {
           multiline={false}
           numberOfLines={1}
           placeholder="机构编号"
+          placeholderTextColor="#999999"
           keyboardType="default"
           inputStyle={styles.inputStyle}
           onChangeText={(text) => setTenantName(text)}
@@ -147,7 +147,10 @@ export default function LoginScreen() {
           }
           rightIcon={
             <TouchableOpacity onPress={() => setTenantName('')}>
-              <Icon name="close-circle" size={setSpText2(30)} color="#CCCCCC" />
+              <Image
+                style={styles.clearButtonImage}
+                source={require('../assets/qietu/dengluye/logon_icon_cancel.png')}
+              />
             </TouchableOpacity>
           }
         />
@@ -157,6 +160,7 @@ export default function LoginScreen() {
           multiline={false}
           keyboardType="default"
           placeholder="输入账号"
+          placeholderTextColor="#999999"
           inputStyle={styles.inputStyle}
           onChangeText={(text) => setUserName(text)}
           value={userName}
@@ -168,7 +172,10 @@ export default function LoginScreen() {
           }
           rightIcon={
             <TouchableOpacity onPress={() => setUserName('')}>
-              <Icon name="close-circle" size={setSpText2(30)} color="#CCCCCC" />
+              <Image
+                style={styles.clearButtonImage}
+                source={require('../assets/qietu/dengluye/logon_icon_cancel.png')}
+              />
             </TouchableOpacity>
           }
         />
@@ -183,6 +190,7 @@ export default function LoginScreen() {
           inputStyle={styles.inputStyle}
           onChangeText={(text) => setPassword(text)}
           value={passWord}
+          placeholderTextColor="#999999"
           leftIcon={
             <Image
               style={styles.inputIcon}
@@ -339,5 +347,9 @@ const styles = StyleSheet.create({
   eyeOpen: {
     width: scaleSize(32),
     height: scaleHeight(20),
+  },
+  clearButtonImage: {
+    width: scaleSize(30),
+    height: scaleSize(30),
   },
 });

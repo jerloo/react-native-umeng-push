@@ -92,7 +92,7 @@ export default function SearchScreen() {
       <LinearGradient
         colors={['#4888E3', '#2567E5']}
         style={styles.topContainer}>
-        <SafeAreaView>
+        <SafeAreaView edges={['top']}>
           <SearchPageBox
             onDone={query}
             onChangeText={(text) => setQueryKey(text)}

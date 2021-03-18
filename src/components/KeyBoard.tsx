@@ -15,6 +15,7 @@ import { colorWhite } from '../styles';
 import StateButton from './StateButton';
 import { PdaReadStateDto } from '../../apiclient/src/models';
 import { ReadStateStorage } from '../utils/settingsUtils';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 let scaleHeight = defaultScaleHeight;
 scaleHeight = scaleSize;
@@ -34,7 +35,7 @@ interface Props {
 
 export default function KeyBoard(props: Props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView edges={['bottom']} style={styles.container}>
       <View style={styles.offenStates}>
         <ScrollView horizontal style={styles.offenStatesWrapper}>
           {props.readStates?.offens.map((it) => (
@@ -157,7 +158,7 @@ export default function KeyBoard(props: Props) {
           <Text style={styles.confirmText}>确定</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

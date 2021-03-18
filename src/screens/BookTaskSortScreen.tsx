@@ -213,7 +213,7 @@ export default function BookTaskSortScreen() {
       <LinearGradient
         colors={['#4888E3', '#2567E5']}
         style={styles.topContainer}>
-        <SafeAreaView>
+        <SafeAreaView edges={['right', 'top', 'left']}>
           <BooksBackTitleBar
             onRightClick={onSearchButtonClick}
             title={`${route.params.title}册本`}

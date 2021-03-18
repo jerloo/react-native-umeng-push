@@ -11,6 +11,7 @@ import EditTitleBar from '../components/titlebars/EditTitleBar';
 import { getSession, UserSession } from '../utils/sesstionUtils';
 import center from '../data';
 import { useNavigation } from '@react-navigation/core';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function EditPhoneScreen() {
   const navigation = useNavigation();
@@ -53,12 +54,15 @@ export default function EditPhoneScreen() {
         translucent={true}
         backgroundColor="transparent"
       />
-      <EditTitleBar
-        title="手机号修改"
-        canDone={/^1[0-9]{10}$/.test(newPhone)}
-        onBack={() => navigation.goBack()}
-        onDone={onSave}
-      />
+      <SafeAreaView edges={['top']}>
+        <EditTitleBar
+          title="手机号修改"
+          canDone={/^1[0-9]{10}$/.test(newPhone)}
+          onBack={() => navigation.goBack()}
+          onDone={onSave}
+        />
+      </SafeAreaView>
+
       <View style={styles.block}>
         <View style={styles.blockRow}>
           <Text style={styles.textTitleCurrent}>当前手机号</Text>
@@ -76,6 +80,7 @@ export default function EditPhoneScreen() {
             style={styles.inputStyle}
             keyboardType="number-pad"
             placeholder="请输入您的新手机号"
+            placeholderTextColor="#999999"
             defaultValue={newPhone}
             onChangeText={(text) => setNewPhone(text)}
             maxLength={11}
@@ -109,6 +114,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    paddingTop: scaleHeight(28),
+    paddingBottom: scaleHeight(12),
   },
   textTitleCurrent: {
     color: '#333333',

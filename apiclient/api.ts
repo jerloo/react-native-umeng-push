@@ -12,7 +12,7 @@ const consola = require('consola');
 const axiosLogger = AxiosLogger.using(consola.info, consola.error);
 
 const axiosInstance = Axios.create({
-  timeout: 3000,
+  // timeout: 3000,
 });
 
 axiosInstance.interceptors.request.use(

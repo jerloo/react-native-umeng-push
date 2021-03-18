@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { InputProps } from 'react-native-elements';
-import { scaleHeight, scaleSize } from 'react-native-responsive-design';
+import { scaleSize } from 'react-native-responsive-design';
 
 interface Props extends InputProps {}
 
@@ -34,10 +34,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginVertical: scaleHeight(20),
-    borderBottomWidth: scaleHeight(1),
+    marginVertical: scaleSize(20),
+    borderBottomWidth: scaleSize(1),
     borderBottomColor: '#979797',
-    paddingBottom: scaleHeight(14),
+    paddingBottom: scaleSize(14),
   },
   inputContainer: {
     flex: 1,
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     paddingStart: scaleSize(30),
   },
   input: {
-    height: scaleHeight(40),
+    height: scaleSize(40),
     padding: 0,
     flex: 1,
   },

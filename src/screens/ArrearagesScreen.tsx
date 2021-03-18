@@ -337,26 +337,24 @@ export default function ArrearagesScreen() {
 
       <LinearGradient
         colors={['#4888E3', '#2567E5']}
-        style={styles.topContainer}>
-        <SafeAreaView>
-          <CommonTitleBarEx
-            onBack={() => navigation.goBack()}
-            onRight2Click={() => {
-              saveSnapshot();
-              setSettingsModalVisible(true);
-            }}
-            right1Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}
-            onRight1Click={() => refresh()}
-            right2Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_adjustment_normal.png')}
-            title={'欠费查询'}
-            titleColor={colorWhite}
-          />
-          <SearchBox
-            style={styles.searchContainer}
-            placeholderTextColor={colorWhite}
-            onSearch={onSearch}
-          />
-        </SafeAreaView>
+        style={[styles.topContainer, { paddingTop: scaleSize(60) }]}>
+        <CommonTitleBarEx
+          onBack={() => navigation.goBack()}
+          onRight2Click={() => {
+            saveSnapshot();
+            setSettingsModalVisible(true);
+          }}
+          right1Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}
+          onRight1Click={() => refresh()}
+          right2Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_adjustment_normal.png')}
+          title={'欠费查询'}
+          titleColor={colorWhite}
+        />
+        <SearchBox
+          style={styles.searchContainer}
+          placeholderTextColor={colorWhite}
+          onSearch={onSearch}
+        />
       </LinearGradient>
 
       <FlatList<PdaArrearageDto>

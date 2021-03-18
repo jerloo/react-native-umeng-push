@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     // height: scaleHeight(32),
     // alignSelf: 'flex-start',
     fontSize: setSpText2(30),
+    paddingVertical: scaleHeight(8),
   },
   titleBarTitle: {
     fontSize: setSpText2(40),
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
   titleBarDoneButton: {
     backgroundColor: '#E6E6E6',
     paddingHorizontal: scaleSize(15),
-    paddingVertical: scaleHeight(3),
+    paddingVertical: scaleHeight(8),
     borderRadius: scaleSize(4),
     fontSize: setSpText2(30),
   },

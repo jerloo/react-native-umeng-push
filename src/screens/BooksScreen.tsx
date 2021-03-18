@@ -12,7 +12,11 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
-import { scaleSize, setSpText2 } from 'react-native-responsive-design';
+import {
+  scaleHeight,
+  scaleSize,
+  setSpText2,
+} from 'react-native-responsive-design';
 import BookItem from '../components/BookItem';
 import center from '../data';
 import { Modal as AntModal, Toast } from '@ant-design/react-native';
@@ -398,28 +402,25 @@ export default function BooksScreen() {
             titleColor={colorWhite}
             right2Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}
           />
-          <View style={styles.topBox}>
-            <View style={styles.topItem}>
-              <Text style={styles.topItemValue}>
-                {totalNumbers?.totalNumber}
-              </Text>
-              <Text style={styles.topItemLabel}>应抄</Text>
-            </View>
-            <View style={styles.topItem}>
-              <Text style={styles.topItemValue}>
-                {totalNumbers?.readingNumber}
-              </Text>
-              <Text style={styles.topItemLabel}>已抄</Text>
-            </View>
-            <View style={styles.topItem}>
-              <Text style={styles.topItemValue}>
-                {totalNumbers?.uploadedNumber}
-              </Text>
-              <Text style={styles.topItemLabel}>已上传</Text>
-            </View>
-          </View>
         </SafeAreaView>
       </LinearGradient>
+
+      <View style={styles.topBox}>
+        <View style={styles.topItem}>
+          <Text style={styles.topItemValue}>{totalNumbers?.totalNumber}</Text>
+          <Text style={styles.topItemLabel}>应抄</Text>
+        </View>
+        <View style={styles.topItem}>
+          <Text style={styles.topItemValue}>{totalNumbers?.readingNumber}</Text>
+          <Text style={styles.topItemLabel}>已抄</Text>
+        </View>
+        <View style={styles.topItem}>
+          <Text style={styles.topItemValue}>
+            {totalNumbers?.uploadedNumber}
+          </Text>
+          <Text style={styles.topItemLabel}>已上传</Text>
+        </View>
+      </View>
 
       <SwipeListView<PdaMeterBookDtoHolder>
         style={styles.items}
@@ -458,10 +459,10 @@ export default function BooksScreen() {
         contentInset={{ bottom: 100 }}
         contentContainerStyle={{
           paddingBottom: scaleSize(30),
+          paddingTop: scaleSize(18),
         }}
       />
-
-      <View style={styles.bottomContainer}>
+      <SafeAreaView edges={['bottom']} style={styles.bottomContainer}>
         <CircleCheckBox
           title="全选"
           iconStyle={{ width: scaleSize(38), height: scaleSize(38) }}
@@ -473,6 +474,7 @@ export default function BooksScreen() {
               .find((item) => item.checked === false)
           }
         />
+
         <View style={styles.bottomRight}>
           <Text style={styles.bottomLabel}>
             已选册本(
@@ -482,7 +484,7 @@ export default function BooksScreen() {
             <Text style={styles.btnDoneText}>下载</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </SafeAreaView>
 
       {renderLoadingModal()}
       {renderAnaModal()}
@@ -497,7 +499,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   topContainer: {
-    height: scaleSize(210),
+    // height: scaleSize(210),
   },
   topBox: {
     backgroundColor: colorWhite,
@@ -507,6 +509,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginHorizontal: scaleSize(30),
     paddingVertical: scaleSize(24),
+    zIndex: 1000,
+    overflow: 'visible',
+    marginTop: scaleSize(-60),
   },
   topItem: {
     display: 'flex',
@@ -526,7 +531,7 @@ const styles = StyleSheet.create({
   items: {
     // backgroundColor: colorWhite,
     // marginTop: scaleSize(100),
-    marginTop: scaleSize(110),
+    // marginTop: scaleSize(110),
   },
   item: {
     paddingHorizontal: scaleSize(30),
@@ -551,7 +556,7 @@ const styles = StyleSheet.create({
   },
   btnDone: {
     backgroundColor: '#096BF3',
-    paddingVertical: scaleSize(4),
+    paddingVertical: scaleSize(10),
     paddingHorizontal: scaleSize(22),
     borderRadius: scaleSize(6),
   },

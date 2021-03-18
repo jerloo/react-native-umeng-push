@@ -7,11 +7,7 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {
-  scaleSize,
-  scaleHeight,
-  setSpText2,
-} from 'react-native-responsive-design';
+import { scaleSize } from 'react-native-responsive-design';
 
 type Props = {
   colorLeft: string;
@@ -48,8 +44,8 @@ const styles = StyleSheet.create({
     height: scaleSize(80),
   },
   homeButtonTitle: {
-    fontSize: setSpText2(34),
-    marginTop: scaleHeight(22),
+    fontSize: scaleSize(34),
+    marginTop: scaleSize(22),
     color: '#666666',
   },
 });

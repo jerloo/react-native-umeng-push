@@ -32,6 +32,7 @@ import dayjs from 'dayjs';
 import { NO_NETWORK_ERROR } from '../data/apiService';
 import { useNavigation } from '@react-navigation/core';
 import AuthContext from '../utils/contextUtls';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -159,7 +160,10 @@ export default function ProfileScreen() {
         translucent={true}
         backgroundColor="transparent"
       />
-      <CommonTitleBar onBack={() => navigation.goBack()} />
+      <SafeAreaView edges={['top']}>
+        <CommonTitleBar onBack={() => navigation.goBack()} />
+      </SafeAreaView>
+
       <View style={styles.block}>
         <TouchableOpacity
           style={styles.blockRow}

@@ -12,6 +12,7 @@ import { Toast } from '@ant-design/react-native';
 import { useNavigation } from '@react-navigation/core';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PasswordInput from '../components/PasswordInput';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const PASSWORD_REG = /^(?=.*?[0-9])(?=.*?[a-zA-Z]).{8,}$/;
 
@@ -62,16 +63,19 @@ export default function EditPasswordScreen() {
         translucent={true}
         backgroundColor="transparent"
       />
-      <EditTitleBar
-        title="密码修改"
-        canDone={
-          oldPassword !== '' &&
-          newPassword !== '' &&
-          newPassword === confirmPasword
-        }
-        onBack={() => navigation.goBack()}
-        onDone={onSave}
-      />
+      <SafeAreaView edges={['top']}>
+        <EditTitleBar
+          title="密码修改"
+          canDone={
+            oldPassword !== '' &&
+            newPassword !== '' &&
+            newPassword === confirmPasword
+          }
+          onBack={() => navigation.goBack()}
+          onDone={onSave}
+        />
+      </SafeAreaView>
+
       <View style={styles.block}>
         <View style={styles.blockRowInput}>
           <Text style={styles.textTitleNew}>旧密码</Text>

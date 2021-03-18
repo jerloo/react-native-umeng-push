@@ -174,7 +174,7 @@ export default function ReadingCollectScreen() {
         <LinearGradient
           colors={['#4888E3', '#2567E5']}
           style={styles.topContainer}>
-          <SafeAreaView>
+          <SafeAreaView edges={['top']}>
             <CommonTitleBarEx
               onBack={() => navigation.goBack()}
               onRight1Click={fetchRemote}
@@ -184,34 +184,35 @@ export default function ReadingCollectScreen() {
               onRight2Click={() => setSettingsModalVisible(true)}
               right1Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}
             />
-            <View style={styles.topBox}>
-              <View style={styles.topItem}>
-                <Text style={styles.topItemValue}>
-                  {sum(items?.map((it) => it.expectRead) || [])}
-                </Text>
-                <Text style={styles.topItemLabel}>应抄</Text>
-              </View>
-              <View style={styles.topItem}>
-                <Text style={styles.topItemValue}>
-                  {sum(items?.map((it) => it.actualRead) || [])}
-                </Text>
-                <Text style={styles.topItemLabel}>实抄</Text>
-              </View>
-              <View style={styles.topItem}>
-                <Text style={styles.topItemValue}>
-                  {sum(items?.map((it) => it.totalWater) || [])}
-                </Text>
-                <Text style={styles.topItemLabel}>水量</Text>
-              </View>
-              <View style={styles.topItem}>
-                <Text style={styles.topItemValue}>
-                  {sum(items?.map((it) => it.totalMoney) || [])}
-                </Text>
-                <Text style={styles.topItemLabel}>金额</Text>
-              </View>
-            </View>
           </SafeAreaView>
         </LinearGradient>
+
+        <View style={styles.topBox}>
+          <View style={styles.topItem}>
+            <Text style={styles.topItemValue}>
+              {sum(items?.map((it) => it.expectRead) || [])}
+            </Text>
+            <Text style={styles.topItemLabel}>应抄</Text>
+          </View>
+          <View style={styles.topItem}>
+            <Text style={styles.topItemValue}>
+              {sum(items?.map((it) => it.actualRead) || [])}
+            </Text>
+            <Text style={styles.topItemLabel}>实抄</Text>
+          </View>
+          <View style={styles.topItem}>
+            <Text style={styles.topItemValue}>
+              {sum(items?.map((it) => it.totalWater) || [])}
+            </Text>
+            <Text style={styles.topItemLabel}>水量</Text>
+          </View>
+          <View style={styles.topItem}>
+            <Text style={styles.topItemValue}>
+              {sum(items?.map((it) => it.totalMoney) || [])}
+            </Text>
+            <Text style={styles.topItemLabel}>金额</Text>
+          </View>
+        </View>
 
         <FlatList<PdaReadingCollectDto>
           style={styles.items}
@@ -224,6 +225,7 @@ export default function ReadingCollectScreen() {
           contentInset={{ bottom: 100 }}
           contentContainerStyle={{
             paddingBottom: scaleSize(30),
+            paddingTop: scaleSize(18),
           }}
         />
 
@@ -240,7 +242,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   topContainer: {
-    height: scaleSize(210),
+    // height: scaleSize(210),
+    paddingBottom: scaleSize(80),
   },
   topBox: {
     backgroundColor: colorWhite,
@@ -250,6 +253,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginHorizontal: scaleSize(30),
     paddingVertical: scaleSize(24),
+    marginTop: scaleSize(-60),
   },
   topItem: {
     display: 'flex',
@@ -269,7 +273,7 @@ const styles = StyleSheet.create({
   items: {
     // backgroundColor: colorWhite,
     // marginTop: scaleSize(100),
-    marginTop: scaleSize(100),
+    // marginTop: scaleSize(-60),
   },
   item: {
     paddingHorizontal: scaleSize(30),

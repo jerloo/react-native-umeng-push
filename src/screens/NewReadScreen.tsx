@@ -9,6 +9,8 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -564,42 +566,49 @@ export default function NewReadScreen() {
         backgroundColor="transparent"
       />
 
-      <SafeAreaView style={styles.mainContainer}>
-        <CommonTitleBarEx
-          title="抄表录入"
-          titleColor={colorWhite}
-          onBack={() => navigation.goBack()}
-          onRight2Click={() => setAttachmentsModalVisible(true)}
-          backIcon={require('../assets/qietu/cebenxiangqing/book_details_icon_back_normal.png')}
-          right2Icon={require('../assets/enter_icon_enclosure_normal_white.png')}
-        />
+      <View style={styles.mainContainer}>
+        <SafeAreaView edges={['top']}>
+          <CommonTitleBarEx
+            title="抄表录入"
+            titleColor={colorWhite}
+            onBack={() => navigation.goBack()}
+            onRight2Click={() => setAttachmentsModalVisible(true)}
+            backIcon={require('../assets/qietu/cebenxiangqing/book_details_icon_back_normal.png')}
+            right2Icon={require('../assets/enter_icon_enclosure_normal_white.png')}
+          />
+        </SafeAreaView>
+
         <View style={styles.main}>
           <ScrollView>{renderContent()}</ScrollView>
 
-          <View style={styles.maskRow}>
-            <View style={styles.maskLeft}>
-              <Image
-                style={styles.maskIcon}
-                source={require('../assets/enter_icon_remarks_normal.png')}
-              />
-              <TextInput
-                style={styles.remark}
-                placeholder="点击添加备注(100字以内)"
-                onChangeText={(text) =>
-                  setNewData({ ...newData, readRemark: text })
-                }
-                value={newData.readRemark}
-              />
-              <TouchableOpacity
-                style={styles.lightButton}
-                onPress={openLighting}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <View style={styles.maskRow}>
+              <View style={styles.maskLeft}>
                 <Image
                   style={styles.maskIcon}
-                  source={require('../assets/shoudiantong.png')}
+                  source={require('../assets/enter_icon_remarks_normal.png')}
                 />
-              </TouchableOpacity>
+                <TextInput
+                  style={styles.remark}
+                  placeholder="点击添加备注(100字以内)"
+                  placeholderTextColor="#999999"
+                  onChangeText={(text) =>
+                    setNewData({ ...newData, readRemark: text })
+                  }
+                  value={newData.readRemark}
+                />
+                <TouchableOpacity
+                  style={styles.lightButton}
+                  onPress={openLighting}>
+                  <Image
+                    style={styles.maskIcon}
+                    source={require('../assets/shoudiantong.png')}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          </KeyboardAvoidingView>
 
           <KeyBoard
             onBackClick={() => {
@@ -639,7 +648,7 @@ export default function NewReadScreen() {
             }}
           />
         </View>
-      </SafeAreaView>
+      </View>
       {renderAttachmentsModal()}
       {renderSettingsModal()}
       {renderPreviewModal()}

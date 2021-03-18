@@ -377,7 +377,7 @@ export default function CustDetailsScreen() {
       <LinearGradient
         colors={['#3273E4', '#3273E4']}
         style={styles.topContainer}>
-        <SafeAreaView>
+        <SafeAreaView edges={['top']}>
           <CommonTitleBarEx
             onBack={() => navigation.goBack()}
             right2Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}

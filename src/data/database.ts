@@ -21,7 +21,7 @@ class DataBase {
   ensure = () => {
     SQLite.openDatabase({
       name: database_name,
-      location: 'Shared',
+      location: 'default',
     })
       .then((DB) => {
         this.db = DB;

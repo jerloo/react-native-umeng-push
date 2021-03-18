@@ -211,7 +211,7 @@ export default function PaymentSubtotalScreen() {
       <LinearGradient
         colors={['#4888E3', '#2567E5']}
         style={styles.topContainer}>
-        <SafeAreaView>
+        <SafeAreaView edges={['top']}>
           <CommonTitleBarEx
             onBack={() => navigation.goBack()}
             onRight2Click={refresh}
@@ -224,24 +224,23 @@ export default function PaymentSubtotalScreen() {
             placeholderTextColor={colorWhite}
             onSearch={onSearch}
           />
-          <View style={styles.topBox}>
-            <View style={styles.topItem}>
-              <Text style={styles.topItemValue}>{data?.custCount || '-'}</Text>
-              <Text style={styles.topItemLabel}>应抄</Text>
-            </View>
-            <View style={styles.topItem}>
-              <Text style={styles.topItemValue}>
-                {data?.actualMoney || '-'}
-              </Text>
-              <Text style={styles.topItemLabel}>实收金额</Text>
-            </View>
-            <View style={styles.topItem}>
-              <Text style={styles.topItemValue}>{data?.soldMoney || '-'}</Text>
-              <Text style={styles.topItemLabel}>销账金额</Text>
-            </View>
-          </View>
         </SafeAreaView>
       </LinearGradient>
+
+      <View style={styles.topBox}>
+        <View style={styles.topItem}>
+          <Text style={styles.topItemValue}>{data?.custCount || '-'}</Text>
+          <Text style={styles.topItemLabel}>应抄</Text>
+        </View>
+        <View style={styles.topItem}>
+          <Text style={styles.topItemValue}>{data?.actualMoney || '-'}</Text>
+          <Text style={styles.topItemLabel}>实收金额</Text>
+        </View>
+        <View style={styles.topItem}>
+          <Text style={styles.topItemValue}>{data?.soldMoney || '-'}</Text>
+          <Text style={styles.topItemLabel}>销账金额</Text>
+        </View>
+      </View>
 
       {renderQuery()}
 
@@ -276,7 +275,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   topContainer: {
-    height: scaleSize(300),
+    // height: scaleSize(300),
+    paddingBottom: scaleSize(80),
   },
   topBox: {
     backgroundColor: colorWhite,
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginHorizontal: scaleSize(30),
     paddingVertical: scaleSize(24),
-    marginTop: scaleSize(32),
+    marginTop: scaleSize(-60),
   },
   topItem: {
     display: 'flex',
@@ -461,7 +461,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: scaleSize(100),
+    // marginTop: scaleSize(100),
     marginHorizontal: scaleSize(30),
     paddingVertical: scaleSize(19),
   },

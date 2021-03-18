@@ -321,7 +321,7 @@ export default function PaymentCollectScreen() {
       <LinearGradient
         colors={['#4888E3', '#2567E5']}
         style={styles.topContainer}>
-        <SafeAreaView>
+        <SafeAreaView edges={['top']}>
           <CommonTitleBarEx
             onBack={() => navigation.goBack()}
             onRight2Click={() => {
@@ -334,22 +334,21 @@ export default function PaymentCollectScreen() {
             title={'收费统计'}
             titleColor={colorWhite}
           />
-          <View style={styles.topBox}>
-            <View style={styles.topItem}>
-              <Text style={styles.topItemValue}>
-                {data?.totalActualMoney || '-'}
-              </Text>
-              <Text style={styles.topItemLabel}>实收金额</Text>
-            </View>
-            <View style={styles.topItem}>
-              <Text style={styles.topItemValue}>
-                {data?.totalSoldMoney || '-'}
-              </Text>
-              <Text style={styles.topItemLabel}>销账金额</Text>
-            </View>
-          </View>
         </SafeAreaView>
       </LinearGradient>
+
+      <View style={styles.topBox}>
+        <View style={styles.topItem}>
+          <Text style={styles.topItemValue}>
+            {data?.totalActualMoney || '-'}
+          </Text>
+          <Text style={styles.topItemLabel}>实收金额</Text>
+        </View>
+        <View style={styles.topItem}>
+          <Text style={styles.topItemValue}>{data?.totalSoldMoney || '-'}</Text>
+          <Text style={styles.topItemLabel}>销账金额</Text>
+        </View>
+      </View>
 
       <FlatList<PdaPaymentCollect>
         style={styles.items}
@@ -384,7 +383,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   topContainer: {
-    height: scaleSize(210),
+    // height: scaleSize(210),
+    paddingBottom: scaleSize(80),
   },
   topBox: {
     backgroundColor: colorWhite,
@@ -394,6 +394,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginHorizontal: scaleSize(30),
     paddingVertical: scaleSize(24),
+    marginTop: scaleSize(-60),
   },
   topItem: {
     display: 'flex',

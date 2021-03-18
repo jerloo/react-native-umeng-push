@@ -200,7 +200,7 @@ export default function BookTaskScreen() {
       <LinearGradient
         colors={['#4888E3', '#2567E5']}
         style={styles.topContainer}>
-        <SafeAreaView>
+        <SafeAreaView edges={['right', 'top', 'left']}>
           <CommonTitleBarEx
             onBack={() => navigation.goBack()}
             onRight2Click={() =>
