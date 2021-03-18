@@ -72,6 +72,7 @@
     "@types/react-test-renderer": "^16.9.2",
     "@types/uuid": "^8.3.0",
     "babel-jest": "^25.1.0",
+    "cos-nodejs-sdk-v5": "^2.9.12",
     "eslint": "^6.5.1",
     "jest": "^25.1.0",
     "metro-react-native-babel-preset": "^0.59.0",

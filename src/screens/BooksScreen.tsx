@@ -135,12 +135,8 @@ export default function BooksScreen() {
 
   const fetchRemote = async () => {
     try {
-      const booksResult = await center.getBookList();
-      const items = (booksResult as PdaMeterBookDtoHolder[]).map((value) => {
-        value.checked = false;
-        return value;
-      });
-      setBookItems(items);
+      await center.getBookList();
+      await fetchLocal();
     } catch (e) {
       Toast.fail(e.message);
     }
@@ -257,21 +253,31 @@ export default function BooksScreen() {
   ) => {
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
-      AntModal.alert('提示', '是否确认删除？', [
-        {
-          text: '取消',
-          style: { color: '#666666' },
-        },
-        {
-          text: '确认删除',
-          style: { color: 'red' },
-          onPress: async () => {
-            await db.deleteBookById(rowKey);
-            Toast.success('删除成功');
-            fetchLocal();
+      const find = bookItems.find((it) => it.bookId === rowKey);
+      if (find && find.readingNumber > 0) {
+        AntModal.alert('提示', '当前册本已开始抄表，不允许删除', [
+          {
+            text: '确定',
+            style: { color: '#666666' },
           },
-        },
-      ]);
+        ]);
+      } else {
+        AntModal.alert('提示', '是否确认删除？', [
+          {
+            text: '取消',
+            style: { color: '#666666' },
+          },
+          {
+            text: '确认删除',
+            style: { color: 'red' },
+            onPress: async () => {
+              await db.deleteBookById(rowKey);
+              Toast.success('删除成功');
+              fetchLocal();
+            },
+          },
+        ]);
+      }
     }
   };
 
@@ -353,10 +359,17 @@ export default function BooksScreen() {
       <Modal
         visible={loading}
         fullScreen
-        horizontalLayout="right"
         animationIn="zoomIn"
         animationOut="zoomOut"
-        style={{ justifyContent: 'center', alignItems: 'center' }}
+        maskCloseable={false}
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          flex: 1,
+          marginTop: 100,
+          paddingTop: 100,
+        }}
+        verticalLayout="bottom"
         onChange={setLoading}>
         <View style={styles.loading}>
           <Image
@@ -385,6 +398,9 @@ export default function BooksScreen() {
 
   return (
     <View style={styles.container}>
+      {renderLoadingModal()}
+      {renderAnaModal()}
+
       <StatusBar
         barStyle="dark-content"
         translucent={true}
@@ -394,7 +410,7 @@ export default function BooksScreen() {
       <LinearGradient
         colors={['#4888E3', '#2567E5']}
         style={styles.topContainer}>
-        <SafeAreaView>
+        <SafeAreaView edges={['top']}>
           <CommonTitleBarEx
             onBack={() => navigation.goBack()}
             onRight2Click={refresh}
@@ -485,9 +501,6 @@ export default function BooksScreen() {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-
-      {renderLoadingModal()}
-      {renderAnaModal()}
     </View>
   );
 }
@@ -500,6 +513,7 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     // height: scaleSize(210),
+    paddingBottom: scaleSize(80),
   },
   topBox: {
     backgroundColor: colorWhite,

@@ -1,7 +1,14 @@
 import { Toast } from '@ant-design/react-native';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { StatusBar, StyleSheet, Text, View, TextInput } from 'react-native';
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Platform,
+} from 'react-native';
 import {
   scaleHeight,
   scaleSize,
@@ -54,14 +61,23 @@ export default function EditPhoneScreen() {
         translucent={true}
         backgroundColor="transparent"
       />
-      <SafeAreaView edges={['top']}>
+      {Platform.OS === 'ios' ? (
+        <SafeAreaView edges={['top']}>
+          <EditTitleBar
+            title="手机号修改"
+            canDone={/^1[0-9]{10}$/.test(newPhone)}
+            onBack={() => navigation.goBack()}
+            onDone={onSave}
+          />
+        </SafeAreaView>
+      ) : (
         <EditTitleBar
           title="手机号修改"
           canDone={/^1[0-9]{10}$/.test(newPhone)}
           onBack={() => navigation.goBack()}
           onDone={onSave}
         />
-      </SafeAreaView>
+      )}
 
       <View style={styles.block}>
         <View style={styles.blockRow}>

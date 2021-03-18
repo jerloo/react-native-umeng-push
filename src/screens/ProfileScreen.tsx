@@ -8,6 +8,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import { BottomSheet, ListItem } from 'react-native-elements';
 import {
@@ -21,6 +22,7 @@ import {
   currentLogFileName,
   currentLogFilePath,
   getObjectKey,
+  l,
 } from '../utils/logUtils';
 import { getSession, setSession, UserSession } from '../utils/sesstionUtils';
 import CosXmlReactNative, { COS_BUCKET_NAME } from '../utils/uploadUtils';
@@ -79,7 +81,7 @@ export default function ProfileScreen() {
     }
     // /handa/202101/zhangsa/2021-02-05-001.log.txt
     const objectName = await getObjectKey();
-    console.log('log file object name', objectName);
+    l.debug('log file object name', objectName);
     const uploadRequest = {
       bucket: `${COS_BUCKET_NAME}-1259078701`,
       object: objectName,
@@ -160,9 +162,13 @@ export default function ProfileScreen() {
         translucent={true}
         backgroundColor="transparent"
       />
-      <SafeAreaView edges={['top']}>
+      {Platform.OS === 'ios' ? (
+        <SafeAreaView edges={['top']}>
+          <CommonTitleBar onBack={() => navigation.goBack()} />
+        </SafeAreaView>
+      ) : (
         <CommonTitleBar onBack={() => navigation.goBack()} />
-      </SafeAreaView>
+      )}
 
       <View style={styles.block}>
         <TouchableOpacity

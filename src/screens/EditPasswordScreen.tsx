@@ -1,6 +1,13 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { StatusBar, StyleSheet, Text, View, Image } from 'react-native';
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Platform,
+} from 'react-native';
 import {
   scaleHeight,
   scaleSize,
@@ -63,7 +70,20 @@ export default function EditPasswordScreen() {
         translucent={true}
         backgroundColor="transparent"
       />
-      <SafeAreaView edges={['top']}>
+      {Platform.OS === 'ios' ? (
+        <SafeAreaView edges={['top']}>
+          <EditTitleBar
+            title="密码修改"
+            canDone={
+              oldPassword !== '' &&
+              newPassword !== '' &&
+              newPassword === confirmPasword
+            }
+            onBack={() => navigation.goBack()}
+            onDone={onSave}
+          />
+        </SafeAreaView>
+      ) : (
         <EditTitleBar
           title="密码修改"
           canDone={
@@ -74,7 +94,7 @@ export default function EditPasswordScreen() {
           onBack={() => navigation.goBack()}
           onDone={onSave}
         />
-      </SafeAreaView>
+      )}
 
       <View style={styles.block}>
         <View style={styles.blockRowInput}>

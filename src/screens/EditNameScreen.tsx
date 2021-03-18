@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Platform,
 } from 'react-native';
 import {
   scaleHeight,
@@ -63,14 +64,23 @@ export default function EditNameScreen() {
         backgroundColor="transparent"
       />
 
-      <SafeAreaView edges={['top']}>
+      {Platform.OS === 'ios' ? (
+        <SafeAreaView edges={['top']}>
+          <EditTitleBar
+            title="姓名修改"
+            canDone={name !== ''}
+            onBack={() => navigation.goBack()}
+            onDone={onSave}
+          />
+        </SafeAreaView>
+      ) : (
         <EditTitleBar
           title="姓名修改"
           canDone={name !== ''}
           onBack={() => navigation.goBack()}
           onDone={onSave}
         />
-      </SafeAreaView>
+      )}
 
       <View style={styles.block}>
         <TextInput

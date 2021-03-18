@@ -213,18 +213,23 @@ class CenterService implements ApiService {
         await db.saveBooks(result as PdaMeterBookDtoHolder[]);
         return result;
       } else {
-        // const adds: PdaMeterBookDtoHolder[] = (result as PdaMeterBookDtoHolder[]).filter(
-        //   (value) => {
-        //     return (localResult as PdaMeterBookDtoHolder[]).find(
-        //       (it) => it.bookId === value.bookId,
-        //     );
-        //   },
-        // );
-        // console.log('本地抄表任务有数据, 保存新增数据');
-        // await db.saveBooks(adds);
-        console.log('本地抄表任务不为空，删除本地数据，保存抄表任务');
-        await db.deleteBooks();
-        await db.saveBooks(result);
+        const remoteItems = result as PdaMeterBookDtoHolder[];
+        const localItems = localResult as PdaMeterBookDtoHolder[];
+        const adds = remoteItems.filter((value) => {
+          return !localItems.find((it) => it.bookId === value.bookId);
+        });
+        if (adds.length > 0) {
+          console.log('本地抄表任务有数据, 保存新增数据');
+          await db.saveBooks(adds);
+        }
+
+        const removeItems = localItems.filter((value) => {
+          return !remoteItems.find((it) => it.bookId === value.bookId);
+        });
+        if (remoteItems.length > 0) {
+          console.log('远程抄表任务有删除, 删除本地抄表任务');
+          await db.deleteBookByIds(removeItems.map((it) => it.bookId));
+        }
         return result;
       }
     }

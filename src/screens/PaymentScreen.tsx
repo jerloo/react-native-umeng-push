@@ -11,6 +11,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Platform,
 } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 import { CommonTitleBar } from '../components/titlebars/CommonTitleBar';
@@ -26,6 +27,7 @@ import { getMobileReadingChargeWay } from '../utils/systemSettingsUtils';
 import Modal from 'react-native-smart-modal';
 import { Toast } from '@ant-design/react-native';
 import QRCode from 'react-native-qrcode-svg';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function PaymentScreen() {
   const navigation = useNavigation();
@@ -231,7 +233,13 @@ export default function PaymentScreen() {
         translucent={true}
         backgroundColor="transparent"
       />
-      <CommonTitleBar title="收费" onBack={() => navigation.goBack()} />
+      {Platform.OS === 'ios' ? (
+        <SafeAreaView edges={['top']}>
+          <CommonTitleBar title="收费" onBack={() => navigation.goBack()} />
+        </SafeAreaView>
+      ) : (
+        <CommonTitleBar title="收费" onBack={() => navigation.goBack()} />
+      )}
 
       <ScrollView>
         <View>
