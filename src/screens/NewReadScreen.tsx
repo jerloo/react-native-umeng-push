@@ -145,8 +145,8 @@ export default function NewReadScreen() {
     const valueData = { ...newData, reading: parseInt(value, 10) || undefined };
     setNewData({
       ...valueData,
-      readWater:
-        value && value !== '' ? calcReadWater(valueData, readStateItems) : '',
+      // readWater:
+      //   value && value !== '' ? calcReadWater(valueData, readStateItems) : '',
       readDate: new Date(),
     });
     setAmount(0);
@@ -154,63 +154,80 @@ export default function NewReadScreen() {
 
   const preItem = async () => {
     if (newData.recordState !== 0) {
-      await checkData();
+      const passed = await checkData();
+      if (!passed) {
+        return;
+      }
     }
     const result = bookDataItems.filter(
       (it) => it.bookSortIndex < newData.bookSortIndex,
     );
     if (result.length > 0) {
-      setNewData(result[result.length - 1]);
+      const readState = readStateItems.find((it) => it.stateName === '正常');
+      const r = result[result.length - 1];
+      r.readStateId = readState?.id;
+      setNewData(r);
     } else {
       Toast.info('当前已经是第一条数据');
     }
   };
 
-  const nextItem = async () => {
-    if (newData.recordState !== 0) {
-      await checkData();
+  const nextItem = async (skip: boolean) => {
+    if (newData.recordState !== 0 && !skip) {
+      const passed = await checkData();
+      if (!passed) {
+        return;
+      }
     }
     const result = bookDataItems.filter(
       (it) => it.bookSortIndex > newData.bookSortIndex,
     );
     if (result.length > 0) {
-      setNewData(result[0]);
+      const readState = readStateItems.find((it) => it.stateName === '正常');
+      const r = result[0];
+      r.readStateId = readState?.id;
+      setNewData(r);
     } else {
       Toast.info('当前已经是最后一条数据');
     }
   };
 
   const checkData = async () => {
-    const water = calcReadWater(newData, readStateItems);
-    const result = judgeReadWater(water, newData);
+    return new Promise<boolean>(async (resolve, reject) => {
+      const water = calcReadWater(newData, readStateItems);
+      const result = judgeReadWater(water, newData);
 
-    if (!result) {
-      if (newData.recordState === 0) {
-        newData.recordState = 1;
-        newData.readWater = water;
-        await db.updateReadData([newData]);
-        await db.updateReadingNumberByBookId(newData.bookId);
-        Toast.success('保存成功');
-      }
-    } else {
-      AntModal.alert('重新选择', result, [
-        {
-          text: '否',
-          onPress: async () => {
-            newData.readWater = water;
-            await db.updateReadData([newData]);
-            await db.updateReadingNumberByBookId(newData.bookId);
+      if (!result) {
+        if (newData.recordState === 0) {
+          newData.recordState = 1;
+          newData.readWater = water;
+          await db.updateReadData([newData]);
+          await db.updateReadingNumberByBookId(newData.bookId);
+          Toast.success('保存成功');
+        }
+        resolve(true);
+      } else {
+        AntModal.alert('重新选择', result, [
+          {
+            text: '否',
+            onPress: async () => {
+              newData.readWater = water;
+              await db.updateReadData([newData]);
+              await db.updateReadingNumberByBookId(newData.bookId);
+              resolve(true);
+            },
           },
-        },
-        {
-          text: '是',
-          onPress: () => console.log('cancel'),
-        },
-      ]);
-    }
+          {
+            text: '是',
+            onPress: () => resolve(false),
+          },
+        ]);
+      }
+    });
   };
 
   const saveData = async () => {
+    console.log('saveData');
     if (!newData.reading) {
       Toast.fail('请先抄表');
       return;
@@ -237,7 +254,7 @@ export default function NewReadScreen() {
               newData.readWater = water;
               await db.updateReadData([newData]);
               await db.updateReadingNumberByBookId(newData.bookId);
-              nextItem();
+              nextItem(true);
             },
           },
           {
