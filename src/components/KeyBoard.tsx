@@ -7,18 +7,12 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {
-  scaleHeight as defaultScaleHeight,
-  scaleSize,
-} from 'react-native-responsive-design';
+import { scaleSize } from 'react-native-responsive-design';
 import { colorWhite } from '../styles';
 import StateButton from './StateButton';
 import { PdaReadStateDto } from '../../apiclient/src/models';
 import { ReadStateStorage } from '../utils/settingsUtils';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-let scaleHeight = defaultScaleHeight;
-scaleHeight = scaleSize;
 
 interface Props {
   onNumberClick?: (value: number) => void;
@@ -165,13 +159,13 @@ export default function KeyBoard(props: Props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#E6E6E6',
-    paddingBottom: scaleHeight(10),
+    paddingBottom: scaleSize(10),
   },
   row: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: scaleHeight(6),
+    marginTop: scaleSize(6),
   },
   cell: {
     display: 'flex',
@@ -179,10 +173,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
-    height: scaleHeight(104),
+    height: scaleSize(80),
     flex: 1,
     borderRadius: scaleSize(10),
-    marginVertical: scaleHeight(6),
+    marginVertical: scaleSize(6),
     marginHorizontal: scaleSize(9),
   },
   number: {
@@ -221,8 +215,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: scaleHeight(21),
-    paddingBottom: scaleHeight(10),
+    paddingTop: scaleSize(21),
+    paddingBottom: scaleSize(10),
     paddingHorizontal: scaleSize(30),
   },
   offenStatesWrapper: {
