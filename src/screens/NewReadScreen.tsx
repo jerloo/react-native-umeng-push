@@ -243,6 +243,8 @@ export default function NewReadScreen() {
       newData.recordState = 1;
       if (!result) {
         newData.readWater = water;
+        newData.lastReadDate = new Date();
+        newData.readDate = new Date();
         await db.updateReadData([newData]);
         await db.updateReadingNumberByBookId(newData.bookId);
         Toast.success('保存成功');
@@ -252,6 +254,8 @@ export default function NewReadScreen() {
             text: '否',
             onPress: async () => {
               newData.readWater = water;
+              newData.lastReadDate = new Date();
+              newData.readDate = new Date();
               await db.updateReadData([newData]);
               await db.updateReadingNumberByBookId(newData.bookId);
               nextItem(true);

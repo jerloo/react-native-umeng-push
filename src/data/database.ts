@@ -606,7 +606,8 @@ class DataBase {
         console.log('保存报表录入', item);
         tx.executeSql(
           `UPDATE BookDatas SET terminalFiles = ?, reading = ?, readWater = ?, 
-                readDate = ?, readStateId = ?, readRemark = ?, recordState = ?, uploaded = false
+                readDate = ?, readStateId = ?, readRemark = ?, recordState = ?, 
+                uploaded = false, lastReadDate = ?
             WHERE billMonth = ? AND custId = ? AND readTimes = ?`,
           [
             JSON.stringify(item.terminalFiles),
@@ -616,6 +617,7 @@ class DataBase {
             item.readStateId,
             item.readRemark,
             item.recordState,
+            dayjs(item.lastReadDate).format('YYYY-MM-DDTHH:mm:ss'),
             item.billMonth,
             item.custId,
             item.readTimes,
