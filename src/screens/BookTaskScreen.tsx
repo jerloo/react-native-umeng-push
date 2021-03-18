@@ -245,7 +245,7 @@ export default function BookTaskScreen() {
         }}>
         <FlatList<PdaReadDataDtoHolder>
           style={styles.items}
-          initialNumToRender={10}
+          initialNumToRender={30}
           data={bookDataItems.filter((it) => it.item.recordState === 0)}
           renderItem={renderBookItem}
           ItemSeparatorComponent={() => (
@@ -262,7 +262,7 @@ export default function BookTaskScreen() {
         />
         <FlatList<PdaReadDataDtoHolder>
           style={styles.items}
-          initialNumToRender={10}
+          initialNumToRender={30}
           data={bookDataItems.filter((it) => it.item.recordState !== 0)}
           renderItem={renderBookItem}
           ItemSeparatorComponent={() => (
@@ -278,7 +278,7 @@ export default function BookTaskScreen() {
         />
         <FlatList<PdaReadDataDtoHolder>
           style={styles.items}
-          initialNumToRender={10}
+          initialNumToRender={30}
           data={bookDataItems}
           renderItem={renderBookItem}
           ItemSeparatorComponent={() => (

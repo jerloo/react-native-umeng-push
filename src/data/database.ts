@@ -634,7 +634,7 @@ class DataBase {
         tx.executeSql(
           `UPDATE BookDatas SET terminalFiles = ?, reading = ?, readWater = ?, 
                 readDate = ?, readStateId = ?, readRemark = ?, recordState = ?, 
-                uploaded = false, lastReadDate = ?
+                uploaded = 1, lastReadDate = ?
             WHERE billMonth = ? AND custId = ? AND readTimes = ?`,
           [
             JSON.stringify(item.terminalFiles),
