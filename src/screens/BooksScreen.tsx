@@ -12,7 +12,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
-import { scaleSize } from 'react-native-responsive-design';
+import { scaleHeight, scaleSize } from 'react-native-responsive-design';
 import BookItem from '../components/BookItem';
 import center from '../data';
 import { Modal as AntModal, Toast } from '@ant-design/react-native';
@@ -251,7 +251,7 @@ export default function BooksScreen() {
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
       const find = bookItems.find((it) => it.bookId === rowKey);
-      if (find && find.readingNumber > 0) {
+      if (find && find.readingNumber > 0 && find.downloaded) {
         AntModal.alert('提示', '当前册本已开始抄表，不允许删除', [
           {
             text: '确定',
@@ -604,12 +604,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingIcon: {
-    width: scaleSize(88),
-    height: scaleSize(92),
+    width: scaleHeight(150),
+    height: scaleHeight(180),
   },
   loadingTitle: {
     color: '#2484E8',
-    fontSize: scaleSize(14),
+    fontSize: scaleSize(30),
     marginTop: scaleSize(-15),
   },
   modalContainer: {

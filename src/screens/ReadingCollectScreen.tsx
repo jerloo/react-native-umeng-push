@@ -57,6 +57,7 @@ export default function ReadingCollectScreen() {
   }, []);
 
   const refresh = async () => {
+    setSettingsModalVisible(false);
     if (loading) {
       return;
     }
