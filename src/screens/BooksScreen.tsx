@@ -222,11 +222,15 @@ export default function BooksScreen() {
   };
 
   const download = async () => {
+    const checkedItems = bookItems
+      .filter((value) => value.checked)
+      .map((it) => it.bookId);
+    if (checkedItems.length === 0) {
+      return;
+    }
     setLoading(true);
     try {
-      await center.getBookDataByIds(
-        bookItems.filter((value) => value.checked).map((it) => it.bookId),
-      );
+      await center.getBookDataByIds(checkedItems);
       fetchLocal();
     } catch (e) {
       Toast.fail(e.message);
