@@ -178,8 +178,8 @@ export default function NewReadScreen() {
     }
   };
 
-  const nextItem = async (skip: boolean) => {
-    if (newData.recordState !== 0 && !skip) {
+  const nextItem = async (notSkip: boolean = true) => {
+    if (notSkip) {
       const passed = await checkData();
       if (!passed) {
         return;
@@ -202,7 +202,7 @@ export default function NewReadScreen() {
     return new Promise<boolean>(async (resolve, reject) => {
       const water = calcReadWater(newData, readStateItems);
       const result = judgeReadWater(water, newData, readStateItems);
-
+      console.log('nextItem', water, result);
       if (!result) {
         if (newData.recordState === 0) {
           newData.recordState = 1;
@@ -282,7 +282,7 @@ export default function NewReadScreen() {
                 await db.updateReadData([newData]);
                 await db.updateReadingNumberByBookId(newData.bookId);
                 setNewData({ ...newData });
-                nextItem(true);
+                nextItem(false);
                 tryUploadAttachments(
                   newData.custId,
                   newData.billMonth,
@@ -687,7 +687,7 @@ export default function NewReadScreen() {
               })
             }
             onConfirmClick={saveData}
-            onNextClick={nextItem}
+            onNextClick={() => nextItem(true)}
             onPreClick={preItem}
             onSettingsOpen={() => setSettingsModalVisible(true)}
             readStates={readStates}
