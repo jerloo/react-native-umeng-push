@@ -9,11 +9,7 @@ import {
   Image,
   Platform,
 } from 'react-native';
-import {
-  scaleHeight,
-  scaleSize,
-  setSpText2,
-} from 'react-native-responsive-design';
+import { scaleHeight, scaleSize } from 'react-native-responsive-design';
 import { getSession } from '../utils/sesstionUtils';
 import EditTitleBar from '../components/titlebars/EditTitleBar';
 import center from '../data';
@@ -124,10 +120,10 @@ const styles = StyleSheet.create({
   titleBarBackButton: {
     // height: scaleHeight(32),
     // alignSelf: 'flex-start',
-    fontSize: setSpText2(30),
+    fontSize: scaleSize(30),
   },
   titleBarTitle: {
-    fontSize: setSpText2(40),
+    fontSize: scaleSize(40),
     color: '#333333',
     // alignSelf: 'center',
   },
@@ -136,7 +132,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scaleSize(15),
     paddingVertical: scaleHeight(3),
     borderRadius: scaleSize(4),
-    fontSize: setSpText2(30),
+    fontSize: scaleSize(30),
   },
   titleBarDoneButtonText: {
     color: '#999999',
@@ -156,11 +152,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: paddingScreen,
-    paddingTop: scaleHeight(28),
-    paddingBottom: scaleHeight(12),
+    paddingTop: scaleSize(12),
+    paddingBottom: scaleSize(12),
   },
   inputStyle: {
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     backgroundColor: 'white',
     paddingHorizontal: 0,
     flex: 1,

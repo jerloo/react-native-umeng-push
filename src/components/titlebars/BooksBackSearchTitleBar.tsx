@@ -7,7 +7,7 @@ import {
   ImageSourcePropType,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { scaleSize, setSpText2 } from 'react-native-responsive-design';
+import { scaleSize } from 'react-native-responsive-design';
 import { colorWhite } from '../../styles';
 
 interface Props {
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     // alignSelf: 'flex-start',
   },
   titleBarTitle: {
-    fontSize: setSpText2(40),
+    fontSize: scaleSize(40),
     color: colorWhite,
     flex: 1,
     // alignSelf: 'center',

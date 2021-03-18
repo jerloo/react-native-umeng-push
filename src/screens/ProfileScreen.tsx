@@ -11,11 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import { BottomSheet, ListItem } from 'react-native-elements';
-import {
-  scaleHeight,
-  scaleSize,
-  setSpText2,
-} from 'react-native-responsive-design';
+import { scaleHeight, scaleSize } from 'react-native-responsive-design';
 import { CommonTitleBar } from '../components/titlebars/CommonTitleBar';
 import { colorWhite } from '../styles';
 import {
@@ -375,12 +371,12 @@ const styles = StyleSheet.create({
   },
   textPrimary: {
     color: '#333333',
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     alignSelf: 'flex-start',
   },
   textSec: {
     color: '#999999',
-    fontSize: setSpText2(32),
+    fontSize: scaleSize(32),
     alignSelf: 'flex-end',
   },
   arrowRight: {
@@ -404,7 +400,7 @@ const styles = StyleSheet.create({
     marginTop: scaleHeight(30),
   },
   logoutButtonText: {
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     color: '#333333',
   },
   divideLine: {
@@ -424,27 +420,27 @@ const styles = StyleSheet.create({
     paddingBottom: scaleHeight(30),
   },
   bottomTitle: {
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     textAlign: 'center',
     alignSelf: 'center',
     fontWeight: '700',
   },
   bottomConfirmButton: {
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     paddingVertical: scaleHeight(21),
   },
   bottomCancelButton: {
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     paddingVertical: scaleHeight(21),
   },
   bottomConfirmText: {
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     textAlign: 'center',
     alignSelf: 'center',
     color: '#096BF3',
   },
   bottomCancelText: {
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     textAlign: 'center',
     alignSelf: 'center',
   },

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { scaleSize, setSpText2 } from 'react-native-responsive-design';
+import { scaleSize } from 'react-native-responsive-design';
 import { PdaMeterBookDtoHolder } from '../data/holders';
 import { colorWhite } from '../styles';
 import CircleCheckBox from './CircleCheckBox';
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   bookName: {
     color: '#333333',
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     marginTop: scaleSize(16),
   },
   detailsContainer: {
@@ -78,11 +78,11 @@ const styles = StyleSheet.create({
     marginHorizontal: scaleSize(34),
   },
   detailsLabel: {
-    fontSize: setSpText2(30),
+    fontSize: scaleSize(30),
     color: '#999999',
   },
   detailsValue: {
-    fontSize: setSpText2(30),
+    fontSize: scaleSize(30),
     color: '#333333',
   },
   detailsBox: {

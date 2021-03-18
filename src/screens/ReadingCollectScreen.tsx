@@ -13,7 +13,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorWhite } from '../styles';
-import { scaleSize, setSpText2 } from 'react-native-responsive-design';
+import { scaleSize } from 'react-native-responsive-design';
 import center from '../data';
 import { DatePicker, Provider, Toast } from '@ant-design/react-native';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
@@ -263,11 +263,11 @@ const styles = StyleSheet.create({
   },
   topItemLabel: {
     color: '#666666',
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
   },
   topItemValue: {
     color: '#333333',
-    fontSize: setSpText2(44),
+    fontSize: scaleSize(44),
     fontWeight: 'bold',
   },
   items: {
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     borderRadius: scaleSize(6),
   },
   btnDoneText: {
-    fontSize: setSpText2(28),
+    fontSize: scaleSize(28),
     color: colorWhite,
   },
   bottomRight: {

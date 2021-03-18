@@ -7,7 +7,7 @@ import {
   ImageSourcePropType,
   TouchableOpacity,
 } from 'react-native';
-import { scaleSize, setSpText2 } from 'react-native-responsive-design';
+import { scaleSize } from 'react-native-responsive-design';
 import { colorWhite } from '../../styles';
 
 interface Props {
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   titleBarTitle: {
-    fontSize: setSpText2(40),
+    fontSize: scaleSize(40),
     color: colorWhite,
     display: 'flex',
     justifyContent: 'center',

@@ -13,11 +13,7 @@ import {
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import HomeButton from '../components/HomeButton';
-import {
-  scaleSize,
-  scaleHeight,
-  setSpText2,
-} from 'react-native-responsive-design';
+import { scaleSize, scaleHeight } from 'react-native-responsive-design';
 import { getSession, UserSession } from '../utils/sesstionUtils';
 import center from '../data';
 import { setReadStateSettings } from '../utils/settingsUtils';
@@ -165,7 +161,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   userName: {
-    fontSize: setSpText2(44),
+    fontSize: scaleSize(44),
     color: '#333333',
     fontWeight: '700',
     marginStart: scaleSize(15),
@@ -180,7 +176,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scaleSize(30),
   },
   groupTitle: {
-    fontSize: setSpText2(40),
+    fontSize: scaleSize(40),
     marginVertical: scaleSize(30),
     fontWeight: '700',
   },

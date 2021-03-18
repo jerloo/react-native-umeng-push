@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import { scaleSize, setSpText2 } from 'react-native-responsive-design';
+import { scaleSize } from 'react-native-responsive-design';
 import { colorWhite } from '../styles';
 
 interface Props {
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   input: {
-    fontSize: setSpText2(28),
+    fontSize: scaleSize(28),
     height: '100%',
     padding: 0,
     color: '#BFC9E3',

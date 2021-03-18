@@ -7,11 +7,7 @@ import {
   StatusBar,
   TouchableOpacity,
 } from 'react-native';
-import {
-  scaleHeight,
-  scaleSize,
-  setSpText2,
-} from 'react-native-responsive-design';
+import { scaleHeight, scaleSize } from 'react-native-responsive-design';
 
 interface Props {
   onBack: () => void;
@@ -65,7 +61,7 @@ const styles = StyleSheet.create({
     // alignSelf: 'flex-start',
   },
   titleBarTitle: {
-    fontSize: setSpText2(40),
+    fontSize: scaleSize(40),
     color: '#333333',
     // alignSelf: 'center',
   },

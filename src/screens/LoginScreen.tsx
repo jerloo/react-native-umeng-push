@@ -10,11 +10,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { colorWhite } from '../styles';
 import AnimatedLoadingButton from 'rn-animated-loading-button';
-import {
-  scaleHeight,
-  scaleSize,
-  setSpText2,
-} from 'react-native-responsive-design';
+import { scaleHeight, scaleSize } from 'react-native-responsive-design';
 
 import center from '../data';
 
@@ -281,7 +277,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colorWhite,
-    fontSize: setSpText2(40),
+    fontSize: scaleSize(40),
     marginTop: scaleHeight(19),
     fontWeight: 'bold',
   },
@@ -290,7 +286,7 @@ const styles = StyleSheet.create({
     height: scaleSize(48),
   },
   inputStyle: {
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     marginBottom: 0,
     marginTop: 0,
     paddingBottom: 0,
@@ -319,7 +315,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   rememberTitle: {
-    fontSize: setSpText2(32),
+    fontSize: scaleSize(32),
     marginStart: scaleSize(30),
   },
   containerWidget: {
@@ -340,7 +336,7 @@ const styles = StyleSheet.create({
     borderRadius: scaleSize(50),
   },
   submitText: {
-    fontSize: setSpText2(44),
+    fontSize: scaleSize(44),
     color: colorWhite,
   },
   eyeClose: {},

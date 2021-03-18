@@ -8,11 +8,7 @@ import {
   Image,
   Platform,
 } from 'react-native';
-import {
-  scaleHeight,
-  scaleSize,
-  setSpText2,
-} from 'react-native-responsive-design';
+import { scaleHeight, scaleSize } from 'react-native-responsive-design';
 import EditTitleBar from '../components/titlebars/EditTitleBar';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
@@ -225,18 +221,18 @@ const styles = StyleSheet.create({
   },
   textTitleCurrent: {
     color: '#333333',
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     alignSelf: 'flex-start',
   },
   textPhoneCurrent: {
     color: '#333333',
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     alignSelf: 'flex-start',
     marginStart: scaleSize(30),
   },
   textTitleNew: {
     color: '#333333',
-    fontSize: setSpText2(34),
+    fontSize: scaleSize(34),
     alignSelf: 'flex-start',
     minWidth: scaleSize(136),
     textAlign: 'right',
@@ -250,13 +246,13 @@ const styles = StyleSheet.create({
     marginHorizontal: paddingScreen,
   },
   inputStyle: {
-    fontSize: setSpText2(32),
+    fontSize: scaleSize(32),
     flex: 1,
     paddingVertical: 0,
     marginVertical: 0,
   },
   remark: {
-    fontSize: setSpText2(28),
+    fontSize: scaleSize(28),
     color: '#4B92F4',
     marginTop: scaleHeight(24),
     paddingBottom: scaleHeight(32),

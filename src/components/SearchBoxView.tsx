@@ -8,7 +8,7 @@ import {
   ImageSourcePropType,
   Text,
 } from 'react-native';
-import { scaleSize, setSpText2 } from 'react-native-responsive-design';
+import { scaleSize } from 'react-native-responsive-design';
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     height: scaleSize(60),
   },
   input: {
-    fontSize: setSpText2(28),
+    fontSize: scaleSize(28),
     height: '100%',
     padding: 0,
     color: '#BFC9E3',

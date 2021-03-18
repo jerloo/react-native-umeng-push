@@ -7,11 +7,7 @@ import {
   StatusBar,
   TouchableOpacity,
 } from 'react-native';
-import {
-  scaleHeight,
-  scaleSize,
-  setSpText2,
-} from 'react-native-responsive-design';
+import { scaleHeight, scaleSize } from 'react-native-responsive-design';
 
 interface Props {
   canDone: boolean;
@@ -75,11 +71,11 @@ const styles = StyleSheet.create({
   titleBarBackButton: {
     // height: scaleHeight(32),
     // alignSelf: 'flex-start',
-    fontSize: setSpText2(30),
+    fontSize: scaleSize(30),
     paddingVertical: scaleHeight(8),
   },
   titleBarTitle: {
-    fontSize: setSpText2(40),
+    fontSize: scaleSize(40),
     color: '#333333',
     // alignSelf: 'center',
   },
@@ -88,7 +84,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scaleSize(15),
     paddingVertical: scaleHeight(8),
     borderRadius: scaleSize(4),
-    fontSize: setSpText2(30),
+    fontSize: scaleSize(30),
   },
   titleBarDoneButtonText: {
     color: '#999999',
