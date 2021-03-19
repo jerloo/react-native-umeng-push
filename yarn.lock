@@ -6529,6 +6529,11 @@ react-native-iphone-x-helper@^1.3.0:
   resolved "https://registry.npm.taobao.org/react-native-iphone-x-helper/download/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha1-IMYD6aDnZf1vlzlmOL3rDlpgsBA=
 
+react-native-lighting@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/react-native-lighting/-/react-native-lighting-1.2.0.tgz#9a7d0cf0a4dc05141999b4d9ed7e2dd641833d5f"
+  integrity sha512-UjG03TlX1KUjMPDiIGLPRaRfST4iJlJHHsduAnAPGPBIQ2CUGYhVLSXmejliHpftSRXELcG2PZCd9N0E3GwmQQ==
+
 react-native-linear-gradient@^2.5.6:
   version "2.5.6"
   resolved "https://registry.npmjs.org/react-native-linear-gradient/-/react-native-linear-gradient-2.5.6.tgz#96215cbc5ec7a01247a20890888aa75b834d44a0"

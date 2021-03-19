@@ -53,6 +53,7 @@ import { meterState, recordState } from '../utils/stateConverter';
 import Video from 'react-native-video';
 import { AttachmentDbItem } from '../data/models';
 import { tryUploadAttachments } from '../utils/attachUtils';
+import { toggle } from 'react-native-lighting';
 
 let scaleHeight = defaultScaleHeight;
 scaleHeight = scaleSize;
@@ -280,7 +281,9 @@ export default function NewReadScreen() {
     }
   };
 
-  const switchLighting = () => {};
+  const switchLighting = async () => {
+    toggle();
+  };
 
   const addNewAttachment = async (result: AttachmentDbItem) => {
     result.bookId = newData.bookId;
