@@ -19,6 +19,7 @@ interface Props {
   backIcon?: ImageSourcePropType;
   right1Icon?: ImageSourcePropType;
   right2Icon?: ImageSourcePropType;
+  right2IconView?: () => React.ReactElement;
 }
 
 export default function CommonTitleBarEx(props: Props) {
@@ -71,7 +72,9 @@ export default function CommonTitleBarEx(props: Props) {
         ) : (
           <View style={styles.titleBarBackButton} />
         )}
-        {props.right2Icon ? (
+        {props.right2IconView ? (
+          props.right2IconView()
+        ) : props.right2Icon ? (
           <TouchableOpacity
             style={styles.button}
             onPress={() => props.onRight2Click && props.onRight2Click()}>

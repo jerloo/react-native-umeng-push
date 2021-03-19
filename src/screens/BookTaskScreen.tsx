@@ -156,7 +156,6 @@ export default function BookTaskScreen() {
   const renderBookItem = (info: ListRenderItemInfo<PdaReadDataDtoHolder>) => {
     return (
       <TouchableOpacity
-        activeOpacity={1.0}
         onLongPress={() => {
           const items = bookDataItems.map((item) => {
             if (item.item.custId === info.item.item.custId) {

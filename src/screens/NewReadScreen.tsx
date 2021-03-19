@@ -36,7 +36,7 @@ import {
 } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
 import db from '../data/database';
-import { Toast } from '@ant-design/react-native';
+import { Badge, Toast } from '@ant-design/react-native';
 import center from '../data';
 import { isMobileReadingCanCharge } from '../utils/systemSettingsUtils';
 import {
@@ -595,7 +595,26 @@ export default function NewReadScreen() {
             onBack={() => navigation.goBack()}
             onRight2Click={() => setAttachmentsModalVisible(true)}
             backIcon={require('../assets/qietu/cebenxiangqing/book_details_icon_back_normal.png')}
-            right2Icon={require('../assets/enter_icon_enclosure_normal_white.png')}
+            // right2Icon={require('../assets/enter_icon_enclosure_normal_white.png')}
+            right2IconView={() => (
+              <TouchableOpacity
+                onPress={() => setAttachmentsModalVisible(true)}>
+                <Badge text={attachments.length}>
+                  <View
+                    style={{
+                      width: scaleSize(50),
+                      height: scaleSize(32),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Image
+                      style={styles.titleBarBackButton}
+                      source={require('../assets/enter_icon_enclosure_normal_white.png')}
+                    />
+                  </View>
+                </Badge>
+              </TouchableOpacity>
+            )}
           />
         </SafeAreaView>
 
@@ -931,5 +950,10 @@ const styles = StyleSheet.create({
     backgroundColor: colorWhite,
     height: '100%',
     paddingTop: StatusBar.currentHeight,
+  },
+  titleBarBackButton: {
+    width: scaleSize(32),
+    height: scaleSize(32),
+    // alignSelf: 'flex-start',
   },
 });
