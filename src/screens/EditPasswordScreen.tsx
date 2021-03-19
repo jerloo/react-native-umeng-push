@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/core';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PasswordInput from '../components/PasswordInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { getSession, UserSession } from '../utils/sesstionUtils';
 
 const PASSWORD_REG = /^(?=.*?[0-9])(?=.*?[a-zA-Z]).{8,}$/;
 
@@ -28,8 +29,21 @@ export default function EditPasswordScreen() {
   const [oldPasswordVisible, setOldPasswordVisible] = useState(false);
   const [newPasswordVisible, setNewPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [session, setSession] = useState<UserSession>();
+
+  React.useEffect(() => {
+    getSession().then((it) => {
+      if (it) {
+        setSession(it);
+      }
+    });
+  }, []);
 
   const onSave = async () => {
+    if (oldPassword !== session?.password) {
+      Toast.fail('旧密码不正确');
+      return;
+    }
     if (!PASSWORD_REG.test(newPassword)) {
       Toast.fail('密码必须至少8位字符，同时需包含字母和数字');
       return;
