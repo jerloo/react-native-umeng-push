@@ -26,7 +26,7 @@ export type MainStackParamList = {
     title: string;
   };
   CustDetails: {
-    data: PdaReadDataDto | PdaCustListDto;
+    data: PdaReadDataDto & PdaCustListDto;
   };
   Camera: {
     callback: (result: MobileFileDto) => void;

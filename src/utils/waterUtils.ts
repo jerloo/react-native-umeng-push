@@ -1,5 +1,5 @@
 import { PdaReadDataDto, PdaReadStateDto } from '../../apiclient/src/models';
-import { getAlgorithmByReadStateId } from './readStatesUtils';
+import { getAlgorithmByReadStateId } from './statesUtils';
 
 export const normalCalc = (data: PdaReadDataDto) => {
   const result = data.reading - data.lastReading + data.replaceWater;

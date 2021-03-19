@@ -16,7 +16,7 @@ import HomeButton from '../components/HomeButton';
 import { scaleSize, scaleHeight } from 'react-native-responsive-design';
 import { getSession, UserSession } from '../utils/sesstionUtils';
 import center from '../data';
-import { setReadStateSettings } from '../utils/settingsUtils';
+import { setReadStateSettings } from '../utils/statesUtils';
 import { useNavigation } from '@react-navigation/core';
 import SearchBoxView from '../components/SearchBoxView';
 import { setSystemSettings } from '../utils/systemSettingsUtils';

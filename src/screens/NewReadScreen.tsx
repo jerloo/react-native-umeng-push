@@ -17,11 +17,7 @@ import {
   scaleHeight as defaultScaleHeight,
   scaleSize,
 } from 'react-native-responsive-design';
-import {
-  MobileFileDto,
-  PdaReadDataDto,
-  PdaReadStateDto,
-} from '../../apiclient/src/models';
+import { MobileFileDto, PdaReadDataDto } from '../../apiclient/src/models';
 import { colorWhite } from '../styles';
 import Tag from '../components/Tag';
 import KeyBoard from '../components/KeyBoard';
@@ -31,11 +27,7 @@ import Attachments from '../components/Attachments';
 import Modal from 'react-native-smart-modal';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import NewReadSettings from '../components/NewReadSettings';
-import {
-  getReadStateSettings,
-  getReadStateSettingsItems,
-  ReadStateStorage,
-} from '../utils/settingsUtils';
+import { getReadStateSettings, ReadStateStorage } from '../utils/statesUtils';
 import {
   NavigationProp,
   RouteProp,
@@ -52,7 +44,7 @@ import {
   judgeReadWater,
   WATER_HIGHER,
   WATER_LOWER,
-} from '../utils/readWaterUtils';
+} from '../utils/waterUtils';
 import { Modal as AntModal } from '@ant-design/react-native';
 import { meterState, recordState } from '../utils/stateConverter';
 import Video from 'react-native-video';
@@ -75,7 +67,6 @@ export default function NewReadScreen() {
   const [previewModalVisible, setPreviewModalVisible] = useState(false);
   const [currentPreviewFile, setCurrentPreviewFile] = useState<MobileFileDto>();
   const [readStates, setReadStates] = React.useState<ReadStateStorage>();
-  const [readStateItems, setReadStateItems] = useState<PdaReadStateDto[]>([]);
   const [amount, setAmount] = useState(0);
   const [canCharge, setCanCharge] = useState(false);
   const [attachments, setAttachments] = useState<AttachmentDbItem[]>([]);
@@ -116,25 +107,10 @@ export default function NewReadScreen() {
           route.params.data.readTimes,
         ).then((details) => {
           if (details) {
-            console.log('数据库获取', details);
-
             if (!details.readStateId) {
-              console.log('不存在抄表状态');
-              getReadStateSettingsItems().then((items) => {
-                const readState = items.find((it) => it.stateName === '正常');
-                details.readStateId = readState?.id;
-                setNewData(details);
-                setReadStateItems(items);
-              });
-            } else {
-              getReadStateSettingsItems().then((items) => {
-                // const readState = items.find(
-                //   (it) => it.id === details.readStateId,
-                // );
-                // details.readStateId = readState?.id;
-                // setNewData(details);
-                setReadStateItems(items);
-              });
+              const readState = r.items.find((it) => it.stateName === '正常');
+              details.readStateId = readState?.id;
+              setNewData(details);
             }
           }
         });
@@ -169,7 +145,7 @@ export default function NewReadScreen() {
       (it) => it.bookSortIndex < newData.bookSortIndex,
     );
     if (result.length > 0) {
-      const readState = readStateItems.find((it) => it.stateName === '正常');
+      const readState = readStates?.items.find((it) => it.stateName === '正常');
       const r = result[result.length - 1];
       r.readStateId = readState?.id;
       setNewData(r);
@@ -189,7 +165,7 @@ export default function NewReadScreen() {
       (it) => it.bookSortIndex > newData.bookSortIndex,
     );
     if (result.length > 0) {
-      const readState = readStateItems.find((it) => it.stateName === '正常');
+      const readState = readStates?.items.find((it) => it.stateName === '正常');
       const r = result[0];
       r.readStateId = readState?.id;
       setNewData(r);
@@ -199,9 +175,9 @@ export default function NewReadScreen() {
   };
 
   const checkData = async () => {
-    return new Promise<boolean>(async (resolve, reject) => {
-      const water = calcReadWater(newData, readStateItems);
-      const result = judgeReadWater(water, newData, readStateItems);
+    return new Promise<boolean>(async (resolve, _reject) => {
+      const water = calcReadWater(newData, readStates?.items || []);
+      const result = judgeReadWater(water, newData, readStates?.items || []);
       console.log('nextItem', water, result);
       if (!result) {
         if (newData.recordState === 0) {
@@ -253,8 +229,8 @@ export default function NewReadScreen() {
       Toast.fail('请选择抄表状态');
       return;
     } else {
-      const water = calcReadWater(newData, readStateItems);
-      const result = judgeReadWater(water, newData, readStateItems);
+      const water = calcReadWater(newData, readStates?.items || []);
+      const result = judgeReadWater(water, newData, readStates?.items || []);
       newData.recordState = 1;
       if (!result) {
         newData.readWater = water;
@@ -374,13 +350,13 @@ export default function NewReadScreen() {
           <View style={styles.extraRowPart}>
             <Text style={styles.extraLabel}>上期抄码</Text>
             <Text style={[styles.extraValue, { color: '#333333' }]}>
-              {newData.lastReading}
+              {newData.lastReading || 0}
             </Text>
           </View>
           <View style={styles.extraRowPart}>
             <Text style={styles.extraLabel}>上次水量</Text>
             <Text style={[styles.extraValue, { color: '#333333' }]}>
-              {newData.lastReadWater === 0 ? '' : newData.lastReadWater}
+              {newData.lastReadWater || 0}
             </Text>
           </View>
         </View>
@@ -701,7 +677,7 @@ export default function NewReadScreen() {
               };
               setNewData({
                 ...valueData,
-                readWater: calcReadWater(valueData, readStateItems),
+                readWater: calcReadWater(valueData, readStates?.items || []),
               });
             }}
           />

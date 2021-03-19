@@ -121,56 +121,82 @@ interface ReadStateGroupItem extends PdaReadStateDto {
 export interface ReadStateStorage {
   offens: PdaReadStateDto[];
   groups: ReadStateGroupItem[];
+  items: PdaReadStateDto[];
 }
-
-export const setOffensReadStatesId = async (ids: number[]) => {
-  await AsyncStorage.setItem('offensReadStatesId', JSON.stringify(ids));
-};
-
-export const getOffesReadStatesId = async () => {
-  const content = await AsyncStorage.getItem('offensReadStatesId');
-  return content ? (JSON.parse(content) as number[]) : null;
-};
 
 const defaultOffenNames = ['正常', '其他', '失灵', '暂估', '门闭', '表坏'];
 
 export const getReadStateSettings = async () => {
   const content = await AsyncStorage.getItem('readStates');
-  const items = content ? (JSON.parse(content) as PdaReadStateDto[]) : null;
-
-  if (!items) {
-    return null;
-  }
-
-  let offenReadStatesId = (await getOffesReadStatesId()) || [];
-  if (!offenReadStatesId || offenReadStatesId.length === 0) {
-    offenReadStatesId = items
-      .filter((it) => defaultOffenNames.indexOf(it.stateName) > -1)
-      .map((it) => it.id);
-  }
-  const offens = items.filter((it) => offenReadStatesId.indexOf(it.id) > -1);
-  const normals = items.filter(
-    (it) => defaultOffenNames.indexOf(it.stateName) < 0,
-  );
-  const groups = (normals.filter(
-    (it) => it.parentId === 0,
-  ) as ReadStateGroupItem[]).map((it) => {
-    it.children = normals.filter((i) => i.parentId === it.id);
-    return it;
-  });
-  const state: ReadStateStorage = {
-    offens: offens,
-    groups: groups,
-  };
+  const state = content ? (JSON.parse(content) as ReadStateStorage) : null;
   return state;
 };
 
 export const setReadStateSettings = async (items: PdaReadStateDto[]) => {
-  const content = JSON.stringify(items);
+  let state = await getReadStateSettings();
+  if (!state) {
+    const offenReadStatesIds = items
+      .filter((it) => defaultOffenNames.indexOf(it.stateName) > -1)
+      .map((it) => it.id);
+    const normals = items.filter(
+      (it) => defaultOffenNames.indexOf(it.stateName) < 0,
+    );
+    const groups = (normals.filter(
+      (it) => it.parentId === 0,
+    ) as ReadStateGroupItem[]).map((it) => {
+      it.children = normals.filter((i) => i.parentId === it.id);
+      return it;
+    });
+    state = {
+      offens: items.filter((it) => offenReadStatesIds.indexOf(it.id) > -1),
+      groups: groups,
+      items: items,
+    };
+  } else {
+    if (state.offens.length === 0) {
+      const offenReadStatesIds = items
+        .filter((it) => defaultOffenNames.indexOf(it.stateName) > -1)
+        .map((it) => it.id);
+      const normals = items.filter(
+        (it) => defaultOffenNames.indexOf(it.stateName) < 0,
+      );
+      const groups = (normals.filter(
+        (it) => it.parentId === 0,
+      ) as ReadStateGroupItem[]).map((it) => {
+        it.children = normals.filter((i) => i.parentId === it.id);
+        return it;
+      });
+      state = {
+        offens: items.filter((it) => offenReadStatesIds.indexOf(it.id) > -1),
+        groups: groups,
+        items: items,
+      };
+    }
+    state.offens = state.offens.filter((it) => items.find((i) => i.id === it));
+    const normals = items.filter((it) =>
+      state?.offens.find((i) => i.id === it.id),
+    );
+    const groups = (normals.filter(
+      (it) => it.parentId === 0,
+    ) as ReadStateGroupItem[]).map((it) => {
+      it.children = normals.filter((i) => i.parentId === it.id);
+      return it;
+    });
+    state.groups = groups;
+    state.items = items;
+  }
+
+  const content = JSON.stringify(state);
   await AsyncStorage.setItem('readStates', content);
 };
 
-export const getReadStateSettingsItems = async () => {
-  const content = await AsyncStorage.getItem('readStates');
-  return content ? (JSON.parse(content) as PdaReadStateDto[]) : [];
+export const getAlgorithmByReadStateId = (
+  readStateId: number,
+  readStates: PdaReadStateDto[],
+) => {
+  const result = readStates.find((it) => it.id === readStateId);
+  if (!result) {
+    return readStates.find((it) => it.stateName === '正常')?.meterReadAlgorithm;
+  }
+  return result.meterReadAlgorithm;
 };

@@ -101,7 +101,7 @@ export default function CustDetailsScreen() {
       '',
       (text) => {
         const info = { ...details?.custInfo };
-        if (info) {
+        if (info && details?.custId) {
           info.installLocation = text;
           updateBasicInfo(details?.custId, info);
         }
@@ -121,7 +121,7 @@ export default function CustDetailsScreen() {
           return;
         }
         const info = { ...details?.custInfo };
-        if (info) {
+        if (info && details?.custId) {
           info.mobile = text;
           updateBasicInfo(details?.custId, info);
         }
@@ -137,7 +137,7 @@ export default function CustDetailsScreen() {
       '',
       (text) => {
         const info = { ...details?.custInfo };
-        if (info) {
+        if (info && details?.custId) {
           info.steelMark = text;
           updateBasicInfo(details?.custId, info);
         }

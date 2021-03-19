@@ -39,7 +39,9 @@ export default function ArrearageItem({ data }: Props) {
       <View style={styles.line} />
       <View style={styles.bottom}>
         <Text style={styles.label}>账单详情</Text>
-        <Image />
+        <Image
+          source={require('../assets/qietu/shoufeimingxi/charge_details_icon_open_normal.png')}
+        />
       </View>
     </View>
   );

@@ -11,7 +11,7 @@ import { scaleSize } from 'react-native-responsive-design';
 import { colorWhite } from '../styles';
 import StateButton from './StateButton';
 import { PdaReadStateDto } from '../../apiclient/src/models';
-import { ReadStateStorage } from '../utils/settingsUtils';
+import { ReadStateStorage } from '../utils/statesUtils';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface Props {

@@ -2,11 +2,7 @@ import * as React from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 import { PdaReadStateDto } from '../../apiclient/src/models';
-import {
-  getReadStateSettings,
-  ReadStateStorage,
-  setOffensReadStatesId,
-} from '../utils/settingsUtils';
+import { getReadStateSettings, ReadStateStorage } from '../utils/statesUtils';
 import StateButtonEx from './StateButtonEx';
 
 interface Props {
