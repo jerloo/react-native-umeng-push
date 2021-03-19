@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 import { PdaPaymentSubtotal } from '../../apiclient/src/models';
 import { colorWhite } from '../styles';
+import ArrowIcon from './ArrowIcon';
 
 interface Props {
   data: PdaPaymentSubtotal;
@@ -39,7 +40,7 @@ export default function SubtotalItem({ data }: Props) {
       <View style={styles.line} />
       <View style={styles.bottom}>
         <Text style={styles.label}>账单详情</Text>
-        <Image />
+        <ArrowIcon />
       </View>
     </View>
   );
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
   line: {
     height: scaleSize(1),
     backgroundColor: '#E1E8F4',
+    marginTop: scaleSize(26),
   },
   label: {
     color: '#333333',

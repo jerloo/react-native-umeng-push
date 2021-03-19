@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
@@ -10,7 +11,9 @@ interface Props {
 export default function PaymentCollectItem({ data }: Props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.payDate}>{data.payDate}</Text>
+      <Text style={styles.payDate}>
+        {dayjs(data.payDate).format('YYYY-MM-DD')}
+      </Text>
       <View style={styles.line} />
       <View style={styles.row}>
         <View style={styles.col}>

@@ -147,8 +147,8 @@ export default function NewReadScreen() {
     }
   };
 
-  const nextItem = async (notSkip: boolean = true) => {
-    if (notSkip) {
+  const nextItem = async () => {
+    if (newData.reading) {
       const passed = await checkData();
       if (!passed) {
         return;
@@ -671,7 +671,7 @@ export default function NewReadScreen() {
               })
             }
             onConfirmClick={saveData}
-            onNextClick={() => nextItem(true)}
+            onNextClick={nextItem}
             onPreClick={preItem}
             onSettingsOpen={() => setSettingsModalVisible(true)}
             readStates={readStates}

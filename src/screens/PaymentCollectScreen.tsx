@@ -414,7 +414,7 @@ const styles = StyleSheet.create({
   items: {
     // backgroundColor: colorWhite,
     // marginTop: scaleSize(100),
-    marginTop: scaleSize(80),
+    // marginTop: scaleSize(80),
   },
   item: {
     // marginHorizontal: scaleSize(30),

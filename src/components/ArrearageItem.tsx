@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 import { PdaArrearageDto } from '../../apiclient/src/models';
 import { colorWhite } from '../styles';
+import ArrowIcon from './ArrowIcon';
 
 interface Props {
   data: PdaArrearageDto;
@@ -39,9 +40,7 @@ export default function ArrearageItem({ data }: Props) {
       <View style={styles.line} />
       <View style={styles.bottom}>
         <Text style={styles.label}>账单详情</Text>
-        <Image
-          source={require('../assets/qietu/shoufeimingxi/charge_details_icon_open_normal.png')}
-        />
+        <ArrowIcon />
       </View>
     </View>
   );
@@ -78,6 +77,7 @@ const styles = StyleSheet.create({
   line: {
     height: scaleSize(1),
     backgroundColor: '#E1E8F4',
+    marginTop: scaleSize(26),
   },
   label: {
     color: '#333333',
