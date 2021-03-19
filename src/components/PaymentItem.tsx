@@ -38,7 +38,9 @@ export default function PaymentItem({ data }: Props) {
         </View>
         <View
           style={[styles.tableCol, { flex: 1, backgroundColor: colorWhite }]}>
-          <Text style={styles.tableValueText}>{info.item.money}</Text>
+          <Text style={styles.tableValueText}>
+            {info.item.money?.toFixed(2)}
+          </Text>
         </View>
       </View>
     );
@@ -57,7 +59,7 @@ export default function PaymentItem({ data }: Props) {
               <Text style={styles.detailsValue}>{data.lastReading}</Text>
               <Text style={styles.detailsValue}>{data.reading}</Text>
               <Text style={[styles.detailsValue, { color: '#F0655A' }]}>
-                {data.extendedAmount}
+                {data.extendedAmount?.toFixed(2)}
               </Text>
             </View>
           </View>
@@ -72,7 +74,9 @@ export default function PaymentItem({ data }: Props) {
             <View style={styles.detailsValues}>
               <Text style={styles.detailsValue}>{data.readWater}</Text>
               <Text style={styles.detailsValue}>{data.readingDate}</Text>
-              <Text style={styles.detailsValue}>{data.lateFee}</Text>
+              <Text style={styles.detailsValue}>
+                {data.lateFee?.toFixed(2)}
+              </Text>
             </View>
           </View>
         </View>
@@ -109,7 +113,7 @@ export default function PaymentItem({ data }: Props) {
       onPress={() => setExpand(!expand)}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{data.billMonth}账单</Text>
-        <Text style={styles.amount}>{data.extendedAmount}</Text>
+        <Text style={styles.amount}>{data.extendedAmount?.toFixed(2)}</Text>
       </View>
 
       {expand ? renderExpand() : null}

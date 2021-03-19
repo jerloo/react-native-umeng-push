@@ -40,11 +40,11 @@ export interface PdaChargeDetails {
      * @type {number}
      * @memberof PdaChargeDetails
      */
-    water?: any;
+    water?: number;
     /**
      * 金额
      * @type {number}
      * @memberof PdaChargeDetails
      */
-    money?: any;
+    money?: number;
 }

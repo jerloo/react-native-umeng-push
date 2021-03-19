@@ -256,7 +256,9 @@ export default function PaymentScreen() {
                 <View style={styles.numbers}>
                   <View style={styles.numberCol}>
                     <Text style={styles.numberLabel}>预存余额</Text>
-                    <Text style={styles.numberValue}>0</Text>
+                    <Text style={styles.numberValue}>
+                      {route.params.deposit || 0}
+                    </Text>
                   </View>
                   <View style={styles.numberCol}>
                     <Text style={styles.numberLabel}>合计金额</Text>

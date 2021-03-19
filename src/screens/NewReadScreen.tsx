@@ -336,6 +336,7 @@ export default function NewReadScreen() {
       navigation.navigate('Payment', {
         custId: newData.custId,
         custCode: newData.custCode || '',
+        deposit: newData.deposit,
       });
     }
   };

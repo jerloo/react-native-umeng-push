@@ -34,6 +34,7 @@ export type MainStackParamList = {
   Payment: {
     custId: number;
     custCode: string;
+    deposit: number;
   };
   PaymentCollect: {};
   PaymentSubtotal: {};
