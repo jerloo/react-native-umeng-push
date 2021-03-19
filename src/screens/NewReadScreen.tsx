@@ -38,7 +38,10 @@ import { MainStackParamList } from './routeParams';
 import db from '../data/database';
 import { Badge, Toast } from '@ant-design/react-native';
 import center from '../data';
-import { isMobileReadingCanCharge } from '../utils/systemSettingsUtils';
+import {
+  isMobileReadingCanCharge,
+  isMobileReadingMustPhoto,
+} from '../utils/systemSettingsUtils';
 import {
   calcReadWater,
   judgeReadWater,
@@ -71,6 +74,7 @@ export default function NewReadScreen() {
   const [canCharge, setCanCharge] = useState(false);
   const [attachments, setAttachments] = useState<AttachmentDbItem[]>([]);
   const [bookDataItems, setBookDataItems] = useState<PdaReadDataDto[]>([]);
+  const [mustTakePhoto, setMustTakePhoto] = useState(false);
 
   useEffect(() => {
     const fetchLocal = async () => {
@@ -84,6 +88,7 @@ export default function NewReadScreen() {
     };
 
     fetchLocal();
+    isMobileReadingMustPhoto().then((r) => setMustTakePhoto(r));
   }, [data]);
 
   useEffect(() => {
@@ -332,6 +337,25 @@ export default function NewReadScreen() {
         custId: newData.custId,
         custCode: newData.custCode || '',
       });
+    }
+  };
+
+  const onNumberClick = async (n: number) => {
+    if (mustTakePhoto && attachments.length === 0) {
+      AntModal.alert('提示', '您需要先拍照再进行抄码', [
+        {
+          text: '取消',
+        },
+        {
+          text: '立即拍照',
+          onPress: () =>
+            navigation.navigate('Camera', {
+              callback: addNewAttachment,
+            }),
+        },
+      ]);
+    } else {
+      setValue(`${newData.reading || ''}${n}`);
     }
   };
 
@@ -662,9 +686,7 @@ export default function NewReadScreen() {
                 );
               }
             }}
-            onNumberClick={(n) => {
-              setValue(`${newData.reading || ''}${n}`);
-            }}
+            onNumberClick={onNumberClick}
             onPhotoClick={() =>
               navigation.navigate('Camera', {
                 callback: addNewAttachment,

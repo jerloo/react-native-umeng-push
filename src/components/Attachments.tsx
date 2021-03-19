@@ -210,14 +210,14 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     position: 'absolute',
-    width: scaleSize(29),
-    height: scaleSize(27),
     right: 5,
     top: 5,
+    paddingBottom: scaleSize(10),
+    paddingStart: scaleSize(30),
   },
   deleteIcon: {
-    width: scaleSize(29),
-    height: scaleSize(27),
+    width: scaleSize(40),
+    height: scaleSize(35),
   },
   takeImage: {
     width: scaleSize(50),
