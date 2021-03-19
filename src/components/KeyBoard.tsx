@@ -32,7 +32,10 @@ export default function KeyBoard(props: Props) {
     <SafeAreaView edges={['bottom']} style={styles.container}>
       <View style={styles.offenStates}>
         <ScrollView horizontal style={styles.offenStatesWrapper}>
-          {props.readStates?.offens.map((it) => (
+          {[
+            ...(props.readStates?.offens || []),
+            ...(props.readStates?.normals || []),
+          ].map((it) => (
             <StateButton
               key={it.id}
               selected={props.selectStateId === it.id}

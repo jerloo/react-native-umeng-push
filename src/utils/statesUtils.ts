@@ -122,6 +122,7 @@ export interface ReadStateStorage {
   offens: PdaReadStateDto[];
   groups: ReadStateGroupItem[];
   items: PdaReadStateDto[];
+  normals: PdaReadStateDto[];
 }
 
 const defaultOffenNames = ['正常', '其他', '失灵', '暂估', '门闭', '表坏'];
@@ -151,6 +152,7 @@ export const setReadStateSettings = async (items: PdaReadStateDto[]) => {
       offens: items.filter((it) => offenReadStatesIds.indexOf(it.id) > -1),
       groups: groups,
       items: items,
+      normals: normals,
     };
   } else {
     if (state.offens.length === 0) {
@@ -170,24 +172,59 @@ export const setReadStateSettings = async (items: PdaReadStateDto[]) => {
         offens: items.filter((it) => offenReadStatesIds.indexOf(it.id) > -1),
         groups: groups,
         items: items,
+        normals: normals,
       };
+    } else {
+      state.offens = state.offens.filter((it) =>
+        items.find((i) => i.id === it.id),
+      );
+      const normals = items.filter(
+        (it) => !state?.offens.find((i) => i.id === it.id),
+      );
+      const groups = (normals.filter(
+        (it) => it.parentId === 0,
+      ) as ReadStateGroupItem[]).map((it) => {
+        it.children = normals.filter((i) => i.parentId === it.id);
+        return it;
+      });
+      state.groups = groups;
+      state.items = items;
+      state.normals = normals;
     }
-    state.offens = state.offens.filter((it) => items.find((i) => i.id === it));
-    const normals = items.filter((it) =>
-      state?.offens.find((i) => i.id === it.id),
-    );
-    const groups = (normals.filter(
-      (it) => it.parentId === 0,
-    ) as ReadStateGroupItem[]).map((it) => {
-      it.children = normals.filter((i) => i.parentId === it.id);
-      return it;
-    });
-    state.groups = groups;
-    state.items = items;
   }
 
   const content = JSON.stringify(state);
   await AsyncStorage.setItem('readStates', content);
+};
+
+export const removeReadStateFromOffen = async (
+  item: PdaReadStateDto,
+  readStates: ReadStateStorage,
+) => {
+  readStates.offens = readStates?.offens.filter((it) => it.id !== item.id);
+  readStates.groups?.forEach((it) => {
+    if (it.id === item.parentId) {
+      it.children.push(item);
+    }
+  });
+  return readStates;
+};
+
+export const addReadStateToOffen = async (
+  item: PdaReadStateDto,
+  readStates: ReadStateStorage,
+) => {
+  readStates.offens = [...readStates?.offens, item];
+  readStates.groups.forEach((it) => {
+    if (it.id === item.parentId) {
+      it.children = it.children.filter((i) => i.id !== item.id);
+    }
+  });
+  return readStates;
+};
+
+export const saveReadStatesStorage = async (readStates: ReadStateStorage) => {
+  await AsyncStorage.setItem('readStates', JSON.stringify(readStates));
 };
 
 export const getAlgorithmByReadStateId = (

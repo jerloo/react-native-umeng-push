@@ -84,13 +84,7 @@ export default function NewReadScreen() {
     };
 
     fetchLocal();
-  }, [data]);
 
-  useEffect(() => {
-    isMobileReadingCanCharge().then((flag) => setCanCharge(flag));
-  }, []);
-
-  useEffect(() => {
     db.getAttachments(data.custId, data.readTimes, data.billMonth).then((r) => {
       console.log('获取附件', r);
       setAttachments(r);
@@ -98,30 +92,27 @@ export default function NewReadScreen() {
   }, [data]);
 
   useEffect(() => {
+    isMobileReadingCanCharge().then((flag) => setCanCharge(flag));
+  }, []);
+
+  useEffect(() => {
     getReadStateSettings().then((r) => {
       if (r) {
         setReadStates(r);
-        db.getBookDataDetails(
-          route.params.data.custId,
-          route.params.data.billMonth,
-          route.params.data.readTimes,
-        ).then((details) => {
-          if (details) {
-            if (!details.readStateId) {
-              const readState = r.items.find((it) => it.stateName === '正常');
-              details.readStateId = readState?.id;
-              setNewData(details);
+        db.getBookDataDetails(data.custId, data.billMonth, data.readTimes).then(
+          (details) => {
+            if (details) {
+              if (!details.readStateId) {
+                const readState = r.items.find((it) => it.stateName === '正常');
+                details.readStateId = readState?.id;
+                setNewData(details);
+              }
             }
-          }
-        });
+          },
+        );
       }
     });
-  }, [
-    data.readStateId,
-    route.params.data.billMonth,
-    route.params.data.custId,
-    route.params.data.readTimes,
-  ]);
+  }, [data.readStateId, data.billMonth, data.custId, data.readTimes]);
 
   const setValue = (value: string) => {
     const valueData = { ...newData, reading: parseInt(value, 10) || undefined };
@@ -282,7 +273,7 @@ export default function NewReadScreen() {
     }
   };
 
-  const openLighting = () => {};
+  const switchLighting = () => {};
 
   const addNewAttachment = async (result: AttachmentDbItem) => {
     result.bookId = newData.bookId;
@@ -506,19 +497,16 @@ export default function NewReadScreen() {
         onChange={setSettingsModalVisible}>
         <View style={styles.settingsModalContent}>
           <NewReadSettings
+            readStates={readStates}
             selectedStateId={newData.readStateId}
             onSelected={(item) => {
               setSettingsModalVisible(false);
               console.log('readStateId', item.id);
               setNewData({ ...newData, readStateId: item.id });
             }}
-            onSaved={() => {
+            onSaved={(r) => {
               setSettingsModalVisible(false);
-              getReadStateSettings().then((r) => {
-                if (r) {
-                  setReadStates(r);
-                }
-              });
+              setReadStates(r);
             }}
           />
         </View>
@@ -633,7 +621,7 @@ export default function NewReadScreen() {
                 />
                 <TouchableOpacity
                   style={styles.lightButton}
-                  onPress={openLighting}>
+                  onPress={switchLighting}>
                   <Image
                     style={styles.maskIcon}
                     source={require('../assets/shoudiantong.png')}

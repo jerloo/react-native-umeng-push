@@ -2,42 +2,39 @@ import * as React from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 import { PdaReadStateDto } from '../../apiclient/src/models';
-import { getReadStateSettings, ReadStateStorage } from '../utils/statesUtils';
+import {
+  addReadStateToOffen,
+  getReadStateSettings,
+  ReadStateStorage,
+  removeReadStateFromOffen,
+  saveReadStatesStorage,
+} from '../utils/statesUtils';
 import StateButtonEx from './StateButtonEx';
 
 interface Props {
-  onSaved: () => void;
+  onSaved: (readStates: ReadStateStorage) => void;
   onSelected: (item: PdaReadStateDto) => void;
   selectedStateId?: number;
+  readStates?: ReadStateStorage;
 }
 
 export default function NewReadSettings(props: Props) {
   const [editing, setEditing] = React.useState(false);
 
   const [readStates, setReadStates] = React.useState<ReadStateStorage>();
+
   React.useEffect(() => {
-    getReadStateSettings().then((r) => {
-      if (r) {
-        setReadStates(r);
-      }
-    });
-  }, []);
+    setReadStates(props.readStates);
+  }, [props.readStates]);
 
   const moveFromOffen = async (item: PdaReadStateDto) => {
     if (!editing) {
       props.onSelected(item);
     } else {
-      const offens = readStates?.offens.filter((it) => it.id !== item.id);
-      const groups = readStates?.groups;
-      groups?.forEach((it) => {
-        if (it.id === item.parentId) {
-          it.children.push(item);
-        }
-      });
-      setReadStates({
-        offens: offens || [],
-        groups: groups || [],
-      });
+      if (readStates) {
+        const newStates = await removeReadStateFromOffen(item, readStates);
+        setReadStates(newStates);
+      }
     }
   };
 
@@ -45,22 +42,18 @@ export default function NewReadSettings(props: Props) {
     if (!editing) {
       props.onSelected(item);
     } else {
-      const offens = readStates?.offens || [];
-      offens.push(item);
-      const groups = readStates?.groups || [];
-      groups.forEach((it) => {
-        if (it.id === item.parentId) {
-          it.children = it.children.filter((i) => i.id !== item.id);
-        }
-      });
-      setReadStates({ offens, groups });
+      if (readStates) {
+        const newStates = await addReadStateToOffen(item, readStates);
+        setReadStates(newStates);
+      }
     }
   };
 
   const save = async () => {
-    console.log('save');
-    await setOffensReadStatesId(readStates?.offens.map((it) => it.id) || []);
-    props.onSaved && props.onSaved();
+    if (readStates) {
+      await saveReadStatesStorage(readStates);
+      props.onSaved && props.onSaved(readStates);
+    }
   };
 
   const reset = () => {
