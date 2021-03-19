@@ -166,7 +166,7 @@ export default function CustDetailsScreen() {
 
           <Text style={styles.tableValue}>
             {details?.custInfo?.custAddress}
-            <LocationButton />
+            <LocationButton address={details?.custInfo?.custAddress} />
           </Text>
         </View>
         {line()}
