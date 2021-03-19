@@ -188,6 +188,7 @@ export default function CustDetailsScreen() {
               marginStart: scaleSize(30),
               padding: 0,
               flex: 1,
+              backgroundColor: '#ebf0ec',
             }}
             showSoftInputOnFocus={false}
             onFocus={showMobileInput}
@@ -241,6 +242,7 @@ export default function CustDetailsScreen() {
               marginStart: scaleSize(30),
               padding: 0,
               flex: 1,
+              backgroundColor: '#ebf0ec',
             }}
             fontColor="#999999"
             fontSize={scaleSize(28)}
@@ -265,6 +267,7 @@ export default function CustDetailsScreen() {
               marginStart: scaleSize(30),
               padding: 0,
               flex: 1,
+              backgroundColor: '#ebf0ec',
             }}
             onFocus={showSteelInput}
             fontColor="#999999"
