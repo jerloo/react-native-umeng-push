@@ -59,7 +59,7 @@ export default function BooksScreen() {
     });
   }, []);
 
-  const fetchLocal = async () => {
+  const fetchLocal = React.useCallback(async () => {
     try {
       const res = await center.offline.getBookList();
       const items = (res as PdaMeterBookDtoHolder[]).map((value) => {
@@ -67,22 +67,25 @@ export default function BooksScreen() {
         return value;
       });
       setBookItems(items);
+      await fetchTotalNumbers();
     } catch (e) {
       Toast.fail(e.message);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchLocal();
-  }, []);
+  }, [fetchLocal]);
+
+  const fetchTotalNumbers = async () => {
+    const result = await db.getBookTotalData();
+    setTotalNumbers(result);
+  };
 
   useFocusEffect(
     React.useCallback(() => {
-      db.getBookTotalData().then((result) => {
-        setTotalNumbers(result);
-      });
       fetchLocal();
-    }, []),
+    }, [fetchLocal]),
   );
 
   const bookItemCheckClick = (holder: PdaMeterBookDtoHolder) => {
@@ -274,7 +277,7 @@ export default function BooksScreen() {
             onPress: async () => {
               await db.deleteBookById(rowKey);
               Toast.success('删除成功');
-              fetchLocal();
+              await fetchLocal();
             },
           },
         ]);
