@@ -1,9 +1,10 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import * as React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { scaleSize } from 'react-native-responsive-design';
+import Video from 'react-native-video';
 import { MobileFileDto } from '../../apiclient/src/models';
 import { colorWhite } from '../styles';
 import { MainStackParamList } from './routeParams';
@@ -18,16 +19,17 @@ export default function CameraScreen() {
   const camera = React.useRef<RNCamera>(null);
   const [timing, setTiming] = React.useState(0);
 
+  const [result, setResult] = React.useState<MobileFileDto>();
+
   const takePicture = async () => {
     const options = { quality: 0.5, base64: true };
     const data = await camera?.current?.takePictureAsync(options);
     if (data?.uri) {
-      const result: MobileFileDto = {
+      const r: MobileFileDto = {
         fileName: data?.uri,
         filePath: data?.uri,
       };
-      route.params.callback(result);
-      navigation.goBack();
+      setResult(r);
     }
   };
 
@@ -53,31 +55,29 @@ export default function CameraScreen() {
       maxFileSize: MAX_FILE_SIZE,
     });
     if (data?.uri) {
-      const result: MobileFileDto = {
+      const r: MobileFileDto = {
         fileName: data?.uri,
         filePath: data?.uri,
       };
-      route.params.callback(result);
-      navigation.goBack();
+      setResult(r);
     }
   };
 
-  return (
-    <View style={styles.container}>
-      <RNCamera
-        ref={camera}
-        style={styles.preview}
-        type={RNCamera.Constants.Type.back}
-        flashMode={RNCamera.Constants.FlashMode.auto}
-        androidCameraPermissionOptions={{
-          title: '相机权限',
-          message: '需要授权相机权限进行拍照',
-          buttonPositive: '好的',
-          buttonNegative: '取消',
-        }}
-        captureAudio={false}
-      />
-      <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
+  const back = () => {
+    if (result) {
+      route.params.callback(result);
+    }
+    navigation.goBack();
+  };
+
+  const renderTakeButton = () => {
+    return (
+      <View
+        style={{
+          flex: 0,
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
         <TouchableOpacity
           activeOpacity={1}
           onPress={takePicture}
@@ -100,6 +100,91 @@ export default function CameraScreen() {
           </AnimatedCircularProgress>
         </TouchableOpacity>
       </View>
+    );
+  };
+
+  const renderControls = () => {
+    return (
+      <View
+        style={{
+          flex: 0,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <TouchableOpacity
+          style={{ padding: scaleSize(40) }}
+          onPress={() => {
+            setResult(undefined);
+          }}>
+          <Text style={{ fontSize: scaleSize(38), color: colorWhite }}>
+            重拍
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ padding: scaleSize(40) }} onPress={back}>
+          <Text style={{ fontSize: scaleSize(38), color: colorWhite }}>
+            使用
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const renderPreview = () => {
+    return (
+      <>
+        {result?.filePath?.endsWith('.mp4') ? (
+          <Video
+            source={{ uri: result?.filePath }} // Can be a URL or a local file.
+            // ref={player} // Store reference
+            // onBuffer={this.onBuffer} // Callback when remote video is buffering
+            // onError={this.videoError} // Callback when video cannot be loaded
+            style={{
+              width: '100%',
+              minHeight: 300,
+              backgroundColor: 'black',
+              alignSelf: 'center',
+              flex: 1,
+            }}
+            resizeMode="contain"
+          />
+        ) : (
+          <Image
+            style={{
+              width: '100%',
+              minHeight: 300,
+              backgroundColor: 'black',
+              alignSelf: 'center',
+              flex: 1,
+            }}
+            resizeMode="contain"
+            source={{ uri: result?.filePath }}
+          />
+        )}
+      </>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      {result ? (
+        renderPreview()
+      ) : (
+        <RNCamera
+          ref={camera}
+          style={styles.preview}
+          type={RNCamera.Constants.Type.back}
+          flashMode={RNCamera.Constants.FlashMode.auto}
+          androidCameraPermissionOptions={{
+            title: '相机权限',
+            message: '需要授权相机权限进行拍照',
+            buttonPositive: '好的',
+            buttonNegative: '取消',
+          }}
+          captureAudio={false}
+        />
+      )}
+
+      {result ? renderControls() : renderTakeButton()}
     </View>
   );
 }

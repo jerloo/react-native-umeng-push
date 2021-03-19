@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 
 interface Props {
   address?: string;
+  containerStyle?: ViewStyle;
 }
 
 export default function LocationButton(props: Props) {
   return (
     <TouchableOpacity
+      style={props.containerStyle}
       onPress={() => {
         try {
           // mapUtils.open({ dname: props.address });

@@ -32,6 +32,7 @@ import PureInput from '../components/PureInput';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { sum } from '../utils/sumUtils';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
+import LocationButton from '../components/LocationButton';
 
 export default function CustDetailsScreen() {
   const navigation = useNavigation();
@@ -162,8 +163,10 @@ export default function CustDetailsScreen() {
         {line()}
         <View style={styles.tableRow}>
           <Text style={styles.tableLabel}>客户地址</Text>
+
           <Text style={styles.tableValue}>
             {details?.custInfo?.custAddress}
+            <LocationButton />
           </Text>
         </View>
         {line()}

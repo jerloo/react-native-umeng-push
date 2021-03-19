@@ -28,7 +28,7 @@ export interface MobileFileDto {
      * @type {string}
      * @memberof MobileFileDto
      */
-    filePath?: any;
+    filePath?: string;
     /**
      * 文件大小
      * @type {number}
