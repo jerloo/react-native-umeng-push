@@ -30,6 +30,7 @@ import {
 } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
 import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto';
+import db from '../data/database';
 
 export default function BookTaskSortScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'BookTaskSort'>>();
@@ -75,6 +76,7 @@ export default function BookTaskSortScreen() {
           return result;
         }),
       );
+      await db.updateReadData(bookSortItems.map((it) => it.item));
       Toast.success('修改成功');
       navigation.goBack();
     } catch (e) {
