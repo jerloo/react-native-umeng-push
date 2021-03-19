@@ -258,7 +258,6 @@ export default function NewReadScreen() {
                 await db.updateReadData([newData]);
                 await db.updateReadingNumberByBookId(newData.bookId);
                 setNewData({ ...newData });
-                nextItem(false);
                 tryUploadAttachments(
                   newData.custId,
                   newData.billMonth,
@@ -315,7 +314,7 @@ export default function NewReadScreen() {
   };
 
   const calcBudgetAmount = async () => {
-    if (!newData.reading) {
+    if (!newData.reading || !newData.readWater) {
       Toast.fail('请先抄表');
       return;
     }
