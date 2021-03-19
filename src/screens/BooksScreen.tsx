@@ -132,7 +132,7 @@ export default function BooksScreen() {
     setBookItems([...bookItems]);
   };
 
-  const fetchRemote = async () => {
+  const fetchRemoteBooks = async () => {
     try {
       await center.getBookList();
       await fetchLocal();
@@ -170,6 +170,7 @@ export default function BooksScreen() {
 
   const sync = async () => {
     try {
+      await fetchRemoteBooks();
       await center.sync(DeviceInfo.getUniqueId());
       await fetchLocal();
     } catch (e) {

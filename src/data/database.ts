@@ -627,10 +627,39 @@ class DataBase {
     });
   };
 
+  /**
+   * 抄表录入
+   * @param item 抄表数据
+   */
+  readData = async (item: PdaReadDataDto) => {
+    await this.db
+      ?.executeSql(
+        `UPDATE BookDatas SET terminalFiles = ?, reading = ?, readWater = ?, 
+                readDate = ?, readStateId = ?, readRemark = ?, recordState = ?, 
+                uploaded = 1, lastReadDate = ?
+            WHERE billMonth = ? AND custId = ? AND readTimes = ?`,
+        [
+          JSON.stringify(item.terminalFiles),
+          item.reading,
+          item.readWater,
+          dayjs(item.readDate).format('YYYY-MM-DDTHH:mm:ss'),
+          item.readStateId,
+          item.readRemark,
+          item.recordState,
+          dayjs(item.lastReadDate).format('YYYY-MM-DDTHH:mm:ss'),
+          item.billMonth,
+          item.custId,
+          item.readTimes,
+        ],
+      )
+      .catch((e) => {
+        console.log('保存抄表录入数据失败', e);
+      });
+  };
+
   updateReadData = async (items: PdaReadDataDto[]) => {
     await this.db?.transaction((tx) => {
       items.forEach((item) => {
-        console.log('保存报表录入', item);
         tx.executeSql(
           `UPDATE BookDatas SET terminalFiles = ?, 
                 oweNumber = ?, 
@@ -644,7 +673,7 @@ class DataBase {
                 deposit = ?, 
                 lastChange = ?,
                 priceCode = ?, 
-                meterState = ?
+                meterState = ?,
                 barCode = ?, 
                 steelMark = ?,
                 installLocation = ?, 
@@ -669,8 +698,8 @@ class DataBase {
                 readStateId = ?, 
                 readRemark = ?, 
                 recordState = ?, 
-                uploaded = 1, 
-                lastReadDate = ?
+                lastReadDate = ?,
+                uploaded = 1
             WHERE billMonth = ? AND custId = ? AND readTimes = ?`,
           [
             JSON.stringify(item.terminalFiles),
