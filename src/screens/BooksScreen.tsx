@@ -27,7 +27,7 @@ import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import Modal from 'react-native-smart-modal';
 import { ReadingDataDto } from '../../apiclient/src/models';
-import DeviceInfo from 'react-native-device-info';
+import DeviceInfo, { syncUniqueId } from 'react-native-device-info';
 
 export default function BooksScreen() {
   const navigation = useNavigation();
@@ -168,6 +168,15 @@ export default function BooksScreen() {
     db.markBookUploaded(ids, inputItems);
   };
 
+  const sync = async () => {
+    try {
+      await center.sync(DeviceInfo.getUniqueId());
+      await fetchLocal();
+    } catch (e) {
+      Toast.fail(e.message);
+    }
+  };
+
   const refresh = async () => {
     if (loading) {
       return;
@@ -179,7 +188,7 @@ export default function BooksScreen() {
       const billMonthLocal = await getBillMonth();
       if (!billMonthLocal) {
         await uploadReadingData();
-        await fetchRemote();
+        await sync();
       } else if (billMonthLocal !== billMonthResult) {
         AntModal.alert(
           '提示',
@@ -195,14 +204,14 @@ export default function BooksScreen() {
               onPress: async () => {
                 await uploadReadingData();
                 await db.deleteBooks();
-                await fetchRemote();
+                await sync();
               },
             },
           ],
         );
       } else {
         await uploadReadingData();
-        await fetchRemote();
+        await sync();
       }
     } catch (e) {
       Toast.fail(e.message);

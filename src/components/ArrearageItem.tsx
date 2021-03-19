@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 import { PdaArrearageDto } from '../../apiclient/src/models';
 import { colorWhite } from '../styles';

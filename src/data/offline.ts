@@ -13,6 +13,7 @@ import {
   PdaPaymentInput,
   PdaPaySubtotalsDto,
   PdaReadDataDto,
+  PdaReadDataDtoListResultDto,
   PdaReadingCollectDto,
   PdaReadStateDto,
   SysSettingDto,
@@ -28,6 +29,10 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
+  async sync(_deviceId: string): Promise<PdaReadDataDtoListResultDto> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
   async uploadAttachments(_input: UploadReadingFileDto): Promise<void> {
     throw new Error(NO_NETWORK_ERROR);
   }

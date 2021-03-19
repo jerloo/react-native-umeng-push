@@ -13,6 +13,7 @@ import {
   PdaPaymentInput,
   PdaPaySubtotalsDto,
   PdaReadDataDto,
+  PdaReadDataDtoListResultDto,
   PdaReadingCollectDto,
   PdaReadStateDto,
   SysSettingDto,
@@ -29,6 +30,21 @@ import DeviceInfo from 'react-native-device-info';
 import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto';
 
 export default class OnlineApiService implements ApiService {
+  async sync(deviceId: string): Promise<PdaReadDataDtoListResultDto> {
+    try {
+      const result = await api.chargeApi.apiAppChargeSynchronousDataListGet(
+        deviceId,
+      );
+      if (result.status < 400) {
+        return result.data;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
   async uploadAttachments(input: UploadReadingFileDto): Promise<void> {
     try {
       const result = await api.mobileReadingApi.apiAppMobileReadingUploadReadingFilePost(

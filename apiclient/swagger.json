@@ -191,6 +191,48 @@
         }
       }
     },
+    "/api/app/charge/synchronousDataList": {
+      "get": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "抄表数据同步",
+        "parameters": [
+          {
+            "name": "deviceCode",
+            "in": "query",
+            "description": "设备编号",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "设备编号"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaReadDataDtoListResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaReadDataDtoListResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdaReadDataDtoListResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/app/charge/custDetailsByCustId": {
       "post": {
         "tags": [
