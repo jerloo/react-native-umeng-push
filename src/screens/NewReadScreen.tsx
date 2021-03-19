@@ -84,12 +84,14 @@ export default function NewReadScreen() {
     };
 
     fetchLocal();
+  }, [data]);
 
+  useEffect(() => {
     db.getAttachments(data.custId, data.readTimes, data.billMonth).then((r) => {
       console.log('获取附件', r);
       setAttachments(r);
     });
-  }, [data]);
+  }, [data.billMonth, data.custId, data.readTimes]);
 
   useEffect(() => {
     isMobileReadingCanCharge().then((flag) => setCanCharge(flag));

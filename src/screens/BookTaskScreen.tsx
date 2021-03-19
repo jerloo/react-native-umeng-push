@@ -7,6 +7,7 @@ import {
   ListRenderItemInfo,
   FlatList,
   TouchableOpacity,
+  UIManager,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -27,6 +28,7 @@ import {
   useRoute,
 } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
+UIManager.setLayoutAnimationEnabledExperimental(false);
 
 export default function BookTaskScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'BookTask'>>();
@@ -156,29 +158,11 @@ export default function BookTaskScreen() {
   const renderBookItem = (info: ListRenderItemInfo<PdaReadDataDtoHolder>) => {
     return (
       <TouchableOpacity
-        onLongPress={() => {
-          const items = bookDataItems.map((item) => {
-            if (item.item.custId === info.item.item.custId) {
-              item.showExtra = true;
-            } else {
-              item.showExtra = false;
-            }
-            return item;
-          });
-          setBookDataItems(items);
-        }}
-        onPressOut={() => {
-          const items = bookDataItems.map((item) => {
-            item.showExtra = false;
-            return item;
-          });
-          setBookDataItems(items);
-        }}
-        onPress={() =>
+        onPress={() => {
           navigation.navigate('NewRead', {
             data: info.item.item,
-          })
-        }>
+          });
+        }}>
         <BookDataItem
           showExtra={info.item.showExtra}
           item={info.item.item}
@@ -188,6 +172,7 @@ export default function BookTaskScreen() {
     );
   };
 
+  const renderDevideLine = () => <View style={{ height: scaleSize(18) }} />;
   return (
     <View style={styles.container}>
       <StatusBar
@@ -247,9 +232,7 @@ export default function BookTaskScreen() {
           initialNumToRender={30}
           data={bookDataItems.filter((it) => it.item.recordState === 0)}
           renderItem={renderBookItem}
-          ItemSeparatorComponent={() => (
-            <View style={{ height: scaleSize(18) }} />
-          )}
+          ItemSeparatorComponent={renderDevideLine}
           keyExtractor={(item) => 'unread-' + item.item.custId.toString()}
           contentInset={{ bottom: 100 }}
           contentContainerStyle={{
@@ -264,9 +247,7 @@ export default function BookTaskScreen() {
           initialNumToRender={30}
           data={bookDataItems.filter((it) => it.item.recordState !== 0)}
           renderItem={renderBookItem}
-          ItemSeparatorComponent={() => (
-            <View style={{ height: scaleSize(18) }} />
-          )}
+          ItemSeparatorComponent={renderDevideLine}
           keyExtractor={(item) => 'read-' + item.item.custId.toString()}
           contentInset={{ bottom: 100 }}
           contentContainerStyle={{
@@ -280,9 +261,7 @@ export default function BookTaskScreen() {
           initialNumToRender={30}
           data={bookDataItems}
           renderItem={renderBookItem}
-          ItemSeparatorComponent={() => (
-            <View style={{ height: scaleSize(18) }} />
-          )}
+          ItemSeparatorComponent={renderDevideLine}
           keyExtractor={(item) => 'all-' + item.item.custId.toString()}
           contentInset={{ bottom: 100 }}
           contentContainerStyle={{
