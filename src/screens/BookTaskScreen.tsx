@@ -29,6 +29,7 @@ import {
 } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
 UIManager.setLayoutAnimationEnabledExperimental(false);
+import DeviceInfo from 'react-native-device-info';
 
 export default function BookTaskScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'BookTask'>>();
@@ -95,15 +96,24 @@ export default function BookTaskScreen() {
     setLoading(true);
     const key = Toast.loading('下载中');
     try {
-      const res = await center.getBookDataByIds([route.params.bookId]);
-      const items = (res as PdaReadDataDto[]).map((value) => {
-        const data: PdaReadDataDtoHolder = {
-          item: value,
-          showExtra: false,
-        };
-        return data;
-      });
-      setBookDataItems(items);
+      await center.sync(DeviceInfo.getUniqueId());
+      const fetchLocal = async () => {
+        try {
+          const { bookId } = route.params;
+          const res = await center.offline.getBookDataByIds([bookId]);
+          const items = (res as PdaReadDataDto[]).map((value) => {
+            const data: PdaReadDataDtoHolder = {
+              item: value,
+              showExtra: false,
+            };
+            return data;
+          });
+          setBookDataItems(items);
+        } catch (e) {
+          Toast.fail(e.message);
+        }
+      };
+      await fetchLocal();
     } catch (e) {
       Toast.fail(e.message);
     } finally {
