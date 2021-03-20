@@ -10,8 +10,6 @@ import {
 import { scaleSize } from 'react-native-responsive-design';
 
 type Props = {
-  colorLeft: string;
-  colorTop: string;
   iconSource: ImageSourcePropType;
   title: string;
   onPress?: () => void;

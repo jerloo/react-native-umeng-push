@@ -8,6 +8,7 @@ import {
   PdaChargeListDto,
   PdaCustDto,
   PdaCustListDto,
+  PdaMeterReaderDto,
   PdaPaymentCollectDto,
   PdaPaymentCollectInput,
   PdaPaymentInput,
@@ -29,6 +30,10 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
+  async getUserInfo(): Promise<PdaMeterReaderDto> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
   async sync(_deviceId: string): Promise<PdaReadDataDtoListResultDto> {
     throw new Error(NO_NETWORK_ERROR);
   }

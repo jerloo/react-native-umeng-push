@@ -6,9 +6,10 @@ import {
   StyleSheet,
   StatusBar,
   Image,
-  ScrollView,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  FlatList,
+  ListRenderItemInfo,
 } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -21,17 +22,36 @@ import { useNavigation } from '@react-navigation/core';
 import SearchBoxView from '../components/SearchBoxView';
 import { setSystemSettings } from '../utils/systemSettingsUtils';
 import { setBillMonth } from '../utils/billMonthUtils';
+import { Permission, Permissions } from '../utils/permissionUtils';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
 
   const [session, setSession] = useState<UserSession>();
+  const [perms, setPerms] = useState<Permission[]>();
+
+  const [loading, setLoading] = useState(false);
+
+  const fetchSession = async () => {
+    const s = await getSession();
+    if (s) {
+      setSession(s);
+      const granteds = s.userInfo.userPermissions?.filter((it) => it.isGranted);
+      console.log('granteds', granteds);
+      const ps: Permission[] = [];
+      granteds?.forEach((it) => {
+        const find = Permissions.get(it.code);
+        if (find) {
+          ps.push(find);
+        }
+      });
+      setPerms(ps);
+    }
+  };
 
   useEffect(() => {
-    getSession().then((s) => {
-      setSession(s || undefined);
-    });
-  });
+    fetchSession();
+  }, []);
 
   const fetchStateSettings = async () => {
     try {
@@ -62,11 +82,53 @@ export default function HomeScreen() {
     }
   };
 
+  const fetchUserInfo = async () => {
+    try {
+      const result = await center.getUserInfo();
+      if (result) {
+        const granteds = result.userPermissions?.filter((it) => it.isGranted);
+        console.log('granteds', granteds);
+        const ps: Permission[] = [];
+        granteds?.forEach((it) => {
+          const find = Permissions.get(it.code);
+          if (find) {
+            ps.push(find);
+          }
+        });
+        setPerms(ps);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     fetchBillMonth();
     fetchStateSettings();
     fetchSystemSettings();
+    fetchUserInfo();
   }, []);
+
+  const refresh = async () => {
+    setLoading(true);
+    await Promise.all([
+      fetchUserInfo(),
+      fetchSystemSettings(),
+      fetchStateSettings(),
+      fetchBillMonth(),
+    ]);
+    setLoading(false);
+  };
+
+  const renderButton = (info: ListRenderItemInfo<Permission>) => (
+    <View style={{ marginBottom: scaleSize(30), marginEnd: scaleSize(16) }}>
+      <HomeButton
+        title={info.item.title}
+        iconSource={info.item.icon}
+        onPress={() => navigation.navigate(info.item.route)}
+      />
+    </View>
+  );
 
   return (
     <View style={styles.container}>
@@ -93,52 +155,20 @@ export default function HomeScreen() {
           <SearchBoxView />
         </TouchableOpacity>
       </SafeAreaView>
-      <ScrollView>
-        <View style={styles.mainContainer}>
-          <Text style={styles.groupTitle}>我的抄表</Text>
-          <View style={styles.groupRow}>
-            <HomeButton
-              colorLeft="#096BF3"
-              colorTop="#BED5F5"
-              title="抄表任务"
-              iconSource={require('../assets/shouye-chaobiaorengwu.png')}
-              onPress={() => navigation.navigate('Books')}
-            />
-            <HomeButton
-              colorLeft="#EFB541"
-              colorTop="#EFB541"
-              title="欠费查询"
-              iconSource={require('../assets/shouye_qianfeichaxun.png')}
-              onPress={() => navigation.navigate('Arrearages')}
-            />
-            <HomeButton
-              colorLeft="#4CABFF"
-              colorTop="#4CABFF"
-              title="收费明细"
-              iconSource={require('../assets/shouye-shoufeimingxi.png')}
-              onPress={() => navigation.navigate('PaymentSubtotal')}
-            />
-          </View>
+      <View style={styles.mainContainer}>
+        <Text style={styles.groupTitle}>我的抄表</Text>
 
-          <View style={styles.groupRow}>
-            <HomeButton
-              colorLeft="#6F65F2"
-              colorTop="#857CFF"
-              title="抄表汇总"
-              iconSource={require('../assets/shouye-chaobiaohuizong.png')}
-              onPress={() => navigation.navigate('ReadingCollect')}
-            />
-            <HomeButton
-              colorLeft="#E98649"
-              colorTop="#E98649"
-              title="收费汇总"
-              iconSource={require('../assets/shouye-shoufeihuizong.png')}
-              onPress={() => navigation.navigate('PaymentCollect')}
-            />
-            <View style={{ width: scaleSize(220), height: scaleSize(220) }} />
-          </View>
+        <View style={styles.groupRow}>
+          <FlatList<Permission>
+            data={perms}
+            numColumns={3}
+            renderItem={renderButton}
+            keyExtractor={(it) => it.title}
+            refreshing={loading}
+            onRefresh={refresh}
+          />
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 }

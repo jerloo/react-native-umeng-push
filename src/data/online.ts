@@ -8,6 +8,7 @@ import {
   PdaChargeListDto,
   PdaCustDto,
   PdaCustListDto,
+  PdaMeterReaderDto,
   PdaPaymentCollectDto,
   PdaPaymentCollectInput,
   PdaPaymentInput,
@@ -30,6 +31,27 @@ import DeviceInfo from 'react-native-device-info';
 import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto';
 
 export default class OnlineApiService implements ApiService {
+  async getUserInfo(): Promise<PdaMeterReaderDto> {
+    try {
+      const infoResult = await api.chargeApi.apiAppChargeUserInfoGet();
+      if (infoResult.status < 400) {
+        const session = await getSession();
+        if (session) {
+          await setSession({
+            ...session,
+            userInfo: infoResult.data,
+          });
+        }
+        return infoResult.data;
+      } else {
+        throw new Error(SERVER_ERROR);
+      }
+    } catch (e) {
+      console.log(e);
+      throw new Error(USERNAME_PWD_ERROR);
+    }
+  }
+
   async sync(deviceId: string): Promise<PdaReadDataDtoListResultDto> {
     try {
       const result = await api.chargeApi.apiAppChargeSynchronousDataListGet(

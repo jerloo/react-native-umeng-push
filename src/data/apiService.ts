@@ -8,6 +8,7 @@ import {
   PdaChargeListDto,
   PdaCustDto,
   PdaCustListDto,
+  PdaMeterReaderDto,
   PdaPaymentCollectDto,
   PdaPaymentCollectInput,
   PdaPaymentInput,
@@ -67,7 +68,8 @@ export default interface ApiService {
   updateBookSort(input: BookSortIndexDto[]): Promise<void>;
   uploadAttachments(input: UploadReadingFileDto): Promise<void>;
   sync(deviceId: string): Promise<PdaReadDataDtoListResultDto>;
-}
+  getUserInfo(): Promise<PdaMeterReaderDto>;
+};
 
 export const NETWORK_ERROR = '网络错误，请稍后再试';
 export const SERVER_ERROR = '服务器错误，请稍后再试';
