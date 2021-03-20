@@ -26,20 +26,35 @@ import { Modal, Toast } from '@ant-design/react-native';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import { Tabs } from '@ant-design/react-native';
 import dayjs from 'dayjs';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
 import PureInput from '../components/PureInput';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { sum } from '../utils/sumUtils';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
 import LocationButton from '../components/LocationButton';
+import { isMobileReadingCanCharge } from '../utils/systemSettingsUtils';
 
 export default function CustDetailsScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const route = useRoute<RouteProp<MainStackParamList, 'CustDetails'>>();
 
   const [details, setDetails] = useState<PdaCustDto>();
   const [onlyShowOwe, setOnlyShowOwe] = useState(false);
+  const [canPay, setCanPay] = useState(false);
+
+  useEffect(() => {
+    isMobileReadingCanCharge().then((r) => {
+      if (r) {
+        setCanPay(r);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const { data } = route.params;
@@ -377,6 +392,19 @@ export default function CustDetailsScreen() {
     );
   };
 
+  const onPayButtonClick = () => {
+    if (details?.billingInfos?.filter((it) => it.payState === 0).length === 0) {
+      Toast.info('当前未欠费');
+    } else {
+      navigation.navigate('Payment', {
+        mode: 'pay',
+        data: {
+          custId: details?.custId,
+        },
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -520,6 +548,14 @@ export default function CustDetailsScreen() {
               paddingBottom: scaleSize(30),
             }}
           />
+
+          {canPay ? (
+            <TouchableOpacity
+              style={styles.payButton}
+              onPress={onPayButtonClick}>
+              <Text style={styles.payButtonText}>去收费</Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
 
         <View style={styles.readingRecords}>
@@ -672,5 +708,18 @@ const styles = StyleSheet.create({
   rememberTitle: {
     fontSize: scaleSize(24),
     marginStart: scaleSize(16),
+  },
+  payButton: {
+    marginHorizontal: scaleSize(74),
+    marginVertical: scaleSize(60),
+    backgroundColor: '#5397F6',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: scaleSize(10),
+    paddingVertical: scaleSize(19),
+  },
+  payButtonText: {
+    fontSize: scaleSize(40),
+    color: colorWhite,
   },
 });
