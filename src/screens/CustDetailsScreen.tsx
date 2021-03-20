@@ -193,6 +193,7 @@ export default function CustDetailsScreen() {
               flex: 1,
               backgroundColor: '#ebf0ec',
             }}
+            placeholder="请输入"
             showSoftInputOnFocus={false}
             onFocus={showMobileInput}
             returnKeyType="done"
@@ -247,11 +248,13 @@ export default function CustDetailsScreen() {
               flex: 1,
               backgroundColor: '#ebf0ec',
             }}
+            placeholder="请输入"
             fontColor="#999999"
             fontSize={scaleSize(28)}
             defaultValue={details?.custInfo?.installLocation}
             returnKeyType="done"
             onFocus={showInstallLocationInput}
+            showSoftInputOnFocus={false}
             // onEndEditing={(e) => {
             //   const info = { ...details?.custInfo };
             //   if (info) {
@@ -272,11 +275,13 @@ export default function CustDetailsScreen() {
               flex: 1,
               backgroundColor: '#ebf0ec',
             }}
+            placeholder="请输入"
             onFocus={showSteelInput}
             fontColor="#999999"
             fontSize={scaleSize(28)}
             defaultValue={details?.custInfo?.steelMark}
             returnKeyType="done"
+            showSoftInputOnFocus={false}
             // onEndEditing={(e) => {
             //   const info = { ...details?.custInfo };
             //   if (info) {

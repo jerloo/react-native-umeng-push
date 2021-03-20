@@ -254,11 +254,11 @@ export default function ArrearagesScreen() {
               <Text style={styles.settingsSubTitle}>财务年月</Text>
               <View style={styles.settingsDatePickers}>
                 <DatePicker
-                  value={dayjs(params.beginMonth, 'YYYYMM').toDate()}
+                  value={dayjs(params.beginMonth.toString(), 'YYYYMM').toDate()}
                   mode="month"
                   defaultDate={new Date()}
                   minDate={new Date(2015, 7, 6)}
-                  maxDate={new Date(2026, 11, 3)}
+                  maxDate={new Date()}
                   onChange={onStartPick}
                   format="YYYY-MM">
                   <TouchableOpacity
@@ -274,11 +274,11 @@ export default function ArrearagesScreen() {
                 </DatePicker>
                 <Text>至</Text>
                 <DatePicker
-                  value={dayjs(params.endMonth, 'YYYYMM').toDate()}
+                  value={dayjs(params.endMonth.toString(), 'YYYYMM').toDate()}
                   mode="month"
                   defaultDate={new Date()}
                   minDate={new Date(2015, 7, 6)}
-                  maxDate={new Date(2026, 11, 3)}
+                  maxDate={new Date()}
                   onChange={onEndPick}
                   format="YYYY-MM">
                   <TouchableOpacity
