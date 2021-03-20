@@ -210,13 +210,13 @@ export default function ReadingCollectScreen() {
         <View style={styles.topBox}>
           <View style={styles.topItem}>
             <Text style={styles.topItemValue}>
-              {sum(items?.map((it) => it.expectRead) || [])}
+              {sum(items?.map((it) => it.expectRead) || [], 0)}
             </Text>
             <Text style={styles.topItemLabel}>应抄</Text>
           </View>
           <View style={styles.topItem}>
             <Text style={styles.topItemValue}>
-              {sum(items?.map((it) => it.actualRead) || [])}
+              {sum(items?.map((it) => it.actualRead) || [], 0)}
             </Text>
             <Text style={styles.topItemLabel}>实抄</Text>
           </View>
