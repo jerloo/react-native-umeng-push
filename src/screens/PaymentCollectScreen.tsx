@@ -234,14 +234,14 @@ export default function PaymentCollectScreen() {
                   source={require('../assets/qietu/qianfeichaxxun/arrearage_inquiry_icon_down_normal.png')}
                 />
               </TouchableOpacity>
-              <Text style={styles.settingsSubTitle}>财务年月</Text>
+              <Text style={styles.settingsSubTitle}>收费日期</Text>
               <View style={styles.settingsDatePickers}>
                 <DatePicker
-                  value={dayjs(params.beginDate, 'YYYYMMDD').toDate()}
-                  mode="month"
+                  value={new Date()}
+                  mode="date"
                   defaultDate={new Date()}
                   minDate={new Date(2015, 7, 6)}
-                  maxDate={new Date(2026, 11, 3)}
+                  maxDate={new Date()}
                   onChange={onStartPick}
                   format="YYYY-MM-DD">
                   <TouchableOpacity
