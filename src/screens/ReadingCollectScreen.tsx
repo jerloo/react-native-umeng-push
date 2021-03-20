@@ -30,7 +30,7 @@ import { useNavigation } from '@react-navigation/core';
 
 export default function ReadingCollectScreen() {
   const navigation = useNavigation();
-  const defaultBillMonth = parseInt(dayjs().format('YYYYMMDD'), 10);
+  const defaultBillMonth = parseInt(dayjs().format('YYYYMM'), 10);
 
   const [items, setItems] = useState<PdaReadingCollectDto[]>();
   const [loading, setLoading] = useState(false);
@@ -146,13 +146,13 @@ export default function ReadingCollectScreen() {
               <Text style={styles.settingsSubTitle}>抄表年月</Text>
               <View style={styles.settingsDatePickers}>
                 <DatePicker
-                  value={dayjs(billMonth, 'YYYYMM').toDate()}
+                  value={dayjs(billMonth.toString(), 'YYYYMM').toDate()}
                   mode="month"
                   defaultDate={new Date()}
                   minDate={new Date(2015, 7, 6)}
-                  maxDate={new Date(2026, 11, 3)}
+                  maxDate={new Date()}
                   onChange={onPickBillMonth}
-                  format="MM">
+                  format="YYYY-MM">
                   <TouchableOpacity
                     style={[styles.settingsInput, { width: scaleSize(450) }]}>
                     <Text style={styles.settingsInputText}>{billMonth}</Text>
