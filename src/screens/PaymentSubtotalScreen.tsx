@@ -230,7 +230,7 @@ export default function PaymentSubtotalScreen() {
       <View style={styles.topBox}>
         <View style={styles.topItem}>
           <Text style={styles.topItemValue}>{data?.custCount || '-'}</Text>
-          <Text style={styles.topItemLabel}>应抄</Text>
+          <Text style={styles.topItemLabel}>户数</Text>
         </View>
         <View style={styles.topItem}>
           <Text style={styles.topItemValue}>{data?.actualMoney || '-'}</Text>
