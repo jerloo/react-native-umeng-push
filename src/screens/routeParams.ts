@@ -35,6 +35,7 @@ export type MainStackParamList = {
     custId: number;
     custCode: string;
     deposit: number;
+    data: PdaReadDataDto;
   };
   PaymentCollect: {};
   PaymentSubtotal: {};

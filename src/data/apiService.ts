@@ -17,6 +17,7 @@ import {
   PdaReadDataDtoListResultDto,
   PdaReadingCollectDto,
   PdaReadStateDto,
+  ReadingDataDto,
   SysSettingDto,
   UploadReadingDataDto,
   UploadReadingFileDto,
@@ -69,7 +70,8 @@ export default interface ApiService {
   uploadAttachments(input: UploadReadingFileDto): Promise<void>;
   sync(deviceId: string): Promise<PdaReadDataDtoListResultDto>;
   getUserInfo(): Promise<PdaMeterReaderDto>;
-};
+  makeOut(input: ReadingDataDto): Promise<void>;
+}
 
 export const NETWORK_ERROR = '网络错误，请稍后再试';
 export const SERVER_ERROR = '服务器错误，请稍后再试';

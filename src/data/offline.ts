@@ -17,6 +17,7 @@ import {
   PdaReadDataDtoListResultDto,
   PdaReadingCollectDto,
   PdaReadStateDto,
+  ReadingDataDto,
   SysSettingDto,
   UploadReadingDataDto,
   UploadReadingFileDto,
@@ -30,6 +31,10 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
+  async makeOut(_input: ReadingDataDto): Promise<void> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
   async getUserInfo(): Promise<PdaMeterReaderDto> {
     throw new Error(NO_NETWORK_ERROR);
   }

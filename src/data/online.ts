@@ -17,6 +17,7 @@ import {
   PdaReadDataDtoListResultDto,
   PdaReadingCollectDto,
   PdaReadStateDto,
+  ReadingDataDto,
   SysSettingDto,
   UploadReadingDataDto,
   UploadReadingFileDto,
@@ -31,6 +32,21 @@ import DeviceInfo from 'react-native-device-info';
 import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto';
 
 export default class OnlineApiService implements ApiService {
+  async makeOut(input: ReadingDataDto): Promise<void> {
+    try {
+      const result = await api.mobileReadingApi.apiAppMobileReadingMakeOutPost(
+        input,
+      );
+      if (result.status < 400) {
+        return result.data;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      console.log(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
   async getUserInfo(): Promise<PdaMeterReaderDto> {
     try {
       const infoResult = await api.chargeApi.apiAppChargeUserInfoGet();

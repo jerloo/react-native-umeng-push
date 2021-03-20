@@ -45,8 +45,11 @@ export default function PaymentScreen() {
       .getArrearageChargeList({ custId: route.params.custId })
       .then((items) => {
         setPaymentBills(items);
+      })
+      .catch((e) => {
+        Toast.fail(e.message);
       });
-  }, [route.params.custId]);
+  }, [route.params.custId, route.params.data]);
 
   useEffect(() => {
     getMobileReadingChargeWay().then((items) => {

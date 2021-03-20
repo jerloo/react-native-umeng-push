@@ -336,11 +336,23 @@ export default function NewReadScreen() {
         Toast.remove(key);
       }
     } else {
-      navigation.navigate('Payment', {
-        custId: newData.custId,
-        custCode: newData.custCode || '',
-        deposit: newData.deposit,
-      });
+      const key = Toast.loading('正在开账');
+      center
+        .makeOut(route.params.data)
+        .then(() => {
+          navigation.navigate('Payment', {
+            data: newData,
+            custId: newData.custId,
+            custCode: newData.custCode || '',
+            deposit: newData.deposit,
+          });
+        })
+        .catch((e) => {
+          Toast.fail(e.message);
+        })
+        .finally(() => {
+          Toast.remove(key);
+        });
     }
   };
 
