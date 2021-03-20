@@ -34,7 +34,7 @@ export default function PaymentScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'Payment'>>();
 
   const [paymentBills, setPaymentBills] = useState<PdaChargeListDto[]>();
-  const [payWay, setPayWay] = useState<string>();
+  const [payWay, setPayWay] = useState<string>('1');
   const [ways, setWays] = useState<string[]>();
   const [paymentVisible, setPaymentVisible] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState<string>();
