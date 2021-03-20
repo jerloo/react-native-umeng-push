@@ -26,7 +26,7 @@ import {
   getSystemSettings,
   SystemSettings,
 } from '../utils/systemSettingsUtils';
-import Modal, { ModalView } from 'react-native-smart-modal';
+import Modal from 'react-native-smart-modal';
 import { Toast } from '@ant-design/react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { SafeAreaView } from 'react-native-safe-area-context';

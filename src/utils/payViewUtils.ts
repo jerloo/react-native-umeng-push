@@ -16,6 +16,7 @@ export const getPayViewModel = (
   canDepositShow: boolean,
 ) => {
   const viewModel: PayViewModel = {
+    fees: 0,
     money: 0,
     showDeposit: true,
     canClickPay: true,
