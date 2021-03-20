@@ -184,7 +184,7 @@ export default function PaymentScreen() {
           <QRCode size={scaleSize(240)} value={qrCodeUrl} />
         </View>
         <Text style={styles.qrText}>
-          {payWay === '1' ? '微信' : '支付宝'}支付码
+          {payWay === '2' ? '微信' : '支付宝'}支付码
         </Text>
       </View>
     );
