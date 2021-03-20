@@ -38,10 +38,7 @@ import { MainStackParamList } from './routeParams';
 import db from '../data/database';
 import { Badge, Toast } from '@ant-design/react-native';
 import center from '../data';
-import {
-  isMobileReadingCanCharge,
-  isMobileReadingMustPhoto,
-} from '../utils/systemSettingsUtils';
+import { getSystemSettings } from '../utils/systemSettingsUtils';
 import {
   calcReadWater,
   judgeReadWater,
@@ -89,7 +86,6 @@ export default function NewReadScreen() {
     };
 
     fetchLocal();
-    isMobileReadingMustPhoto().then((r) => setMustTakePhoto(r));
   }, [data]);
 
   useEffect(() => {
@@ -100,7 +96,12 @@ export default function NewReadScreen() {
   }, [data.billMonth, data.custId, data.readTimes]);
 
   useEffect(() => {
-    isMobileReadingCanCharge().then((flag) => setCanCharge(flag));
+    getSystemSettings().then((r) => {
+      if (r) {
+        setMustTakePhoto(r.isMobileReadingMustPhoto);
+        setCanCharge(r.isMobileReadingCanCharge);
+      }
+    });
   }, []);
 
   useEffect(() => {

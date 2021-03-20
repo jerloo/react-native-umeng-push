@@ -27,7 +27,7 @@ import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import Modal from 'react-native-smart-modal';
 import { ReadingDataDto } from '../../apiclient/src/models';
-import DeviceInfo, { syncUniqueId } from 'react-native-device-info';
+import DeviceInfo from 'react-native-device-info';
 
 export default function BooksScreen() {
   const navigation = useNavigation();

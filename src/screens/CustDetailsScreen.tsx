@@ -38,7 +38,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { sum } from '../utils/sumUtils';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
 import LocationButton from '../components/LocationButton';
-import { isMobileReadingCanCharge } from '../utils/systemSettingsUtils';
+import { getSystemSettings } from '../utils/systemSettingsUtils';
 
 export default function CustDetailsScreen() {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
@@ -49,9 +49,9 @@ export default function CustDetailsScreen() {
   const [canPay, setCanPay] = useState(false);
 
   useEffect(() => {
-    isMobileReadingCanCharge().then((r) => {
+    getSystemSettings().then((r) => {
       if (r) {
-        setCanPay(r);
+        setCanPay(r.isMobileReadingCanCharge);
       }
     });
   }, []);

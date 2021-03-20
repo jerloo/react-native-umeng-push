@@ -8,44 +8,60 @@ export const MobileReadingMustPhoto = 'MobileReadingMustPhoto';
 export const IS_OPEN_DEPOSIT = 'IS_OPEN_DEPOSIT';
 export const IS_SHOW_DEPOSIT_PAY = 'IS_SHOW_DEPOSIT_PAY';
 
+export interface SystemSettings {
+  fileUploadMethod: string;
+  isMobileReadingCanCharge: boolean;
+  mobileReadingChargeWay: string[];
+  isMobileReadingMustPhoto: boolean;
+  isOpenDeposit: boolean;
+  isShowDepositPay: boolean;
+}
+
 export const getSystemSettings = async () => {
   const content = await AsyncStorage.getItem('systemSettings');
-  return content ? (JSON.parse(content) as SysSettingDto[]) : null;
+  return content ? (JSON.parse(content) as SystemSettings) : null;
 };
 
-export const getSystemSettingByKey = async (key: string) => {
-  const items = await getSystemSettings();
+const getSystemSettingByKey = (key: string, items: SysSettingDto[]) => {
   return items?.find((it) => it.code === key);
 };
 
 export const setSystemSettings = async (items: SysSettingDto[]) => {
-  await AsyncStorage.setItem('systemSettings', JSON.stringify(items));
+  const settings: SystemSettings = {
+    fileUploadMethod: getFileUploadMethod(items),
+    isMobileReadingCanCharge: isMobileReadingCanCharge(items),
+    mobileReadingChargeWay: getMobileReadingChargeWay(items) || [],
+    isMobileReadingMustPhoto: isMobileReadingMustPhoto(items),
+    isOpenDeposit: isOpenDeposit(items),
+    isShowDepositPay: isShowDepositPay(items),
+  };
+  await AsyncStorage.setItem('systemSettings', JSON.stringify(settings));
 };
 
-export const getFileUploadMethod = async () => {
-  (await getSystemSettingByKey(FILE_UPLOAD_METHOD))?.value;
+const getFileUploadMethod = (items: SysSettingDto[]) => {
+  return getSystemSettingByKey(FILE_UPLOAD_METHOD, items)?.value;
 };
 
-export const isMobileReadingCanCharge = async () => {
-  return (await getSystemSettingByKey(MobileReadingCanCharge))?.value === '1';
+const isMobileReadingCanCharge = (items: SysSettingDto[]) => {
+  return getSystemSettingByKey(MobileReadingCanCharge, items)?.value === '1';
 };
 
-export const getMobileReadingChargeWay = async () => {
-  const result = (await getSystemSettingByKey(MobileReadingChargeWay))?.value;
+const getMobileReadingChargeWay = (items: SysSettingDto[]) => {
+  const result = getSystemSettingByKey(MobileReadingChargeWay, items)?.value;
   if (!result) {
     return null;
   }
   return (result as string).split(',');
 };
 
-export const isMobileReadingMustPhoto = async () => {
-  return (await getSystemSettingByKey(MobileReadingMustPhoto))?.value === '1';
+const isMobileReadingMustPhoto = (items: SysSettingDto[]) => {
+  return getSystemSettingByKey(MobileReadingMustPhoto, items)?.value === '1';
 };
 
-export const isOpenDeposit = async () => {
-  return (await getSystemSettingByKey(IS_OPEN_DEPOSIT))?.value === '1';
+const isOpenDeposit = (items: SysSettingDto[]) => {
+  return getSystemSettingByKey(IS_OPEN_DEPOSIT, items)?.value === '1';
 };
 
-export const isShowDepositPay = async () => {
-  return (await getSystemSettingByKey(IS_SHOW_DEPOSIT_PAY))?.value === '1';
+const isShowDepositPay = (items: SysSettingDto[]) => {
+  return getSystemSettingByKey(IS_SHOW_DEPOSIT_PAY, items)?.value === '1';
 };

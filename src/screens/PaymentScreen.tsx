@@ -18,27 +18,49 @@ import { CommonTitleBar } from '../components/titlebars/CommonTitleBar';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { colorWhite } from '../styles';
 import { FeeId, PdaChargeListDto } from '../../apiclient/src/models';
-import { sum } from '../utils/sumUtils';
 import PaymentItem from '../components/PaymentItem';
 import center from '../data';
 import { MainStackParamList } from './routeParams';
 import CircleCheckBox from '../components/CircleCheckBox';
-import { getMobileReadingChargeWay } from '../utils/systemSettingsUtils';
-import Modal from 'react-native-smart-modal';
+import {
+  getSystemSettings,
+  SystemSettings,
+} from '../utils/systemSettingsUtils';
+import Modal, { ModalView } from 'react-native-smart-modal';
 import { Toast } from '@ant-design/react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { getPayViewModel, PayViewModel } from '../utils/payViewUtils';
 
 export default function PaymentScreen() {
   const navigation = useNavigation();
   const route = useRoute<RouteProp<MainStackParamList, 'Payment'>>();
 
-  const [paymentBills, setPaymentBills] = useState<PdaChargeListDto[]>();
+  const [paymentBills, setPaymentBills] = useState<PdaChargeListDto[]>([]);
   const [payWay, setPayWay] = useState<string>('1');
-  const [ways, setWays] = useState<string[]>();
   const [paymentVisible, setPaymentVisible] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState<string>();
   const [cashRealValue, setCashRealValue] = useState<string>('');
+  const [settings, setSettings] = useState<SystemSettings>();
+  const [viewModel, setViewModel] = useState<PayViewModel>();
+
+  useEffect(() => {
+    getSystemSettings().then((r) => {
+      if (r) {
+        setSettings(r);
+        const vm = getPayViewModel(
+          paymentBills,
+          route.params.data.deposit || 0,
+          r.isOpenDeposit,
+          r.isShowDepositPay,
+        );
+        setViewModel(vm);
+        if (vm.money) {
+          setCashRealValue(vm.money.toFixed(2));
+        }
+      }
+    });
+  }, [paymentBills, route.params.data.deposit]);
 
   useEffect(() => {
     console.log(route.params);
@@ -50,15 +72,13 @@ export default function PaymentScreen() {
       .catch((e) => {
         Toast.fail(e.message);
       });
-  }, [route.params.data]);
-
-  useEffect(() => {
-    getMobileReadingChargeWay().then((items) => {
-      setWays(items || []);
-    });
-  }, []);
+  }, [route.params, route.params.data]);
 
   const onPayButtonClick = async () => {
+    if (viewModel?.canClickPay) {
+      Toast.info('不需要缴费');
+      return;
+    }
     try {
       if (payWay === '1') {
         setPaymentVisible(true);
@@ -85,6 +105,14 @@ export default function PaymentScreen() {
   const onCashConfirm = async () => {
     if (!cashRealValue) {
       Toast.fail('请先输入实收金额');
+      return;
+    }
+    if (
+      cashRealValue &&
+      viewModel?.money &&
+      parseFloat(cashRealValue) < viewModel?.money
+    ) {
+      Toast.fail('实收金额过小不得小于应缴总金额');
       return;
     }
     const key = Toast.loading('收款中');
@@ -146,10 +174,7 @@ export default function PaymentScreen() {
       <View style={styles.cashContent}>
         <Text style={styles.cashContentTitle}>应缴金额</Text>
         <Text style={styles.cashContentAmount}>
-          {sum([
-            ...(paymentBills?.map((it) => it.extendedAmount || 0) || []),
-            ...(paymentBills?.map((it) => it.lateFee || 0) || []),
-          ])}
+          {viewModel?.money.toFixed(2)}
         </Text>
         <Text style={styles.cashContentActualAmountTitle}>实收金额</Text>
         <View style={styles.cashContentActualAmountContainer}>
@@ -157,8 +182,10 @@ export default function PaymentScreen() {
             onChangeText={(text) => {
               setCashRealValue(text);
             }}
+            defaultValue={viewModel?.money.toFixed(2)}
             value={cashRealValue}
             style={styles.cashContentActualAmountInput}
+            editable={viewModel?.canEditMoney}
           />
           <TouchableOpacity
             onPress={() => setCashRealValue('')}
@@ -285,9 +312,7 @@ export default function PaymentScreen() {
                   <View style={styles.numberCol}>
                     <Text style={styles.numberLabel}>合计金额</Text>
                     <Text style={styles.numberValue}>
-                      {sum(
-                        paymentBills?.map((it) => it.extendedAmount || 0) || [],
-                      )}
+                      {viewModel?.fees.toFixed(2)}
                     </Text>
                   </View>
                 </View>
@@ -309,11 +334,7 @@ export default function PaymentScreen() {
             </Text>
             <Text style={styles.totalValue}>
               {route.params.mode === 'pay'
-                ? sum([
-                    ...(paymentBills?.map((it) => it.extendedAmount || 0) ||
-                      []),
-                    ...(paymentBills?.map((it) => it.lateFee || 0) || []),
-                  ])
+                ? viewModel?.money.toFixed(2)
                 : route.params.data.actualMoney}
             </Text>
           </View>
@@ -321,7 +342,7 @@ export default function PaymentScreen() {
           {route.params.mode === 'pay' ? (
             <View style={styles.payways}>
               <FlatList<string>
-                data={ways}
+                data={settings?.mobileReadingChargeWay}
                 renderItem={renderPayWay}
                 keyExtractor={(i) => i}
                 ItemSeparatorComponent={() => (
