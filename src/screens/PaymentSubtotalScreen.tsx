@@ -139,11 +139,11 @@ export default function PaymentSubtotalScreen() {
         <Text style={styles.settingsSubTitle}>收费时间</Text>
         <View style={styles.settingsDatePickers}>
           <DatePicker
-            value={dayjs(params.beginDate, 'YYYYMMDD').toDate()}
-            mode="month"
+            value={dayjs(params.beginDate.toString(), 'YYYYMMDD').toDate()}
+            mode="date"
             defaultDate={new Date()}
             minDate={new Date(2015, 7, 6)}
-            maxDate={new Date(2026, 11, 3)}
+            maxDate={new Date()}
             onChange={onStartPick}
             format="YYYY-MM-DD">
             <TouchableOpacity
@@ -161,11 +161,11 @@ export default function PaymentSubtotalScreen() {
           </DatePicker>
           <Text>至</Text>
           <DatePicker
-            value={dayjs(params.endDate, 'YYYYMMDD').toDate()}
-            mode="month"
+            value={dayjs(params.endDate.toString(), 'YYYYMMDD').toDate()}
+            mode="date"
             defaultDate={new Date()}
             minDate={new Date(2015, 7, 6)}
-            maxDate={new Date(2026, 11, 3)}
+            maxDate={new Date()}
             onChange={onEndPick}
             format="YYYY-MM-DD">
             <TouchableOpacity
