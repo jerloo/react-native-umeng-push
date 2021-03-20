@@ -1,6 +1,7 @@
 import {
   MobileFileDto,
   PdaCustListDto,
+  PdaPaymentSubtotal,
   PdaReadDataDto,
 } from '../../apiclient/src/models';
 
@@ -32,10 +33,8 @@ export type MainStackParamList = {
     callback: (result: MobileFileDto) => void;
   };
   Payment: {
-    custId: number;
-    custCode: string;
-    deposit: number;
-    data: PdaReadDataDto;
+    data: PdaReadDataDto & PdaPaymentSubtotal;
+    mode: 'pay' | 'details';
   };
   PaymentCollect: {};
   PaymentSubtotal: {};

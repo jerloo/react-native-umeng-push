@@ -342,9 +342,7 @@ export default function NewReadScreen() {
         .then(() => {
           navigation.navigate('Payment', {
             data: newData,
-            custId: newData.custId,
-            custCode: newData.custCode || '',
-            deposit: newData.deposit,
+            mode: 'pay',
           });
         })
         .catch((e) => {

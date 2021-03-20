@@ -94,7 +94,7 @@ export interface PdaReadDataDto {
      * @type {number}
      * @memberof PdaReadDataDto
      */
-    deposit?: any;
+    deposit?: number;
     /**
      * 上次零头
      * @type {number}

@@ -41,15 +41,16 @@ export default function PaymentScreen() {
   const [cashRealValue, setCashRealValue] = useState<string>('');
 
   useEffect(() => {
+    console.log(route.params);
     center
-      .getArrearageChargeList({ custId: route.params.custId })
+      .getArrearageChargeList({ custId: route.params.data.custId })
       .then((items) => {
         setPaymentBills(items);
       })
       .catch((e) => {
         Toast.fail(e.message);
       });
-  }, [route.params.custId, route.params.data]);
+  }, [route.params.data]);
 
   useEffect(() => {
     getMobileReadingChargeWay().then((items) => {
@@ -62,11 +63,15 @@ export default function PaymentScreen() {
       if (payWay === '1') {
         setPaymentVisible(true);
       } else if (payWay === '2') {
-        const result = await center.getWechatQrCodeUrl(route.params.custCode);
+        const result = await center.getWechatQrCodeUrl(
+          route.params.data.custCode,
+        );
         setQrCodeUrl(result);
         setPaymentVisible(true);
       } else if (payWay === '3') {
-        const result = await center.getAlipayQrCodeUrl(route.params.custCode);
+        const result = await center.getAlipayQrCodeUrl(
+          route.params.data.custCode,
+        );
         setQrCodeUrl(result);
         setPaymentVisible(true);
       } else {
@@ -87,7 +92,7 @@ export default function PaymentScreen() {
       await center.getCashPaymentDetails({
         actualMoney: parseFloat(cashRealValue),
         chargeWay: '1',
-        custCode: route.params.custCode,
+        custCode: route.params.data.custCode,
         paymnetMobileFeeInput:
           paymentBills?.map((it) => {
             const item: FeeId = {
@@ -142,8 +147,8 @@ export default function PaymentScreen() {
         <Text style={styles.cashContentTitle}>应缴金额</Text>
         <Text style={styles.cashContentAmount}>
           {sum([
-            ...(paymentBills?.map((it) => it.extendedAmount) || []),
-            ...(paymentBills?.map((it) => it.lateFee) || []),
+            ...(paymentBills?.map((it) => it.extendedAmount || 0) || []),
+            ...(paymentBills?.map((it) => it.lateFee || 0) || []),
           ])}
         </Text>
         <Text style={styles.cashContentActualAmountTitle}>实收金额</Text>
@@ -231,6 +236,14 @@ export default function PaymentScreen() {
     );
   };
 
+  const renderPaymentItem = (info: ListRenderItemInfo<PdaChargeListDto>) => {
+    return <PaymentItem key={info.item.feeId} data={info.item} />;
+  };
+
+  const renderItemSep = () => {
+    return <View style={{ height: scaleSize(18) }} />;
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -240,10 +253,16 @@ export default function PaymentScreen() {
       />
       {Platform.OS === 'ios' ? (
         <SafeAreaView edges={['top']}>
-          <CommonTitleBar title="收费" onBack={() => navigation.goBack()} />
+          <CommonTitleBar
+            title={route.params.mode === 'pay' ? '收费' : '账单详情'}
+            onBack={() => navigation.goBack()}
+          />
         </SafeAreaView>
       ) : (
-        <CommonTitleBar title="收费" onBack={() => navigation.goBack()} />
+        <CommonTitleBar
+          title={route.params.mode === 'pay' ? '收费' : '账单详情'}
+          onBack={() => navigation.goBack()}
+        />
       )}
 
       <ScrollView>
@@ -260,13 +279,15 @@ export default function PaymentScreen() {
                   <View style={styles.numberCol}>
                     <Text style={styles.numberLabel}>预存余额</Text>
                     <Text style={styles.numberValue}>
-                      {route.params.deposit || 0}
+                      {route.params.data.deposit || 0}
                     </Text>
                   </View>
                   <View style={styles.numberCol}>
                     <Text style={styles.numberLabel}>合计金额</Text>
                     <Text style={styles.numberValue}>
-                      {sum(paymentBills?.map((it) => it.extendedAmount) || [])}
+                      {sum(
+                        paymentBills?.map((it) => it.extendedAmount || 0) || [],
+                      )}
                     </Text>
                   </View>
                 </View>
@@ -275,34 +296,48 @@ export default function PaymentScreen() {
             <View style={styles.contentRight} />
           </View>
 
-          <View style={styles.items}>
-            {paymentBills?.map((item) => (
-              <PaymentItem key={item.feeId} data={item} />
-            ))}
-          </View>
+          <FlatList<PdaChargeListDto>
+            data={paymentBills}
+            renderItem={renderPaymentItem}
+            keyExtractor={(item) => item.feeId.toString()}
+            ItemSeparatorComponent={renderItemSep}
+          />
 
           <View style={styles.total}>
-            <Text style={styles.totalTitle}>应缴总金额</Text>
+            <Text style={styles.totalTitle}>
+              {route.params.mode === 'pay' ? '应缴总金额' : '实收金额'}
+            </Text>
             <Text style={styles.totalValue}>
-              {sum([
-                ...(paymentBills?.map((it) => it.extendedAmount) || []),
-                ...(paymentBills?.map((it) => it.lateFee) || []),
-              ])}
+              {route.params.mode === 'pay'
+                ? sum([
+                    ...(paymentBills?.map((it) => it.extendedAmount || 0) ||
+                      []),
+                    ...(paymentBills?.map((it) => it.lateFee || 0) || []),
+                  ])
+                : route.params.data.actualMoney}
             </Text>
           </View>
 
-          <View style={styles.payways}>
-            <FlatList<string>
-              data={ways}
-              renderItem={renderPayWay}
-              keyExtractor={(i) => i}
-              ItemSeparatorComponent={() => <View style={styles.paywayLine} />}
-            />
-          </View>
+          {route.params.mode === 'pay' ? (
+            <View style={styles.payways}>
+              <FlatList<string>
+                data={ways}
+                renderItem={renderPayWay}
+                keyExtractor={(i) => i}
+                ItemSeparatorComponent={() => (
+                  <View style={styles.paywayLine} />
+                )}
+              />
+            </View>
+          ) : null}
 
-          <TouchableOpacity style={styles.payButton} onPress={onPayButtonClick}>
-            <Text style={styles.payButtonText}>去收费</Text>
-          </TouchableOpacity>
+          {route.params.mode === 'pay' ? (
+            <TouchableOpacity
+              style={styles.payButton}
+              onPress={onPayButtonClick}>
+              <Text style={styles.payButtonText}>去收费</Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
       </ScrollView>
 

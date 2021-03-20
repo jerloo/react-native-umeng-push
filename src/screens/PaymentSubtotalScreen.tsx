@@ -191,8 +191,8 @@ export default function PaymentSubtotalScreen() {
       <TouchableOpacity
         onPress={() =>
           navigation.navigate('Payment', {
-            custId: info.item.custId,
-            custCode: info.item.custCode,
+            data: info.item,
+            mode: 'details',
           })
         }>
         <SubtotalItem data={info.item} />
