@@ -59,7 +59,7 @@ export default function PaymentItem({ data }: Props) {
               <Text style={styles.detailsValue}>{data.lastReading}</Text>
               <Text style={styles.detailsValue}>{data.reading}</Text>
               <Text style={[styles.detailsValue, { color: '#F0655A' }]}>
-                {data.extendedAmount?.toFixed(2)}
+                {((data.extendedAmount || 0) + (data.lateFee || 0))?.toFixed(2)}
               </Text>
             </View>
           </View>

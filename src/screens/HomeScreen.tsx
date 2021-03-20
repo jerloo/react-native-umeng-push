@@ -23,6 +23,7 @@ import SearchBoxView from '../components/SearchBoxView';
 import { setSystemSettings } from '../utils/systemSettingsUtils';
 import { setBillMonth } from '../utils/billMonthUtils';
 import { Permission, Permissions } from '../utils/permissionUtils';
+import { PdaUserPermissionDto } from '../../apiclient/src/models';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -32,20 +33,28 @@ export default function HomeScreen() {
 
   const [loading, setLoading] = useState(false);
 
-  const fetchSession = async () => {
-    const s = await getSession();
-    if (s) {
-      setSession(s);
-      const granteds = s.userInfo.userPermissions?.filter((it) => it.isGranted);
-      console.log('granteds', granteds);
+  const refreshPermissions = (psItems: PdaUserPermissionDto[]) => {
+    const granteds = psItems?.filter((it) => it.isGranted);
+
+    if (process.env.NODE_ENV === 'production') {
       const ps: Permission[] = [];
       granteds?.forEach((it) => {
-        const find = Permissions.get(it.code);
+        const find = Permissions.find((i) => i.code === it.code);
         if (find) {
           ps.push(find);
         }
       });
       setPerms(ps);
+    } else {
+      setPerms(Permissions);
+    }
+  };
+
+  const fetchSession = async () => {
+    const s = await getSession();
+    if (s) {
+      setSession(s);
+      refreshPermissions(s.userInfo.userPermissions || []);
     }
   };
 
@@ -86,16 +95,7 @@ export default function HomeScreen() {
     try {
       const result = await center.getUserInfo();
       if (result) {
-        const granteds = result.userPermissions?.filter((it) => it.isGranted);
-        console.log('granteds', granteds);
-        const ps: Permission[] = [];
-        granteds?.forEach((it) => {
-          const find = Permissions.get(it.code);
-          if (find) {
-            ps.push(find);
-          }
-        });
-        setPerms(ps);
+        refreshPermissions(result.userPermissions || []);
       }
     } catch (e) {
       console.log(e);
@@ -158,9 +158,10 @@ export default function HomeScreen() {
       <View style={styles.mainContainer}>
         <Text style={styles.groupTitle}>我的抄表</Text>
 
-        <View style={styles.groupRow}>
+        <View style={[styles.groupRow, { flex: 1 }]}>
           <FlatList<Permission>
             data={perms}
+            style={{ flex: 1 }}
             numColumns={3}
             renderItem={renderButton}
             keyExtractor={(it) => it.title}
