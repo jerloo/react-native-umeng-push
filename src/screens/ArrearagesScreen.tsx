@@ -317,8 +317,8 @@ export default function ArrearagesScreen() {
       <TouchableOpacity
         onPress={() =>
           navigation.navigate('Payment', {
-            custId: info.item.custId,
-            custCode: info.item.custCode,
+            data: info.item,
+            mode: 'pay',
           })
         }>
         <ArrearageItem data={info.item} />

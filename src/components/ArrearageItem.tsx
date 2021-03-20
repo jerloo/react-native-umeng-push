@@ -55,6 +55,8 @@ const styles = StyleSheet.create({
     backgroundColor: colorWhite,
     marginHorizontal: scaleSize(30),
     borderRadius: scaleSize(8),
+    height: scaleSize(439),
+    justifyContent: 'space-around',
   },
   title: {
     fontSize: scaleSize(34),
