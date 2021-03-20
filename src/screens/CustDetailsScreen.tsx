@@ -334,10 +334,16 @@ export default function CustDetailsScreen() {
     );
   };
 
+  const getStyleByIndex = (index: number) => {
+    return index % 2 === 1
+      ? [styles.listItem, styles.listItemDark]
+      : [styles.listItem];
+  };
+
   const renderReadingRecord = (info: ListRenderItemInfo<PdaReadingRecord>) => {
     return (
-      <View style={styles.listItem}>
-        <Text style={styles.listItemText}>
+      <View style={getStyleByIndex(info.index)}>
+        <Text style={[styles.listItemText, { flex: 2 }]}>
           {dayjs(info.item.readingDate).format('YYYY-MM-DD')}
         </Text>
         <Text style={styles.listItemText}>{info.item.lastReading}</Text>
@@ -349,7 +355,7 @@ export default function CustDetailsScreen() {
 
   const renderBillingRecord = (info: ListRenderItemInfo<PdaBillingInfo>) => {
     return (
-      <View style={styles.listItem}>
+      <View style={getStyleByIndex(info.index)}>
         <Text style={styles.listItemText}>{info.item.billMonth}</Text>
         <Text style={styles.listItemText}>{info.item.billWater}</Text>
         <Text style={styles.listItemText}>{info.item.extendedAmount}</Text>
@@ -360,7 +366,7 @@ export default function CustDetailsScreen() {
 
   const renderPayRecord = (info: ListRenderItemInfo<PdaPayRecord>) => {
     return (
-      <View style={styles.listItem}>
+      <View style={getStyleByIndex(info.index)}>
         <Text style={[styles.listItemText, { flex: 2 }]}>
           {dayjs(info.item.payDate).format('YYYY-MM-DD')}
         </Text>
@@ -377,6 +383,17 @@ export default function CustDetailsScreen() {
         {headers.map((value) => (
           <Text style={styles.listItemText}>{value}</Text>
         ))}
+      </View>
+    );
+  };
+
+  const renderBillsHeader = () => {
+    return (
+      <View style={[styles.listItem, styles.listItemDark]}>
+        <Text style={[styles.listItemText, { flex: 2 }]}>账务年月</Text>
+        <Text style={styles.listItemText}>开账水量</Text>
+        <Text style={styles.listItemText}>账单金额</Text>
+        <Text style={styles.listItemText}>违约金</Text>
       </View>
     );
   };
@@ -533,7 +550,7 @@ export default function CustDetailsScreen() {
             <Text style={styles.rememberTitle}>仅显示欠费</Text>
           </TouchableOpacity>
 
-          {renderHeader(['账务年月', '开账水量', '账单金额', '违约金'])}
+          {renderBillsHeader()}
 
           <FlatList<PdaBillingInfo>
             data={
