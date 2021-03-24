@@ -501,7 +501,7 @@ export default function CustDetailsScreen() {
           />
         </View>
 
-        <View style={styles.readingRecords}>
+        <View style={[styles.readingRecords, { flex: 1 }]}>
           <View style={styles.topRow}>
             <View style={styles.topCol}>
               <Text style={styles.topLabel}>笔数：</Text>
@@ -573,6 +573,7 @@ export default function CustDetailsScreen() {
             contentContainerStyle={{
               paddingBottom: scaleSize(30),
             }}
+            // style={{ flex: 1 }}
           />
 
           {canPay ? (
@@ -737,7 +738,7 @@ const styles = StyleSheet.create({
   },
   payButton: {
     marginHorizontal: scaleSize(74),
-    marginVertical: scaleSize(60),
+    marginVertical: scaleSize(30),
     backgroundColor: '#5397F6',
     justifyContent: 'center',
     alignItems: 'center',
