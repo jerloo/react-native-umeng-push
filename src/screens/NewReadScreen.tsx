@@ -721,6 +721,12 @@ export default function NewReadScreen() {
                 readStateId: item.id,
                 readDate: new Date(),
               };
+              const find = readStates?.items.find(
+                (it) => it.stateName === '无量',
+              );
+              if (find) {
+                valueData.reading = valueData.lastReading;
+              }
               setNewData({
                 ...valueData,
                 readWater: calcReadWater(valueData, readStates?.items || []),
