@@ -71,9 +71,9 @@ export default interface ApiService {
   sync(deviceId: string): Promise<PdaReadDataDtoListResultDto>;
   getUserInfo(): Promise<PdaMeterReaderDto>;
   makeOut(input: ReadingDataDto): Promise<void>;
-}
+};
 
 export const NETWORK_ERROR = '网络错误，请稍后再试';
-export const SERVER_ERROR = '服务器错误，请稍后再试';
+export const SERVER_ERROR = '请连接网络';
 export const NO_NETWORK_ERROR = '请连接网络';
 export const USERNAME_PWD_ERROR = '用户名或密码错误';
