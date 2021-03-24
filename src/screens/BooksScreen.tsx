@@ -73,9 +73,9 @@ export default function BooksScreen() {
     }
   }, []);
 
-  useEffect(() => {
-    fetchLocal();
-  }, [fetchLocal]);
+  // useEffect(() => {
+  //   fetchLocal();
+  // }, [fetchLocal]);
 
   const fetchTotalNumbers = async () => {
     const result = await db.getBookTotalData();

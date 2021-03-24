@@ -22,25 +22,25 @@ export interface PdaArrearageInputDto {
      * @type {number}
      * @memberof PdaArrearageInputDto
      */
-    beginMonth?: any;
+    beginMonth?: number;
     /**
      * 结束年月
      * @type {number}
      * @memberof PdaArrearageInputDto
      */
-    endMonth?: any;
+    endMonth?: number;
     /**
      * 抄表员
      * @type {string}
      * @memberof PdaArrearageInputDto
      */
-    meterReaderId?: any;
+    meterReaderId?: string;
     /**
      * 册本编号
      * @type {number}
      * @memberof PdaArrearageInputDto
      */
-    bookId?: any;
+    bookId?: number;
     /**
      * 组合查询条件
      * @type {string}

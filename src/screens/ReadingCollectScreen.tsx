@@ -22,11 +22,12 @@ import {
   PdaReadingCollectDto,
 } from '../../apiclient/src/models';
 import dayjs from 'dayjs';
-import { sum } from '../utils/sumUtils';
+import { sum, sumNoFixed } from '../utils/sumUtils';
 import ReadingCollectItem from '../components/ReadingCollectItem';
 import Modal from 'react-native-smart-modal';
 import { Modal as AntModal } from '@ant-design/react-native';
 import { useNavigation } from '@react-navigation/core';
+import { saveBillMonth } from '../utils/billMonthUtils';
 
 export default function ReadingCollectScreen() {
   const navigation = useNavigation();
@@ -52,7 +53,16 @@ export default function ReadingCollectScreen() {
     }
   };
 
+  const fetchLatestBillMonth = async () => {
+    const latestBillMonth = await center.getReadingMonth();
+    if (latestBillMonth) {
+      saveBillMonth(latestBillMonth);
+      setBillMonth(latestBillMonth);
+    }
+  };
+
   useEffect(() => {
+    fetchLatestBillMonth();
     fetchPdaUsers();
   }, []);
 
@@ -63,6 +73,8 @@ export default function ReadingCollectScreen() {
     }
     const key = Toast.loading('加载中');
     try {
+      await fetchLatestBillMonth();
+
       const result = await center.getReadingCollect(currentUser?.id, billMonth);
       setItems(result);
       Toast.remove(key);
@@ -222,7 +234,7 @@ export default function ReadingCollectScreen() {
           </View>
           <View style={styles.topItem}>
             <Text style={styles.topItemValue}>
-              {sum(items?.map((it) => it.totalWater) || [])}
+              {sumNoFixed(items?.map((it) => it.totalWater) || []).toFixed(0)}
             </Text>
             <Text style={styles.topItemLabel}>水量</Text>
           </View>

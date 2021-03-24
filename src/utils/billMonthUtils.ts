@@ -8,6 +8,6 @@ export const getBillMonth = async () => {
   return parseInt(result, 10);
 };
 
-export const setBillMonth = async (billMonth: number) => {
+export const saveBillMonth = async (billMonth: number) => {
   await AsyncStorage.setItem('billMonth', billMonth.toString());
 };

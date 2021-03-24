@@ -28,6 +28,7 @@ import { MainStackParamList } from './routeParams';
 import ArrearageItem from '../components/ArrearageItem';
 import dayjs from 'dayjs';
 import Modal from 'react-native-smart-modal';
+import { saveBillMonth } from '../utils/billMonthUtils';
 
 const PAGE_SIZE = 30;
 
@@ -80,7 +81,19 @@ export default function ArrearagesScreen() {
     }
   };
 
+  const fetchLatestBillMonth = async () => {
+    const latestBillMonth = await center.getReadingMonth();
+    if (latestBillMonth) {
+      saveBillMonth(latestBillMonth);
+      setParams({
+        ...params,
+        endMonth: latestBillMonth,
+      });
+    }
+  };
+
   useEffect(() => {
+    fetchLatestBillMonth();
     fetchPdaUsers();
     fetchBooks();
   }, []);
@@ -97,6 +110,8 @@ export default function ArrearagesScreen() {
 
     setLoading(true);
     try {
+      await fetchLatestBillMonth();
+
       const res = await center.getArrearageList(ps);
       setItems(res.items);
       setTotal(res.totalCount);

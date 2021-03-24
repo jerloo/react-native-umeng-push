@@ -21,7 +21,7 @@ import { setReadStateSettings } from '../utils/statesUtils';
 import { useNavigation } from '@react-navigation/core';
 import SearchBoxView from '../components/SearchBoxView';
 import { setSystemSettings } from '../utils/systemSettingsUtils';
-import { setBillMonth } from '../utils/billMonthUtils';
+import { saveBillMonth } from '../utils/billMonthUtils';
 import { Permission, Permissions } from '../utils/permissionUtils';
 import { PdaUserPermissionDto } from '../../apiclient/src/models';
 import { PERMISSIONS_CHECK } from '../utils/devUtils';
@@ -85,7 +85,7 @@ export default function HomeScreen() {
     try {
       const result = await center.getReadingMonth();
       if (result) {
-        setBillMonth(result);
+        saveBillMonth(result);
       }
     } catch (e) {
       console.log(e);
