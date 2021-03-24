@@ -22,23 +22,25 @@ export interface PdaUserPermissionDto {
      * @type {string}
      * @memberof PdaUserPermissionDto
      */
-    code?: any;
+    code?: string;
     /**
      * 权限名称
      * @type {string}
      * @memberof PdaUserPermissionDto
      */
-    name?: any;
+    name?: string;
     /**
      * 权限说明
      * @type {string}
      * @memberof PdaUserPermissionDto
      */
-    description?: any;
+    description?: string;
     /**
      * 是否授权
      * @type {boolean}
      * @memberof PdaUserPermissionDto
      */
-    isGranted?: any;
+    isGranted?: boolean;
+
+    disabled?: boolean;
 }

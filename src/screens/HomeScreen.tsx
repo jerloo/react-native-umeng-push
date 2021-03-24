@@ -24,6 +24,7 @@ import { setSystemSettings } from '../utils/systemSettingsUtils';
 import { setBillMonth } from '../utils/billMonthUtils';
 import { Permission, Permissions } from '../utils/permissionUtils';
 import { PdaUserPermissionDto } from '../../apiclient/src/models';
+import { PERMISSIONS_CHECK } from '../utils/devUtils';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -34,9 +35,11 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(false);
 
   const refreshPermissions = (psItems: PdaUserPermissionDto[]) => {
-    const granteds = psItems?.filter((it) => it.isGranted);
+    const granteds = psItems?.filter((it) => it.isGranted || it.disabled);
 
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV !== 'production' || PERMISSIONS_CHECK) {
+      setPerms(Permissions);
+    } else {
       const ps: Permission[] = [];
       granteds?.forEach((it) => {
         const find = Permissions.find((i) => i.code === it.code);
@@ -45,8 +48,6 @@ export default function HomeScreen() {
         }
       });
       setPerms(ps);
-    } else {
-      setPerms(Permissions);
     }
   };
 
