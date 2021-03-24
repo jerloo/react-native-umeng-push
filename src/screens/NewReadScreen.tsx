@@ -98,6 +98,7 @@ export default function NewReadScreen() {
   useEffect(() => {
     getSystemSettings().then((r) => {
       if (r) {
+        console.log('getSystemSettings', r);
         setMustTakePhoto(r.isMobileReadingMustPhoto);
         setCanCharge(r.isMobileReadingCanCharge);
       }

@@ -506,14 +506,20 @@ export default function CustDetailsScreen() {
             <View style={styles.topCol}>
               <Text style={styles.topLabel}>笔数：</Text>
               <Text style={styles.topValue}>
-                {details?.billingInfos?.length || 0}
+                {(onlyShowOwe
+                  ? details?.billingInfos?.filter((it) => it.payState === 0)
+                  : details?.billingInfos
+                )?.length || 0}
               </Text>
             </View>
             <View style={styles.topCol}>
               <Text style={styles.topLabel}>水量：</Text>
               <Text style={styles.topValue}>
                 {sum(
-                  details?.billingInfos?.map((value) => value.billWater) || [],
+                  (onlyShowOwe
+                    ? details?.billingInfos?.filter((it) => it.payState === 0)
+                    : details?.billingInfos
+                  )?.map((value) => value.billWater) || [],
                 )}
               </Text>
             </View>
@@ -521,7 +527,10 @@ export default function CustDetailsScreen() {
               <Text style={styles.topLabel}>合计金额：</Text>
               <Text style={[styles.topValue, styles.redText]}>
                 {sum(
-                  details?.billingInfos?.map((it) => it.extendedAmount) || [],
+                  (onlyShowOwe
+                    ? details?.billingInfos?.filter((it) => it.payState === 0)
+                    : details?.billingInfos
+                  )?.map((it) => it.extendedAmount) || [],
                 )}
               </Text>
             </View>

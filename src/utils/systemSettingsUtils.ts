@@ -8,6 +8,8 @@ export const MobileReadingMustPhoto = 'MobileReadingMustPhoto';
 export const IS_OPEN_DEPOSIT = 'IS_OPEN_DEPOSIT';
 export const IS_SHOW_DEPOSIT_PAY = 'IS_SHOW_DEPOSIT_PAY';
 
+export const SYSTEM_SETTINGS_KEY = 'SYSTEM_SETTINGS_KEY';
+
 export interface SystemSettings {
   fileUploadMethod: string;
   isMobileReadingCanCharge: boolean;
@@ -18,7 +20,7 @@ export interface SystemSettings {
 }
 
 export const getSystemSettings = async () => {
-  const content = await AsyncStorage.getItem('systemSettings');
+  const content = await AsyncStorage.getItem(SYSTEM_SETTINGS_KEY);
   return content ? (JSON.parse(content) as SystemSettings) : null;
 };
 
@@ -35,11 +37,11 @@ export const setSystemSettings = async (items: SysSettingDto[]) => {
     isOpenDeposit: isOpenDeposit(items),
     isShowDepositPay: isShowDepositPay(items),
   };
-  await AsyncStorage.setItem('systemSettings', JSON.stringify(settings));
+  await AsyncStorage.setItem(SYSTEM_SETTINGS_KEY, JSON.stringify(settings));
 };
 
 const getFileUploadMethod = (items: SysSettingDto[]) => {
-  return getSystemSettingByKey(FILE_UPLOAD_METHOD, items)?.value;
+  return getSystemSettingByKey(FILE_UPLOAD_METHOD, items)?.value || '';
 };
 
 const isMobileReadingCanCharge = (items: SysSettingDto[]) => {

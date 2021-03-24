@@ -22,29 +22,29 @@ export interface SysSettingDto {
      * @type {string}
      * @memberof SysSettingDto
      */
-    groupName?: any;
+    groupName?: string;
     /**
      * 参数名称
      * @type {string}
      * @memberof SysSettingDto
      */
-    name?: any;
+    name?: string;
     /**
      * 参数编码
      * @type {string}
      * @memberof SysSettingDto
      */
-    code?: any;
+    code?: string;
     /**
      * 参数当前值
      * @type {string}
      * @memberof SysSettingDto
      */
-    value?: any;
+    value?: string;
     /**
      * 备注
      * @type {string}
      * @memberof SysSettingDto
      */
-    remark?: any;
+    remark?: string;
 }

@@ -11,6 +11,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+
+import { SysSettingDto } from "./sys-setting-dto";
+
 /**
  * 
  * @export
@@ -22,5 +25,5 @@ export interface SysSettingDtoListResultDto {
      * @type {Array&lt;SysSettingDto&gt;}
      * @memberof SysSettingDtoListResultDto
      */
-    items?: any;
+    items?: SysSettingDto[];
 }

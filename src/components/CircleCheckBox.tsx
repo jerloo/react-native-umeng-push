@@ -60,16 +60,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   rememberIcon: {
-    width: scaleSize(28),
-    height: scaleSize(28),
+    // width: scaleSize(28),
+    // height: scaleSize(28),
   },
   rememberIconContainer: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingEnd: scaleSize(18),
-    paddingStart: scaleSize(34),
-    // paddingTop: scaleSize(16),
+    padding: scaleSize(30),
+    // backgroundColor: 'blue',
   },
   title: {
     fontSize: scaleSize(32),

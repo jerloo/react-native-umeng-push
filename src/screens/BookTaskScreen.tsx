@@ -45,26 +45,26 @@ export default function BookTaskScreen() {
   const f2Ref = React.useRef<FlatList<PdaReadDataDtoHolder>>(null);
   const f3Ref = React.useRef<FlatList<PdaReadDataDtoHolder>>(null);
 
-  useEffect(() => {
-    const fetchLocal = async () => {
-      try {
-        const { bookId } = route.params;
-        const res = await center.offline.getBookDataByIds([bookId]);
-        const items = (res as PdaReadDataDto[]).map((value) => {
-          const data: PdaReadDataDtoHolder = {
-            item: value,
-            showExtra: false,
-          };
-          return data;
-        });
-        setBookDataItems(items);
-      } catch (e) {
-        Toast.fail(e.message);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchLocal = async () => {
+  //     try {
+  //       const { bookId } = route.params;
+  //       const res = await center.offline.getBookDataByIds([bookId]);
+  //       const items = (res as PdaReadDataDto[]).map((value) => {
+  //         const data: PdaReadDataDtoHolder = {
+  //           item: value,
+  //           showExtra: false,
+  //         };
+  //         return data;
+  //       });
+  //       setBookDataItems(items);
+  //     } catch (e) {
+  //       Toast.fail(e.message);
+  //     }
+  //   };
 
-    fetchLocal();
-  }, [route.params]);
+  //   fetchLocal();
+  // }, [route.params]);
 
   useFocusEffect(
     React.useCallback(() => {

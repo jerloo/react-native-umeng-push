@@ -258,7 +258,7 @@ export default class OnlineApiService implements ApiService {
     try {
       const result = await api.mobileSystemApi.apiAppMobileSystemSettingsGet();
       if (result.status < 400) {
-        return result.data.items;
+        return result.data.items || [];
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {

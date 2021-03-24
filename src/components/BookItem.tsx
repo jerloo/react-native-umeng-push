@@ -20,7 +20,6 @@ export default function BookItem(props: Props) {
           iconStyle={{
             width: scaleSize(38),
             height: scaleSize(38),
-            marginTop: scaleSize(16),
           }}
           disabled={props.holder.downloaded}
         />
@@ -63,19 +62,19 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    // backgroundColor: 'blue',
   },
   bookName: {
     color: '#333333',
     fontSize: scaleSize(34),
-    marginTop: scaleSize(16),
   },
   detailsContainer: {
     display: 'flex',
     flexDirection: 'row',
-    marginTop: scaleSize(30),
     justifyContent: 'space-between',
-    marginBottom: scaleSize(24),
     marginHorizontal: scaleSize(34),
+    marginBottom: scaleSize(14),
+    alignItems: 'center',
   },
   detailsLabel: {
     fontSize: scaleSize(30),
@@ -88,6 +87,7 @@ const styles = StyleSheet.create({
   detailsBox: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
   },
   geyuechao: {
     color: '#EA9538',
@@ -99,7 +99,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: scaleSize(8),
     marginStart: scaleSize(18),
     textAlign: 'center',
-    marginTop: scaleSize(16),
   },
   downloaded: {
     color: '#3874EA',
@@ -111,6 +110,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: scaleSize(8),
     marginStart: scaleSize(12),
     textAlign: 'center',
-    marginTop: scaleSize(16),
   },
 });
