@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
@@ -30,11 +31,19 @@ export default function SubtotalItem({ data }: Props) {
           <Text style={styles.label}>缴费时间</Text>
         </View>
         <View style={styles.contentRight}>
-          <Text style={styles.value}>{data.chargeWay}</Text>
+          <Text style={styles.value}>
+            {data.chargeWay === '1'
+              ? '现金'
+              : data.chargeWay === '2'
+              ? '微信'
+              : '支付宝'}
+          </Text>
           <Text style={[styles.value, { color: '#2660ED' }]}>
             {data.actualMoney}
           </Text>
-          <Text style={styles.value}>{data.payTime}</Text>
+          <Text style={styles.value}>
+            {dayjs(data.payTime).format('YYYY-MM-DD')}
+          </Text>
         </View>
       </View>
       <View style={styles.line} />
