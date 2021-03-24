@@ -61,13 +61,13 @@ export const calcReadWater = (
     console.log('抄表算法数值', algorithm);
     if (algorithm && [1, 2, 4, 5, 6].indexOf(algorithm) > -1) {
       const fn = CALCS[algorithm];
-      return fn(data);
+      return fn(data).toFixed(0);
     } else {
-      return normalCalc(data);
+      return normalCalc(data).toFixed(0);
     }
   } catch (e) {
     console.log('calcReadWater', e);
-    return normalCalc(data);
+    return normalCalc(data).toFixed(0);
   }
 };
 
