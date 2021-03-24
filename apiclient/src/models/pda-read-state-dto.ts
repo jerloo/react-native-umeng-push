@@ -28,7 +28,7 @@ export interface PdaReadStateDto {
      * @type {string}
      * @memberof PdaReadStateDto
      */
-    stateName?: any;
+    stateName?: string;
     /**
      * 抄表算法
      * @type {number}

@@ -22,6 +22,7 @@ import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import SearchBox from '../components/SearchBox';
 import { Tabs } from '@ant-design/react-native';
 import {
+  NavigationProp,
   RouteProp,
   useFocusEffect,
   useNavigation,
@@ -33,7 +34,7 @@ import DeviceInfo from 'react-native-device-info';
 
 export default function BookTaskScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'BookTask'>>();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const [bookDataItems, setBookDataItems] = useState<PdaReadDataDtoHolder[]>(
     [],

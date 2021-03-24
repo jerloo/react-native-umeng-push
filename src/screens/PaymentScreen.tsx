@@ -164,6 +164,8 @@ export default function PaymentScreen() {
           iconSelected={require('../assets/qietu/shoufei/turnpike_ic_pick_selected.png')}
           checked={payWay === info.item}
           onClick={() => setPayWay(info.item)}
+          iconStyle={{ width: scaleSize(48), height: scaleSize(48) }}
+          iconContainerStyle={{ padding: 0 }}
         />
       </TouchableOpacity>
     );

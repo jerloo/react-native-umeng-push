@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import * as React from 'react';
 import {
   ListRenderItemInfo,
@@ -73,7 +74,9 @@ export default function PaymentItem({ data }: Props) {
             </View>
             <View style={styles.detailsValues}>
               <Text style={styles.detailsValue}>{data.readWater}</Text>
-              <Text style={styles.detailsValue}>{data.readingDate}</Text>
+              <Text style={styles.detailsValue}>
+                {dayjs(data.readingDate).format('YYYY-MM-DD')}
+              </Text>
               <Text style={styles.detailsValue}>
                 {data.lateFee?.toFixed(2)}
               </Text>
