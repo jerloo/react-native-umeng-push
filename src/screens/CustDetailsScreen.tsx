@@ -35,7 +35,7 @@ import {
 import { MainStackParamList } from './routeParams';
 import PureInput from '../components/PureInput';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { sum } from '../utils/sumUtils';
+import { sum, sumNoFixed } from '../utils/sumUtils';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
 import LocationButton from '../components/LocationButton';
 import { getSystemSettings } from '../utils/systemSettingsUtils';
@@ -356,7 +356,9 @@ export default function CustDetailsScreen() {
   const renderBillingRecord = (info: ListRenderItemInfo<PdaBillingInfo>) => {
     return (
       <View style={getStyleByIndex(info.index)}>
-        <Text style={styles.listItemText}>{info.item.billMonth}</Text>
+        <Text style={[styles.listItemText, { flex: 2 }]}>
+          {info.item.billMonth}
+        </Text>
         <Text style={styles.listItemText}>{info.item.billWater}</Text>
         <Text style={styles.listItemText}>{info.item.extendedAmount}</Text>
         <Text style={styles.listItemText}>{info.item.lateFee}</Text>
@@ -383,6 +385,17 @@ export default function CustDetailsScreen() {
         {headers.map((value) => (
           <Text style={styles.listItemText}>{value}</Text>
         ))}
+      </View>
+    );
+  };
+
+  const renderReadingHeader = () => {
+    return (
+      <View style={[styles.listItem, styles.listItemDark]}>
+        <Text style={[styles.listItemText, { flex: 2 }]}>抄表日期</Text>
+        <Text style={styles.listItemText}>上期抄码</Text>
+        <Text style={styles.listItemText}>本次抄码</Text>
+        <Text style={styles.listItemText}>本期水量</Text>
       </View>
     );
   };
@@ -476,10 +489,10 @@ export default function CustDetailsScreen() {
             <View style={styles.topCol}>
               <Text style={styles.topLabel}>水量：</Text>
               <Text style={styles.topValue}>
-                {sum(
+                {sumNoFixed(
                   details?.readingRecords?.map((value) => value.readWater) ||
                     [],
-                )}
+                ).toFixed(0)}
               </Text>
             </View>
             <View style={styles.topCol}>
@@ -488,7 +501,7 @@ export default function CustDetailsScreen() {
             </View>
           </View>
 
-          {renderHeader(['抄表日期', '上期抄码', '本次抄码', '本期水量'])}
+          {renderReadingHeader()}
 
           <FlatList<PdaReadingRecord>
             data={details?.readingRecords}
@@ -515,12 +528,12 @@ export default function CustDetailsScreen() {
             <View style={styles.topCol}>
               <Text style={styles.topLabel}>水量：</Text>
               <Text style={styles.topValue}>
-                {sum(
+                {sumNoFixed(
                   (onlyShowOwe
                     ? details?.billingInfos?.filter((it) => it.payState === 0)
                     : details?.billingInfos
                   )?.map((value) => value.billWater) || [],
-                )}
+                ).toFixed(0)}
               </Text>
             </View>
             <View style={styles.topCol}>
