@@ -108,7 +108,6 @@ export default function ReadingCollectScreen() {
 
   const onPickBillMonth = (dt: Date) => {
     const value = parseInt(dayjs(dt).format('YYYYMM'), 10);
-    console.log('onPickBillMonth', value);
     setBillMonth(value);
   };
 

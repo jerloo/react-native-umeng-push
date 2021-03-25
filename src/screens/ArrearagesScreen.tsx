@@ -169,13 +169,11 @@ export default function ArrearagesScreen() {
 
   const onStartPick = (dt: Date) => {
     const value = parseInt(dayjs(dt).format('YYYYMM'), 10);
-    console.log('onPickBillMonth', value);
     setParams({ ...params, beginMonth: value });
   };
 
   const onEndPick = (dt: Date) => {
     const value = parseInt(dayjs(dt).format('YYYYMM'), 10);
-    console.log('onPickBillMonth', value);
     setParams({ ...params, endMonth: value });
   };
 

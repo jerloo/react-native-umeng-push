@@ -7,6 +7,7 @@ import {
 } from './src/api';
 import Axios from 'axios';
 import { AxiosLogger } from 'axios-pretty-logger';
+import { l } from '../src/utils/logUtils';
 
 const consola = require('consola');
 const axiosLogger = AxiosLogger.using(consola.info, consola.error);
@@ -18,11 +19,12 @@ const axiosInstance = Axios.create({
 axiosInstance.interceptors.request.use(
   function (config) {
     config.metadata = { startTime: new Date() };
+    process.env.NODE_ENV === 'production' && l.info(config);
     process.env.NODE_ENV !== 'production' && axiosLogger.logRequest(config);
     return config;
   },
   function (error) {
-    process.env.NODE_ENV !== 'production' && console.log(error);
+    process.env.NODE_ENV === 'production' && l.error(error);
     process.env.NODE_ENV !== 'production' && axiosLogger.logErrorDetails(error);
     return Promise.reject(error);
   },
@@ -34,9 +36,17 @@ axiosInstance.interceptors.response.use(
     response.duration =
       response.config.metadata.endTime - response.config.metadata.startTime;
     process.env.NODE_ENV !== 'production' && axiosLogger.logResponse(response);
-    // process.env.NODE_ENV !== 'production' && console.log(response);
+    process.env.NODE_ENV === 'production' &&
+      l.info(
+        `${response.status} ${response.statusText} API请求耗时：${response.duration / 1000
+        }s`,
+        response,
+      );
     process.env.NODE_ENV !== 'production' &&
-      console.log(`API请求耗时：${response.duration / 1000}s`);
+      l.info(
+        `${response.status} ${response.statusText} API请求耗时：${response.duration / 1000
+        }s`,
+      );
     return response;
   },
   function (error) {
@@ -44,6 +54,7 @@ axiosInstance.interceptors.response.use(
     error.duration =
       error.config.metadata.endTime - error.config.metadata.startTime;
     process.env.NODE_ENV !== 'production' && axiosLogger.logErrorDetails(error);
+    process.env.NODE_ENV === 'production' && l.error(error);
     return Promise.reject(error);
   },
 );

@@ -11,6 +11,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+
+import { PdaReadDataDto } from "./pda-read-data-dto";
+
 /**
  * 
  * @export
@@ -22,5 +25,5 @@ export interface PdaReadDataDtoListResultDto {
      * @type {Array&lt;PdaReadDataDto&gt;}
      * @memberof PdaReadDataDtoListResultDto
      */
-    items?: any;
+    items?: PdaReadDataDto[];
 }

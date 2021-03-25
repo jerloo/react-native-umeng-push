@@ -90,7 +90,6 @@ export default function NewReadScreen() {
 
   useEffect(() => {
     db.getAttachments(data.custId, data.readTimes, data.billMonth).then((r) => {
-      console.log('获取附件', r);
       setAttachments(r);
     });
   }, [data.billMonth, data.custId, data.readTimes]);
@@ -98,7 +97,6 @@ export default function NewReadScreen() {
   useEffect(() => {
     getSystemSettings().then((r) => {
       if (r) {
-        console.log('getSystemSettings', r);
         setMustTakePhoto(r.isMobileReadingMustPhoto);
         setCanCharge(r.isMobileReadingCanCharge);
       }
@@ -179,7 +177,6 @@ export default function NewReadScreen() {
     return new Promise<boolean>(async (resolve, _reject) => {
       const water = calcReadWater(newData, readStates?.items || []);
       const result = judgeReadWater(water, newData, readStates?.items || []);
-      console.log('nextItem', water, result);
       if (!result) {
         if (newData.recordState === 0) {
           newData.recordState = 1;
@@ -219,7 +216,6 @@ export default function NewReadScreen() {
   };
 
   const saveData = async () => {
-    console.log('saveData');
     if (!newData.reading) {
       Toast.fail('请先抄表');
       return;
@@ -292,6 +288,7 @@ export default function NewReadScreen() {
     result.custId = newData.custId;
     result.readTimes = newData.readTimes;
     result.billMonth = newData.billMonth;
+    result.uploaded = false;
     await db.saveAttachments([result]);
     if (!attachments) {
       setAttachments([result]);
@@ -543,7 +540,6 @@ export default function NewReadScreen() {
             selectedStateId={newData.readStateId}
             onSelected={(item) => {
               setSettingsModalVisible(false);
-              console.log('readStateId', item.id);
               setNewData({ ...newData, readStateId: item.id });
             }}
             onSaved={(r) => {
@@ -715,7 +711,6 @@ export default function NewReadScreen() {
             readStates={readStates}
             selectStateId={newData.readStateId}
             onStateSelect={(item) => {
-              console.log('onStateSelect', item);
               const valueData = {
                 ...newData,
                 readStateId: item.id,

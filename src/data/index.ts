@@ -30,6 +30,7 @@ import OfflineApiService from './offline';
 import OnlineApiService from './online';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
 import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto';
+import { l } from '../utils/logUtils';
 
 class CenterService implements ApiService {
   offline: OfflineApiService;
@@ -60,7 +61,8 @@ class CenterService implements ApiService {
     const netInfo = await NetInfo.fetch();
     if (netInfo.isConnected === true) {
       const result = await this.online.sync(deviceId);
-      db.updateReadData(result.items);
+      l.info(`拉取同步数据 ${result.items?.length || 0}`, result.items);
+      db.updateReadData(result.items || []);
       return result;
     }
     return this.offline.sync(deviceId);
@@ -247,7 +249,7 @@ class CenterService implements ApiService {
     if (netInfo.isConnected === true) {
       const result = await this.online.getBookList();
       if (localResult.length === 0) {
-        console.log('本地抄表任务为空，直接保存抄表任务');
+        l.debug('本地抄表任务为空，直接保存抄表任务');
         await db.saveBooks(result as PdaMeterBookDtoHolder[]);
         return result;
       } else {
@@ -257,7 +259,7 @@ class CenterService implements ApiService {
           return !localItems.find((it) => it.bookId === value.bookId);
         });
         if (adds.length > 0) {
-          console.log('本地抄表任务有数据, 保存新增数据');
+          l.debug('本地抄表任务有数据, 保存新增数据');
           await db.saveBooks(adds);
         }
 
@@ -265,7 +267,7 @@ class CenterService implements ApiService {
           return !remoteItems.find((it) => it.bookId === value.bookId);
         });
         if (removeItems.length > 0) {
-          console.log('远程抄表任务有删除, 删除本地抄表任务');
+          l.debug('远程抄表任务有删除, 删除本地抄表任务');
           await db.deleteBookByIds(removeItems.map((it) => it.bookId));
         }
         return result;

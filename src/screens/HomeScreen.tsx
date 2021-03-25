@@ -25,6 +25,7 @@ import { saveBillMonth } from '../utils/billMonthUtils';
 import { Permission, Permissions } from '../utils/permissionUtils';
 import { PdaUserPermissionDto } from '../../apiclient/src/models';
 import { PERMISSIONS_CHECK } from '../utils/devUtils';
+import { l } from '../utils/logUtils';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -68,7 +69,7 @@ export default function HomeScreen() {
       const remoteStates = await center.online.getReadStates();
       setReadStateSettings(remoteStates);
     } catch (e) {
-      console.log(e);
+      l.error(e);
     }
   };
 
@@ -77,7 +78,7 @@ export default function HomeScreen() {
       const remoteSettings = await center.online.getSystemSettings();
       setSystemSettings(remoteSettings);
     } catch (e) {
-      console.log(e);
+      l.error(e);
     }
   };
 
@@ -88,7 +89,7 @@ export default function HomeScreen() {
         saveBillMonth(result);
       }
     } catch (e) {
-      console.log(e);
+      l.error(e);
     }
   };
 
@@ -99,7 +100,7 @@ export default function HomeScreen() {
         refreshPermissions(result.userPermissions || []);
       }
     } catch (e) {
-      console.log(e);
+      l.error(e);
     }
   };
 

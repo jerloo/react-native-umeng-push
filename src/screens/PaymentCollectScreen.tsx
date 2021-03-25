@@ -162,13 +162,11 @@ export default function PaymentCollectScreen() {
 
   const onStartPick = (dt: Date) => {
     const value = parseInt(dayjs(dt).format('YYYYMMDD'), 10);
-    console.log('onPickBillMonth', value);
     setParams({ ...params, beginDate: value });
   };
 
   const onEndPick = (dt: Date) => {
     const value = parseInt(dayjs(dt).format('YYYYMMDD'), 10);
-    console.log('onPickBillMonth', value);
     setParams({ ...params, endDate: value });
   };
 

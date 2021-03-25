@@ -147,20 +147,17 @@ export default function BookTaskScreen() {
       const data = bookDataItems.filter((it) => it.item.recordState === 0);
       const index = findIndex(data, text);
       if (index > -1) {
-        console.log(index);
         f1Ref.current?.scrollToIndex({ animated: true, index });
       }
     } else if (tabIndex === 1) {
       const data = bookDataItems.filter((it) => it.item.recordState !== 0);
       const index = findIndex(data, text);
       if (index > -1) {
-        console.log(index);
         f2Ref.current?.scrollToIndex({ animated: true, index });
       }
     } else if (tabIndex === 2) {
       const index = findIndex(bookDataItems, text);
       if (index > -1) {
-        console.log(index);
         f3Ref.current?.scrollToIndex({ animated: true, index });
       }
     }

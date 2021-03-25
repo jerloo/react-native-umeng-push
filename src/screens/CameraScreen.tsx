@@ -8,6 +8,8 @@ import Video from 'react-native-video';
 import { MobileFileDto } from '../../apiclient/src/models';
 import { colorWhite } from '../styles';
 import { MainStackParamList } from './routeParams';
+import { stat } from 'react-native-fs';
+import { l } from '../utils/logUtils';
 
 const MAX_DURATION = 10;
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -25,9 +27,12 @@ export default function CameraScreen() {
     const options = { quality: 0.5, base64: true };
     const data = await camera?.current?.takePictureAsync(options);
     if (data?.uri) {
+      const fileInfo = await stat(data?.uri);
       const r: MobileFileDto = {
         fileName: data?.uri,
         filePath: data?.uri,
+        fileSize: fileInfo.size,
+        fileSource: 2,
       };
       setResult(r);
     }
@@ -36,10 +41,10 @@ export default function CameraScreen() {
   const [timer, setTimer] = React.useState<number>();
 
   const takeVideo = async () => {
-    console.log('开始录像');
+    l.info('开始录像');
     setTiming(MAX_DURATION);
     const t = setInterval(() => {
-      console.log('timing');
+      l.info('timing');
       if (timing > 1) {
         setTiming(timing - 1);
       }
@@ -55,9 +60,12 @@ export default function CameraScreen() {
       maxFileSize: MAX_FILE_SIZE,
     });
     if (data?.uri) {
+      const fileInfo = await stat(data?.uri);
       const r: MobileFileDto = {
         fileName: data?.uri,
         filePath: data?.uri,
+        fileSize: fileInfo.size,
+        fileSource: 2,
       };
       setResult(r);
     }
@@ -87,7 +95,7 @@ export default function CameraScreen() {
             camera?.current?.stopRecording();
             setTiming(0);
             timer && clearInterval(timer);
-            console.log('停止录像');
+            l.info('停止录像');
           }}>
           <AnimatedCircularProgress
             size={100}

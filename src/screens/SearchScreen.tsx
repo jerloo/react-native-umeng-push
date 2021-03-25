@@ -31,7 +31,6 @@ export default function SearchScreen() {
   React.useEffect(() => {
     getSearchHistory().then((data) => {
       setHistoryItems(data);
-      console.log('最近搜索', data);
     });
   }, []);
 

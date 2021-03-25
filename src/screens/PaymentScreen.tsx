@@ -63,7 +63,6 @@ export default function PaymentScreen() {
   }, [paymentBills, route.params.data.deposit]);
 
   useEffect(() => {
-    console.log(route.params);
     center
       .getArrearageChargeList({ custId: route.params.data.custId })
       .then((items) => {

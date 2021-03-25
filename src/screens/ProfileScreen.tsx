@@ -31,6 +31,7 @@ import { NO_NETWORK_ERROR } from '../data/apiService';
 import { useNavigation } from '@react-navigation/core';
 import AuthContext from '../utils/contextUtls';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { stat } from 'react-native-fs';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -84,20 +85,21 @@ export default function ProfileScreen() {
       // 文件本地 Uri 或者 路径
       fileUri: 'file://' + currentLogFilePath,
     };
-    // const files = await RNFS.readDir(uploadRequest.fileUri);
-    // files.forEach((item) => console.log('日志文件大小', item.size));
+
+    const fileInfo = await stat(currentLogFilePath);
+    l.info(`日志文件大小: ${fileInfo.size}`);
 
     const key = Toast.loading('上传中', 0);
     // 上传 与 暂停后续传对象
     // 注意如果是续传，请务必跟初始上传使用同一个 uploadRequest 对象
     try {
       const startAt = new Date();
-      console.log('开始上传 ', dayjs(startAt).format('YYYY-MM-DD HH:mm:ss'));
+      l.info('开始上传 ', dayjs(startAt).format('YYYY-MM-DD HH:mm:ss'));
       const uploadResult = await CosXmlReactNative.upload(
         uploadRequest,
         (processedBytes: number, targetBytes: number) => {
           // 回调进度
-          console.log(
+          l.info(
             'put Progress callback : ',
             processedBytes,
             targetBytes,
@@ -107,10 +109,10 @@ export default function ProfileScreen() {
         },
       );
       const endAt = new Date();
-      console.log('结束上传', dayjs(endAt).format('YYYY-MM-DD HH:mm:ss'));
-      console.log('上传文件耗时', (endAt.getTime() - startAt.getTime()) / 1000);
+      l.info('结束上传', dayjs(endAt).format('YYYY-MM-DD HH:mm:ss'));
+      l.info('上传文件耗时', (endAt.getTime() - startAt.getTime()) / 1000);
       const startRecord = new Date();
-      console.log(
+      l.info(
         '开始调取上传接口添加文件记录 ',
         dayjs(startRecord).format('YYYY-MM-DD HH:mm:ss'),
       );
@@ -120,11 +122,11 @@ export default function ProfileScreen() {
         uploadResult.Location,
       );
       const endRecord = new Date();
-      console.log(
+      l.info(
         '结束调取上传接口添加文件记录 ',
         dayjs(endRecord).format('YYYY-MM-DD HH:mm:ss'),
       );
-      console.log(
+      l.info(
         '调取添加文件记录接口耗时',
         (endRecord.getTime() - startRecord.getTime()) / 1000,
       );
@@ -135,7 +137,7 @@ export default function ProfileScreen() {
         Toast.fail('上传失败');
       }
     } catch (e) {
-      console.log('上传失败', e);
+      l.error('上传失败', e);
       Toast.remove(key);
       Toast.fail('上传失败');
     }

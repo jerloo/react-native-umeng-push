@@ -7,6 +7,7 @@ import * as uuid from 'uuid';
 import center from '../data';
 import DeviceInfo from 'react-native-device-info';
 import { MobileFileDto } from '../../apiclient/src/models';
+import { l } from './logUtils';
 
 export const tryUploadAttachments = async (
   custId: number,
@@ -17,7 +18,7 @@ export const tryUploadAttachments = async (
   try {
     await uploadAttachments(custId, billMonth, readTimes, files);
   } catch (e) {
-    console.log('尝试上传图片失败');
+    l.error('尝试上传图片失败', e);
   }
 };
 
@@ -37,7 +38,7 @@ export const uploadAttachments = async (
   const requests = filesToUpload.map((it) => {
     const uploadRequest = {
       bucket: `${COS_BUCKET_NAME}-1259078701`,
-      object: objectName,
+      object: objectName + it.filePath?.substring(it.filePath.lastIndexOf('.')),
       // 文件本地 Uri 或者 路径
       fileUri: 'file://' + it.filePath,
     };

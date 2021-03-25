@@ -21,13 +21,19 @@ import CircleCheckBox from '../components/CircleCheckBox';
 import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
 import SwipeButton from '../components/SwipeButton';
 import db from '../data/database';
-import { BookAttachmentsTotal, NumbersType } from '../data/models';
+import {
+  AttachmentDbItem,
+  BookAttachmentsTotal,
+  NumbersType,
+} from '../data/models';
 import { getBillMonth } from '../utils/billMonthUtils';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import Modal from 'react-native-smart-modal';
 import { ReadingDataDto } from '../../apiclient/src/models';
 import DeviceInfo from 'react-native-device-info';
+import { l } from '../utils/logUtils';
+import { uploadAttachments } from '../utils/attachUtils';
 
 export default function BooksScreen() {
   const navigation = useNavigation();
@@ -144,7 +150,7 @@ export default function BooksScreen() {
   const uploadReadingData = async () => {
     const ids = bookItems.filter((it) => it.downloaded).map((it) => it.bookId);
     const readingDatas = await db.getToUploadBookDatas();
-    console.log('准备上传抄表数据', readingDatas.length);
+    l.info(`准备上传抄表数据 ${readingDatas.length} 条`, readingDatas);
     const inputItems = readingDatas.map((it) => {
       const item: ReadingDataDto = {
         billMonth: it.billMonth,
@@ -172,6 +178,30 @@ export default function BooksScreen() {
     try {
       await fetchRemoteBooks();
       await center.sync(DeviceInfo.getUniqueId());
+      const attachments = await db.getToUploadAttachments();
+      const map = new Map<string, AttachmentDbItem[]>();
+      attachments.forEach((it) => {
+        const key = `${it.billMonth}${it.custId}${it.readTimes}`;
+        if (!map.has(key)) {
+          map.set(key, []);
+        }
+        const items = map.get(key);
+        items?.push(it);
+      });
+      const ps: Promise<any>[] = [];
+      map.forEach((values) => {
+        const p = uploadAttachments(
+          values[0].custId,
+          values[0].billMonth,
+          values[0].readTimes,
+          values,
+        );
+        ps.push(p);
+      });
+      l.info(`正在等待所有附件上传完成, 共 ${attachments.length} 个`);
+      await Promise.all(ps);
+      l.info(`所有附件已经上传完成, 共 ${attachments.length} 个`);
+
       await fetchLocal();
     } catch (e) {
       Toast.fail(e.message);

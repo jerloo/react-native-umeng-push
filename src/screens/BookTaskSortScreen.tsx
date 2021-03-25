@@ -42,8 +42,7 @@ export default function BookTaskSortScreen() {
   const itemRefs = new Map<number, SwipeableItem<PdaReadDataDtoHolder>>();
 
   useEffect(() => {
-    const { bookId, title } = route.params;
-    console.log(bookId, title);
+    const { bookId } = route.params;
 
     const fetchLocal = async () => {
       try {
@@ -114,7 +113,6 @@ export default function BookTaskSortScreen() {
   const closeRow = (item: PdaReadDataDtoHolder) => {
     if (itemRefs && itemRefs.get(item.item.custId)) {
       itemRefs.get(item.item.custId)?.close();
-      console.log('关闭');
     }
   };
 

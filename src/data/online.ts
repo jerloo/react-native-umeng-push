@@ -30,6 +30,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
 import DeviceInfo from 'react-native-device-info';
 import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto';
+import { l } from '../utils/logUtils';
 
 export default class OnlineApiService implements ApiService {
   async makeOut(input: ReadingDataDto): Promise<void> {
@@ -42,7 +43,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -63,7 +64,7 @@ export default class OnlineApiService implements ApiService {
         throw new Error(SERVER_ERROR);
       }
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(USERNAME_PWD_ERROR);
     }
   }
@@ -78,7 +79,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -93,7 +94,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -108,7 +109,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -123,7 +124,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -136,7 +137,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -153,7 +154,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -170,7 +171,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -185,7 +186,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -200,7 +201,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -215,7 +216,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -232,7 +233,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -249,7 +250,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -262,7 +263,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -277,7 +278,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -289,7 +290,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -302,7 +303,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -321,7 +322,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -334,7 +335,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -345,12 +346,12 @@ export default class OnlineApiService implements ApiService {
         custId: custIds,
       });
       if (result.status < 400) {
-        console.log('获取客户详情', (result.data.items || []).length);
+        l.info('获取客户详情', (result.data.items || []).length);
         return result.data.items || [];
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -359,12 +360,12 @@ export default class OnlineApiService implements ApiService {
     try {
       const result = await api.chargeApi.apiAppChargeReadStatesGet();
       if (result.status < 400) {
-        console.log('获取抄表状态', (result.data.items || []).length);
+        l.info('获取抄表状态', (result.data.items || []).length);
         return result.data.items || [];
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -375,12 +376,12 @@ export default class OnlineApiService implements ApiService {
         bookIds: ids,
       });
       if (result.status < 400) {
-        console.log('获取测本数量', (result.data.items || []).length);
+        l.info('获取测本数量', (result.data.items || []).length);
         return result.data.items || [];
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -393,7 +394,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -406,7 +407,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -453,7 +454,7 @@ export default class OnlineApiService implements ApiService {
       }
       throw new Error(SERVER_ERROR);
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(SERVER_ERROR);
     }
   }
@@ -509,7 +510,6 @@ export default class OnlineApiService implements ApiService {
       if (loginResult.status < 400) {
         const token =
           loginResult.data.tokenType + ' ' + loginResult.data.accessToken;
-        console.log('token', token);
         await api.provider.set(token);
         await AsyncStorage.setItem('token', token);
         const infoResult = await api.chargeApi.apiAppChargeUserInfoGet();
@@ -522,15 +522,15 @@ export default class OnlineApiService implements ApiService {
           });
           return true;
         } else {
-          console.log(loginResult);
+          l.error(loginResult);
           throw new Error(SERVER_ERROR);
         }
       } else {
-        console.log(loginResult);
+        l.error(loginResult);
         throw new Error(USERNAME_PWD_ERROR);
       }
     } catch (e) {
-      console.log(e);
+      l.error(e);
       throw new Error(USERNAME_PWD_ERROR);
     }
   }

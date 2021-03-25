@@ -5,6 +5,7 @@ import {
   PdaReadDataDto,
   ReadingDataDto,
 } from '../../apiclient/src/models';
+import { l } from '../utils/logUtils';
 import {
   PdaBillingInfoHolder,
   PdaCustInfoHolder,
@@ -14,7 +15,7 @@ import {
 } from './holders';
 import { AttachmentDbItem, BookAttachmentsTotal } from './models';
 
-SQLite.DEBUG(process.env.NODE_ENV !== 'production');
+// SQLite.DEBUG(process.env.NODE_ENV !== 'production');
 SQLite.enablePromise(true);
 
 const database_name = 'mobile-read-app.db';
@@ -29,25 +30,25 @@ class DataBase {
     })
       .then((DB) => {
         this.db = DB;
-        console.log('Database OPEN');
+        l.info('Database OPEN');
         this.populateDatabase(DB);
       })
       .catch((error) => {
-        console.log(error);
+        l.error(error);
       });
   };
 
   populateDatabase = (db: SQLite.SQLiteDatabase) => {
-    console.log('Database integrity check');
+    l.info('Database integrity check');
     db.executeSql('SELECT 1 FROM Versions LIMIT 1')
       .then(() => {
         return true;
       })
       .catch((error) => {
-        console.log('Received error: ', error);
-        console.log('Database not yet ready ... populating data');
+        l.error('Received error: ', error);
+        l.error('Database not yet ready ... populating data');
         db.transaction(this.populateDB).then(() => {
-          console.log('Database populated ...');
+          l.info('Database populated ...');
           return true;
         });
       });
@@ -55,28 +56,28 @@ class DataBase {
 
   closeDatabase = () => {
     if (this.db) {
-      console.log('Closing database ...');
-      console.log('Closing DB');
+      l.info('Closing database ...');
+      l.info('Closing DB');
       this.db
         .close()
         .then(() => {
-          console.log('Database CLOSED');
+          l.info('Database CLOSED');
         })
         .catch((error) => {
           this.errorCB(error);
         });
     } else {
-      console.log('Database was not OPENED');
+      l.info('Database was not OPENED');
     }
   };
 
   errorCB = (err: any) => {
-    console.log('error: ', err);
-    console.log('Error ' + (err.message || err));
+    l.error('error: ', err);
+    l.error('Error ' + (err.message || err));
   };
 
   populateDB = (tx: SQLite.Transaction) => {
-    console.log('Executing CREATE stmts');
+    l.info('Executing CREATE stmts');
 
     tx.executeSql(
       `CREATE TABLE IF NOT EXISTS Versions ( 
@@ -213,7 +214,7 @@ class DataBase {
       isRemove boolean
     )`);
 
-    console.log('Executing INSERT stmts');
+    l.info('Executing INSERT stmts');
 
     tx.executeSql('INSERT INTO Versions (version_id) VALUES (1);').catch(
       (error) => {
@@ -221,7 +222,7 @@ class DataBase {
       },
     );
 
-    console.log('all config SQL done');
+    l.info('all config SQL done');
   };
 
   saveBooks = (holders: PdaMeterBookDtoHolder[]) => {
@@ -244,13 +245,13 @@ class DataBase {
             ],
           )
             .then(() => {
-              console.log(`保存抄表任务${item.bookId}`);
+              l.info(`保存抄表任务${item.bookId}`);
             })
             .catch((err) => {
               this.errorCB(err);
             });
         });
-        console.log(`保存抄表任务[${holders.length}]条`);
+        l.info(`保存抄表任务[${holders.length}]条`);
       })
       .catch((err) => {
         this.errorCB(err);
@@ -286,7 +287,7 @@ class DataBase {
             ],
           )
             .then(() => {
-              console.log(`保存基本信息[${holders.length}]条`);
+              l.info(`保存基本信息[${holders.length}]条`);
             })
             .catch((err) => {
               this.errorCB(err);
@@ -323,7 +324,7 @@ class DataBase {
             ],
           )
             .then(() => {
-              console.log(`保存抄表信息[${holders.length}]条`);
+              l.info(`保存抄表信息[${holders.length}]条`);
             })
             .catch((err) => {
               this.errorCB(err);
@@ -360,7 +361,7 @@ class DataBase {
             ],
           )
             .then(() => {
-              console.log(`保存账单信息[${holders.length}]条`);
+              l.info(`保存账单信息[${holders.length}]条`);
             })
             .catch((err) => {
               this.errorCB(err);
@@ -396,7 +397,7 @@ class DataBase {
             ],
           )
             .then(() => {
-              console.log(`保存缴费信息[${holders.length}]条`);
+              l.info(`保存缴费信息[${holders.length}]条`);
             })
             .catch((err) => {
               this.errorCB(err);
@@ -496,7 +497,7 @@ class DataBase {
             ],
           )
             .then(() => {
-              console.log(`保存附件[${holders.length}]条`);
+              l.info(`保存附件[${holders.length}]条`);
             })
             .catch((err) => {
               this.errorCB(err);
@@ -537,6 +538,14 @@ class DataBase {
       [false],
     );
     return (result?.[0].rows.raw() as PdaReadDataDto[]) || [];
+  };
+
+  getToUploadAttachments = async () => {
+    const result = await this.db?.executeSql(
+      'SELECT * FROM Attachments WHERE uploaded = ?',
+      [false],
+    );
+    return (result?.[0].rows.raw() as AttachmentDbItem[]) || [];
   };
 
   getBookDataDetails = async (
@@ -621,7 +630,7 @@ class DataBase {
             false,
           ],
         ).catch((e) => {
-          console.log('插入下载测本数据失败', e);
+          l.error('插入下载测本数据失败', e);
         });
       });
     });
@@ -653,7 +662,7 @@ class DataBase {
         ],
       )
       .catch((e) => {
-        console.log('保存抄表录入数据失败', e);
+        l.error('保存抄表录入数据失败', e);
       });
   };
 
@@ -745,7 +754,7 @@ class DataBase {
             item.readTimes,
           ],
         ).catch((e) => {
-          console.log('保存抄表录入数据失败', e);
+          l.error('保存抄表录入数据失败', e);
         });
       });
     });
@@ -758,12 +767,12 @@ class DataBase {
         [bookId, 0],
         (t, result) => {
           const count = result.rows.raw()[0].count;
-          console.log('coun', count);
+          l.info('coun', count);
           tx.executeSql('UPDATE Books SET readingNumber = ? WHERE bookId = ?', [
             count,
             bookId,
           ]).catch((e) => {
-            console.log('更新抄表统计数据失败', e);
+            l.error('更新抄表统计数据失败', e);
           });
         },
       );
@@ -818,7 +827,6 @@ class DataBase {
         uploadedNumber: 0,
       },
     ];
-    console.log('totalNumbers', items[0]);
     return {
       readingNumber: items[0].readingNumber || 0,
       totalNumber: items[0].totalNumber || 0,

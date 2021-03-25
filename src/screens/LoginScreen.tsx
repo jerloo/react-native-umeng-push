@@ -71,7 +71,7 @@ export default function LoginScreen() {
         }, 1000);
       }
     } catch (e) {
-      console.log('LoginScreen', e);
+      l.error('LoginScreen onSubmit', e);
       Toast.fail(e.message);
       setTimeout(() => {
         loadingButton.current?.setLoading(false);
