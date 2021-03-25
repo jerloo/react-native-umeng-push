@@ -38,4 +38,5 @@ export type MainStackParamList = {
   };
   PaymentCollect: {};
   PaymentSubtotal: {};
+  LogView: {};
 };

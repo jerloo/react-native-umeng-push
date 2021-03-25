@@ -147,8 +147,10 @@ export default function ProfileScreen() {
     setClearCacheVisible(false);
     try {
       await Caches.runClearCache();
+      l.info('清理缓存成功');
       Toast.success('清理缓存成功');
     } catch {
+      l.info('清理缓存失败');
       Toast.success('清理缓存失败');
     }
   };

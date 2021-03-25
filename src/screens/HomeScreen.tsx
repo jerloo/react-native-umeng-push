@@ -26,6 +26,7 @@ import { Permission, Permissions } from '../utils/permissionUtils';
 import { PdaUserPermissionDto } from '../../apiclient/src/models';
 import { PERMISSIONS_CHECK } from '../utils/devUtils';
 import { l } from '../utils/logUtils';
+import { colorWhite } from '../styles';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -172,6 +173,12 @@ export default function HomeScreen() {
           />
         </View>
       </View>
+
+      <TouchableOpacity
+        style={styles.logButton}
+        onPress={() => navigation.navigate('LogView')}>
+        <Text style={styles.logButtonText}>LOG</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -227,5 +234,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: scaleSize(10),
     height: scaleHeight(60),
+  },
+  logButton: {
+    backgroundColor: 'blue',
+    height: scaleSize(100),
+    width: scaleSize(100),
+    borderRadius: scaleSize(50),
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: scaleSize(30),
+    bottom: scaleSize(60),
+  },
+  logButtonText: {
+    color: colorWhite,
   },
 });
