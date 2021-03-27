@@ -36,15 +36,9 @@ export default function ArrearagesScreen() {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const defaultBillMonth = parseInt(dayjs().format('YYYYMM'), 10);
-  const [total, setTotal] = useState(0);
   const [items, setItems] = useState<PdaArrearageDto[]>([]);
   const [loading, setLoading] = useState(false);
   const [params, setParams] = useState<PdaArrearageInputDto>({
-    maxResultCount: PAGE_SIZE,
-    beginMonth: defaultBillMonth,
-    endMonth: defaultBillMonth,
-  });
-  const [snapshot, setSnapshot] = useState<PdaArrearageInputDto>({
     maxResultCount: PAGE_SIZE,
     beginMonth: defaultBillMonth,
     endMonth: defaultBillMonth,

@@ -90,20 +90,6 @@ export default function NewReadScreen() {
     fetchLocal();
   }, [data]);
 
-  useFocusEffect(() => {
-    const fetchLocal = async () => {
-      try {
-        const { bookId } = data;
-        const res = await center.offline.getBookDataByIds([bookId]);
-        setBookDataItems(res);
-      } catch (e) {
-        Toast.fail(e.message);
-      }
-    };
-
-    fetchLocal();
-  });
-
   useEffect(() => {
     db.getAttachments(data.custId, data.readTimes, data.billMonth).then((r) => {
       setAttachments(r);
@@ -406,6 +392,10 @@ export default function NewReadScreen() {
     } else {
       setValue(`${newData.reading || ''}${n}`);
     }
+  };
+
+  const onConfirmClick = async () => {
+    await saveData();
   };
 
   const renderStateExtra = () => {
@@ -740,7 +730,7 @@ export default function NewReadScreen() {
                 callback: addNewAttachment,
               })
             }
-            onConfirmClick={saveData}
+            onConfirmClick={onConfirmClick}
             onNextClick={nextItem}
             onPreClick={preItem}
             onSettingsOpen={() => setSettingsModalVisible(true)}
@@ -960,7 +950,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     flex: 1,
-    flexWrap: 'wrap',
     alignItems: 'center',
   },
   extraLabel: {
