@@ -537,7 +537,7 @@ export default function CustDetailsScreen() {
               </Text>
             </View>
             <View style={styles.topCol}>
-              <Text style={styles.topLabel}>合计金额：</Text>
+              <Text style={styles.topLabel}>金额：</Text>
               <Text style={[styles.topValue, styles.redText]}>
                 {sum(
                   (onlyShowOwe
@@ -607,7 +607,7 @@ export default function CustDetailsScreen() {
               </Text>
             </View>
             <View style={styles.topCol}>
-              <Text style={styles.topLabel}>合计金额：</Text>
+              <Text style={styles.topLabel}>金额：</Text>
               <Text style={[styles.topValue, styles.redText]}>
                 {sum(details?.payRecords?.map((it) => it.actualMoney) || [])}
               </Text>
