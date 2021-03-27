@@ -227,15 +227,15 @@ export default function PaymentSubtotalScreen() {
 
       <View style={styles.topBox}>
         <View style={styles.topItem}>
-          <Text style={styles.topItemValue}>{data?.custCount || '-'}</Text>
+          <Text style={styles.topItemValue}>{data?.custCount || '0'}</Text>
           <Text style={styles.topItemLabel}>户数</Text>
         </View>
         <View style={styles.topItem}>
-          <Text style={styles.topItemValue}>{data?.actualMoney || '-'}</Text>
+          <Text style={styles.topItemValue}>{data?.actualMoney || '0.00'}</Text>
           <Text style={styles.topItemLabel}>实收金额</Text>
         </View>
         <View style={styles.topItem}>
-          <Text style={styles.topItemValue}>{data?.soldMoney || '-'}</Text>
+          <Text style={styles.topItemValue}>{data?.soldMoney || '0.00'}</Text>
           <Text style={styles.topItemLabel}>销账金额</Text>
         </View>
       </View>

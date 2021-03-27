@@ -341,12 +341,14 @@ export default function PaymentCollectScreen() {
       <View style={styles.topBox}>
         <View style={styles.topItem}>
           <Text style={styles.topItemValue}>
-            {data?.totalActualMoney || '-'}
+            {data?.totalActualMoney || '0.00'}
           </Text>
           <Text style={styles.topItemLabel}>实收金额</Text>
         </View>
         <View style={styles.topItem}>
-          <Text style={styles.topItemValue}>{data?.totalSoldMoney || '-'}</Text>
+          <Text style={styles.topItemValue}>
+            {data?.totalSoldMoney || '0.00'}
+          </Text>
           <Text style={styles.topItemLabel}>销账金额</Text>
         </View>
       </View>
