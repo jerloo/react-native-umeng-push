@@ -11,6 +11,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  Vibration,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -188,6 +189,10 @@ export default function NewReadScreen() {
     }
   };
 
+  const vibrate = async () => {
+    Vibration.vibrate();
+  };
+
   const checkData = async () => {
     return new Promise<boolean>(async (resolve, _reject) => {
       const water = calcReadWater(newData, readStates?.items || []);
@@ -203,6 +208,7 @@ export default function NewReadScreen() {
         resolve(true);
       } else {
         if (result === WATER_HIGHER || result === WATER_LOWER) {
+          vibrate();
           AntModal.alert('重新选择', result, [
             {
               text: '否',
@@ -261,6 +267,7 @@ export default function NewReadScreen() {
         );
       } else {
         if (result === WATER_HIGHER || result === WATER_LOWER) {
+          vibrate();
           AntModal.alert('重新选择', result, [
             {
               text: '否',
