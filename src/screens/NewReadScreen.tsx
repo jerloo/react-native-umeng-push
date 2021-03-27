@@ -53,6 +53,7 @@ import Video from 'react-native-video';
 import { AttachmentDbItem } from '../data/models';
 import { tryUploadAttachments } from '../utils/attachUtils';
 import { toggle } from 'react-native-lighting';
+import { l } from '../utils/logUtils';
 
 let scaleHeight = defaultScaleHeight;
 scaleHeight = scaleSize;
@@ -565,6 +566,7 @@ export default function NewReadScreen() {
             readStates={readStates}
             selectedStateId={newData.readStateId}
             onSelected={(item) => {
+              l.info('选择抄表状态', item);
               setSettingsModalVisible(false);
               setNewData({ ...newData, readStateId: item.id });
             }}
@@ -737,6 +739,7 @@ export default function NewReadScreen() {
             readStates={readStates}
             selectStateId={newData.readStateId}
             onStateSelect={(item) => {
+              l.info('选择抄表状态', item);
               const valueData = {
                 ...newData,
                 readStateId: item.id,
@@ -747,6 +750,7 @@ export default function NewReadScreen() {
               );
               if (find) {
                 valueData.reading = valueData.lastReading;
+                valueData.readWater = 0;
               }
               setNewData({
                 ...valueData,

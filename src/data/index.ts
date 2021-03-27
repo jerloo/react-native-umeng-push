@@ -62,7 +62,8 @@ class CenterService implements ApiService {
     if (netInfo.isConnected === true) {
       const result = await this.online.sync(deviceId);
       l.info(`拉取同步数据 ${result.items?.length || 0}`, result.items);
-      db.updateReadData(result.items || []);
+      await db.updateReadData(result.items || []);
+      l.info('同步数据', result.items || []);
       return result;
     }
     return this.offline.sync(deviceId);

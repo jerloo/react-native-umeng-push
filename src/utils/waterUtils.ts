@@ -3,6 +3,9 @@ import { l } from './logUtils';
 import { getAlgorithmByReadStateId } from './statesUtils';
 
 export const normalCalc = (data: PdaReadDataDto): number => {
+  if (!data.reading) {
+    throw new Error('本次抄码不能为空');
+  }
   const result = data.reading - data.lastReading + data.replaceWater;
   l.info('正常算法: 水量=本次抄码 - 上次抄码 + 换表水量');
   l.info(
@@ -12,6 +15,9 @@ export const normalCalc = (data: PdaReadDataDto): number => {
 };
 
 export const overCircleCalc = (data: PdaReadDataDto) => {
+  if (!data.reading) {
+    throw new Error('本次抄码不能为空');
+  }
   const result =
     data.rangeValue - data.lastReading + data.reading + data.replaceWater;
   l.info('过圈算法:  (量程 – 上次抄码) + 本次抄码 + 换表数量');
@@ -22,6 +28,9 @@ export const overCircleCalc = (data: PdaReadDataDto) => {
 };
 
 export const reverseCalc = (data: PdaReadDataDto) => {
+  if (!data.reading) {
+    throw new Error('本次抄码不能为空');
+  }
   const result = data.lastReading - data.reading + data.replaceWater;
   l.info('倒装算法: 上次抄码-本期抄码+换表数量');
   l.info(
@@ -31,10 +40,14 @@ export const reverseCalc = (data: PdaReadDataDto) => {
 };
 
 export const noWatterCalc = (_data: PdaReadDataDto) => {
+  l.info('无量算法: 水量 = 0');
   return 0;
 };
 
 export const roundCalc = (data: PdaReadDataDto) => {
+  if (!data.reading) {
+    throw new Error('本次抄码不能为空');
+  }
   const result = data.reading - data.lastReading + data.replaceWater;
   l.info('估表算法: 水量=本次抄码 - 上次抄码 + 换表水量');
   l.info(
@@ -79,6 +92,9 @@ export const judgeReadWater = (
   data: PdaReadDataDto,
   readStates: PdaReadStateDto[],
 ) => {
+  if (!data.reading) {
+    throw new Error('本次抄码不能为空');
+  }
   if (data.rangeValue <= data.reading) {
     return '本次抄码不得大于量程';
   }

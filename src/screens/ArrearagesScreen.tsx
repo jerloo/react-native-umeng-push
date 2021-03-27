@@ -75,7 +75,7 @@ export default function ArrearagesScreen() {
     }
   };
 
-  const fetchLatestBillMonth = useCallback(async () => {
+  const fetchLatestBillMonth = async () => {
     const latestBillMonth = await center.getReadingMonth();
     if (latestBillMonth) {
       saveBillMonth(latestBillMonth);
@@ -85,11 +85,11 @@ export default function ArrearagesScreen() {
         endMonth: latestBillMonth,
       });
     }
-  }, [params]);
+  };
 
   useEffect(() => {
     fetchLatestBillMonth();
-  }, [fetchLatestBillMonth]);
+  }, []);
 
   useEffect(() => {
     fetchPdaUsers();
@@ -143,8 +143,6 @@ export default function ArrearagesScreen() {
         onPress: async () => {
           setCurrentUser(item);
           setSettingsModalVisible(true);
-
-          // await center.getReadingMonth()
         },
       };
     });
