@@ -15,7 +15,7 @@ import {
 } from './holders';
 import { AttachmentDbItem, BookAttachmentsTotal } from './models';
 
-// SQLite.DEBUG(process.env.NODE_ENV !== 'production');
+SQLite.DEBUG(process.env.NODE_ENV !== 'production');
 SQLite.enablePromise(true);
 
 const database_name = 'mobile-read-app.db';
@@ -645,7 +645,7 @@ class DataBase {
       ?.executeSql(
         `UPDATE BookDatas SET terminalFiles = ?, reading = ?, readWater = ?, 
                 readDate = ?, readStateId = ?, readRemark = ?, recordState = ?, 
-                uploaded = 1, lastReadDate = ?
+                uploaded = 0, lastReadDate = ?
             WHERE billMonth = ? AND custId = ? AND readTimes = ?`,
         [
           JSON.stringify(item.terminalFiles),

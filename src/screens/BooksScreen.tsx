@@ -149,6 +149,7 @@ export default function BooksScreen() {
 
   const uploadReadingData = async () => {
     const ids = bookItems.filter((it) => it.downloaded).map((it) => it.bookId);
+    l.info(`准备上传bookId为(${ids.join(',')})的抄表数据`);
     const readingDatas = await db.getToUploadBookDatas();
     l.info(`准备上传抄表数据 ${readingDatas.length} 条`, readingDatas);
     const inputItems = readingDatas.map((it) => {
@@ -171,7 +172,7 @@ export default function BooksScreen() {
       deviceCode: DeviceInfo.getUniqueId(),
       readingDates: inputItems,
     });
-    db.markBookUploaded(ids, inputItems);
+    await db.markBookUploaded(ids, inputItems);
   };
 
   const sync = async () => {

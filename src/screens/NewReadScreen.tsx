@@ -193,6 +193,7 @@ export default function NewReadScreen() {
               text: '否',
               onPress: async () => {
                 newData.readWater = water;
+                newData.recordState = 1;
                 await db.readData(newData);
                 await db.updateReadingNumberByBookId(newData.bookId);
                 resolve(true);
@@ -252,6 +253,7 @@ export default function NewReadScreen() {
                 newData.readWater = water;
                 newData.lastReadDate = new Date();
                 newData.readDate = new Date();
+                newData.recordState = 1;
                 await db.readData(newData);
                 await db.updateReadingNumberByBookId(newData.bookId);
                 setNewData({ ...newData });
