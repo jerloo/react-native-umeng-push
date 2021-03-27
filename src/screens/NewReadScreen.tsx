@@ -143,7 +143,9 @@ export default function NewReadScreen() {
       }
     }
     const result = bookDataItems.filter(
-      (it) => it.bookSortIndex < newData.bookSortIndex,
+      (it) =>
+        it.bookSortIndex < newData.bookSortIndex &&
+        it.recordState === newData.recordState,
     );
     if (result.length > 0) {
       const r = result[result.length - 1];
@@ -167,7 +169,9 @@ export default function NewReadScreen() {
       }
     }
     const result = bookDataItems.filter(
-      (it) => it.bookSortIndex > newData.bookSortIndex,
+      (it) =>
+        it.bookSortIndex > newData.bookSortIndex &&
+        it.recordState === newData.recordState,
     );
     if (result.length > 0) {
       const readState = readStates?.items.find((it) => it.stateName === '正常');
