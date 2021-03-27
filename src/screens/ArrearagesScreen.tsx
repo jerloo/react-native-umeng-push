@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   View,
   StyleSheet,
@@ -75,19 +75,23 @@ export default function ArrearagesScreen() {
     }
   };
 
-  const fetchLatestBillMonth = async () => {
+  const fetchLatestBillMonth = useCallback(async () => {
     const latestBillMonth = await center.getReadingMonth();
     if (latestBillMonth) {
       saveBillMonth(latestBillMonth);
       setParams({
         ...params,
+        beginMonth: latestBillMonth,
         endMonth: latestBillMonth,
       });
     }
-  };
+  }, [params]);
 
   useEffect(() => {
     fetchLatestBillMonth();
+  }, [fetchLatestBillMonth]);
+
+  useEffect(() => {
     fetchPdaUsers();
     fetchBooks();
   }, []);
@@ -108,7 +112,6 @@ export default function ArrearagesScreen() {
 
       const res = await center.getArrearageList(ps);
       setItems(res.items);
-      setTotal(res.totalCount);
       setParams(ps);
     } catch (e) {
       Toast.fail(e.message);
@@ -126,7 +129,6 @@ export default function ArrearagesScreen() {
     try {
       const res = await center.getArrearageList(ps);
       setItems([...items, ...res.items]);
-      setTotal(res.totalCount);
       setParams(ps);
     } catch (e) {
       Toast.fail(e.message);
@@ -174,7 +176,6 @@ export default function ArrearagesScreen() {
   };
 
   const resetQueryParams = async () => {
-    setParams({ ...snapshot });
     if (pdaUsers.length > 0) {
       setCurrentUser(pdaUsers[0]);
     }
@@ -263,7 +264,10 @@ export default function ArrearagesScreen() {
               <Text style={styles.settingsSubTitle}>财务年月</Text>
               <View style={styles.settingsDatePickers}>
                 <DatePicker
-                  value={dayjs(params.beginMonth.toString(), 'YYYYMM').toDate()}
+                  value={dayjs(
+                    params.beginMonth?.toString(),
+                    'YYYYMM',
+                  ).toDate()}
                   mode="month"
                   defaultDate={new Date()}
                   minDate={new Date(2015, 7, 6)}
@@ -283,7 +287,7 @@ export default function ArrearagesScreen() {
                 </DatePicker>
                 <Text>至</Text>
                 <DatePicker
-                  value={dayjs(params.endMonth.toString(), 'YYYYMM').toDate()}
+                  value={dayjs(params.endMonth?.toString(), 'YYYYMM').toDate()}
                   mode="month"
                   defaultDate={new Date()}
                   minDate={new Date(2015, 7, 6)}
