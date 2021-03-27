@@ -29,7 +29,7 @@ export default function CameraScreen() {
     if (data?.uri) {
       const fileInfo = await stat(data?.uri);
       const r: MobileFileDto = {
-        fileName: data?.uri,
+        fileName: data?.uri.substring(data?.uri.lastIndexOf('/')),
         filePath: data?.uri,
         fileSize: fileInfo.size,
         fileSource: 2,
@@ -62,7 +62,7 @@ export default function CameraScreen() {
     if (data?.uri) {
       const fileInfo = await stat(data?.uri);
       const r: MobileFileDto = {
-        fileName: data?.uri,
+        fileName: data?.uri.substring(data?.uri.lastIndexOf('/')),
         filePath: data?.uri,
         fileSize: fileInfo.size,
         fileSource: 2,
