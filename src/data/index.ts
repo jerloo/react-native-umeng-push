@@ -136,12 +136,16 @@ class CenterService implements ApiService {
     return this.offline.getWechatQrCodeUrl(custCode);
   }
 
-  async getCashPaymentDetails(input: PdaPaymentInput): Promise<void> {
+  async getCashPaymentDetails(
+    custId: number,
+    input: PdaPaymentInput,
+  ): Promise<void> {
     const netInfo = await NetInfo.fetch();
     if (netInfo.isConnected === true) {
-      return this.online.getCashPaymentDetails(input);
+      await this.online.getCashPaymentDetails(custId, input);
+      await db.markPaidAfterCashPayment(custId);
     }
-    return this.offline.getCashPaymentDetails(input);
+    return this.offline.getCashPaymentDetails(custId, input);
   }
 
   async getArrearageList(

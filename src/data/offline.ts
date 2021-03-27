@@ -78,7 +78,10 @@ export default class OfflineApiService implements ApiService {
     throw new Error(NO_NETWORK_ERROR);
   }
 
-  async getCashPaymentDetails(_input: PdaPaymentInput): Promise<void> {
+  async getCashPaymentDetails(
+    _custId: number,
+    _input: PdaPaymentInput,
+  ): Promise<void> {
     throw new Error(NO_NETWORK_ERROR);
   }
 

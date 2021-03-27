@@ -206,7 +206,10 @@ export default class OnlineApiService implements ApiService {
     }
   }
 
-  async getCashPaymentDetails(input: PdaPaymentInput): Promise<void> {
+  async getCashPaymentDetails(
+    custId: number,
+    input: PdaPaymentInput,
+  ): Promise<void> {
     try {
       const result = await api.paymentApi.apiAppMobilePaymentPaymentByCashPost(
         input,

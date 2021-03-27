@@ -2,7 +2,7 @@ import { PdaReadDataDto, PdaReadStateDto } from '../../apiclient/src/models';
 import { l } from './logUtils';
 import { getAlgorithmByReadStateId } from './statesUtils';
 
-export const normalCalc = (data: PdaReadDataDto) => {
+export const normalCalc = (data: PdaReadDataDto): number => {
   const result = data.reading - data.lastReading + data.replaceWater;
   l.info('正常算法: 水量=本次抄码 - 上次抄码 + 换表水量');
   l.info(
@@ -62,13 +62,13 @@ export const calcReadWater = (
     l.info('抄表算法数值', algorithm);
     if (algorithm && [1, 2, 4, 5, 6].indexOf(algorithm) > -1) {
       const fn = CALCS[algorithm];
-      return fn(data).toFixed(0);
+      return parseInt(fn(data).toFixed(0), 10);
     } else {
-      return normalCalc(data).toFixed(0);
+      return parseInt(normalCalc(data).toFixed(0), 10);
     }
   } catch (e) {
     l.error('calcReadWater', e);
-    return normalCalc(data).toFixed(0);
+    return parseInt(normalCalc(data).toFixed(0), 10);
   }
 };
 

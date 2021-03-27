@@ -57,7 +57,7 @@ export default interface ApiService {
   ): Promise<PdaArrearageDtoPagedResultDto>;
   getAlipayQrCodeUrl(custCode: string): Promise<string>;
   getWechatQrCodeUrl(custCode: string): Promise<string>;
-  getCashPaymentDetails(input: PdaPaymentInput): Promise<void>;
+  getCashPaymentDetails(custId: number, input: PdaPaymentInput): Promise<void>;
   getPaymentCollect(
     input: PdaPaymentCollectInput,
   ): Promise<PdaPaymentCollectDto>;
@@ -71,7 +71,7 @@ export default interface ApiService {
   sync(deviceId: string): Promise<PdaReadDataDtoListResultDto>;
   getUserInfo(): Promise<PdaMeterReaderDto>;
   makeOut(input: ReadingDataDto): Promise<void>;
-}
+};
 
 export const NETWORK_ERROR = '网络错误，请稍后再试';
 export const SERVER_ERROR = '请连接网络';

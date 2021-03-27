@@ -786,6 +786,13 @@ class DataBase {
     );
   };
 
+  markPaidAfterCashPayment = async (custId: number) => {
+    return this.db?.executeSql(
+      'UPDATE BookDatas SET oweNumber = 0 WHERE custId = ?',
+      [custId],
+    );
+  };
+
   markBookUploaded = (ids: number[], items: ReadingDataDto[]) => {
     this.db?.transaction((tx) => {
       items.forEach((item) => {

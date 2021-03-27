@@ -31,6 +31,7 @@ import { getReadStateSettings, ReadStateStorage } from '../utils/statesUtils';
 import {
   NavigationProp,
   RouteProp,
+  useFocusEffect,
   useNavigation,
   useRoute,
 } from '@react-navigation/core';
@@ -87,6 +88,20 @@ export default function NewReadScreen() {
 
     fetchLocal();
   }, [data]);
+
+  useFocusEffect(() => {
+    const fetchLocal = async () => {
+      try {
+        const { bookId } = data;
+        const res = await center.offline.getBookDataByIds([bookId]);
+        setBookDataItems(res);
+      } catch (e) {
+        Toast.fail(e.message);
+      }
+    };
+
+    fetchLocal();
+  });
 
   useEffect(() => {
     db.getAttachments(data.custId, data.readTimes, data.billMonth).then((r) => {
@@ -339,7 +354,19 @@ export default function NewReadScreen() {
     } else {
       const key = Toast.loading('正在开账');
       center
-        .makeOut(route.params.data)
+        .makeOut({
+          billMonth: newData.billMonth,
+          custId: newData.custId,
+          readTimes: newData.readTimes,
+          reading: newData.reading,
+          childReading: newData.childReading,
+          readWater: newData.readWater,
+          readDate: newData.readDate,
+          readStateId: newData.readStateId,
+          highLowState: newData.highLowState,
+          isEstimate: newData.isEstimate,
+          readRemark: newData.readRemark,
+        })
         .then(() => {
           navigation.navigate('Payment', {
             data: newData,
