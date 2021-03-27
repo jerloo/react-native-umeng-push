@@ -64,17 +64,17 @@ export interface PdaPaymentSubtotal {
      * @type {number}
      * @memberof PdaPaymentSubtotal
      */
-    actualMoney?: any;
+    actualMoney?: number;
     /**
      * 实际销账
      * @type {number}
      * @memberof PdaPaymentSubtotal
      */
-    soldMoney?: any;
+    soldMoney?: number;
     /**
      * 预存变化
      * @type {number}
      * @memberof PdaPaymentSubtotal
      */
-    deposit?: any;
+    deposit?: number;
 }

@@ -144,9 +144,11 @@ export default function ArrearagesScreen() {
     const ops = pdaUsers?.map((item) => {
       return {
         text: item.name,
-        onPress: () => {
+        onPress: async () => {
           setCurrentUser(item);
           setSettingsModalVisible(true);
+
+          // await center.getReadingMonth()
         },
       };
     });

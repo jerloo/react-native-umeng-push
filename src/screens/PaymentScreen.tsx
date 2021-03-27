@@ -116,7 +116,7 @@ export default function PaymentScreen() {
     }
     const key = Toast.loading('收款中');
     try {
-      await center.getCashPaymentDetails({
+      await center.getCashPaymentDetails(route.params.data.custId, {
         actualMoney: parseFloat(cashRealValue),
         chargeWay: '1',
         custCode: route.params.data.custCode,
@@ -299,8 +299,10 @@ export default function PaymentScreen() {
             <View style={styles.contentLeft}>
               <View style={styles.summary}>
                 <View style={styles.titleContainer}>
-                  <Text style={styles.title}>文化花园1期</Text>
-                  <Text style={styles.subTitle}>(029302221)</Text>
+                  <Text style={styles.title}>{route.params.data.custName}</Text>
+                  <Text style={styles.subTitle}>
+                    ({route.params.data.custCode})
+                  </Text>
                 </View>
 
                 <View style={styles.numbers}>
