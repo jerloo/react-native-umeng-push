@@ -23,7 +23,7 @@ import {
   UploadReadingFileDto,
 } from '../../apiclient/src/models';
 import { getSession, setSession } from '../utils/sesstionUtils';
-import ApiService, { SERVER_ERROR, USERNAME_PWD_ERROR } from './apiService';
+import { ApiService, SERVER_ERROR, USERNAME_PWD_ERROR } from './apiService';
 import { PdaMeterBookDtoHolder } from './holders';
 import { api } from '../utils/apiUtils';
 import AsyncStorage from '@react-native-community/async-storage';

@@ -25,7 +25,7 @@ import {
 import NetInfo from '@react-native-community/netinfo';
 import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
-import ApiService from './apiService';
+import { ApiService } from './apiService';
 import OfflineApiService from './offline';
 import OnlineApiService from './online';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';

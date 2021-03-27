@@ -191,13 +191,15 @@ export default function BooksScreen() {
       });
       const ps: Promise<any>[] = [];
       map.forEach((values) => {
-        const p = uploadAttachments(
-          values[0].custId,
-          values[0].billMonth,
-          values[0].readTimes,
-          values,
-        );
-        ps.push(p);
+        if (values[0].custId && values[0].billMonth && values[0].readTimes) {
+          const p = uploadAttachments(
+            values[0].custId,
+            values[0].billMonth,
+            values[0].readTimes,
+            values,
+          );
+          ps.push(p);
+        }
       });
       l.info(`正在等待所有附件上传完成, 共 ${attachments.length} 个`);
       await Promise.all(ps);

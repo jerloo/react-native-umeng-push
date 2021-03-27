@@ -32,7 +32,6 @@ import { getReadStateSettings, ReadStateStorage } from '../utils/statesUtils';
 import {
   NavigationProp,
   RouteProp,
-  useFocusEffect,
   useNavigation,
   useRoute,
 } from '@react-navigation/core';
@@ -147,9 +146,13 @@ export default function NewReadScreen() {
       (it) => it.bookSortIndex < newData.bookSortIndex,
     );
     if (result.length > 0) {
-      const readState = readStates?.items.find((it) => it.stateName === '正常');
       const r = result[result.length - 1];
-      r.readStateId = readState?.id;
+      if (!r.readStateId) {
+        const readState = readStates?.items.find(
+          (it) => it.stateName === '正常',
+        );
+        r.readStateId = readState?.id;
+      }
       setNewData(r);
     } else {
       Toast.info('当前已经是第一条数据');
@@ -190,6 +193,13 @@ export default function NewReadScreen() {
           newData.readWater = water;
           await db.readData(newData);
           await db.updateReadingNumberByBookId(newData.bookId);
+
+          const index = bookDataItems.findIndex(
+            (it) => it.custId === newData.custId,
+          );
+          bookDataItems[index] = newData;
+          setBookDataItems(bookDataItems);
+
           Toast.success('保存成功');
         }
         resolve(true);
@@ -204,6 +214,13 @@ export default function NewReadScreen() {
                 newData.recordState = 1;
                 await db.readData(newData);
                 await db.updateReadingNumberByBookId(newData.bookId);
+
+                const index = bookDataItems.findIndex(
+                  (it) => it.custId === newData.custId,
+                );
+                bookDataItems[index] = newData;
+                setBookDataItems(bookDataItems);
+
                 resolve(true);
               },
             },
@@ -245,6 +262,13 @@ export default function NewReadScreen() {
         await db.readData(newData);
         await db.updateReadingNumberByBookId(newData.bookId);
         setNewData({ ...newData });
+
+        const index = bookDataItems.findIndex(
+          (it) => it.custId === newData.custId,
+        );
+        bookDataItems[index] = newData;
+        setBookDataItems(bookDataItems);
+
         Toast.success('保存成功');
         tryUploadAttachments(
           newData.custId,
@@ -266,6 +290,13 @@ export default function NewReadScreen() {
                 await db.readData(newData);
                 await db.updateReadingNumberByBookId(newData.bookId);
                 setNewData({ ...newData });
+
+                const index = bookDataItems.findIndex(
+                  (it) => it.custId === newData.custId,
+                );
+                bookDataItems[index] = newData;
+                setBookDataItems(bookDataItems);
+
                 tryUploadAttachments(
                   newData.custId,
                   newData.billMonth,

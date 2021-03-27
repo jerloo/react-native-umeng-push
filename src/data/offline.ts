@@ -26,7 +26,7 @@ import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
 import { getBillMonth } from '../utils/billMonthUtils';
 import { getSession } from '../utils/sesstionUtils';
-import ApiService, { NO_NETWORK_ERROR, USERNAME_PWD_ERROR } from './apiService';
+import { ApiService, NO_NETWORK_ERROR, USERNAME_PWD_ERROR } from './apiService';
 import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
