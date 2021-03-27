@@ -423,13 +423,17 @@ export default function CustDetailsScreen() {
   };
 
   const onPayButtonClick = () => {
-    if (details?.billingInfos?.filter((it) => it.payState === 0).length === 0) {
+    if (
+      details?.billingInfos?.filter((it) => it.payState === 0 && it.lateFee > 0)
+        .length === 0
+    ) {
       Toast.info('当前未欠费');
     } else {
       navigation.navigate('Payment', {
         mode: 'pay',
         data: {
           custId: details?.custId,
+          deposit: details?.custInfo?.deposit,
         },
       });
     }
@@ -577,7 +581,9 @@ export default function CustDetailsScreen() {
           <FlatList<PdaBillingInfo>
             data={
               onlyShowOwe
-                ? details?.billingInfos?.filter((it) => it.payState === 0)
+                ? details?.billingInfos?.filter(
+                    (it) => it.payState === 0 && it.lateFee > 0,
+                  )
                 : details?.billingInfos
             }
             renderItem={renderBillingRecord}
