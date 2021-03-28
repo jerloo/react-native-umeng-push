@@ -33,8 +33,10 @@ export default function KeyBoard(props: Props) {
       <View style={styles.offenStates}>
         <ScrollView horizontal style={styles.offenStatesWrapper}>
           {[
-            ...(props.readStates?.offens || []),
-            ...(props.readStates?.normals || []),
+            ...(props.readStates?.offens.filter((it) => it.parentId !== 0) ||
+              []),
+            ...(props.readStates?.normals.filter((it) => it.parentId !== 0) ||
+              []),
           ].map((it) => (
             <StateButton
               key={it.id}
