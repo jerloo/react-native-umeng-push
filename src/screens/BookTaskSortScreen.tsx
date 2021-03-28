@@ -40,6 +40,7 @@ export default function BookTaskSortScreen() {
     [],
   );
   const itemRefs = new Map<number, SwipeableItem<PdaReadDataDtoHolder>>();
+  const [changedIndex, setChangedIndex] = useState(-1);
 
   useEffect(() => {
     const { bookId } = route.params;
@@ -67,15 +68,21 @@ export default function BookTaskSortScreen() {
     const key = Toast.loading('修改中');
     try {
       await center.updateBookSort(
-        bookSortItems.map((it) => {
-          const result: BookSortIndexDto = {
-            custId: it.item.custId,
-            bookSortIndex: it.item.bookSortIndex,
-          };
-          return result;
-        }),
+        bookSortItems
+          .filter((it) => it.item.bookSortIndex <= changedIndex)
+          .map((it) => {
+            const result: BookSortIndexDto = {
+              custId: it.item.custId,
+              bookSortIndex: it.item.bookSortIndex,
+            };
+            return result;
+          }),
       );
-      await db.updateReadData(bookSortItems.map((it) => it.item));
+      await db.updateReadData(
+        bookSortItems
+          .filter((it) => it.item.bookSortIndex <= changedIndex)
+          .map((it) => it.item),
+      );
       Toast.success('修改成功');
       navigation.goBack();
     } catch (e) {
@@ -83,7 +90,7 @@ export default function BookTaskSortScreen() {
     } finally {
       Toast.remove(key);
     }
-  }, [bookSortItems, navigation]);
+  }, [bookSortItems, changedIndex, navigation]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -118,6 +125,10 @@ export default function BookTaskSortScreen() {
 
   const topRow = (item: PdaReadDataDtoHolder) => {
     closeRow(item);
+    if (item.item.bookSortIndex > changedIndex) {
+      setChangedIndex(item.item.bookSortIndex);
+    }
+
     let newData = [...bookSortItems];
     const topItem = newData.find((it) => it.item.custId === item.item.custId);
     if (topItem) {
@@ -251,7 +262,13 @@ export default function BookTaskSortScreen() {
           paddingBottom: scaleSize(30),
           paddingTop: scaleSize(18),
         }}
-        onDragEnd={({ data }) => {
+        onDragEnd={({ data, from, to }) => {
+          if (from > changedIndex) {
+            setChangedIndex(from);
+          }
+          if (to > changedIndex) {
+            setChangedIndex(to);
+          }
           data.forEach((value, index) => {
             value.item.bookSortIndex = index + 1;
           });
