@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -28,7 +28,6 @@ import { MainStackParamList } from './routeParams';
 import ArrearageItem from '../components/ArrearageItem';
 import dayjs from 'dayjs';
 import Modal from 'react-native-smart-modal';
-import { saveBillMonth } from '../utils/billMonthUtils';
 
 const PAGE_SIZE = 30;
 
@@ -78,7 +77,6 @@ export default function ArrearagesScreen() {
   const fetchLatestBillMonth = async () => {
     const latestBillMonth = await center.getReadingMonth();
     if (latestBillMonth) {
-      saveBillMonth(latestBillMonth);
       setParams({
         ...params,
         beginMonth: latestBillMonth,

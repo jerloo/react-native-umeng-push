@@ -56,7 +56,6 @@ export default function ReadingCollectScreen() {
   const fetchLatestBillMonth = async () => {
     const latestBillMonth = await center.getReadingMonth();
     if (latestBillMonth) {
-      saveBillMonth(latestBillMonth);
       setBillMonth(latestBillMonth);
     }
   };

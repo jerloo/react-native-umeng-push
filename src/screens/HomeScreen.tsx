@@ -21,7 +21,6 @@ import { setReadStateSettings } from '../utils/statesUtils';
 import { useNavigation } from '@react-navigation/core';
 import SearchBoxView from '../components/SearchBoxView';
 import { setSystemSettings } from '../utils/systemSettingsUtils';
-import { saveBillMonth } from '../utils/billMonthUtils';
 import { Permission, Permissions } from '../utils/permissionUtils';
 import { PdaUserPermissionDto } from '../../apiclient/src/models';
 import { PERMISSIONS_CHECK } from '../utils/devUtils';
@@ -83,17 +82,6 @@ export default function HomeScreen() {
     }
   };
 
-  const fetchBillMonth = async () => {
-    try {
-      const result = await center.getReadingMonth();
-      if (result) {
-        saveBillMonth(result);
-      }
-    } catch (e) {
-      l.error(e);
-    }
-  };
-
   const fetchUserInfo = async () => {
     try {
       const result = await center.getUserInfo();
@@ -106,7 +94,6 @@ export default function HomeScreen() {
   };
 
   useEffect(() => {
-    fetchBillMonth();
     fetchStateSettings();
     fetchSystemSettings();
     fetchUserInfo();
@@ -118,7 +105,6 @@ export default function HomeScreen() {
       fetchUserInfo(),
       fetchSystemSettings(),
       fetchStateSettings(),
-      fetchBillMonth(),
     ]);
     setLoading(false);
   };
