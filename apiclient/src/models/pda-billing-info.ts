@@ -46,5 +46,5 @@ export interface PdaBillingInfo {
      * @type {number}
      * @memberof PdaBillingInfo
      */
-    payState?: any;
+    payState?: number;
 }

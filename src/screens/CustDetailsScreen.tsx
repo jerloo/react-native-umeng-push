@@ -545,12 +545,16 @@ export default function CustDetailsScreen() {
             <View style={styles.topCol}>
               <Text style={styles.topLabel}>金额：</Text>
               <Text style={[styles.topValue, styles.redText]}>
-                {sum(
-                  (onlyShowOwe
+                {sum([
+                  ...((onlyShowOwe
                     ? details?.billingInfos?.filter((it) => it.payState === 0)
                     : details?.billingInfos
-                  )?.map((it) => it.extendedAmount) || [],
-                )}
+                  )?.map((it) => it.extendedAmount) || []),
+                  ...((onlyShowOwe
+                    ? details?.billingInfos?.filter((it) => it.payState === 0)
+                    : details?.billingInfos
+                  )?.map((it) => it.lateFee) || []),
+                ])}
               </Text>
             </View>
           </View>
