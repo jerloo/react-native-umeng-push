@@ -526,7 +526,9 @@ export default function CustDetailsScreen() {
               <Text style={styles.topLabel}>笔数：</Text>
               <Text style={styles.topValue}>
                 {(onlyShowOwe
-                  ? details?.billingInfos?.filter((it) => it.payState === 0)
+                  ? details?.billingInfos?.filter(
+                      (it) => it.payState === 0 && it.lateFee > 0,
+                    )
                   : details?.billingInfos
                 )?.length || 0}
               </Text>
@@ -536,7 +538,9 @@ export default function CustDetailsScreen() {
               <Text style={styles.topValue}>
                 {sumNoFixed(
                   (onlyShowOwe
-                    ? details?.billingInfos?.filter((it) => it.payState === 0)
+                    ? details?.billingInfos?.filter(
+                        (it) => it.payState === 0 && it.lateFee > 0,
+                      )
                     : details?.billingInfos
                   )?.map((value) => value.billWater) || [],
                 ).toFixed(0)}
