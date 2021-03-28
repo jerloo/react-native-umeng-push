@@ -434,6 +434,8 @@ export default function CustDetailsScreen() {
         data: {
           custId: details?.custId,
           deposit: details?.custInfo?.deposit,
+          custName: details?.custInfo?.custName,
+          custCode: route.params.data.custCode,
         },
       });
     }

@@ -74,8 +74,8 @@ export default function PaymentScreen() {
   }, [route.params, route.params.data]);
 
   const onPayButtonClick = async () => {
-    if (viewModel?.canClickPay) {
-      Toast.info('不需要缴费');
+    if (!viewModel?.canClickPay) {
+      Toast.info('无需缴费');
       return;
     }
     try {
@@ -188,14 +188,16 @@ export default function PaymentScreen() {
             style={styles.cashContentActualAmountInput}
             editable={viewModel?.canEditMoney}
           />
-          <TouchableOpacity
-            onPress={() => setCashRealValue('')}
-            style={{ padding: scaleSize(10) }}>
-            <Image
-              source={require('../assets/qietu/dengluye/logon_icon_cancel.png')}
-              style={{ width: scaleSize(20), height: scaleSize(20) }}
-            />
-          </TouchableOpacity>
+          {viewModel?.canEditMoney ? (
+            <TouchableOpacity
+              onPress={() => setCashRealValue('')}
+              style={{ padding: scaleSize(10) }}>
+              <Image
+                source={require('../assets/qietu/dengluye/logon_icon_cancel.png')}
+                style={{ width: scaleSize(20), height: scaleSize(20) }}
+              />
+            </TouchableOpacity>
+          ) : null}
         </View>
 
         <TouchableOpacity
