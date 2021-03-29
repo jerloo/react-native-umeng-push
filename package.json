@@ -29,6 +29,8 @@
     "axios-pretty-logger": "^0.1.12",
     "cos-xml-react-native-fix-upload": "^1.0.1",
     "dayjs": "^1.10.4",
+    "mobx": "^6.1.8",
+    "mobx-react-lite": "^3.2.0",
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-animated-loading-button": "^1.0.1",
