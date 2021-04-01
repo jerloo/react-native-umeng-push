@@ -376,6 +376,7 @@ export default class OnlineApiService implements ApiService {
   async getBookDataByIds(ids: number[]): Promise<PdaReadDataDto[]> {
     try {
       const result = await api.chargeApi.apiAppChargeReadDataByBookIdsPost({
+        deviceCode: DeviceInfo.getUniqueId(),
         bookIds: ids,
       });
       if (result.status < 400) {
