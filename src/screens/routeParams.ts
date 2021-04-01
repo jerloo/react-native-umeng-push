@@ -17,6 +17,7 @@ export type MainStackParamList = {
   Arrearages: {};
   NewRead: {
     data: PdaReadDataDto;
+    mode: 'read' | 'unread' | 'all';
   };
   BookTask: {
     bookId: number;

@@ -142,11 +142,26 @@ export default function NewReadScreen() {
         return;
       }
     }
-    const result = bookDataItems.filter(
-      (it) =>
-        it.bookSortIndex < newData.bookSortIndex &&
-        it.recordState === newData.recordState,
-    );
+    let result: PdaReadDataDto[] = [];
+    switch (route.params.mode) {
+      case 'read':
+        result = bookDataItems.filter(
+          (it) =>
+            it.bookSortIndex < newData.bookSortIndex && it.recordState !== 0,
+        );
+        break;
+      case 'unread':
+        result = bookDataItems.filter(
+          (it) =>
+            it.bookSortIndex < newData.bookSortIndex && it.recordState === 0,
+        );
+        break;
+      case 'all':
+        result = bookDataItems.filter(
+          (it) => it.bookSortIndex < newData.bookSortIndex,
+        );
+        break;
+    }
     if (result.length > 0) {
       const r = result[result.length - 1];
       if (!r.readStateId) {
@@ -168,11 +183,26 @@ export default function NewReadScreen() {
         return;
       }
     }
-    const result = bookDataItems.filter(
-      (it) =>
-        it.bookSortIndex > newData.bookSortIndex &&
-        it.recordState === newData.recordState,
-    );
+    let result: PdaReadDataDto[] = [];
+    switch (route.params.mode) {
+      case 'read':
+        result = bookDataItems.filter(
+          (it) =>
+            it.bookSortIndex > newData.bookSortIndex && it.recordState !== 0,
+        );
+        break;
+      case 'unread':
+        result = bookDataItems.filter(
+          (it) =>
+            it.bookSortIndex > newData.bookSortIndex && it.recordState === 0,
+        );
+        break;
+      case 'all':
+        result = bookDataItems.filter(
+          (it) => it.bookSortIndex > newData.bookSortIndex,
+        );
+        break;
+    }
     if (result.length > 0) {
       const readState = readStates?.items.find((it) => it.stateName === '正常');
       const r = result[0];

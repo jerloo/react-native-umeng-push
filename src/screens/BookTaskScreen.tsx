@@ -163,12 +163,16 @@ export default function BookTaskScreen() {
     }
   };
 
-  const renderBookItem = (info: ListRenderItemInfo<PdaReadDataDtoHolder>) => {
+  const renderBookItem = (
+    info: ListRenderItemInfo<PdaReadDataDtoHolder>,
+    mode: any,
+  ) => {
     return (
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('NewRead', {
             data: info.item.item,
+            mode: mode,
           });
         }}>
         <BookDataItem
@@ -239,7 +243,7 @@ export default function BookTaskScreen() {
           style={styles.items}
           initialNumToRender={30}
           data={bookDataItems.filter((it) => it.item.recordState === 0)}
-          renderItem={renderBookItem}
+          renderItem={(info) => renderBookItem(info, 'unread')}
           ItemSeparatorComponent={renderDevideLine}
           keyExtractor={(item) => 'unread-' + item.item.custId.toString()}
           contentInset={{ bottom: 100 }}
@@ -254,7 +258,7 @@ export default function BookTaskScreen() {
           style={styles.items}
           initialNumToRender={30}
           data={bookDataItems.filter((it) => it.item.recordState !== 0)}
-          renderItem={renderBookItem}
+          renderItem={(info) => renderBookItem(info, 'read')}
           ItemSeparatorComponent={renderDevideLine}
           keyExtractor={(item) => 'read-' + item.item.custId.toString()}
           contentInset={{ bottom: 100 }}
@@ -268,7 +272,7 @@ export default function BookTaskScreen() {
           style={styles.items}
           initialNumToRender={30}
           data={bookDataItems}
-          renderItem={renderBookItem}
+          renderItem={(info) => renderBookItem(info, 'all')}
           ItemSeparatorComponent={renderDevideLine}
           keyExtractor={(item) => 'all-' + item.item.custId.toString()}
           contentInset={{ bottom: 100 }}
