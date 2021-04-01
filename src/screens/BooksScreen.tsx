@@ -233,7 +233,7 @@ export default function BooksScreen() {
       } else if (billMonthLocal !== billMonthResult) {
         AntModal.alert(
           '提示',
-          '当前抄表周期与手机内不一致，是否清楚不一致数据？',
+          '当前抄表周期与手机内不一致，是否清除不一致数据？',
           [
             {
               text: '取消',
