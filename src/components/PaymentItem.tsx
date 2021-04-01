@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function PaymentItem({ data }: Props) {
-  const [expand, setExpand] = React.useState(false);
+  const [expand, setExpand] = React.useState(true);
 
   const renderChargeDetailItem = (
     info: ListRenderItemInfo<PdaChargeDetails>,
@@ -46,6 +46,7 @@ export default function PaymentItem({ data }: Props) {
       </View>
     );
   };
+
   const renderExpand = () => {
     return (
       <View style={styles.detailsContainer}>
