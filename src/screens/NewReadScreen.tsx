@@ -397,9 +397,13 @@ export default function NewReadScreen() {
           readRemark: newData.readRemark,
         })
         .then(() => {
-          navigation.navigate('Payment', {
-            data: newData,
-            mode: 'pay',
+          Toast.success('开账成功');
+          setNewData({ ...newData, recordState: 3 });
+          db.readData(newData).then(() => {
+            navigation.navigate('Payment', {
+              data: newData,
+              mode: 'pay',
+            });
           });
         })
         .catch((e) => {
@@ -752,6 +756,7 @@ export default function NewReadScreen() {
           </KeyboardAvoidingView>
 
           <KeyBoard
+            disabled={newData.recordState === 2 || newData.recordState === 3}
             onBackClick={() => {
               if (newData.reading && newData.reading.toString().length !== 0) {
                 setValue(
