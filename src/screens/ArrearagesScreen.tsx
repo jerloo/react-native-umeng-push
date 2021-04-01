@@ -14,10 +14,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import { colorWhite } from '../styles';
 import { scaleSize } from 'react-native-responsive-design';
 import {
+  MeterBookDto,
   MeterReaderDto,
   PdaArrearageDto,
   PdaArrearageInputDto,
-  PdaMeterBookDto,
 } from '../../apiclient/src/models';
 import center from '../data';
 import { Toast, Modal as AntModal, DatePicker } from '@ant-design/react-native';
@@ -28,6 +28,7 @@ import { MainStackParamList } from './routeParams';
 import ArrearageItem from '../components/ArrearageItem';
 import dayjs from 'dayjs';
 import Modal from 'react-native-smart-modal';
+import BookSelector from '../components/BookSelector';
 
 const PAGE_SIZE = 30;
 
@@ -44,11 +45,12 @@ export default function ArrearagesScreen() {
   });
   const [pdaUsers, setPdaUsers] = useState<MeterReaderDto[]>([]);
   const [currentUser, setCurrentUser] = useState<MeterReaderDto>();
-  const [books, setBooks] = useState<PdaMeterBookDto[]>([]);
-  const [currentBook, setCurrentBook] = useState<PdaMeterBookDto>();
+  const [books, setBooks] = useState<MeterBookDto[]>([]);
+  const [currentBooks, setCurrentBooks] = useState<MeterBookDto[]>();
 
   const [settingsModalVisible, setSettingsModalVisible] = useState(false);
   const fRef = React.useRef<FlatList>(null);
+  const [bookSelectModalVisible, setBookSelectModalVisible] = useState(false);
 
   const fetchPdaUsers = async () => {
     try {
@@ -56,18 +58,15 @@ export default function ArrearagesScreen() {
       setPdaUsers(users);
       if (users.length > 0) {
         setCurrentUser(users[0]);
-      }
-    } catch (e) {
-      Toast.fail(e.message);
-    }
-  };
 
-  const fetchBooks = async () => {
-    try {
-      const data = await center.online.getBookList();
-      setBooks(data);
-      if (data.length > 0) {
-        setCurrentBook(data[0]);
+        try {
+          center.getBookListByUserId(users[0].id).then((bs) => {
+            setBooks(bs);
+            setCurrentBooks([]);
+          });
+        } catch (e) {
+          Toast.fail(e.message);
+        }
       }
     } catch (e) {
       Toast.fail(e.message);
@@ -91,7 +90,6 @@ export default function ArrearagesScreen() {
 
   useEffect(() => {
     fetchPdaUsers();
-    fetchBooks();
   }, []);
 
   const refresh = async () => {
@@ -104,7 +102,7 @@ export default function ArrearagesScreen() {
     ps.skipCount = 0;
     ps.maxResultCount = PAGE_SIZE;
     ps.meterReaderId = currentUser?.id;
-    ps.bookId = [currentBook?.bookId];
+    ps.bookId = currentBooks?.map((it) => it.id);
 
     setLoading(true);
     try {
@@ -147,7 +145,7 @@ export default function ArrearagesScreen() {
           try {
             const books = await center.getBookListByUserId(item.id);
             setBooks(books);
-            setCurrentBook(undefined);
+            setCurrentBooks([]);
           } catch (e) {
             Toast.fail(e.message);
           }
@@ -159,16 +157,7 @@ export default function ArrearagesScreen() {
 
   const pickBook = async () => {
     setSettingsModalVisible(false);
-    const ops = books?.map((item) => {
-      return {
-        text: item.bookName,
-        onPress: () => {
-          setCurrentBook(item);
-          setSettingsModalVisible(true);
-        },
-      };
-    });
-    AntModal.operation(ops || []);
+    setBookSelectModalVisible(true);
   };
 
   const onStartPick = (dt: Date) => {
@@ -186,7 +175,7 @@ export default function ArrearagesScreen() {
       setCurrentUser(pdaUsers[0]);
     }
     if (books?.length > 0) {
-      setCurrentBook(books[0]);
+      setCurrentBooks([]);
     }
   };
 
@@ -260,7 +249,7 @@ export default function ArrearagesScreen() {
                   source={require('../assets/qietu/qianfeichaxxun/arrearage_inquiry_icon_user_normal.png')}
                 />
                 <Text style={styles.settingsInputText}>
-                  {currentBook?.bookName}
+                  {currentBooks?.map((it) => it.bookName).join(',')}
                 </Text>
                 <Image
                   style={styles.settingsInputIcon}
@@ -345,6 +334,28 @@ export default function ArrearagesScreen() {
     );
   };
 
+  const renderBookSelectModal = () => {
+    return (
+      <AntModal
+        popup
+        visible={bookSelectModalVisible}
+        animationType="slide-up"
+        onClose={() => setBookSelectModalVisible(false)}>
+        <View style={{ paddingVertical: 20, paddingHorizontal: 20 }}>
+          <BookSelector
+            items={books}
+            onSelected={(selecteds) => {
+              console.log('selected', selecteds);
+              setCurrentBooks(selecteds);
+              setBookSelectModalVisible(false);
+              setSettingsModalVisible(true);
+            }}
+          />
+        </View>
+      </AntModal>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -397,6 +408,7 @@ export default function ArrearagesScreen() {
       />
 
       {renderSettingsModal()}
+      {renderBookSelectModal()}
     </View>
   );
 }
