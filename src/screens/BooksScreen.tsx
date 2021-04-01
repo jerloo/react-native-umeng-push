@@ -26,7 +26,7 @@ import {
   BookAttachmentsTotal,
   NumbersType,
 } from '../data/models';
-import { getBillMonth } from '../utils/billMonthUtils';
+import { getBillMonth, saveBillMonth } from '../utils/billMonthUtils';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import Modal from 'react-native-smart-modal';
@@ -61,6 +61,13 @@ export default function BooksScreen() {
     getBillMonth().then((r) => {
       if (r) {
         setCurrentBillMonth(r);
+      } else {
+        center.getReadingMonth().then((res) => {
+          if (res) {
+            setCurrentBillMonth(res);
+            saveBillMonth(res);
+          }
+        });
       }
     });
   }, []);
