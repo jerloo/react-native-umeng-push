@@ -38,7 +38,7 @@ export default function HomeScreen() {
   const refreshPermissions = (psItems: PdaUserPermissionDto[]) => {
     const granteds = psItems?.filter((it) => it.isGranted || it.disabled);
 
-    if (process.env.NODE_ENV !== 'production' || PERMISSIONS_CHECK) {
+    if (!PERMISSIONS_CHECK) {
       setPerms(Permissions);
     } else {
       const ps: Permission[] = [];
