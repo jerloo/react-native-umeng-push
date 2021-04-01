@@ -207,6 +207,7 @@ export const removeReadStateFromOffen = async (
       it.children.push(item);
     }
   });
+  readStates.normals = readStates.items.filter(it => !readStates.offens.find(i => i.id === it.id))
   return readStates;
 };
 
@@ -220,10 +221,12 @@ export const addReadStateToOffen = async (
       it.children = it.children.filter((i) => i.id !== item.id);
     }
   });
+  readStates.normals = readStates.items.filter(it => !readStates.offens.find(i => i.id === it.id))
   return readStates;
 };
 
 export const saveReadStatesStorage = async (readStates: ReadStateStorage) => {
+  console.log('save', JSON.stringify(readStates))
   await AsyncStorage.setItem('readStates', JSON.stringify(readStates));
 };
 

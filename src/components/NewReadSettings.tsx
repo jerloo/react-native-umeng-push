@@ -33,7 +33,7 @@ export default function NewReadSettings(props: Props) {
     } else {
       if (readStates) {
         const newStates = await removeReadStateFromOffen(item, readStates);
-        setReadStates(newStates);
+        setReadStates({ ...newStates });
       }
     }
   };
@@ -44,7 +44,7 @@ export default function NewReadSettings(props: Props) {
     } else {
       if (readStates) {
         const newStates = await addReadStateToOffen(item, readStates);
-        setReadStates(newStates);
+        setReadStates({ ...newStates });
       }
     }
   };
