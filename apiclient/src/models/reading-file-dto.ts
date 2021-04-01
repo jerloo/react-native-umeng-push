@@ -40,5 +40,5 @@ export interface ReadingFileDto {
      * @type {Array&lt;MobileFileDto&gt;}
      * @memberof ReadingFileDto
      */
-    files?: any;
+    files?: any | null;
 }

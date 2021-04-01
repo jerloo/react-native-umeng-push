@@ -40,7 +40,7 @@ export interface PdaReadDataDto {
      * @type {Array&lt;MobileFileDto&gt;}
      * @memberof PdaReadDataDto
      */
-    terminalFiles?: any;
+    terminalFiles?: any | null;
     /**
      * 欠费笔数
      * @type {number}
@@ -58,43 +58,43 @@ export interface PdaReadDataDto {
      * @type {string}
      * @memberof PdaReadDataDto
      */
-    bookCode?: any;
+    bookCode?: any | null;
     /**
      * 册内序号
      * @type {number}
      * @memberof PdaReadDataDto
      */
-    bookSortIndex: number;
+    bookSortIndex?: any;
     /**
      * 客户编号
      * @type {string}
      * @memberof PdaReadDataDto
      */
-    custCode?: string;
+    custCode?: any | null;
     /**
      * 客户名称
      * @type {string}
      * @memberof PdaReadDataDto
      */
-    custName?: string;
+    custName?: any | null;
     /**
      * 客户地址
      * @type {string}
      * @memberof PdaReadDataDto
      */
-    custAddress?: string;
+    custAddress?: any | null;
     /**
      * 客户状态
      * @type {string}
      * @memberof PdaReadDataDto
      */
-    custState?: string;
+    custState?: any | null;
     /**
      * 预存款余额
      * @type {number}
      * @memberof PdaReadDataDto
      */
-    deposit?: number;
+    deposit?: any;
     /**
      * 上次零头
      * @type {number}
@@ -112,25 +112,25 @@ export interface PdaReadDataDto {
      * @type {string}
      * @memberof PdaReadDataDto
      */
-    meterState?: any;
+    meterState?: any | null;
     /**
      * 水表条形码
      * @type {string}
      * @memberof PdaReadDataDto
      */
-    barCode?: any;
+    barCode?: any | null;
     /**
      * 水表钢印号
      * @type {string}
      * @memberof PdaReadDataDto
      */
-    steelMark?: any;
+    steelMark?: any | null;
     /**
      * 水表位置
      * @type {string}
      * @memberof PdaReadDataDto
      */
-    installLocation?: any;
+    installLocation?: any | null;
     /**
      * 口径
      * @type {number}
@@ -178,7 +178,7 @@ export interface PdaReadDataDto {
      * @type {number}
      * @memberof PdaReadDataDto
      */
-    reading?: number;
+    reading?: any;
     /**
      * 本次子表抄码
      * @type {number}
@@ -190,19 +190,19 @@ export interface PdaReadDataDto {
      * @type {number}
      * @memberof PdaReadDataDto
      */
-    readWater?: any;
+    readWater?: any | null;
     /**
      * 本次抄表时间
      * @type {Date}
      * @memberof PdaReadDataDto
      */
-    readDate?: any;
+    readDate?: any | null;
     /**
      * 抄表状态
      * @type {number}
      * @memberof PdaReadDataDto
      */
-    readStateId?: any;
+    readStateId?: any | null;
     /**
      * 量高量低标志
      * @type {number}
@@ -220,7 +220,7 @@ export interface PdaReadDataDto {
      * @type {string}
      * @memberof PdaReadDataDto
      */
-    readRemark?: any;
+    readRemark?: any | null;
     /**
      * 抄表状态 0：未抄 1:已抄 2:已复核 3：已开账
      * @type {number}

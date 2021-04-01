@@ -22,5 +22,5 @@ export interface PdaReadingCollectDtoListResultDto {
      * @type {Array&lt;PdaReadingCollectDto&gt;}
      * @memberof PdaReadingCollectDtoListResultDto
      */
-    items?: any;
+    items?: any | null;
 }

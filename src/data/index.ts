@@ -21,6 +21,7 @@ import {
   PdaReadDataDtoListResultDto,
   PdaMeterReaderDto,
   ReadingDataDto,
+  MeterBookDto,
 } from '../../apiclient/src/models';
 import NetInfo from '@react-native-community/netinfo';
 import db from './database';
@@ -39,6 +40,14 @@ class CenterService implements ApiService {
   constructor() {
     this.offline = new OfflineApiService();
     this.online = new OnlineApiService();
+  }
+
+  async getBookListByUserId(id: string): Promise<MeterBookDto[]> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isConnected === true) {
+      return this.online.getBookListByUserId(id);
+    }
+    return this.offline.getBookListByUserId(id);
   }
 
   async makeOut(input: ReadingDataDto): Promise<void> {

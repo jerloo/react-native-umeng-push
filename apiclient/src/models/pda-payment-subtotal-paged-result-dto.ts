@@ -28,5 +28,5 @@ export interface PdaPaymentSubtotalPagedResultDto {
      * @type {Array&lt;PdaPaymentSubtotal&gt;}
      * @memberof PdaPaymentSubtotalPagedResultDto
      */
-    items?: any;
+    items?: any | null;
 }

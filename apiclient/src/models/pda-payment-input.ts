@@ -28,7 +28,7 @@ export interface PdaPaymentInput {
      * @type {Array&lt;FeeId&gt;}
      * @memberof PdaPaymentInput
      */
-    paymnetMobileFeeInput?: any;
+    paymnetMobileFeeInput?: any | null;
     /**
      * 实收金额
      * @type {number}
@@ -46,29 +46,29 @@ export interface PdaPaymentInput {
      * @type {number}
      * @memberof PdaPaymentInput
      */
-    chequeType?: any;
+    chequeType?: any | null;
     /**
      * 凭证号、付款码
      * @type {string}
      * @memberof PdaPaymentInput
      */
-    tradeCode?: any;
+    tradeCode?: any | null;
     /**
      * 第三方机构代码
      * @type {string}
      * @memberof PdaPaymentInput
      */
-    thirdPartyCode?: any;
+    thirdPartyCode?: any | null;
     /**
      * 第三方交易流水号
      * @type {string}
      * @memberof PdaPaymentInput
      */
-    thirdPartyNum?: any;
+    thirdPartyNum?: any | null;
     /**
      * 备注
      * @type {string}
      * @memberof PdaPaymentInput
      */
-    remark?: any;
+    remark?: any | null;
 }

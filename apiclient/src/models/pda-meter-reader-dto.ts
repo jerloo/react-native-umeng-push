@@ -11,9 +11,6 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-
-import { PdaUserPermissionDto } from "./pda-user-permission-dto";
-
 /**
  * 抄表员个人信息
  * @export
@@ -25,25 +22,25 @@ export interface PdaMeterReaderDto {
      * @type {string}
      * @memberof PdaMeterReaderDto
      */
-    userName?: any;
+    userName?: any | null;
     /**
      * 邮箱
      * @type {string}
      * @memberof PdaMeterReaderDto
      */
-    email?: any;
+    email?: any | null;
     /**
      * 电话
      * @type {string}
      * @memberof PdaMeterReaderDto
      */
-    phoneNumber?: any;
+    phoneNumber?: any | null;
     /**
      * Pda权限
      * @type {Array&lt;PdaUserPermissionDto&gt;}
      * @memberof PdaMeterReaderDto
      */
-    userPermissions?: PdaUserPermissionDto[];
+    userPermissions?: any | null;
     /**
      * 人员Id
      * @type {string}
@@ -55,5 +52,5 @@ export interface PdaMeterReaderDto {
      * @type {string}
      * @memberof PdaMeterReaderDto
      */
-    name?: any;
+    name?: any | null;
 }

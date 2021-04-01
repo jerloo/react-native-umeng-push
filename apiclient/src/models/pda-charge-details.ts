@@ -22,29 +22,29 @@ export interface PdaChargeDetails {
      * @type {string}
      * @memberof PdaChargeDetails
      */
-    feeItem?: any;
+    feeItem?: any | null;
     /**
      * 费用代码
      * @type {string}
      * @memberof PdaChargeDetails
      */
-    feeItemCode?: any;
+    feeItemCode?: any | null;
     /**
      * 单价
      * @type {string}
      * @memberof PdaChargeDetails
      */
-    price?: any;
+    price?: any | null;
     /**
      * 水量
      * @type {number}
      * @memberof PdaChargeDetails
      */
-    water?: number;
+    water?: any;
     /**
      * 金额
      * @type {number}
      * @memberof PdaChargeDetails
      */
-    money?: number;
+    money?: any;
 }

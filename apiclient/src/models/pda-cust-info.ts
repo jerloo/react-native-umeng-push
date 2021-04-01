@@ -22,25 +22,25 @@ export interface PdaCustInfo {
      * @type {string}
      * @memberof PdaCustInfo
      */
-    custName?: any;
+    custName?: any | null;
     /**
      * 客户地址
      * @type {string}
      * @memberof PdaCustInfo
      */
-    custAddress?: any;
+    custAddress?: any | null;
     /**
      * 营业站点
      * @type {string}
      * @memberof PdaCustInfo
      */
-    orgName?: any;
+    orgName?: any | null;
     /**
      * 联系电话
      * @type {string}
      * @memberof PdaCustInfo
      */
-    mobile?: any;
+    mobile?: any | null;
     /**
      * 人口数
      * @type {number}
@@ -52,19 +52,19 @@ export interface PdaCustInfo {
      * @type {string}
      * @memberof PdaCustInfo
      */
-    payMethod?: any;
+    payMethod?: any | null;
     /**
      * 用户类型
      * @type {string}
      * @memberof PdaCustInfo
      */
-    custType?: any;
+    custType?: any | null;
     /**
      * 用水性质
      * @type {string}
      * @memberof PdaCustInfo
      */
-    priceCode?: any;
+    priceCode?: any | null;
     /**
      * 预存余额
      * @type {number}
@@ -88,35 +88,35 @@ export interface PdaCustInfo {
      * @type {string}
      * @memberof PdaCustInfo
      */
-    installLocation?: any;
+    installLocation?: any | null;
     /**
      * 钢印号
      * @type {string}
      * @memberof PdaCustInfo
      */
-    steelMark?: any;
+    steelMark?: any | null;
     /**
      * 水表口径
      * @type {string}
      * @memberof PdaCustInfo
      */
-    caliber?: any;
+    caliber?: any | null;
     /**
      * 水表厂家
      * @type {string}
      * @memberof PdaCustInfo
      */
-    producer?: any;
+    producer?: any | null;
     /**
      * 换表日期
      * @type {string}
      * @memberof PdaCustInfo
      */
-    replaceDate?: any;
+    replaceDate?: any | null;
     /**
      * 立户日期
      * @type {string}
      * @memberof PdaCustInfo
      */
-    buildDate?: any;
+    buildDate?: any | null;
 }

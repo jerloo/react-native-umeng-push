@@ -28,23 +28,23 @@ export interface PdaCustListDto {
      * @type {string}
      * @memberof PdaCustListDto
      */
-    custCode?: any;
+    custCode?: any | null;
     /**
      * 客户姓名
      * @type {string}
      * @memberof PdaCustListDto
      */
-    custName?: any;
+    custName?: any | null;
     /**
      * 客户地址
      * @type {string}
      * @memberof PdaCustListDto
      */
-    custAddress?: any;
+    custAddress?: any | null;
     /**
      * 册本编号
      * @type {string}
      * @memberof PdaCustListDto
      */
-    bookCode?: any;
+    bookCode?: any | null;
 }

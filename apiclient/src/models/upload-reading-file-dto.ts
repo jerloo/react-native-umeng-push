@@ -11,9 +11,6 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-
-import { ReadingFileDto } from "./reading-file-dto";
-
 /**
  * Pda附件上传
  * @export
@@ -31,5 +28,5 @@ export interface UploadReadingFileDto {
      * @type {Array&lt;ReadingFileDto&gt;}
      * @memberof UploadReadingFileDto
      */
-    readingFiles: ReadingFileDto[];
+    readingFiles: any;
 }

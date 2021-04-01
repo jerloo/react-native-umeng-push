@@ -22,13 +22,13 @@ export interface PdaReadingCollectDto {
      * @type {string}
      * @memberof PdaReadingCollectDto
      */
-    bookCode?: any;
+    bookCode?: any | null;
     /**
      * 册本名称
      * @type {string}
      * @memberof PdaReadingCollectDto
      */
-    bookName?: any;
+    bookName?: any | null;
     /**
      * 应抄数量
      * @type {number}

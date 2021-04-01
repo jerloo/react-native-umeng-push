@@ -22,5 +22,5 @@ export interface PdaReadStateDtoListResultDto {
      * @type {Array&lt;PdaReadStateDto&gt;}
      * @memberof PdaReadStateDtoListResultDto
      */
-    items?: any;
+    items?: any | null;
 }

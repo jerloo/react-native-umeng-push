@@ -22,5 +22,5 @@ export interface MeterReaderDtoListResultDto {
      * @type {Array&lt;MeterReaderDto&gt;}
      * @memberof MeterReaderDtoListResultDto
      */
-    items?: any;
+    items?: any | null;
 }

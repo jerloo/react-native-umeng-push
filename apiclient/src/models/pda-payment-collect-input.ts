@@ -40,7 +40,7 @@ export interface PdaPaymentCollectInput {
      * @type {string}
      * @memberof PdaPaymentCollectInput
      */
-    queryConditions?: any;
+    queryConditions?: any | null;
     /**
      * 
      * @type {number}

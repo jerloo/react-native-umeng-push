@@ -22,11 +22,11 @@ export interface ReadDataByBookIdsInput {
      * @type {string}
      * @memberof ReadDataByBookIdsInput
      */
-    deviceCode?: any;
+    deviceCode?: any | null;
     /**
      * 册本Id
      * @type {Array&lt;number&gt;}
      * @memberof ReadDataByBookIdsInput
      */
-    bookIds?: any;
+    bookIds?: any | null;
 }

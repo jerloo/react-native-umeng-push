@@ -1,5 +1,6 @@
 import {
   LoginInput,
+  MeterBookDto,
   MeterReaderDto,
   PdaArrearageChargesInputDto,
   PdaArrearageDtoPagedResultDto,
@@ -33,6 +34,21 @@ import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto
 import { l } from '../utils/logUtils';
 
 export default class OnlineApiService implements ApiService {
+  async getBookListByUserId(id: string): Promise<MeterBookDto[]> {
+    try {
+      const result = await api.chargeApi.apiAppChargeMeterBookListGet(
+        id,
+      );
+      if (result.status < 400) {
+        return result.data.items;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      l.error(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
   async makeOut(input: ReadingDataDto): Promise<void> {
     try {
       const result = await api.mobileReadingApi.apiAppMobileReadingMakeOutPost(

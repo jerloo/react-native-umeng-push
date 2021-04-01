@@ -22,11 +22,11 @@ export interface LogOutput {
      * @type {string}
      * @memberof LogOutput
      */
-    accessToken?: any;
+    accessToken?: any | null;
     /**
      * TokenType
      * @type {string}
      * @memberof LogOutput
      */
-    tokenType?: any;
+    tokenType?: any | null;
 }

@@ -1,5 +1,6 @@
 import {
   LoginInput,
+  MeterBookDto,
   MeterReaderDto,
   PdaArrearageChargesInputDto,
   PdaArrearageDtoPagedResultDto,
@@ -31,6 +32,10 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
+  async getBookListByUserId(id: string): Promise<MeterBookDto[]> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
   async makeOut(_input: ReadingDataDto): Promise<void> {
     throw new Error(NO_NETWORK_ERROR);
   }

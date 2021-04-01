@@ -103,6 +103,8 @@ export default function ArrearagesScreen() {
     const ps = params;
     ps.skipCount = 0;
     ps.maxResultCount = PAGE_SIZE;
+    ps.meterReaderId = currentUser?.id;
+    ps.bookId = [currentBook?.bookId];
 
     setLoading(true);
     try {
@@ -141,6 +143,14 @@ export default function ArrearagesScreen() {
         onPress: async () => {
           setCurrentUser(item);
           setSettingsModalVisible(true);
+
+          try {
+            const books = await center.getBookListByUserId(item.id);
+            setBooks(books);
+            setCurrentBook(undefined);
+          } catch (e) {
+            Toast.fail(e.message);
+          }
         },
       };
     });

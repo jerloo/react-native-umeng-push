@@ -22,5 +22,5 @@ export interface PdaCustDetailsInput {
      * @type {Array&lt;number&gt;}
      * @memberof PdaCustDetailsInput
      */
-    custId?: any;
+    custId?: any | null;
 }

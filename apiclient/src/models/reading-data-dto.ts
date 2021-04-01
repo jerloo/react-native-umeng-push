@@ -52,19 +52,19 @@ export interface ReadingDataDto {
      * @type {number}
      * @memberof ReadingDataDto
      */
-    readWater?: any;
+    readWater?: any | null;
     /**
      * 本次抄表时间
      * @type {Date}
      * @memberof ReadingDataDto
      */
-    readDate?: any;
+    readDate?: any | null;
     /**
      * 抄表状态
      * @type {number}
      * @memberof ReadingDataDto
      */
-    readStateId?: any;
+    readStateId?: any | null;
     /**
      * 量高量低标志
      * @type {number}
@@ -82,5 +82,5 @@ export interface ReadingDataDto {
      * @type {string}
      * @memberof ReadingDataDto
      */
-    readRemark?: any;
+    readRemark?: any | null;
 }

@@ -22,5 +22,5 @@ export interface PdaCustListDtoListResultDto {
      * @type {Array&lt;PdaCustListDto&gt;}
      * @memberof PdaCustListDtoListResultDto
      */
-    items?: any;
+    items?: any | null;
 }

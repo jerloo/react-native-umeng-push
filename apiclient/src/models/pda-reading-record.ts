@@ -28,7 +28,7 @@ export interface PdaReadingRecord {
      * @type {string}
      * @memberof PdaReadingRecord
      */
-    readingDate?: any;
+    readingDate?: any | null;
     /**
      * 上期抄码
      * @type {number}

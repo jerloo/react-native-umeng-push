@@ -28,19 +28,19 @@ export interface PdaArrearageDto {
      * @type {string}
      * @memberof PdaArrearageDto
      */
-    custCode?: any;
+    custCode?: any | null;
     /**
      * 客户名称
      * @type {string}
      * @memberof PdaArrearageDto
      */
-    custName?: any;
+    custName?: any | null;
     /**
      * 客户地址
      * @type {string}
      * @memberof PdaArrearageDto
      */
-    custAddress?: any;
+    custAddress?: any | null;
     /**
      * 账单金额
      * @type {number}

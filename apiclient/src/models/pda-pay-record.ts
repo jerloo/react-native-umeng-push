@@ -22,13 +22,13 @@ export interface PdaPayRecord {
      * @type {string}
      * @memberof PdaPayRecord
      */
-    payDate?: any;
+    payDate?: any | null;
     /**
      * 收费员
      * @type {string}
      * @memberof PdaPayRecord
      */
-    cashier?: any;
+    cashier?: any | null;
     /**
      * 实缴金额
      * @type {number}

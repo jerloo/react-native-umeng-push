@@ -22,13 +22,13 @@ export interface PdaReadStateDto {
      * @type {string}
      * @memberof PdaReadStateDto
      */
-    stateCode?: any;
+    stateCode?: any | null;
     /**
      * 状态名称
      * @type {string}
      * @memberof PdaReadStateDto
      */
-    stateName?: string;
+    stateName?: any | null;
     /**
      * 抄表算法
      * @type {number}
@@ -46,17 +46,17 @@ export interface PdaReadStateDto {
      * @type {number}
      * @memberof PdaReadStateDto
      */
-    parentId?: any;
+    parentId?: any | null;
     /**
      * 备注
      * @type {string}
      * @memberof PdaReadStateDto
      */
-    remark?: any;
+    remark?: any | null;
     /**
      * 
      * @type {number}
      * @memberof PdaReadStateDto
      */
-    id?: any;
+    id?: any | null;
 }

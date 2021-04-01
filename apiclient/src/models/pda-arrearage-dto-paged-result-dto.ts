@@ -28,5 +28,5 @@ export interface PdaArrearageDtoPagedResultDto {
      * @type {Array&lt;PdaArrearageDto&gt;}
      * @memberof PdaArrearageDtoPagedResultDto
      */
-    items?: any;
+    items?: any | null;
 }

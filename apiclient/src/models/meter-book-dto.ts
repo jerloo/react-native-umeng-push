@@ -14,19 +14,25 @@
 /**
  * 
  * @export
- * @interface PdaPaymentCollectPagedResultDto
+ * @interface MeterBookDto
  */
-export interface PdaPaymentCollectPagedResultDto {
+export interface MeterBookDto {
     /**
-     * 
+     * 册本编号
      * @type {number}
-     * @memberof PdaPaymentCollectPagedResultDto
+     * @memberof MeterBookDto
      */
-    totalCount?: any;
+    id?: any | null;
     /**
-     * 
-     * @type {Array&lt;PdaPaymentCollect&gt;}
-     * @memberof PdaPaymentCollectPagedResultDto
+     * 册本编码
+     * @type {string}
+     * @memberof MeterBookDto
      */
-    items?: any | null;
+    bookCode?: any | null;
+    /**
+     * 册本名称
+     * @type {string}
+     * @memberof MeterBookDto
+     */
+    bookName?: any | null;
 }

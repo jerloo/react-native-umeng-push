@@ -5,6 +5,48 @@
     "version": "v1"
   },
   "paths": {
+    "/api/app/charge/meterBookList": {
+      "get": {
+        "tags": [
+          "Charge"
+        ],
+        "summary": "获取册本表Id，BookCode,BookName",
+        "parameters": [
+          {
+            "name": "meterReader",
+            "in": "query",
+            "description": "抄表员编号",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "抄表员编号"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeterBookDtoListResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeterBookDtoListResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeterBookDtoListResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/app/charge/userInfo": {
       "get": {
         "tags": [
@@ -1320,6 +1362,41 @@
   },
   "components": {
     "schemas": {
+      "MeterBookDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "册本编号",
+            "format": "int32",
+            "nullable": true
+          },
+          "bookCode": {
+            "type": "string",
+            "description": "册本编码",
+            "nullable": true
+          },
+          "bookName": {
+            "type": "string",
+            "description": "册本名称",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MeterBookDtoListResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MeterBookDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "PdaUserPermissionDto": {
         "type": "object",
         "properties": {
@@ -1341,6 +1418,10 @@
           "isGranted": {
             "type": "boolean",
             "description": "是否授权"
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "是否禁用（已通过角色分配权限）"
           }
         },
         "additionalProperties": false,
@@ -2095,9 +2176,12 @@
             "nullable": true
           },
           "bookId": {
-            "type": "integer",
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
             "description": "册本编号",
-            "format": "int32",
             "nullable": true
           },
           "queryConditions": {

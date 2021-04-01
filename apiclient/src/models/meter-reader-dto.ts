@@ -28,5 +28,5 @@ export interface MeterReaderDto {
      * @type {string}
      * @memberof MeterReaderDto
      */
-    name?: any;
+    name?: any | null;
 }

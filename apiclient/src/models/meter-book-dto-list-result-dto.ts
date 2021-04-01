@@ -14,19 +14,13 @@
 /**
  * 
  * @export
- * @interface PdaPaymentCollectPagedResultDto
+ * @interface MeterBookDtoListResultDto
  */
-export interface PdaPaymentCollectPagedResultDto {
+export interface MeterBookDtoListResultDto {
     /**
      * 
-     * @type {number}
-     * @memberof PdaPaymentCollectPagedResultDto
-     */
-    totalCount?: any;
-    /**
-     * 
-     * @type {Array&lt;PdaPaymentCollect&gt;}
-     * @memberof PdaPaymentCollectPagedResultDto
+     * @type {Array&lt;MeterBookDto&gt;}
+     * @memberof MeterBookDtoListResultDto
      */
     items?: any | null;
 }

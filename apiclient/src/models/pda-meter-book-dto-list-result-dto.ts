@@ -22,5 +22,5 @@ export interface PdaMeterBookDtoListResultDto {
      * @type {Array&lt;PdaMeterBookDto&gt;}
      * @memberof PdaMeterBookDtoListResultDto
      */
-    items?: any;
+    items?: any | null;
 }

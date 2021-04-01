@@ -22,13 +22,13 @@ export interface PdaArrearageChargesInputDto {
      * @type {number}
      * @memberof PdaArrearageChargesInputDto
      */
-    beginMonth?: any;
+    beginMonth?: any | null;
     /**
      * 结束年月
      * @type {number}
      * @memberof PdaArrearageChargesInputDto
      */
-    endMonth?: any;
+    endMonth?: any | null;
     /**
      * 客户编号
      * @type {number}

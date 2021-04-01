@@ -28,35 +28,35 @@ export interface CustInfoModifyInputDto {
      * @type {string}
      * @memberof CustInfoModifyInputDto
      */
-    oldMobile?: any;
+    oldMobile?: any | null;
     /**
      * 旧-钢印号
      * @type {string}
      * @memberof CustInfoModifyInputDto
      */
-    oldSteelMark?: any;
+    oldSteelMark?: any | null;
     /**
      * 旧-安装位置
      * @type {string}
      * @memberof CustInfoModifyInputDto
      */
-    oldInstallLocation?: any;
+    oldInstallLocation?: any | null;
     /**
      * 新-联系方式
      * @type {string}
      * @memberof CustInfoModifyInputDto
      */
-    newMobile?: any;
+    newMobile?: any | null;
     /**
      * 新-钢印号
      * @type {string}
      * @memberof CustInfoModifyInputDto
      */
-    newSteelMark?: any;
+    newSteelMark?: any | null;
     /**
      * 新-安装位置
      * @type {string}
      * @memberof CustInfoModifyInputDto
      */
-    newInstallLocation?: any;
+    newInstallLocation?: any | null;
 }

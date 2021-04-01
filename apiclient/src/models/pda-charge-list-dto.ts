@@ -11,9 +11,6 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-
-import { PdaChargeDetails } from "./pda-charge-details";
-
 /**
  * 账单列表
  * @export
@@ -37,7 +34,7 @@ export interface PdaChargeListDto {
      * @type {string}
      * @memberof PdaChargeListDto
      */
-    readingDate?: any;
+    readingDate?: any | null;
     /**
      * 上期抄码
      * @type {number}
@@ -67,17 +64,17 @@ export interface PdaChargeListDto {
      * @type {number}
      * @memberof PdaChargeListDto
      */
-    extendedAmount?: number;
+    extendedAmount?: any;
     /**
      * 违约金
      * @type {number}
      * @memberof PdaChargeListDto
      */
-    lateFee?: number;
+    lateFee?: any;
     /**
      * 账单明细
      * @type {Array&lt;PdaChargeDetails&gt;}
      * @memberof PdaChargeListDto
      */
-    chargeDetails?: PdaChargeDetails[];
+    chargeDetails?: any | null;
 }

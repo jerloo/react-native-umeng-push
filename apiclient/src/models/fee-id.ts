@@ -22,5 +22,5 @@ export interface FeeId {
      * @type {number}
      * @memberof FeeId
      */
-    feedId?: any;
+    feedId?: any | null;
 }

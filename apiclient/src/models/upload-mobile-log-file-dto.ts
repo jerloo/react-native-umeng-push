@@ -28,5 +28,5 @@ export interface UploadMobileLogFileDto {
      * @type {Array&lt;MobileLogFileDto&gt;}
      * @memberof UploadMobileLogFileDto
      */
-    logFiles?: any;
+    logFiles?: any | null;
 }

@@ -1,5 +1,6 @@
 import {
   LoginInput,
+  MeterBookDto,
   MeterReaderDto,
   PdaArrearageChargesInputDto,
   PdaArrearageDtoPagedResultDto,
@@ -71,6 +72,7 @@ export interface ApiService {
   sync(deviceId: string): Promise<PdaReadDataDtoListResultDto>;
   getUserInfo(): Promise<PdaMeterReaderDto>;
   makeOut(input: ReadingDataDto): Promise<void>;
+  getBookListByUserId(id: string): Promise<MeterBookDto[]>;
 }
 
 export const NETWORK_ERROR = '网络错误，请稍后再试';

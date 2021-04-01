@@ -22,25 +22,29 @@ export interface PdaUserPermissionDto {
      * @type {string}
      * @memberof PdaUserPermissionDto
      */
-    code?: string;
+    code?: any | null;
     /**
      * 权限名称
      * @type {string}
      * @memberof PdaUserPermissionDto
      */
-    name?: string;
+    name?: any | null;
     /**
      * 权限说明
      * @type {string}
      * @memberof PdaUserPermissionDto
      */
-    description?: string;
+    description?: any | null;
     /**
      * 是否授权
      * @type {boolean}
      * @memberof PdaUserPermissionDto
      */
-    isGranted?: boolean;
-
-    disabled?: boolean;
+    isGranted?: any;
+    /**
+     * 是否禁用（已通过角色分配权限）
+     * @type {boolean}
+     * @memberof PdaUserPermissionDto
+     */
+    disabled?: any;
 }

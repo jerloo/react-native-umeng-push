@@ -28,7 +28,7 @@ export interface PdaPaymentSubtotal {
      * @type {string}
      * @memberof PdaPaymentSubtotal
      */
-    chargeWay?: any;
+    chargeWay?: any | null;
     /**
      * 缴费时间
      * @type {Date}
@@ -46,35 +46,35 @@ export interface PdaPaymentSubtotal {
      * @type {string}
      * @memberof PdaPaymentSubtotal
      */
-    custCode?: any;
+    custCode?: any | null;
     /**
      * 客户名称
      * @type {string}
      * @memberof PdaPaymentSubtotal
      */
-    custName?: any;
+    custName?: any | null;
     /**
      * 客户地址
      * @type {string}
      * @memberof PdaPaymentSubtotal
      */
-    custAddress?: any;
+    custAddress?: any | null;
     /**
      * 实收金额
      * @type {number}
      * @memberof PdaPaymentSubtotal
      */
-    actualMoney?: number;
+    actualMoney?: any;
     /**
      * 实际销账
      * @type {number}
      * @memberof PdaPaymentSubtotal
      */
-    soldMoney?: number;
+    soldMoney?: any;
     /**
      * 预存变化
      * @type {number}
      * @memberof PdaPaymentSubtotal
      */
-    deposit?: number;
+    deposit?: any;
 }

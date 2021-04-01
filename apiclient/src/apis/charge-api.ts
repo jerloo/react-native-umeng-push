@@ -17,6 +17,7 @@ import { Configuration } from '../configuration';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 import { CustInfoModifyInputDto } from '../models';
+import { MeterBookDtoListResultDto } from '../models';
 import { PdaArrearageChargesInputDto } from '../models';
 import { PdaArrearageDtoPagedResultDto } from '../models';
 import { PdaArrearageInputDto } from '../models';
@@ -447,6 +448,57 @@ export const ChargeApiAxiosParamCreator = function (configuration?: Configuratio
         },
         /**
          * 
+         * @summary 获取册本表Id，BookCode,BookName
+         * @param {string} meterReader 抄表员编号
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppChargeMeterBookListGet: async (meterReader: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'meterReader' is not null or undefined
+            if (meterReader === null || meterReader === undefined) {
+                throw new RequiredError('meterReader','Required parameter meterReader was null or undefined when calling apiAppChargeMeterBookListGet.');
+            }
+            const localVarPath = `/api/app/charge/meterBookList`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            if (meterReader !== undefined) {
+                localVarQueryParameter['meterReader'] = meterReader;
+            }
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 根据设备编号下载抄表数据
          * @param {ReadDataByBookIdsInput} body 
          * @param {*} [options] Override http request option.
@@ -848,6 +900,20 @@ export const ChargeApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 获取册本表Id，BookCode,BookName
+         * @param {string} meterReader 抄表员编号
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiAppChargeMeterBookListGet(meterReader: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MeterBookDtoListResultDto>> {
+            const localVarAxiosArgs = await ChargeApiAxiosParamCreator(configuration).apiAppChargeMeterBookListGet(meterReader, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary 根据设备编号下载抄表数据
          * @param {ReadDataByBookIdsInput} body 
          * @param {*} [options] Override http request option.
@@ -1019,6 +1085,16 @@ export const ChargeApiFactory = function (configuration?: Configuration, basePat
         },
         /**
          * 
+         * @summary 获取册本表Id，BookCode,BookName
+         * @param {string} meterReader 抄表员编号
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAppChargeMeterBookListGet(meterReader: string, options?: any): AxiosPromise<MeterBookDtoListResultDto> {
+            return ChargeApiFp(configuration).apiAppChargeMeterBookListGet(meterReader, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 根据设备编号下载抄表数据
          * @param {ReadDataByBookIdsInput} body 
          * @param {*} [options] Override http request option.
@@ -1172,6 +1248,17 @@ export class ChargeApi extends BaseAPI {
      */
     public apiAppChargeGetReadingCollectPost(body: PdaReadingCollectInput, options?: any) {
         return ChargeApiFp(this.configuration).apiAppChargeGetReadingCollectPost(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @summary 获取册本表Id，BookCode,BookName
+     * @param {string} meterReader 抄表员编号
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChargeApi
+     */
+    public apiAppChargeMeterBookListGet(meterReader: string, options?: any) {
+        return ChargeApiFp(this.configuration).apiAppChargeMeterBookListGet(meterReader, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 

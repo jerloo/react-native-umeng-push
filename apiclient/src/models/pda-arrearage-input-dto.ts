@@ -22,31 +22,31 @@ export interface PdaArrearageInputDto {
      * @type {number}
      * @memberof PdaArrearageInputDto
      */
-    beginMonth?: number;
+    beginMonth?: any | null;
     /**
      * 结束年月
      * @type {number}
      * @memberof PdaArrearageInputDto
      */
-    endMonth?: number;
+    endMonth?: any | null;
     /**
      * 抄表员
      * @type {string}
      * @memberof PdaArrearageInputDto
      */
-    meterReaderId?: string;
+    meterReaderId?: any | null;
     /**
      * 册本编号
-     * @type {number}
+     * @type {Array&lt;number&gt;}
      * @memberof PdaArrearageInputDto
      */
-    bookId?: number;
+    bookId?: any | null;
     /**
      * 组合查询条件
      * @type {string}
      * @memberof PdaArrearageInputDto
      */
-    queryConditions?: any;
+    queryConditions?: any | null;
     /**
      * 
      * @type {number}

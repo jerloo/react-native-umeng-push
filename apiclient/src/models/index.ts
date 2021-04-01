@@ -3,6 +3,8 @@ export * from './cust-info-modify-input-dto';
 export * from './fee-id';
 export * from './log-output';
 export * from './login-input';
+export * from './meter-book-dto';
+export * from './meter-book-dto-list-result-dto';
 export * from './meter-reader-dto';
 export * from './meter-reader-dto-list-result-dto';
 export * from './mobile-file-dto';

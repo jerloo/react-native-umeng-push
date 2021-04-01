@@ -34,25 +34,25 @@ export interface PdaMeterBookDto {
      * @type {string}
      * @memberof PdaMeterBookDto
      */
-    bookCode?: any;
+    bookCode?: any | null;
     /**
      * 册本名称
      * @type {string}
      * @memberof PdaMeterBookDto
      */
-    bookName?: any;
+    bookName?: any | null;
     /**
      * 抄表周期
      * @type {string}
      * @memberof PdaMeterBookDto
      */
-    readCycle?: any;
+    readCycle?: any | null;
     /**
      * 备注
      * @type {string}
      * @memberof PdaMeterBookDto
      */
-    remark?: any;
+    remark?: any | null;
     /**
      * 已抄数
      * @type {number}

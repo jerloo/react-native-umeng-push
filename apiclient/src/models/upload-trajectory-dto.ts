@@ -28,5 +28,5 @@ export interface UploadTrajectoryDto {
      * @type {Array&lt;MobileTrajectoryDto&gt;}
      * @memberof UploadTrajectoryDto
      */
-    trajectorys?: any;
+    trajectorys?: any | null;
 }
