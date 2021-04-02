@@ -149,8 +149,8 @@ export default function ArrearagesScreen() {
           setSettingsModalVisible(true);
 
           try {
-            const books = await center.getBookListByUserId(item.id);
-            setBooks(books);
+            const bs = await center.getBookListByUserId(item.id);
+            setBooks(bs);
             setCurrentBooks([]);
           } catch (e) {
             Toast.fail(e.message);

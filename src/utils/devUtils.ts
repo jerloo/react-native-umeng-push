@@ -1,4 +1,4 @@
 //
 
 export const SQLITE_DEBUG = true;
-export const PERMISSIONS_CHECK = true;
+export const PERMISSIONS_CHECK = false;

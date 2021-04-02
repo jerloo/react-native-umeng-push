@@ -30,6 +30,7 @@ import { MainStackParamList } from './routeParams';
 import Modal from 'react-native-smart-modal';
 import PaymentCollectItem from '../components/PaymentCollectItem';
 import dayjs from 'dayjs';
+import { getSession } from '../utils/sesstionUtils';
 
 const PAGE_SIZE = 30;
 
@@ -61,7 +62,12 @@ export default function PaymentCollectScreen() {
       const users = await center.getAllPdaUsers();
       setPdaUsers(users);
       if (users.length > 0) {
-        setCurrentUser(users[0]);
+        const session = await getSession();
+        let uc = users.find((it) => it.id === session?.userInfo.id);
+        if (!uc) {
+          uc = users[0];
+        }
+        setCurrentUser(uc);
       }
     } catch (e) {
       Toast.fail(e.message);
@@ -137,9 +143,21 @@ export default function PaymentCollectScreen() {
     const ops = pdaUsers?.map((item) => {
       return {
         text: item.name,
-        onPress: () => {
+        onPress: async () => {
           setCurrentUser(item);
           setSettingsModalVisible(true);
+
+          try {
+            const bs = await center.getBookListByUserId(item.id);
+            setBooks(bs);
+            if (bs.length > 0) {
+              setCurrentBook(bs[0]);
+            } else {
+              setCurrentBook(undefined);
+            }
+          } catch (e) {
+            Toast.fail(e.message);
+          }
         },
       };
     });

@@ -28,6 +28,7 @@ import ReadingCollectItem from '../components/ReadingCollectItem';
 import Modal from 'react-native-smart-modal';
 import { Modal as AntModal } from '@ant-design/react-native';
 import { useNavigation } from '@react-navigation/core';
+import { getSession } from '../utils/sesstionUtils';
 
 export default function ReadingCollectScreen() {
   const navigation = useNavigation();
@@ -48,7 +49,12 @@ export default function ReadingCollectScreen() {
       const users = await center.getAllPdaUsers();
       setPdaUsers(users);
       if (users.length > 0) {
-        setCurrentUser(users[0]);
+        const session = await getSession();
+        let cu = users.find((it) => it.id === session?.userInfo.id);
+        if (!cu) {
+          cu = users[0];
+        }
+        setCurrentUser(cu);
       }
     } catch (e) {
       Toast.fail(e.message);
@@ -161,7 +167,10 @@ export default function ReadingCollectScreen() {
               <Text style={styles.settingsSubTitle}>抄表年月</Text>
               <View style={styles.settingsDatePickers}>
                 <DatePicker
-                  value={dayjs(billMonth.toString(), 'YYYYMM').toDate()}
+                  value={dayjs(
+                    billMonth.billingMonth.toString(),
+                    'YYYYMM',
+                  ).toDate()}
                   mode="month"
                   defaultDate={new Date()}
                   minDate={new Date(2015, 7, 6)}
@@ -170,7 +179,9 @@ export default function ReadingCollectScreen() {
                   format="YYYY-MM">
                   <TouchableOpacity
                     style={[styles.settingsInput, { width: scaleSize(450) }]}>
-                    <Text style={styles.settingsInputText}>{billMonth}</Text>
+                    <Text style={styles.settingsInputText}>
+                      {billMonth.billingMonth}
+                    </Text>
                     <Image
                       style={styles.settingsInputIcon}
                       source={require('../assets/qietu/qianfeichaxxun/arrearage_inquiry_icon_down_normal.png')}
