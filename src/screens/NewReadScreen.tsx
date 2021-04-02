@@ -53,6 +53,7 @@ import { AttachmentDbItem } from '../data/models';
 import { tryUploadAttachments } from '../utils/attachUtils';
 import { toggle } from 'react-native-lighting';
 import { l } from '../utils/logUtils';
+import { getSession } from '../utils/sesstionUtils';
 
 let scaleHeight = defaultScaleHeight;
 scaleHeight = scaleSize;
@@ -106,11 +107,15 @@ export default function NewReadScreen() {
   }, []);
 
   useEffect(() => {
-    getReadStateSettings().then((r) => {
-      if (r) {
-        setReadStates(r);
-        db.getBookDataDetails(data.custId, data.billMonth, data.readTimes).then(
-          (details) => {
+    getSession().then((session) => {
+      getReadStateSettings(session?.userInfo.id).then((r) => {
+        if (r) {
+          setReadStates(r);
+          db.getBookDataDetails(
+            data.custId,
+            data.billMonth,
+            data.readTimes,
+          ).then((details) => {
             if (details) {
               if (!details.readStateId) {
                 const readState = r.items.find((it) => it.stateName === '正常');
@@ -118,9 +123,9 @@ export default function NewReadScreen() {
                 setNewData(details);
               }
             }
-          },
-        );
-      }
+          });
+        }
+      });
     });
   }, [data.readStateId, data.billMonth, data.custId, data.readTimes]);
 

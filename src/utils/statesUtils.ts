@@ -127,21 +127,23 @@ export interface ReadStateStorage {
 
 const defaultOffenNames = ['正常', '其他', '失灵', '暂估', '门闭', '表坏'];
 
-export const getReadStateSettings = async () => {
-  const content = await AsyncStorage.getItem('readStates');
+export const getReadStateSettings = async (userId: string) => {
+  const content = await AsyncStorage.getItem(`readStates-${userId}`);
   const state = content ? (JSON.parse(content) as ReadStateStorage) : null;
   return state;
 };
 
-export const setReadStateSettings = async (items: PdaReadStateDto[]) => {
-  let state = await getReadStateSettings();
+export const saveReadStateSettings = async (
+  items: PdaReadStateDto[],
+  userId: string,
+) => {
+  let state = await getReadStateSettings(userId);
   if (!state) {
-    const offenReadStatesIds = items
-      .filter((it) => defaultOffenNames.indexOf(it.stateName) > -1)
-      .map((it) => it.id);
-    const normals = items.filter(
-      (it) => defaultOffenNames.indexOf(it.stateName) < 0,
+    console.log('!state');
+    const offens = items.filter(
+      (it) => defaultOffenNames.indexOf(it.stateName) > -1,
     );
+    const normals = items.filter((it) => !offens.find((i) => it.id === i.id));
     const groups = (normals.filter(
       (it) => it.parentId === 0,
     ) as ReadStateGroupItem[]).map((it) => {
@@ -149,19 +151,18 @@ export const setReadStateSettings = async (items: PdaReadStateDto[]) => {
       return it;
     });
     state = {
-      offens: items.filter((it) => offenReadStatesIds.indexOf(it.id) > -1),
+      offens: offens,
       groups: groups,
       items: items,
       normals: normals,
     };
   } else {
     if (state.offens.length === 0) {
-      const offenReadStatesIds = items
-        .filter((it) => defaultOffenNames.indexOf(it.stateName) > -1)
-        .map((it) => it.id);
-      const normals = items.filter(
-        (it) => defaultOffenNames.indexOf(it.stateName) < 0,
+      console.log('state.offens.length === 0');
+      const offens = items.filter(
+        (it) => defaultOffenNames.indexOf(it.stateName) > -1,
       );
+      const normals = items.filter((it) => !offens.find((i) => it.id === i.id));
       const groups = (normals.filter(
         (it) => it.parentId === 0,
       ) as ReadStateGroupItem[]).map((it) => {
@@ -169,12 +170,13 @@ export const setReadStateSettings = async (items: PdaReadStateDto[]) => {
         return it;
       });
       state = {
-        offens: items.filter((it) => offenReadStatesIds.indexOf(it.id) > -1),
+        offens: offens,
         groups: groups,
         items: items,
         normals: normals,
       };
     } else {
+      console.log('else');
       state.offens = state.offens.filter((it) =>
         items.find((i) => i.id === it.id),
       );
@@ -194,7 +196,8 @@ export const setReadStateSettings = async (items: PdaReadStateDto[]) => {
   }
 
   const content = JSON.stringify(state);
-  await AsyncStorage.setItem('readStates', content);
+  console.log('states:', content);
+  await AsyncStorage.setItem(`readStates-${userId}`, content);
 };
 
 export const removeReadStateFromOffen = async (
@@ -207,7 +210,9 @@ export const removeReadStateFromOffen = async (
       it.children.push(item);
     }
   });
-  readStates.normals = readStates.items.filter(it => !readStates.offens.find(i => i.id === it.id))
+  readStates.normals = readStates.items.filter(
+    (it) => !readStates.offens.find((i) => i.id === it.id),
+  );
   return readStates;
 };
 
@@ -221,13 +226,21 @@ export const addReadStateToOffen = async (
       it.children = it.children.filter((i) => i.id !== item.id);
     }
   });
-  readStates.normals = readStates.items.filter(it => !readStates.offens.find(i => i.id === it.id))
+  readStates.normals = readStates.items.filter(
+    (it) => !readStates.offens.find((i) => i.id === it.id),
+  );
   return readStates;
 };
 
-export const saveReadStatesStorage = async (readStates: ReadStateStorage) => {
-  console.log('save', JSON.stringify(readStates))
-  await AsyncStorage.setItem('readStates', JSON.stringify(readStates));
+export const saveReadStatesStorage = async (
+  readStates: ReadStateStorage,
+  userId: string,
+) => {
+  console.log('save', JSON.stringify(readStates));
+  await AsyncStorage.setItem(
+    `readStates-${userId}`,
+    JSON.stringify(readStates),
+  );
 };
 
 export const getAlgorithmByReadStateId = (

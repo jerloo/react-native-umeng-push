@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 import { PdaReadStateDto } from '../../apiclient/src/models';
+import { getSession, UserSession } from '../utils/sesstionUtils';
 import {
   addReadStateToOffen,
   getReadStateSettings,
@@ -22,6 +23,15 @@ export default function NewReadSettings(props: Props) {
   const [editing, setEditing] = React.useState(false);
 
   const [readStates, setReadStates] = React.useState<ReadStateStorage>();
+  const [userSession, setUserSession] = React.useState<UserSession>();
+
+  React.useEffect(() => {
+    getSession().then((r) => {
+      if (r) {
+        setUserSession(r);
+      }
+    });
+  }, []);
 
   React.useEffect(() => {
     setReadStates(props.readStates);
@@ -51,17 +61,19 @@ export default function NewReadSettings(props: Props) {
 
   const save = async () => {
     if (readStates) {
-      await saveReadStatesStorage(readStates);
+      await saveReadStatesStorage(readStates, userSession?.userInfo.id);
       props.onSaved && props.onSaved(readStates);
     }
   };
 
   const reset = () => {
-    getReadStateSettings().then((r) => {
-      if (r) {
-        setReadStates(r);
-        setEditing(false);
-      }
+    getSession().then((session) => {
+      getReadStateSettings(session?.userInfo.id).then((r) => {
+        if (r) {
+          setReadStates(r);
+          setEditing(false);
+        }
+      });
     });
   };
 

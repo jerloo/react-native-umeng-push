@@ -17,7 +17,7 @@ import HomeButton from '../components/HomeButton';
 import { scaleSize, scaleHeight } from 'react-native-responsive-design';
 import { getSession, UserSession } from '../utils/sesstionUtils';
 import center from '../data';
-import { setReadStateSettings } from '../utils/statesUtils';
+import { saveReadStateSettings } from '../utils/statesUtils';
 import { useNavigation } from '@react-navigation/core';
 import SearchBoxView from '../components/SearchBoxView';
 import { setSystemSettings } from '../utils/systemSettingsUtils';
@@ -67,7 +67,14 @@ export default function HomeScreen() {
   const fetchStateSettings = async () => {
     try {
       const remoteStates = await center.online.getReadStates();
-      setReadStateSettings(remoteStates);
+      if (session?.userInfo.id) {
+        saveReadStateSettings(remoteStates, session.userInfo.id);
+      } else {
+        const s = await getSession();
+        if (s?.userInfo.id) {
+          saveReadStateSettings(remoteStates, s?.userInfo.id);
+        }
+      }
     } catch (e) {
       l.error(e);
     }
