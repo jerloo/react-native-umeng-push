@@ -838,9 +838,14 @@ export default function NewReadScreen() {
                 valueData.reading = valueData.lastReading;
                 valueData.readWater = 0;
               }
+              if (valueData.reading) {
+                valueData.readWater = calcReadWater(
+                  valueData,
+                  readStates?.items || [],
+                );
+              }
               setNewData({
                 ...valueData,
-                readWater: calcReadWater(valueData, readStates?.items || []),
               });
             }}
           />
