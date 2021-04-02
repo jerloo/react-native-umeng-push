@@ -29,6 +29,7 @@ import ArrearageItem from '../components/ArrearageItem';
 import dayjs from 'dayjs';
 import Modal from 'react-native-smart-modal';
 import BookSelector from '../components/BookSelector';
+import { getSession } from '../utils/sesstionUtils';
 
 const PAGE_SIZE = 30;
 
@@ -57,10 +58,15 @@ export default function ArrearagesScreen() {
       const users = await center.getAllPdaUsers();
       setPdaUsers(users);
       if (users.length > 0) {
-        setCurrentUser(users[0]);
+        const session = await getSession();
+        let cu = users.find((it) => it.id === session?.userInfo.id);
+        if (!cu) {
+          cu = users[0];
+        }
+        setCurrentUser(cu);
 
         try {
-          center.getBookListByUserId(users[0].id).then((bs) => {
+          center.getBookListByUserId(cu.id).then((bs) => {
             setBooks(bs);
             setCurrentBooks([]);
           });
@@ -78,8 +84,8 @@ export default function ArrearagesScreen() {
     if (latestBillMonth) {
       setParams({
         ...params,
-        beginMonth: latestBillMonth,
-        endMonth: latestBillMonth,
+        beginMonth: dayjs(latestBillMonth.startDate).format('YYYYMM'),
+        endMonth: dayjs(latestBillMonth.endDate).format('YYYYMM'),
       });
     }
   };
