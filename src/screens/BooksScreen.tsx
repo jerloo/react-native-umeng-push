@@ -227,10 +227,13 @@ export default function BooksScreen() {
     try {
       const billMonthResult = await center.getReadingMonth();
       const billMonthLocal = await getBillMonth();
-      if (!billMonthLocal) {
+      console.log('billMonthLocal', billMonthLocal);
+      if (!billMonthLocal || !billMonthLocal.billingMonth) {
         await uploadReadingData();
         await sync();
-      } else if (billMonthLocal !== billMonthResult) {
+      } else if (
+        billMonthLocal.billingMonth !== billMonthResult?.billingMonth
+      ) {
         AntModal.alert(
           '提示',
           '当前抄表周期与手机内不一致，是否清除不一致数据？',
@@ -243,6 +246,10 @@ export default function BooksScreen() {
             {
               text: '确认',
               onPress: async () => {
+                if (billMonthResult) {
+                  setCurrentBillMonth(billMonthResult);
+                  await saveBillMonth(billMonthResult);
+                }
                 await uploadReadingData();
                 await db.deleteBooks();
                 await sync();

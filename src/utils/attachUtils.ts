@@ -59,7 +59,7 @@ export const uploadAttachments = async (
         files: filesToUpload.map((it) => {
           const item: MobileFileDto = {
             fileName: it.fileName,
-            filePath: it.url,
+            filePath: it.url?.substring(it.url?.indexOf('.com/')),
             fileSize: it.fileSize,
             fileSource: it.fileSource,
           };
