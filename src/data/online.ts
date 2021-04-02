@@ -19,6 +19,7 @@ import {
   PdaReadingCollectDto,
   PdaReadStateDto,
   ReadingDataDto,
+  ReadingMonthDto,
   SysSettingDto,
   UploadReadingDataDto,
   UploadReadingFileDto,
@@ -36,9 +37,7 @@ import { l } from '../utils/logUtils';
 export default class OnlineApiService implements ApiService {
   async getBookListByUserId(id: string): Promise<MeterBookDto[]> {
     try {
-      const result = await api.chargeApi.apiAppChargeMeterBookListGet(
-        id,
-      );
+      const result = await api.chargeApi.apiAppChargeMeterBookListGet(id);
       if (result.status < 400) {
         return result.data.items;
       }
@@ -346,7 +345,7 @@ export default class OnlineApiService implements ApiService {
     }
   }
 
-  async getReadingMonth(): Promise<number | null> {
+  async getReadingMonth(): Promise<ReadingMonthDto | null> {
     try {
       const result = await api.chargeApi.apiAppChargeReadingMonthGet();
       if (result.status < 400) {

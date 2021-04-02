@@ -20,6 +20,7 @@ import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import {
   MeterReaderDto,
   PdaReadingCollectDto,
+  ReadingMonthDto,
 } from '../../apiclient/src/models';
 import dayjs from 'dayjs';
 import { sum, sumNoFixed } from '../utils/sumUtils';
@@ -27,7 +28,6 @@ import ReadingCollectItem from '../components/ReadingCollectItem';
 import Modal from 'react-native-smart-modal';
 import { Modal as AntModal } from '@ant-design/react-native';
 import { useNavigation } from '@react-navigation/core';
-import { saveBillMonth } from '../utils/billMonthUtils';
 
 export default function ReadingCollectScreen() {
   const navigation = useNavigation();
@@ -38,7 +38,9 @@ export default function ReadingCollectScreen() {
   const [pdaUsers, setPdaUsers] = useState<MeterReaderDto[]>([]);
   const [currentUser, setCurrentUser] = useState<MeterReaderDto>();
 
-  const [billMonth, setBillMonth] = useState<number>(defaultBillMonth);
+  const [billMonth, setBillMonth] = useState<ReadingMonthDto>({
+    billingMonth: defaultBillMonth,
+  });
   const [settingsModalVisible, setSettingsModalVisible] = useState(false);
 
   const fetchPdaUsers = async () => {
@@ -74,7 +76,10 @@ export default function ReadingCollectScreen() {
     try {
       await fetchLatestBillMonth();
 
-      const result = await center.getReadingCollect(currentUser?.id, billMonth);
+      const result = await center.getReadingCollect(
+        currentUser?.id,
+        billMonth.billingMonth,
+      );
       setItems(result);
       Toast.remove(key);
     } catch (e) {
@@ -107,11 +112,11 @@ export default function ReadingCollectScreen() {
 
   const onPickBillMonth = (dt: Date) => {
     const value = parseInt(dayjs(dt).format('YYYYMM'), 10);
-    setBillMonth(value);
+    setBillMonth({ ...billMonth, billingMonth: value });
   };
 
   const resetQueryParams = async () => {
-    setBillMonth(defaultBillMonth);
+    setBillMonth({ ...billMonth, billingMonth: defaultBillMonth });
     if (pdaUsers.length > 0) {
       setCurrentUser(pdaUsers[0]);
     }

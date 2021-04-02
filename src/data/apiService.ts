@@ -19,6 +19,7 @@ import {
   PdaReadingCollectDto,
   PdaReadStateDto,
   ReadingDataDto,
+  ReadingMonthDto,
   SysSettingDto,
   UploadReadingDataDto,
   UploadReadingFileDto,
@@ -41,7 +42,7 @@ export interface ApiService {
   getBookDataByIds(ids: number[]): Promise<PdaReadDataDto[]>;
   getReadStates(): Promise<PdaReadStateDto[]>;
   getCustDetails(custIds: number[]): Promise<PdaCustDto>;
-  getReadingMonth(): Promise<number | null>;
+  getReadingMonth(): Promise<ReadingMonthDto | null>;
   getReadingCollect(
     opId: string,
     billMonth: number,

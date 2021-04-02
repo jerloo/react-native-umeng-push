@@ -22,6 +22,7 @@ import {
   PdaMeterReaderDto,
   ReadingDataDto,
   MeterBookDto,
+  ReadingMonthDto,
 } from '../../apiclient/src/models';
 import NetInfo from '@react-native-community/netinfo';
 import db from './database';
@@ -221,7 +222,7 @@ class CenterService implements ApiService {
     return this.offline.getReadingCollect(opId, billMonth);
   }
 
-  async getReadingMonth(): Promise<number | null> {
+  async getReadingMonth(): Promise<ReadingMonthDto | null> {
     const netInfo = await NetInfo.fetch();
     if (netInfo.isConnected === true) {
       return await this.online.getReadingMonth();

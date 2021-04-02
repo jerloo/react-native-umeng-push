@@ -30,7 +30,7 @@ import { getBillMonth, saveBillMonth } from '../utils/billMonthUtils';
 import CommonTitleBarEx from '../components/titlebars/CommonTitleBarEx';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import Modal from 'react-native-smart-modal';
-import { ReadingDataDto } from '../../apiclient/src/models';
+import { ReadingDataDto, ReadingMonthDto } from '../../apiclient/src/models';
 import DeviceInfo from 'react-native-device-info';
 import { l } from '../utils/logUtils';
 import { uploadAttachments } from '../utils/attachUtils';
@@ -45,7 +45,7 @@ export default function BooksScreen() {
     uploadedNumber: 0,
   });
   const [loading, setLoading] = useState(false);
-  const [currentBillMonth, setCurrentBillMonth] = useState<number>();
+  const [currentBillMonth, setCurrentBillMonth] = useState<ReadingMonthDto>();
   const [currentBook, setCurrentBook] = useState<PdaMeterBookDtoHolder>();
   const [modalVisible, setModalVisible] = useState(false);
   const [
@@ -468,7 +468,7 @@ export default function BooksScreen() {
           <CommonTitleBarEx
             onBack={() => navigation.goBack()}
             onRight2Click={refresh}
-            title={`抄表任务(${currentBillMonth || ''})`}
+            title={`抄表任务(${currentBillMonth?.billingMonth || ''})`}
             titleColor={colorWhite}
             right2Icon={require('../assets/qietu/cebenxiangqing/book_details_icon_refresh_normal.png')}
           />

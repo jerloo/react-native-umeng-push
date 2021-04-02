@@ -49,6 +49,7 @@ export * from './pda-user-permission-dto';
 export * from './read-data-by-book-ids-input';
 export * from './reading-data-dto';
 export * from './reading-file-dto';
+export * from './reading-month-dto';
 export * from './sys-setting-dto';
 export * from './sys-setting-dto-list-result-dto';
 export * from './upload-mobile-log-file-dto';

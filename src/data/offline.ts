@@ -19,6 +19,7 @@ import {
   PdaReadingCollectDto,
   PdaReadStateDto,
   ReadingDataDto,
+  ReadingMonthDto,
   SysSettingDto,
   UploadReadingDataDto,
   UploadReadingFileDto,
@@ -32,7 +33,7 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
-  async getBookListByUserId(id: string): Promise<MeterBookDto[]> {
+  async getBookListByUserId(_id: string): Promise<MeterBookDto[]> {
     throw new Error(NO_NETWORK_ERROR);
   }
 
@@ -133,7 +134,7 @@ export default class OfflineApiService implements ApiService {
     throw new Error('Method not implemented.');
   }
 
-  async getReadingMonth(): Promise<number | null> {
+  async getReadingMonth(): Promise<ReadingMonthDto | null> {
     return await getBillMonth();
   }
 

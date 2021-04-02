@@ -32,6 +32,7 @@ import { PdaReadStateDtoListResultDto } from '../models';
 import { PdaReadingCollectDtoListResultDto } from '../models';
 import { PdaReadingCollectInput } from '../models';
 import { ReadDataByBookIdsInput } from '../models';
+import { ReadingMonthDto } from '../models';
 /**
  * ChargeApi - axios parameter creator
  * @export
@@ -945,7 +946,7 @@ export const ChargeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiAppChargeReadingMonthGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<number>> {
+        async apiAppChargeReadingMonthGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReadingMonthDto>> {
             const localVarAxiosArgs = await ChargeApiAxiosParamCreator(configuration).apiAppChargeReadingMonthGet(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1118,7 +1119,7 @@ export const ChargeApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiAppChargeReadingMonthGet(options?: any): AxiosPromise<number> {
+        apiAppChargeReadingMonthGet(options?: any): AxiosPromise<ReadingMonthDto> {
             return ChargeApiFp(configuration).apiAppChargeReadingMonthGet(options).then((request) => request(axios, basePath));
         },
         /**

@@ -622,20 +622,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int32"
+                  "$ref": "#/components/schemas/ReadingMonthDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int32"
+                  "$ref": "#/components/schemas/ReadingMonthDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int32"
+                  "$ref": "#/components/schemas/ReadingMonthDto"
                 }
               }
             }
@@ -2512,6 +2509,27 @@
               "$ref": "#/components/schemas/PdaReadStateDto"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReadingMonthDto": {
+        "type": "object",
+        "properties": {
+          "billingMonth": {
+            "type": "integer",
+            "description": "BillMonth",
+            "format": "int32"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "开始时间",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "结束时间",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
