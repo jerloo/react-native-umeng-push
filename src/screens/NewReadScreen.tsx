@@ -790,6 +790,9 @@ export default function NewReadScreen() {
 
           <KeyBoard
             disabled={newData.recordState === 2 || newData.recordState === 3}
+            onDisabledCall={() =>
+              Toast.info('当前数据已复核或已开账，不允许修改')
+            }
             onBackClick={() => {
               if (newData.reading && newData.reading.toString().length !== 0) {
                 setValue(

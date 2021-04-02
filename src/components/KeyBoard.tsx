@@ -26,9 +26,20 @@ interface Props {
   readStates?: ReadStateStorage;
   selectStateId?: number;
   disabled?: boolean;
+  onDisabledCall?: () => void;
 }
 
+type clickCallBack = () => void;
+
 export default function KeyBoard(props: Props) {
+  const callIfNotDisabled = (cb: clickCallBack | undefined) => {
+    if (!props.disabled) {
+      cb && cb();
+    } else {
+      props.onDisabledCall && props.onDisabledCall();
+    }
+  };
+
   return (
     <SafeAreaView edges={['bottom']} style={styles.container}>
       <View style={styles.offenStates}>
@@ -44,9 +55,9 @@ export default function KeyBoard(props: Props) {
               selected={props.selectStateId === it.id}
               title={it.stateName}
               onClick={() =>
-                !props.disabled &&
-                props.onStateSelect &&
-                props.onStateSelect(it)
+                callIfNotDisabled(
+                  () => props.onStateSelect && props.onStateSelect(it),
+                )
               }
             />
           ))}
@@ -64,7 +75,9 @@ export default function KeyBoard(props: Props) {
         <TouchableOpacity
           style={styles.cell}
           onPress={() =>
-            !props.disabled && props.onNumberClick && props.onNumberClick(7)
+            callIfNotDisabled(
+              () => props.onNumberClick && props.onNumberClick(7),
+            )
           }>
           <Text style={styles.number}>7</Text>
         </TouchableOpacity>
@@ -72,7 +85,9 @@ export default function KeyBoard(props: Props) {
         <TouchableOpacity
           style={styles.cell}
           onPress={() =>
-            !props.disabled && props.onNumberClick && props.onNumberClick(8)
+            callIfNotDisabled(
+              () => props.onNumberClick && props.onNumberClick(8),
+            )
           }>
           <Text style={styles.number}>8</Text>
         </TouchableOpacity>
@@ -80,7 +95,9 @@ export default function KeyBoard(props: Props) {
         <TouchableOpacity
           style={styles.cell}
           onPress={() =>
-            !props.disabled && props.onNumberClick && props.onNumberClick(9)
+            callIfNotDisabled(
+              () => props.onNumberClick && props.onNumberClick(9),
+            )
           }>
           <Text style={styles.number}>9</Text>
         </TouchableOpacity>
@@ -88,7 +105,7 @@ export default function KeyBoard(props: Props) {
         <TouchableOpacity
           style={[styles.cell, { backgroundColor: '#D0D1D3' }]}
           onPress={() =>
-            !props.disabled && props.onPhotoClick && props.onPhotoClick()
+            callIfNotDisabled(() => props.onPhotoClick && props.onPhotoClick())
           }>
           <Image
             style={styles.photo}
@@ -100,7 +117,9 @@ export default function KeyBoard(props: Props) {
         <TouchableOpacity
           style={styles.cell}
           onPress={() =>
-            !props.disabled && props.onNumberClick && props.onNumberClick(4)
+            callIfNotDisabled(
+              () => props.onNumberClick && props.onNumberClick(4),
+            )
           }>
           <Text style={styles.number}>4</Text>
         </TouchableOpacity>
@@ -108,7 +127,9 @@ export default function KeyBoard(props: Props) {
         <TouchableOpacity
           style={styles.cell}
           onPress={() =>
-            !props.disabled && props.onNumberClick && props.onNumberClick(5)
+            callIfNotDisabled(
+              () => props.onNumberClick && props.onNumberClick(5),
+            )
           }>
           <Text style={styles.number}>5</Text>
         </TouchableOpacity>
@@ -116,7 +137,9 @@ export default function KeyBoard(props: Props) {
         <TouchableOpacity
           style={styles.cell}
           onPress={() =>
-            !props.disabled && props.onNumberClick && props.onNumberClick(6)
+            callIfNotDisabled(
+              () => props.onNumberClick && props.onNumberClick(6),
+            )
           }>
           <Text style={styles.number}>6</Text>
         </TouchableOpacity>
@@ -131,7 +154,9 @@ export default function KeyBoard(props: Props) {
         <TouchableOpacity
           style={styles.cell}
           onPress={() =>
-            !props.disabled && props.onNumberClick && props.onNumberClick(1)
+            callIfNotDisabled(
+              () => props.onNumberClick && props.onNumberClick(1),
+            )
           }>
           <Text style={styles.number}>1</Text>
         </TouchableOpacity>
@@ -139,7 +164,9 @@ export default function KeyBoard(props: Props) {
         <TouchableOpacity
           style={styles.cell}
           onPress={() =>
-            !props.disabled && props.onNumberClick && props.onNumberClick(2)
+            callIfNotDisabled(
+              () => props.onNumberClick && props.onNumberClick(2),
+            )
           }>
           <Text style={styles.number}>2</Text>
         </TouchableOpacity>
@@ -147,7 +174,9 @@ export default function KeyBoard(props: Props) {
         <TouchableOpacity
           style={styles.cell}
           onPress={() =>
-            !props.disabled && props.onNumberClick && props.onNumberClick(3)
+            callIfNotDisabled(
+              () => props.onNumberClick && props.onNumberClick(3),
+            )
           }>
           <Text style={styles.number}>3</Text>
         </TouchableOpacity>
@@ -165,7 +194,9 @@ export default function KeyBoard(props: Props) {
         <TouchableOpacity
           style={styles.cell}
           onPress={() =>
-            !props.disabled && props.onNumberClick && props.onNumberClick(0)
+            callIfNotDisabled(
+              () => props.onNumberClick && props.onNumberClick(0),
+            )
           }>
           <Text style={styles.number}>0</Text>
         </TouchableOpacity>
@@ -173,7 +204,7 @@ export default function KeyBoard(props: Props) {
         <TouchableOpacity
           style={styles.cell}
           onPress={() =>
-            !props.disabled && props.onBackClick && props.onBackClick()
+            callIfNotDisabled(() => props.onBackClick && props.onBackClick())
           }>
           <Image
             style={styles.photo}
@@ -185,7 +216,9 @@ export default function KeyBoard(props: Props) {
         <TouchableOpacity
           style={[styles.cell, styles.confirm]}
           onPress={() =>
-            !props.disabled && props.onConfirmClick && props.onConfirmClick()
+            callIfNotDisabled(
+              () => props.onConfirmClick && props.onConfirmClick(),
+            )
           }>
           <Text style={styles.confirmText}>确定</Text>
         </TouchableOpacity>

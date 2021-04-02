@@ -37,7 +37,7 @@ import PaymentCollectScreen from './src/screens/PaymentCollectScreen';
 import PaymentSubtotalScreen from './src/screens/PaymentSubtotalScreen';
 import LogViewScreen from './src/screens/LogViewScreen';
 
-// Toast.config({ duration: 0.5 });
+Toast.config({ duration: 1.5 });
 
 const Stack = createStackNavigator<MainStackParamList>();
 
