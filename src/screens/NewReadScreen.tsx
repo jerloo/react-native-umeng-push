@@ -171,6 +171,9 @@ export default function NewReadScreen() {
         r.readStateId = readState?.id;
       }
       setNewData(r);
+      db.getAttachments(r.custId, r.readTimes, r.billMonth).then((rs) => {
+        setAttachments(rs);
+      });
     } else {
       Toast.info('当前已经是第一条数据');
     }
@@ -208,6 +211,9 @@ export default function NewReadScreen() {
       const r = result[0];
       r.readStateId = readState?.id;
       setNewData(r);
+      db.getAttachments(r.custId, r.readTimes, r.billMonth).then((rs) => {
+        setAttachments(rs);
+      });
     } else {
       Toast.info('当前已经是最后一条数据');
     }
