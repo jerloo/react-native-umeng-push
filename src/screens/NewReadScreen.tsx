@@ -754,7 +754,10 @@ export default function NewReadScreen() {
         </SafeAreaView>
 
         <View style={styles.main}>
-          <ScrollView>{renderContent()}</ScrollView>
+          <ScrollView
+            style={{ flex: 1, backgroundColor: 'red', display: 'flex' }}>
+            {renderContent()}
+          </ScrollView>
 
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
