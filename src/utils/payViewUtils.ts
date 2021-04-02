@@ -51,7 +51,7 @@ export const getPayViewModel = (
     canClickPay: true,
     canEditMoney: true,
   };
-  const payBillsTotal = sumNoFixed([
+  let payBillsTotal = sumNoFixed([
     ...(paymentBills?.map((it) => it.extendedAmount || 0) || []),
     ...(paymentBills?.map((it) => it.lateFee || 0) || []),
   ]);

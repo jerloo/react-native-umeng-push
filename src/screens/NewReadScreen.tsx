@@ -328,6 +328,7 @@ export default function NewReadScreen() {
             {
               text: '否',
               onPress: async () => {
+                console.log('水量', water);
                 newData.readWater = water;
                 newData.lastReadDate = new Date();
                 newData.readDate = new Date();

@@ -106,10 +106,11 @@ export default function PaymentScreen() {
       Toast.fail('请先输入实收金额');
       return;
     }
+    console.log('onCashConfirm', cashRealValue, viewModel?.money);
     if (
       cashRealValue &&
       viewModel?.money &&
-      parseFloat(cashRealValue) < viewModel?.money
+      parseFloat(cashRealValue).toFixed(2) < viewModel?.money.toFixed(2)
     ) {
       Toast.fail('实收金额过小不得小于应缴总金额');
       return;
