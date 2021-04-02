@@ -761,7 +761,11 @@ export default function NewReadScreen() {
 
         <View style={styles.main}>
           <ScrollView
-            style={{ flex: 1, backgroundColor: 'red', display: 'flex' }}>
+            contentContainerStyle={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+            }}>
             {renderContent()}
           </ScrollView>
 
