@@ -34,6 +34,7 @@ import { ReadingDataDto, ReadingMonthDto } from '../../apiclient/src/models';
 import DeviceInfo from 'react-native-device-info';
 import { l } from '../utils/logUtils';
 import { uploadAttachments } from '../utils/attachUtils';
+import { getSession, UserSession } from '../utils/sesstionUtils';
 
 export default function BooksScreen() {
   const navigation = useNavigation();
@@ -53,28 +54,41 @@ export default function BooksScreen() {
     setBookAttachTotal,
   ] = useState<BookAttachmentsTotal>();
   const [readWater, setReadWater] = useState(0);
+  const [userSession, setUserSession] = useState<UserSession>();
 
   useEffect(() => {
-    db.getBookTotalData().then((result) => {
-      setTotalNumbers(result);
-    });
-    getBillMonth().then((r) => {
-      if (r) {
-        setCurrentBillMonth(r);
-      } else {
-        center.getReadingMonth().then((res) => {
-          if (res) {
-            setCurrentBillMonth(res);
-            saveBillMonth(res);
-          }
-        });
+    const fetchEL = async () => {
+      let us = userSession;
+      if (!us) {
+        us = (await getSession()) || undefined;
       }
-    });
+      db.getBookTotalData(us?.userInfo.id).then((result) => {
+        setTotalNumbers(result);
+      });
+      getBillMonth().then((r) => {
+        if (r) {
+          setCurrentBillMonth(r);
+        } else {
+          center.getReadingMonth().then((res) => {
+            if (res) {
+              setCurrentBillMonth(res);
+              saveBillMonth(res);
+            }
+          });
+        }
+      });
+    };
+    fetchEL();
   }, []);
 
   const fetchLocal = React.useCallback(async () => {
     try {
-      const res = await center.offline.getBookList();
+      let us = userSession;
+      if (!us) {
+        us = (await getSession()) || undefined;
+        setUserSession(us);
+      }
+      const res = await center.offline.getBookList(us?.userInfo.id);
       const items = (res as PdaMeterBookDtoHolder[]).map((value) => {
         value.checked = false;
         return value;
@@ -91,7 +105,12 @@ export default function BooksScreen() {
   // }, [fetchLocal]);
 
   const fetchTotalNumbers = async () => {
-    const result = await db.getBookTotalData();
+    let us = userSession;
+    if (!us) {
+      us = (await getSession()) || undefined;
+      setUserSession(us);
+    }
+    const result = await db.getBookTotalData(us?.userInfo.id);
     setTotalNumbers(result);
   };
 
@@ -147,7 +166,11 @@ export default function BooksScreen() {
 
   const fetchRemoteBooks = async () => {
     try {
-      await center.getBookList();
+      let us = userSession;
+      if (!us) {
+        us = (await getSession()) || undefined;
+      }
+      await center.getBookList(us?.userInfo.id);
       await fetchLocal();
     } catch (e) {
       Toast.fail(e.message);
@@ -251,7 +274,11 @@ export default function BooksScreen() {
                   await saveBillMonth(billMonthResult);
                 }
                 await uploadReadingData();
-                await db.deleteBooks();
+                let us = userSession;
+                if (!us) {
+                  us = (await getSession()) || undefined;
+                }
+                await db.deleteBooks(us?.userInfo.id);
                 await sync();
               },
             },

@@ -97,7 +97,8 @@ class DataBase {
         remark NVARCHAR(30),
         totalNumber INTEGER,
         downloaded boolean,
-        uploadedNumber INTEGER
+        uploadedNumber INTEGER,
+        userId NVARCHAR(30)
       ); `,
     ).catch((error) => {
       this.errorCB(error);
@@ -225,13 +226,13 @@ class DataBase {
     l.info('all config SQL done');
   };
 
-  saveBooks = (holders: PdaMeterBookDtoHolder[]) => {
+  saveBooks = (holders: PdaMeterBookDtoHolder[], userId: string) => {
     this.db
       ?.transaction((tx) => {
         holders.forEach((item) => {
           tx.executeSql(
-            `INSERT INTO Books ('billMonth','bookId','bookCode','bookName','readCycle','readingNumber','remark','totalNumber','downloaded') 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO Books ('billMonth','bookId','bookCode','bookName','readCycle','readingNumber','remark','totalNumber','downloaded','userId') 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
               item.billMonth,
               item.bookId,
@@ -242,6 +243,7 @@ class DataBase {
               item.remark,
               item.totalNumber,
               false,
+              userId,
             ],
           )
             .then(() => {
@@ -517,8 +519,11 @@ class DataBase {
     return result?.[0].rows.raw() || [];
   };
 
-  getBooks = async () => {
-    const result = await this.db?.executeSql('SELECT * FROM Books', []);
+  getBooks = async (userId: string) => {
+    const result = await this.db?.executeSql(
+      'SELECT * FROM Books WHERE userId = ?',
+      [userId],
+    );
     return result?.[0].rows.raw() || [];
   };
 
@@ -822,10 +827,12 @@ class DataBase {
     );
   };
 
-  getBookTotalData = async () => {
+  getBookTotalData = async (userId: string) => {
     const result = await this.db?.executeSql(
-      'SELECT sum(readingNumber) as readingNumber, sum(totalNumber) as totalNumber, sum(uploadedNumber) as uploadedNumber FROM Books',
-      [],
+      `SELECT sum(readingNumber) as readingNumber, sum(totalNumber) as totalNumber, 
+        sum(uploadedNumber) as uploadedNumber FROM Books
+        WHERE userId = ?`,
+      [userId],
     );
     const items = result?.[0].rows.raw() || [
       {
@@ -841,8 +848,8 @@ class DataBase {
     };
   };
 
-  deleteBooks = async () => {
-    await this.db?.executeSql('DELETE FROM Books');
+  deleteBooks = async (userId: string) => {
+    await this.db?.executeSql('DELETE FROM Books WHERE userId = ?', [userId]);
   };
 
   deleteBookById = async (bookId: number) => {

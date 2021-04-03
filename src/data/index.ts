@@ -258,14 +258,14 @@ class CenterService implements ApiService {
     return this.offline.getBookDataByIds(ids);
   }
 
-  async getBookList(): Promise<PdaMeterBookDtoHolder[]> {
-    const localResult = await this.offline.getBookList();
+  async getBookList(userId: string): Promise<PdaMeterBookDtoHolder[]> {
+    const localResult = await this.offline.getBookList(userId);
     const netInfo = await NetInfo.fetch();
     if (netInfo.isConnected === true) {
-      const result = await this.online.getBookList();
+      const result = await this.online.getBookList(userId);
       if (localResult.length === 0) {
         l.debug('本地抄表任务为空，直接保存抄表任务');
-        await db.saveBooks(result as PdaMeterBookDtoHolder[]);
+        await db.saveBooks(result as PdaMeterBookDtoHolder[], userId);
         return result;
       } else {
         const remoteItems = result as PdaMeterBookDtoHolder[];
@@ -275,7 +275,7 @@ class CenterService implements ApiService {
         });
         if (adds.length > 0) {
           l.debug('本地抄表任务有数据, 保存新增数据');
-          await db.saveBooks(adds);
+          await db.saveBooks(adds, userId);
         }
 
         const removeItems = localItems.filter((value) => {

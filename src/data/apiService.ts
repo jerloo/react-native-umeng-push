@@ -38,7 +38,7 @@ export interface ApiService {
     newPassword: string,
   ): Promise<boolean>;
   uploadLogFile(fileName: string, fileUrl: string): Promise<boolean>;
-  getBookList(): Promise<PdaMeterBookDtoHolder[]>;
+  getBookList(userId: string): Promise<PdaMeterBookDtoHolder[]>;
   getBookDataByIds(ids: number[]): Promise<PdaReadDataDto[]>;
   getReadStates(): Promise<PdaReadStateDto[]>;
   getCustDetails(custIds: number[]): Promise<PdaCustDto>;

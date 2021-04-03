@@ -142,8 +142,8 @@ export default class OfflineApiService implements ApiService {
     return db.getBookDataByBookIds(ids);
   }
 
-  async getBookList(): Promise<PdaMeterBookDtoHolder[]> {
-    return db.getBooks();
+  async getBookList(userId: string): Promise<PdaMeterBookDtoHolder[]> {
+    return db.getBooks(userId);
   }
 
   async logout(): Promise<boolean> {
