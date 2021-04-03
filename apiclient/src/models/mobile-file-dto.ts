@@ -47,4 +47,5 @@ export interface MobileFileDto {
      * @memberof MobileFileDto
      */
     isRemove?: any;
+    fileBucket?: string;
 }

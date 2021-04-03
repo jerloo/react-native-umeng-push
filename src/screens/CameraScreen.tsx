@@ -24,12 +24,12 @@ export default function CameraScreen() {
   const [result, setResult] = React.useState<MobileFileDto>();
 
   const takePicture = async () => {
-    const options = { quality: 0.5, base64: true };
+    const options = { quality: 0.3, base64: true };
     const data = await camera?.current?.takePictureAsync(options);
     if (data?.uri) {
       const fileInfo = await stat(data?.uri);
       const r: MobileFileDto = {
-        fileName: data?.uri.substring(data?.uri.lastIndexOf('/')),
+        fileName: data?.uri.substring(data?.uri.lastIndexOf('/') + 1),
         filePath: data?.uri,
         fileSize: fileInfo.size,
         fileSource: 2,
