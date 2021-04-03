@@ -35,6 +35,7 @@ import DeviceInfo from 'react-native-device-info';
 import { l } from '../utils/logUtils';
 import { uploadAttachments } from '../utils/attachUtils';
 import { getSession, UserSession } from '../utils/sesstionUtils';
+import dayjs from 'dayjs';
 
 export default function BooksScreen() {
   const navigation = useNavigation();
@@ -131,10 +132,26 @@ export default function BooksScreen() {
 
   const bookItemClick = (holder: PdaMeterBookDtoHolder) => {
     if (holder.downloaded) {
-      navigation.navigate('BookTask', {
-        bookId: holder.bookId,
-        title: holder.bookCode,
-      });
+      if (dayjs().isAfter(dayjs(currentBillMonth?.endDate))) {
+        AntModal.alert('提示', '当前时间无法抄表，请下载最新数据', [
+          {
+            text: '取消',
+            onPress: () => console.log('取消'),
+            style: { color: '#666666' },
+          },
+          {
+            text: '确认下载',
+            onPress: async () => {
+              refresh();
+            },
+          },
+        ]);
+      } else {
+        navigation.navigate('BookTask', {
+          bookId: holder.bookId,
+          title: holder.bookCode,
+        });
+      }
     } else {
       AntModal.alert('提示', '当前任务未下载，是否立刻下载', [
         {
