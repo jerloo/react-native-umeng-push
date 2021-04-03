@@ -422,7 +422,7 @@ export default function NewReadScreen() {
       } finally {
         Toast.remove(key);
       }
-    } else {
+    } else if (canCharge) {
       const key = Toast.loading('正在开账');
       center
         .makeOut({
