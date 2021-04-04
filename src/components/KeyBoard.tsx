@@ -27,6 +27,7 @@ interface Props {
   selectStateId?: number;
   disabled?: boolean;
   onDisabledCall?: () => void;
+  disabledStates?: boolean;
 }
 
 type clickCallBack = () => void;
@@ -55,9 +56,9 @@ export default function KeyBoard(props: Props) {
               selected={props.selectStateId === it.id}
               title={it.stateName}
               onClick={() =>
-                callIfNotDisabled(
-                  () => props.onStateSelect && props.onStateSelect(it),
-                )
+                !props.disabledStates &&
+                props.onStateSelect &&
+                props.onStateSelect(it)
               }
             />
           ))}

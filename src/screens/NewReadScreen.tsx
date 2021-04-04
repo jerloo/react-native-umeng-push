@@ -130,7 +130,12 @@ export default function NewReadScreen() {
   }, [data.readStateId, data.billMonth, data.custId, data.readTimes]);
 
   const setValue = (value: string) => {
-    const valueData = { ...newData, reading: parseInt(value, 10) || undefined };
+    console.log('setValue', value);
+    const valueData = {
+      ...newData,
+      reading: value === '0' ? 0 : parseInt(value, 10) || undefined,
+    };
+    console.log('valueData', valueData);
     setNewData({
       ...valueData,
       // readWater:
@@ -458,6 +463,7 @@ export default function NewReadScreen() {
   };
 
   const onNumberClick = async (n: number) => {
+    console.log('onNumberClick', n);
     if (mustTakePhoto && attachments.length === 0) {
       AntModal.alert('提示', '您需要先拍照再进行抄码', [
         {
@@ -510,15 +516,23 @@ export default function NewReadScreen() {
                   margin: 0,
                 },
               ]}
-              defaultValue={(newData.reading || '').toString()}
-              value={(newData.reading || '').toString()}
+              defaultValue={(newData.reading === 0
+                ? 0
+                : newData.reading || ''
+              ).toString()}
+              value={(newData.reading === 0
+                ? 0
+                : newData.reading || ''
+              ).toString()}
               autoFocus={true}
             />
           </View>
 
           <View style={styles.extraRowPart}>
             <Text style={styles.extraLabel}>本次水量</Text>
-            <Text style={styles.extraValue}>{newData.readWater || ''}</Text>
+            <Text style={styles.extraValue}>
+              {newData.readWater === 0 ? 0 : ''}
+            </Text>
           </View>
         </View>
         <View style={styles.extraRow}>
@@ -805,6 +819,9 @@ export default function NewReadScreen() {
           </KeyboardAvoidingView>
 
           <KeyBoard
+            disabledStates={
+              newData.recordState === 2 || newData.recordState === 3
+            }
             disabled={
               newData.recordState === 2 ||
               newData.recordState === 3 ||
