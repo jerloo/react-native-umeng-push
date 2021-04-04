@@ -358,7 +358,7 @@ export default function PaymentScreen() {
             </View>
           ) : null}
 
-          {route.params.mode === 'pay' ? (
+          {route.params.mode === 'pay' && settings?.isOpenDeposit ? (
             <TouchableOpacity
               style={styles.payButton}
               onPress={onPayButtonClick}>
