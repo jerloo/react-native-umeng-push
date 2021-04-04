@@ -11,6 +11,11 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+
+import { PdaBillingInfo } from "./pda-billing-info";
+import { PdaPayRecord } from "./pda-pay-record";
+import { PdaReadingRecord } from "./pda-reading-record";
+
 /**
  * 客户详情
  * @export
@@ -34,17 +39,17 @@ export interface PdaCustDto {
      * @type {Array&lt;PdaReadingRecord&gt;}
      * @memberof PdaCustDto
      */
-    readingRecords?: any | null;
+    readingRecords?: PdaReadingRecord[] | null;
     /**
      * 
      * @type {Array&lt;PdaBillingInfo&gt;}
      * @memberof PdaCustDto
      */
-    billingInfos?: any | null;
+    billingInfos?: PdaBillingInfo[] | null;
     /**
      * 
      * @type {Array&lt;PdaPayRecord&gt;}
      * @memberof PdaCustDto
      */
-    payRecords?: any | null;
+    payRecords?: PdaPayRecord[] | null;
 }

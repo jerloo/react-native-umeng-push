@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { ReadingMonthDto } from '../../apiclient/src/models';
 
-export const getBillMonth = async () => {
-  const result = await AsyncStorage.getItem('billMonth');
+export const getBillMonth = async (userId: string) => {
+  const result = await AsyncStorage.getItem(`billMonth-${userId}`);
   if (!result) {
     return null;
   }
@@ -13,6 +13,9 @@ export const getBillMonth = async () => {
   }
 };
 
-export const saveBillMonth = async (billMonth: ReadingMonthDto) => {
-  await AsyncStorage.setItem('billMonth', JSON.stringify(billMonth));
+export const saveBillMonth = async (
+  billMonth: ReadingMonthDto,
+  userId: string,
+) => {
+  await AsyncStorage.setItem(`billMonth-${userId}`, JSON.stringify(billMonth));
 };

@@ -15,7 +15,7 @@ import { colorWhite } from '../styles';
 import { scaleSize } from 'react-native-responsive-design';
 import SearchPageBox from '../components/SearchPageBox';
 import { PdaCustListDto } from '../../apiclient/src/models';
-import { getSearchHistory, setSearchHistory } from '../utils/searchUtils';
+import { getSearchHistory, saveSearchHistory } from '../utils/searchUtils';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
@@ -49,7 +49,7 @@ export default function SearchScreen() {
   const onClick = (item: PdaCustListDto) => {
     const ex = historyItems.filter((it) => it.id !== item.id) || [];
     const newHistory = [item, ...ex];
-    setSearchHistory(newHistory);
+    saveSearchHistory(newHistory);
     getSearchHistory().then((data) => setHistoryItems(data));
 
     navigation.navigate('CustDetails', {

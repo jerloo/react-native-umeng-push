@@ -66,14 +66,14 @@ export default function BooksScreen() {
       db.getBookTotalData(us?.userInfo.id).then((result) => {
         setTotalNumbers(result);
       });
-      getBillMonth().then((r) => {
+      getBillMonth(us?.userInfo.id).then((r) => {
         if (r) {
           setCurrentBillMonth(r);
         } else {
           center.getReadingMonth().then((res) => {
             if (res) {
               setCurrentBillMonth(res);
-              saveBillMonth(res);
+              saveBillMonth(res, us?.userInfo.id);
             }
           });
         }

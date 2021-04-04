@@ -26,7 +26,6 @@ import {
 } from '../../apiclient/src/models';
 import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto';
 import { CustInfoModifyInputDto } from '../../apiclient/src/models/cust-info-modify-input-dto';
-import { getBillMonth } from '../utils/billMonthUtils';
 import { getSession } from '../utils/sesstionUtils';
 import { ApiService, NO_NETWORK_ERROR, USERNAME_PWD_ERROR } from './apiService';
 import db from './database';
@@ -127,15 +126,15 @@ export default class OfflineApiService implements ApiService {
   }
 
   async getReadStates(): Promise<PdaReadStateDto[]> {
-    throw new Error('Method not implemented.');
+    throw new Error(NO_NETWORK_ERROR);
   }
 
   async getCustDetails(_custIds: number[]): Promise<PdaCustDto> {
-    throw new Error('Method not implemented.');
+    throw new Error(NO_NETWORK_ERROR);
   }
 
   async getReadingMonth(): Promise<ReadingMonthDto | null> {
-    return await getBillMonth();
+    throw new Error(NO_NETWORK_ERROR);
   }
 
   async getBookDataByIds(ids: number[]): Promise<PdaReadDataDto[]> {

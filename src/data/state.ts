@@ -38,7 +38,7 @@ export default class MeterState {
   }
 
   async getLocalBillMonth() {
-    const localBillMonth = await getBillMonth();
+    const localBillMonth = await getBillMonth(this.userSession?.userInfo.id);
     runInAction(() => {
       this.localBillMonth = localBillMonth;
     });
