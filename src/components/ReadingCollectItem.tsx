@@ -24,10 +24,7 @@ export default function ReadingCollectItem({ data }: Props) {
         <View style={styles.progressLine} />
       </View>
       <View style={styles.wrapper}>
-        <Text style={styles.title}>
-          {data.bookName}
-          {data.bookCode}
-        </Text>
+        <Text style={styles.title}>{data.bookCode}</Text>
         <View style={[styles.row, { marginBottom: scaleSize(12) }]}>
           <View style={styles.cel}>
             <Text style={styles.label}>应抄：</Text>
