@@ -805,10 +805,22 @@ export default function NewReadScreen() {
           </KeyboardAvoidingView>
 
           <KeyBoard
-            disabled={newData.recordState === 2 || newData.recordState === 3}
-            onDisabledCall={() =>
-              Toast.info('当前数据已复核或已开账，不允许修改')
+            disabled={
+              newData.recordState === 2 ||
+              newData.recordState === 3 ||
+              newData.readStateId ===
+                readStates?.items.find((it) => it.stateName === '无量')?.id
             }
+            onDisabledCall={() => {
+              if (newData.recordState === 2 || newData.recordState === 3) {
+                Toast.info('当前数据已复核或已开账，不允许修改');
+              } else if (
+                newData.readStateId ===
+                readStates?.items.find((it) => it.stateName === '无量')?.id
+              ) {
+                Toast.info('无法修改抄码，请切换抄表状态');
+              }
+            }}
             onBackClick={() => {
               if (newData.reading && newData.reading.toString().length !== 0) {
                 setValue(
