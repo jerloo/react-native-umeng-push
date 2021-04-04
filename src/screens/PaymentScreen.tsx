@@ -164,7 +164,7 @@ export default function PaymentScreen() {
           iconSelected={require('../assets/qietu/shoufei/turnpike_ic_pick_selected.png')}
           checked={payWay === info.item}
           onClick={() => setPayWay(info.item)}
-          iconStyle={{ width: scaleSize(48), height: scaleSize(48) }}
+          iconStyle={{ width: scaleSize(24), height: scaleSize(24) }}
           iconContainerStyle={{ padding: 0 }}
         />
       </TouchableOpacity>
@@ -324,7 +324,12 @@ export default function PaymentScreen() {
                 </View>
               </View>
             </View>
-            <View style={styles.contentRight} />
+            <View style={styles.contentRight}>
+              <Image
+                style={{ width: scaleSize(130), height: scaleSize(130) }}
+                source={require('../assets/qietu/shoufei/charge_background_normal.png')}
+              />
+            </View>
           </View>
 
           <FlatList<PdaChargeListDto>
@@ -379,17 +384,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9F9F9',
   },
   content: {
-    padding: scaleSize(30),
+    margin: scaleSize(30),
     display: 'flex',
     flexDirection: 'row',
+    backgroundColor: '#096BF3',
+    borderRadius: scaleSize(8),
   },
   contentLeft: {
     flex: 1,
   },
-  contentRight: {},
+  contentRight: {
+    paddingHorizontal: scaleSize(20),
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   summary: {
-    backgroundColor: '#096BF3',
-    borderRadius: scaleSize(8),
     padding: scaleSize(30),
   },
   titleContainer: {

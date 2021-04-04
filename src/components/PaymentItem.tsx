@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  Image,
 } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 import { PdaChargeDetails, PdaChargeListDto } from '../../apiclient/src/models';
@@ -117,7 +118,27 @@ export default function PaymentItem({ data }: Props) {
       onPress={() => setExpand(!expand)}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{data.billMonth}账单</Text>
-        <Text style={styles.amount}>{data.extendedAmount?.toFixed(2)}</Text>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Text style={styles.amount}>{data.extendedAmount?.toFixed(2)}</Text>
+          <Image
+            resizeMode="contain"
+            style={{
+              width: scaleSize(20),
+              height: scaleSize(20),
+              marginStart: scaleSize(28),
+            }}
+            source={
+              expand
+                ? require('../assets/qietu/shoufei/expand_down.png')
+                : require('../assets/qietu/shoufei/expand_right.png')
+            }
+          />
+        </View>
       </View>
 
       {expand ? renderExpand() : null}

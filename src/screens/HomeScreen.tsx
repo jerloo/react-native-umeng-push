@@ -167,11 +167,11 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.logButton}
         onPress={() => navigation.navigate('LogView')}>
         <Text style={styles.logButtonText}>LOG</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 }
