@@ -837,19 +837,17 @@ export default function NewReadScreen() {
                 readStateId: item.id,
                 readDate: new Date(),
               };
-              const find = readStates?.items.find(
-                (it) => it.stateName === '无量',
-              );
-              if (find) {
+              if (item.stateName === '无量') {
                 valueData.reading = valueData.lastReading;
                 valueData.readWater = 0;
+                if (valueData.reading) {
+                  valueData.readWater = calcReadWater(
+                    valueData,
+                    readStates?.items || [],
+                  );
+                }
               }
-              if (valueData.reading) {
-                valueData.readWater = calcReadWater(
-                  valueData,
-                  readStates?.items || [],
-                );
-              }
+
               setNewData({
                 ...valueData,
               });
