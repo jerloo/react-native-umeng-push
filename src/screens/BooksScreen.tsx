@@ -266,7 +266,7 @@ export default function BooksScreen() {
     setLoading(true);
     try {
       const billMonthResult = await center.getReadingMonth();
-      const billMonthLocal = await getBillMonth();
+      const billMonthLocal = await getBillMonth(userSession?.userInfo.id);
       console.log('billMonthLocal', billMonthLocal);
       if (!billMonthLocal || !billMonthLocal.billingMonth) {
         await uploadReadingData();
@@ -288,7 +288,10 @@ export default function BooksScreen() {
               onPress: async () => {
                 if (billMonthResult) {
                   setCurrentBillMonth(billMonthResult);
-                  await saveBillMonth(billMonthResult);
+                  await saveBillMonth(
+                    billMonthResult,
+                    userSession?.userInfo.id,
+                  );
                 }
                 await uploadReadingData();
                 let us = userSession;
