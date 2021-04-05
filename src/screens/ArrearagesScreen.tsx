@@ -84,8 +84,8 @@ export default function ArrearagesScreen() {
     if (latestBillMonth) {
       setParams({
         ...params,
-        beginMonth: dayjs(latestBillMonth.startDate).format('YYYYMM'),
-        endMonth: dayjs(latestBillMonth.endDate).format('YYYYMM'),
+        beginMonth: latestBillMonth.billingMonth,
+        endMonth: latestBillMonth.billingMonth,
       });
     }
   };
