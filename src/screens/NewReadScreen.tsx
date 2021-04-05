@@ -76,6 +76,7 @@ export default function NewReadScreen() {
   const [attachments, setAttachments] = useState<AttachmentDbItem[]>([]);
   const [bookDataItems, setBookDataItems] = useState<PdaReadDataDto[]>([]);
   const [mustTakePhoto, setMustTakePhoto] = useState(false);
+  const [reading, setReading] = useState(null);
 
   useEffect(() => {
     const fetchLocal = async () => {
@@ -121,6 +122,9 @@ export default function NewReadScreen() {
                 const readState = r.items.find((it) => it.stateName === '正常');
                 details.readStateId = readState?.id;
                 setNewData(details);
+                if (details.recordState === 0) {
+                  setReading(null);
+                }
               }
             }
           });
@@ -142,6 +146,7 @@ export default function NewReadScreen() {
       //   value && value !== '' ? calcReadWater(valueData, readStateItems) : '',
       readDate: new Date(),
     });
+    setReading(valueData.reading);
     setAmount(0);
   };
 
@@ -516,13 +521,17 @@ export default function NewReadScreen() {
                   margin: 0,
                 },
               ]}
-              defaultValue={(newData.reading === 0
+              defaultValue={(newData.recordState !== 0
+                ? newData.reading
+                : reading === 0
                 ? 0
-                : newData.reading || ''
+                : reading || ''
               ).toString()}
-              value={(newData.reading === 0
+              value={(newData.recordState !== 0
+                ? newData.reading
+                : reading === 0
                 ? 0
-                : newData.reading || ''
+                : reading || ''
               ).toString()}
               autoFocus={true}
             />
@@ -531,7 +540,7 @@ export default function NewReadScreen() {
           <View style={styles.extraRowPart}>
             <Text style={styles.extraLabel}>本次水量</Text>
             <Text style={styles.extraValue}>
-              {newData.readWater === 0 ? 0 : ''}
+              {newData.readWater === 0 ? 0 : newData.readWater || ''}
             </Text>
           </View>
         </View>
