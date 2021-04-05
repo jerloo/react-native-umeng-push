@@ -350,7 +350,7 @@ export default function PaymentScreen() {
             </Text>
           </View>
 
-          {route.params.mode === 'pay' ? (
+          {route.params.mode === 'pay' && settings?.isOpenDeposit ? (
             <View style={styles.payways}>
               <FlatList<string>
                 data={settings?.mobileReadingChargeWay}
