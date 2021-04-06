@@ -17,7 +17,6 @@ import { scaleSize } from 'react-native-responsive-design';
 import {
   MeterReaderDto,
   PdaArrearageInputDto,
-  PdaMeterBookDto,
   PdaPaymentCollect,
   PdaPaymentCollectDto,
   PdaPaymentCollectInput,
@@ -52,8 +51,6 @@ export default function PaymentCollectScreen() {
   });
   const [pdaUsers, setPdaUsers] = useState<MeterReaderDto[]>([]);
   const [currentUser, setCurrentUser] = useState<MeterReaderDto>();
-  const [books, setBooks] = useState<PdaMeterBookDto[]>([]);
-  const [currentBook, setCurrentBook] = useState<PdaMeterBookDto>();
 
   const [settingsModalVisible, setSettingsModalVisible] = useState(false);
 
@@ -74,21 +71,8 @@ export default function PaymentCollectScreen() {
     }
   };
 
-  const fetchBooks = async () => {
-    try {
-      const result = await center.online.getBookList();
-      setBooks(result);
-      if (result.length > 0) {
-        setCurrentBook(result[0]);
-      }
-    } catch (e) {
-      Toast.fail(e.message);
-    }
-  };
-
   useEffect(() => {
     fetchPdaUsers();
-    fetchBooks();
   }, []);
 
   const refresh = async () => {
@@ -146,32 +130,6 @@ export default function PaymentCollectScreen() {
         onPress: async () => {
           setCurrentUser(item);
           setSettingsModalVisible(true);
-
-          try {
-            const bs = await center.getBookListByUserId(item.id);
-            setBooks(bs);
-            if (bs.length > 0) {
-              setCurrentBook(bs[0]);
-            } else {
-              setCurrentBook(undefined);
-            }
-          } catch (e) {
-            Toast.fail(e.message);
-          }
-        },
-      };
-    });
-    AntModal.operation(ops || []);
-  };
-
-  const pickBook = async () => {
-    setSettingsModalVisible(false);
-    const ops = books?.map((item) => {
-      return {
-        text: item.bookName,
-        onPress: () => {
-          setCurrentBook(item);
-          setSettingsModalVisible(true);
         },
       };
     });
@@ -192,9 +150,6 @@ export default function PaymentCollectScreen() {
     setParams({ ...snapshot });
     if (pdaUsers.length > 0) {
       setCurrentUser(pdaUsers[0]);
-    }
-    if (books?.length > 0) {
-      setCurrentBook(books[0]);
     }
   };
 
@@ -236,20 +191,7 @@ export default function PaymentCollectScreen() {
                   source={require('../assets/qietu/qianfeichaxxun/arrearage_inquiry_icon_down_normal.png')}
                 />
               </TouchableOpacity>
-              <Text style={styles.settingsSubTitle}>册本</Text>
-              <TouchableOpacity style={styles.settingsInput} onPress={pickBook}>
-                <Image
-                  style={styles.settingsInputIconUser}
-                  source={require('../assets/qietu/qianfeichaxxun/arrearage_inquiry_icon_user_normal.png')}
-                />
-                <Text style={styles.settingsInputText}>
-                  {currentBook?.bookName}
-                </Text>
-                <Image
-                  style={styles.settingsInputIcon}
-                  source={require('../assets/qietu/qianfeichaxxun/arrearage_inquiry_icon_down_normal.png')}
-                />
-              </TouchableOpacity>
+
               <Text style={styles.settingsSubTitle}>收费日期</Text>
               <View style={styles.settingsDatePickers}>
                 <DatePicker
