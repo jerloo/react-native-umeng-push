@@ -618,6 +618,7 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
+    backgroundColor: '#F9F9F9',
   },
   topContainer: {
     // height: scaleSize(210),
@@ -701,9 +702,11 @@ const styles = StyleSheet.create({
   },
   rowHiddenStatic: {
     backgroundColor: '#4B90F2',
+    height: scaleSize(150),
   },
   rowHiddenDelete: {
     backgroundColor: '#F0655A',
+    height: scaleSize(150),
   },
   loading: {
     position: 'absolute',

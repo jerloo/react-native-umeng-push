@@ -12,37 +12,70 @@ interface Props {
 
 export default function BookItem(props: Props) {
   return (
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <CircleCheckBox
-          checked={props.holder.checked}
-          onClick={props.onCheckClick}
-          iconStyle={{
-            width: scaleSize(38),
-            height: scaleSize(38),
-          }}
-          disabled={props.holder.downloaded}
-        />
-        <Text style={styles.bookName}>{props.holder.bookName}</Text>
-        <Text style={styles.geyuechao}>{props.holder.readCycle}</Text>
+    <View
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+      }}>
+      <CircleCheckBox
+        checked={props.holder.checked}
+        onClick={props.onCheckClick}
+        iconStyle={{
+          width: scaleSize(38),
+          height: scaleSize(38),
+        }}
+        disabled={props.holder.downloaded}
+      />
+      <View style={styles.container}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.bookName}>{props.holder.bookName}</Text>
+          <Text style={styles.geyuechao}>{props.holder.readCycle}</Text>
 
-        <Text style={styles.downloaded}>
-          {props.holder.downloaded ? '已下载' : '未下载'}
-        </Text>
-      </View>
-      <View style={styles.detailsContainer}>
-        <View style={styles.detailsBox}>
-          <Text style={styles.detailsLabel}>应抄：</Text>
-          <Text style={styles.detailsValue}>{props.holder.totalNumber}</Text>
+          {/* <Text style={styles.downloaded}>
+            {props.holder.downloaded ? '已下载' : '未下载'}
+          </Text> */}
         </View>
-        <View style={styles.detailsBox}>
-          <Text style={styles.detailsLabel}>已抄：</Text>
-          <Text style={styles.detailsValue}>{props.holder.readingNumber}</Text>
+        <View style={styles.detailsContainer}>
+          <View style={styles.detailsBox}>
+            <Text style={styles.detailsLabel}>应抄：</Text>
+            <Text style={styles.detailsValue}>{props.holder.totalNumber}</Text>
+          </View>
+          <View style={styles.detailsBox}>
+            <Text style={styles.detailsLabel}>已抄：</Text>
+            <Text style={styles.detailsValue}>
+              {props.holder.readingNumber}
+            </Text>
+          </View>
+          <View style={styles.detailsBox}>
+            <Text style={styles.detailsLabel}>已上传：</Text>
+            <Text style={styles.detailsValue}>
+              {props.holder.uploadedNumber || 0}
+            </Text>
+          </View>
         </View>
-        <View style={styles.detailsBox}>
-          <Text style={styles.detailsLabel}>已上传：</Text>
-          <Text style={styles.detailsValue}>
-            {props.holder.uploadedNumber || 0}
+
+        <View
+          style={{
+            position: 'absolute',
+            right: scaleSize(-48),
+            top: scaleSize(-48),
+            width: scaleSize(98),
+            height: scaleSize(98),
+            backgroundColor: props.holder.downloaded ? '#4B90F2' : '#F5F6FA',
+            transform: [{ rotate: '45deg' }],
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            paddingBottom: scaleSize(2),
+          }}>
+          <Text
+            style={{
+              fontSize: scaleSize(16),
+              color: props.holder.downloaded ? colorWhite : '#999999',
+            }}>
+            已下载
           </Text>
         </View>
       </View>
@@ -57,12 +90,17 @@ const styles = StyleSheet.create({
     // paddingTop: scaleSize(16),
     // paddingBottom: scaleSize(24),
     backgroundColor: colorWhite,
+    height: scaleSize(150),
+    justifyContent: 'space-around',
+    borderRadius: scaleSize(10),
+    overflow: 'hidden',
   },
   titleContainer: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     // backgroundColor: 'blue',
+    paddingStart: scaleSize(18),
   },
   bookName: {
     color: '#333333',
@@ -72,7 +110,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: scaleSize(34),
+    marginHorizontal: scaleSize(20),
     marginBottom: scaleSize(14),
     alignItems: 'center',
   },
