@@ -95,18 +95,22 @@ export default function BookTaskSortScreen() {
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
-        Modal.alert('是否保存册本序号？', '', [
-          {
-            text: '取消',
-            onPress: () => navigation.goBack(),
-          },
-          {
-            text: '保存',
-            onPress: async () => {
-              saveSort();
+        if (changedIndex > -1) {
+          Modal.alert('是否保存册本序号？', '', [
+            {
+              text: '取消',
+              onPress: () => navigation.goBack(),
             },
-          },
-        ]);
+            {
+              text: '保存',
+              onPress: async () => {
+                saveSort();
+              },
+            },
+          ]);
+        } else {
+          navigation.goBack();
+        }
         return true;
       };
 
@@ -114,7 +118,7 @@ export default function BookTaskSortScreen() {
 
       return () =>
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    }, [navigation, saveSort]),
+    }, [changedIndex, navigation, saveSort]),
   );
 
   const closeRow = (item: PdaReadDataDtoHolder) => {
@@ -214,18 +218,22 @@ export default function BookTaskSortScreen() {
   const onSearchButtonClick = () => {};
 
   const onBack = () => {
-    Modal.alert('是否保存册本序号？', '', [
-      {
-        text: '取消',
-        onPress: () => navigation.goBack(),
-      },
-      {
-        text: '保存',
-        onPress: async () => {
-          saveSort();
+    if (changedIndex > -1) {
+      Modal.alert('是否保存册本序号？', '', [
+        {
+          text: '取消',
+          onPress: () => navigation.goBack(),
         },
-      },
-    ]);
+        {
+          text: '保存',
+          onPress: async () => {
+            saveSort();
+          },
+        },
+      ]);
+    } else {
+      navigation.goBack();
+    }
   };
 
   return (
