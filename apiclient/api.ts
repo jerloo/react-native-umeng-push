@@ -8,6 +8,7 @@ import {
 import Axios from 'axios';
 import { AxiosLogger } from 'axios-pretty-logger';
 import { l } from '../src/utils/logUtils';
+import { NETWORK_ERROR, SERVER_ERROR } from '../src/data/apiService';
 
 const consola = require('consola');
 const axiosLogger = AxiosLogger.using(consola.info, consola.error);
@@ -55,7 +56,17 @@ axiosInstance.interceptors.response.use(
       error.config.metadata.endTime - error.config.metadata.startTime;
     process.env.NODE_ENV !== 'production' && axiosLogger.logErrorDetails(error);
     process.env.NODE_ENV === 'production' && l.error(error);
-    return Promise.reject(error);
+    if (error.response) {
+      if (error.response.error) {
+        return Promise.reject(error.response.error);
+      } else {
+        return Promise.reject({ message: SERVER_ERROR });
+      }
+    } else if (error.request) {
+      return Promise.reject({ message: NETWORK_ERROR });
+    } else {
+      return Promise.reject(error);
+    }
   },
 );
 

@@ -63,6 +63,7 @@ export default function ArrearagesScreen() {
         if (!cu) {
           cu = users[0];
         }
+        console.log('setCurrentUser', cu);
         setCurrentUser(cu);
 
         try {
@@ -91,6 +92,11 @@ export default function ArrearagesScreen() {
   };
 
   useEffect(() => {
+    getSession().then((session) => {
+      if (session?.userInfo.id) {
+        setCurrentUser(session.userInfo);
+      }
+    });
     fetchLatestBillMonth();
   }, []);
 
@@ -108,7 +114,7 @@ export default function ArrearagesScreen() {
     ps.skipCount = 0;
     ps.maxResultCount = PAGE_SIZE;
     ps.meterReaderId = currentUser?.id;
-    ps.bookId = currentBooks?.map((it) => it.id);
+    ps.bookId = currentBooks?.map((it) => it.id) || [];
 
     setLoading(true);
     try {
