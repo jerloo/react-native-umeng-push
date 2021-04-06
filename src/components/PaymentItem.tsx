@@ -19,7 +19,7 @@ interface Props {
 }
 
 export default function PaymentItem({ data }: Props) {
-  const [expand, setExpand] = React.useState(true);
+  const [expand, setExpand] = React.useState(false);
 
   const renderChargeDetailItem = (
     info: ListRenderItemInfo<PdaChargeDetails>,
