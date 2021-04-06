@@ -52,6 +52,7 @@ export default function ArrearagesScreen() {
   const [settingsModalVisible, setSettingsModalVisible] = useState(false);
   const fRef = React.useRef<FlatList>(null);
   const [bookSelectModalVisible, setBookSelectModalVisible] = useState(false);
+  const [total, setTotal] = useState(0);
 
   const fetchPdaUsers = async () => {
     try {
@@ -110,7 +111,7 @@ export default function ArrearagesScreen() {
       return;
     }
 
-    const ps = params;
+    const ps = { ...params };
     ps.skipCount = 0;
     ps.maxResultCount = PAGE_SIZE;
     ps.meterReaderId = currentUser?.id;
@@ -123,6 +124,7 @@ export default function ArrearagesScreen() {
       const res = await center.getArrearageList(ps);
       setItems(res.items);
       setParams(ps);
+      setTotal(res.totalCount);
     } catch (e) {
       Toast.fail(e.message);
     } finally {
@@ -131,15 +133,19 @@ export default function ArrearagesScreen() {
   };
 
   const nextPage = async () => {
-    const ps = params;
+    const ps = { ...params };
 
-    ps.skipCount = ps.skipCount || 0 + PAGE_SIZE;
+    if (ps.skipCount <= total && total > 0) {
+      ps.skipCount = (ps.skipCount || 0) + PAGE_SIZE;
+    }
+
     ps.maxResultCount = PAGE_SIZE;
 
     try {
       const res = await center.getArrearageList(ps);
       setItems([...items, ...res.items]);
       setParams(ps);
+      setTotal(res.totalCount);
     } catch (e) {
       Toast.fail(e.message);
     }
