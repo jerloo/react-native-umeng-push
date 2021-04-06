@@ -217,9 +217,9 @@ export default function KeyBoard(props: Props) {
         <TouchableOpacity
           style={[styles.cell, styles.confirm]}
           onPress={() =>
-            callIfNotDisabled(
-              () => props.onConfirmClick && props.onConfirmClick(),
-            )
+            !props.disabledStates &&
+            props.onConfirmClick &&
+            props.onConfirmClick()
           }>
           <Text style={styles.confirmText}>确定</Text>
         </TouchableOpacity>

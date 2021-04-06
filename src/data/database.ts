@@ -578,6 +578,9 @@ class DataBase {
   saveReadData = async (items: PdaReadDataDto[]) => {
     await this.db?.transaction((tx) => {
       items.forEach((item) => {
+        if (item.recordState === 0 && item.reading === 0) {
+          item.reading = null;
+        }
         tx.executeSql(
           `INSERT INTO BookDatas VALUES(
             ?,?,?,?,?,

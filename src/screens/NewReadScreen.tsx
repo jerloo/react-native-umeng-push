@@ -76,7 +76,6 @@ export default function NewReadScreen() {
   const [attachments, setAttachments] = useState<AttachmentDbItem[]>([]);
   const [bookDataItems, setBookDataItems] = useState<PdaReadDataDto[]>([]);
   const [mustTakePhoto, setMustTakePhoto] = useState(false);
-  const [reading, setReading] = useState(null);
 
   useEffect(() => {
     const fetchLocal = async () => {
@@ -122,9 +121,6 @@ export default function NewReadScreen() {
                 const readState = r.items.find((it) => it.stateName === '正常');
                 details.readStateId = readState?.id;
                 setNewData(details);
-                if (details.recordState === 0) {
-                  setReading(null);
-                }
               }
             }
           });
@@ -146,7 +142,6 @@ export default function NewReadScreen() {
       //   value && value !== '' ? calcReadWater(valueData, readStateItems) : '',
       readDate: new Date(),
     });
-    setReading(valueData.reading);
     setAmount(0);
   };
 
@@ -522,16 +517,16 @@ export default function NewReadScreen() {
                 },
               ]}
               defaultValue={(newData.recordState !== 0
+                ? newData.reading || ''
+                : newData.reading
                 ? newData.reading
-                : reading === 0
-                ? 0
-                : reading || ''
+                : ''
               ).toString()}
               value={(newData.recordState !== 0
+                ? newData.reading || ''
+                : newData.reading
                 ? newData.reading
-                : reading === 0
-                ? 0
-                : reading || ''
+                : ''
               ).toString()}
               autoFocus={true}
             />
@@ -869,14 +864,16 @@ export default function NewReadScreen() {
             readStates={readStates}
             selectStateId={newData.readStateId}
             onStateSelect={(item) => {
-              l.info('选择抄表状态', item);
+              l.info('选择抄表状态', item, newData);
+
               const valueData = {
                 ...newData,
                 readStateId: item.id,
                 readDate: new Date(),
               };
+
               if (item.stateName === '无量') {
-                valueData.reading = valueData.lastReading;
+                valueData.reading = newData.lastReading;
                 valueData.readWater = 0;
                 if (valueData.reading) {
                   valueData.readWater = calcReadWater(
@@ -884,6 +881,9 @@ export default function NewReadScreen() {
                     readStates?.items || [],
                   );
                 }
+              } else if (item.id !== newData.readStateId) {
+                valueData.reading = undefined;
+                valueData.readWater = undefined;
               }
 
               setNewData({
