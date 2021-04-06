@@ -580,6 +580,7 @@ class DataBase {
       items.forEach((item) => {
         if (item.recordState === 0 && item.reading === 0) {
           item.reading = null;
+          item.readWater = null;
         }
         tx.executeSql(
           `INSERT INTO BookDatas VALUES(

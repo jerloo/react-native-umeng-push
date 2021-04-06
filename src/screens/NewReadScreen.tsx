@@ -146,7 +146,7 @@ export default function NewReadScreen() {
   };
 
   const preItem = async () => {
-    if (!newData.readWater) {
+    if (newData.reading !== null) {
       const passed = await checkData();
       if (!passed) {
         return;
@@ -190,7 +190,7 @@ export default function NewReadScreen() {
   };
 
   const nextItem = async () => {
-    if (!newData.readWater) {
+    if (newData.reading !== null) {
       const passed = await checkData();
       if (!passed) {
         return;

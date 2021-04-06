@@ -93,7 +93,7 @@ export const judgeReadWater = (
   readStates: PdaReadStateDto[],
 ) => {
   if (!data.reading) {
-    throw new Error('本次抄码不能为空');
+    return '本次抄码不能为空';
   }
   if (data.rangeValue <= data.reading) {
     return '本次抄码不得大于量程';
