@@ -357,7 +357,7 @@ export default function PaymentDetailsScreen() {
             <Text style={styles.totalValue}>
               {route.params.mode === 'pay'
                 ? viewModel?.money.toFixed(2)
-                : route.params.data.actualMoney}
+                : route.params.data.actualMoney?.toFixed(2)}
             </Text>
           </View>
 

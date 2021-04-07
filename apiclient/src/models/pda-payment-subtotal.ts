@@ -64,7 +64,7 @@ export interface PdaPaymentSubtotal {
      * @type {number}
      * @memberof PdaPaymentSubtotal
      */
-    actualMoney?: any;
+    actualMoney?: number;
     /**
      * 实际销账
      * @type {number}
