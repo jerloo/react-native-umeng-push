@@ -43,6 +43,16 @@ class CenterService implements ApiService {
     this.online = new OnlineApiService();
   }
 
+  async getPaymentSubtotalDetails(
+    subTotalId: number,
+  ): Promise<PdaChargeListDto[]> {
+    const netInfo = await NetInfo.fetch();
+    if (netInfo.isConnected === true) {
+      return this.online.getPaymentSubtotalDetails(subTotalId);
+    }
+    return this.offline.getPaymentSubtotalDetails(subTotalId);
+  }
+
   async getBookListByUserId(id: string): Promise<MeterBookDto[]> {
     const netInfo = await NetInfo.fetch();
     if (netInfo.isConnected === true) {

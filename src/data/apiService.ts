@@ -74,6 +74,7 @@ export interface ApiService {
   getUserInfo(): Promise<PdaMeterReaderDto>;
   makeOut(input: ReadingDataDto): Promise<void>;
   getBookListByUserId(id: string): Promise<MeterBookDto[]>;
+  getPaymentSubtotalDetails(subTotalId: number): Promise<PdaChargeListDto[]>;
 }
 
 export const NETWORK_ERROR = '网络错误，请稍后再试';

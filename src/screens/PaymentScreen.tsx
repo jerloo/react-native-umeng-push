@@ -32,7 +32,7 @@ import QRCode from 'react-native-qrcode-svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getPayViewModel, PayViewModel } from '../utils/payViewUtils';
 
-export default function PaymentScreen() {
+export default function PaymentDetailsScreen() {
   const navigation = useNavigation();
   const route = useRoute<RouteProp<MainStackParamList, 'Payment'>>();
 
@@ -63,14 +63,25 @@ export default function PaymentScreen() {
   }, [paymentBills, route.params.data.deposit]);
 
   useEffect(() => {
-    center
-      .getArrearageChargeList({ custId: route.params.data.custId })
-      .then((items) => {
-        setPaymentBills(items);
-      })
-      .catch((e) => {
-        Toast.fail(e.message);
-      });
+    if (route.params.mode === 'pay') {
+      center
+        .getArrearageChargeList({ custId: route.params.data.custId })
+        .then((items) => {
+          setPaymentBills(items);
+        })
+        .catch((e) => {
+          Toast.fail(e.message);
+        });
+    } else {
+      center
+        .getPaymentSubtotalDetails(route.params.data.subtotalId)
+        .then((items) => {
+          setPaymentBills(items);
+        })
+        .catch((e) => {
+          Toast.fail(e.message);
+        });
+    }
   }, [route.params, route.params.data]);
 
   const onPayButtonClick = async () => {

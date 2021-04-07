@@ -36,6 +36,7 @@ import { MainStackParamList } from './src/screens/routeParams';
 import PaymentCollectScreen from './src/screens/PaymentCollectScreen';
 import PaymentSubtotalScreen from './src/screens/PaymentSubtotalScreen';
 import LogViewScreen from './src/screens/LogViewScreen';
+import PaymentDetailsScreen from './src/screens/PaymentScreen';
 
 Toast.config({ duration: 1.5 });
 
@@ -211,6 +212,11 @@ function App() {
                     <Stack.Screen
                       name="LogView"
                       component={LogViewScreen}
+                      options={{ header: () => null }}
+                    />
+                    <Stack.Screen
+                      name="PaymentDetails"
+                      component={PaymentDetailsScreen}
                       options={{ header: () => null }}
                     />
                   </>

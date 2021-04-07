@@ -32,6 +32,12 @@ import db from './database';
 import { PdaMeterBookDtoHolder } from './holders';
 
 export default class OfflineApiService implements ApiService {
+  async getPaymentSubtotalDetails(
+    _subTotalId: number,
+  ): Promise<PdaChargeListDto[]> {
+    throw new Error(NO_NETWORK_ERROR);
+  }
+
   async getBookListByUserId(_id: string): Promise<MeterBookDto[]> {
     throw new Error(NO_NETWORK_ERROR);
   }

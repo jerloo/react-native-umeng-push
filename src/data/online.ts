@@ -35,6 +35,23 @@ import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto
 import { l } from '../utils/logUtils';
 
 export default class OnlineApiService implements ApiService {
+  async getPaymentSubtotalDetails(
+    subTotalId: number,
+  ): Promise<PdaChargeListDto[]> {
+    try {
+      const result = await api.paymentApi.apiAppMobilePaymentPaymentDetailsSubtotalIdGet(
+        subTotalId,
+      );
+      if (result.status < 400) {
+        return result.data.items;
+      }
+      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      l.error(e);
+      throw new Error(SERVER_ERROR);
+    }
+  }
+
   async getBookListByUserId(id: string): Promise<MeterBookDto[]> {
     try {
       const result = await api.chargeApi.apiAppChargeMeterBookListGet(id);
