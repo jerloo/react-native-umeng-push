@@ -25,6 +25,12 @@ export default function BookItem(props: Props) {
           width: scaleSize(38),
           height: scaleSize(38),
         }}
+        iconContainerStyle={{
+          height: scaleSize(150),
+          width: scaleSize(100),
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
         disabled={props.holder.downloaded}
       />
       <View style={styles.container}>
@@ -75,7 +81,7 @@ export default function BookItem(props: Props) {
               fontSize: scaleSize(16),
               color: props.holder.downloaded ? colorWhite : '#999999',
             }}>
-            已下载
+            {props.holder.downloaded ? '已下载' : '未下载'}
           </Text>
         </View>
       </View>
