@@ -181,6 +181,7 @@ export default function NewReadScreen() {
         r.readStateId = readState?.id;
       }
       setNewData(r);
+      setAmount(0);
       db.getAttachments(r.custId, r.readTimes, r.billMonth).then((rs) => {
         setAttachments(rs);
       });
@@ -221,6 +222,7 @@ export default function NewReadScreen() {
       const r = result[0];
       r.readStateId = readState?.id;
       setNewData(r);
+      setAmount(0);
       db.getAttachments(r.custId, r.readTimes, r.billMonth).then((rs) => {
         setAttachments(rs);
       });
