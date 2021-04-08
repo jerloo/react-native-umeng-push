@@ -3,7 +3,6 @@ import axios from 'axios';
 import CosXmlReactNative from 'cos-xml-react-native-fix-upload';
 import dayjs from 'dayjs';
 import { l } from './logUtils';
-import { getSession } from './sesstionUtils';
 
 export const COS_BUCKET_NAME = 'shyuntechtest';
 
@@ -12,8 +11,6 @@ CosXmlReactNative.initWithSessionCredentialCallback(
     region: 'ap-shanghai',
   },
   async () => {
-    // const session = await getSession();
-    // const prefix = session?.tenantName;
     const token = await AsyncStorage.getItem('token');
     l.info('开始请求获取临时凭证接口', dayjs().format('YYYY-MM-DD HH:mm:ss'));
     // 请求临时密钥
