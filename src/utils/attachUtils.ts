@@ -46,10 +46,8 @@ export const uploadAttachments = async (
     };
     return uploadRequest;
   });
-  l.info('组装信息后附件列表', requests);
   const rsp = requests.map((it) => CosXmlReactNative.upload(it));
   const results = await Promise.all(rsp);
-  l.info('配置url后的附件列表', results);
   results.forEach((value, index) => {
     filesToUpload[index].url = value.Location;
   });

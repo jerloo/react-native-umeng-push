@@ -13,7 +13,7 @@ CosXmlReactNative.initWithSessionCredentialCallback(
   },
   async () => {
     const session = await getSession();
-    const prefix = session?.tenantName;
+    // const prefix = session?.tenantName;
     const token = await AsyncStorage.getItem('token');
     l.info('开始请求获取临时凭证接口', dayjs().format('YYYY-MM-DD HH:mm:ss'));
     // 请求临时密钥
