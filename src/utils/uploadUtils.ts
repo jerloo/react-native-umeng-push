@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { l } from './logUtils';
 import { getSession } from './sesstionUtils';
 
-export const COS_BUCKET_NAME = 'mobilereadapptest';
+export const COS_BUCKET_NAME = 'shyuntechtest';
 
 CosXmlReactNative.initWithSessionCredentialCallback(
   {
@@ -18,7 +18,7 @@ CosXmlReactNative.initWithSessionCredentialCallback(
     l.info('开始请求获取临时凭证接口', dayjs().format('YYYY-MM-DD HH:mm:ss'));
     // 请求临时密钥
     const response = await axios.get(
-      `http://fileservice.yuncloudtech.cn/api/app/files/tempSecretKey?FileSource=2&Bucket=${COS_BUCKET_NAME}&Prefix=${prefix}`,
+      `http://fileservice.yuncloudtech.cn/api/app/files/tempSecretKey?FileSource=2&Bucket=${COS_BUCKET_NAME}&Prefix=`,
       {
         headers: {
           Authorization: token,
@@ -27,6 +27,7 @@ CosXmlReactNative.initWithSessionCredentialCallback(
       },
     );
     l.info('完成请求获取临时凭证接口', dayjs().format('YYYY-MM-DD HH:mm:ss'));
+    l.info('凭证接口返回', response);
     const credentials = response.data.Credentials;
     const expiredTime = response.data.ExpiredTime;
     const sessionCredentials = {

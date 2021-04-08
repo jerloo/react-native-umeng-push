@@ -32,20 +32,24 @@ export const uploadAttachments = async (
   const username = session?.userInfo.userName;
   const dtYearMonth = dayjs().format('YYYYMM');
   const objectName =
+    'mobilereadapp/' +
     `${session?.tenantName}/${dtYearMonth}/${username}` +
     `/${dayjs().format('YYYY-MM-DD')}-${uuid.v4().toString().replace('-', '')}`;
   const filesToUpload = files.filter((it) => !it.uploaded);
+  l.info('待上传附件列表', filesToUpload);
   const requests = filesToUpload.map((it) => {
     const uploadRequest = {
       bucket: `${COS_BUCKET_NAME}-1259078701`,
-      object: objectName + it.filePath?.substring(it.filePath.lastIndexOf('.')),
+      object: objectName + it.filePath?.substring(it.filePath.lastIndexOf('/')),
       // 文件本地 Uri 或者 路径
       fileUri: 'file://' + it.filePath,
     };
     return uploadRequest;
   });
+  l.info('组装信息后附件列表', requests);
   const rsp = requests.map((it) => CosXmlReactNative.upload(it));
   const results = await Promise.all(rsp);
+  l.info('配置url后的附件列表', results);
   results.forEach((value, index) => {
     filesToUpload[index].url = value.Location;
   });
@@ -59,9 +63,9 @@ export const uploadAttachments = async (
         files: filesToUpload.map((it) => {
           const item: MobileFileDto = {
             fileName: it.fileName,
-            filePath: it.url?.substring(
-              it.url?.indexOf(session?.tenantName || ''),
-            ),
+            filePath:
+              'mobilereadapp/' +
+              it.url?.substring(it.url?.indexOf(session?.tenantName || '')),
             fileSize: it.fileSize,
             fileSource: it.fileSource,
             fileBucket: COS_BUCKET_NAME,

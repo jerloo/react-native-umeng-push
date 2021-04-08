@@ -11,14 +11,17 @@ import * as uuid from 'uuid';
 // /handa/202101/zhangsa/2021-02-05-{uuid}.log.txt
 export const currentLogFileName = `${dayjs().format('YYYY-MM-DD')}.log.txt`;
 export const currentLogFileDir = RNFS.CachesDirectoryPath;
-export const currentLogFilePath = currentLogFileDir + '/' + currentLogFileName;
+export const currentLogFilePath =
+  'mobilereadapp/' + currentLogFileDir + '/' + currentLogFileName;
 
 export const getObjectKey = async () => {
   const session = await getSession();
   const username = session?.userInfo.userName;
   const dtYearMonth = dayjs().format('YYYYMM');
   // /handa/202101/zhangsa/2021-02-05-{uuid}.log.txt
-  return `/${session?.tenantName}/${dtYearMonth}/${username}/${dayjs().format(
+  return `mobilereadapp/${
+    session?.tenantName
+  }/${dtYearMonth}/${username}/${dayjs().format(
     'YYYY-MM-DD',
   )}-${uuid.v4().toString().replace('-', '')}.log.txt`;
 };
