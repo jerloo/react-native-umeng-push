@@ -10,6 +10,10 @@ import { colorWhite } from '../styles';
 import { MainStackParamList } from './routeParams';
 import { stat } from 'react-native-fs';
 import { l } from '../utils/logUtils';
+import ImageMarker, {
+  Position,
+  TextBackgroundType,
+} from 'react-native-image-marker';
 
 const MAX_DURATION = 10;
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -23,14 +27,42 @@ export default function CameraScreen() {
 
   const [result, setResult] = React.useState<MobileFileDto>();
 
+  const markImage = async (uri: any) => {
+    return ImageMarker.markText({
+      src: uri,
+      text: 'text marker',
+      position: Position.topRight,
+      fontName: 'Arial-BoldItalicMT',
+      X: 30,
+      Y: 30,
+      color: '#FF0000',
+      fontSize: 44,
+      shadowStyle: {
+        dx: 10.5,
+        dy: 20.8,
+        radius: 20.9,
+        color: '#ff00ff',
+      },
+      textBackgroundStyle: {
+        type: TextBackgroundType.stretchX,
+        paddingX: 10,
+        paddingY: 10,
+        color: '#0f0',
+      },
+      scale: 1,
+      quality: 100,
+    });
+  };
+
   const takePicture = async () => {
     const options = { quality: 0.3, base64: true };
     const data = await camera?.current?.takePictureAsync(options);
     if (data?.uri) {
-      const fileInfo = await stat(data?.uri);
+      const marked = await markImage(data?.uri);
+      const fileInfo = await stat(marked);
       const r: MobileFileDto = {
-        fileName: data?.uri.substring(data?.uri.lastIndexOf('/') + 1),
-        filePath: data?.uri,
+        fileName: marked.substring(data?.uri.lastIndexOf('/') + 1),
+        filePath: marked,
         fileSize: fileInfo.size,
         fileSource: 2,
       };

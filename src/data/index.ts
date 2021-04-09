@@ -295,6 +295,14 @@ class CenterService implements ApiService {
           l.debug('远程抄表任务有删除, 删除本地抄表任务');
           await db.deleteBookByIds(removeItems.map((it) => it.bookId));
         }
+
+        const updateItems = remoteItems.filter((it) =>
+          localItems.find((i) => it.bookId === i.bookId),
+        );
+        if (updateItems.length > 0) {
+          l.debug('更新抄表任务数据');
+          await db.updateBooks(updateItems, userId);
+        }
         return result;
       }
     }
