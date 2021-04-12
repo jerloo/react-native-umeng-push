@@ -146,6 +146,7 @@ export default function PaymentDetailsScreen() {
     } finally {
       Toast.remove(key);
       Toast.success('收款成功');
+      route.params.cashPaid && route.params.cashPaid();
       navigation.goBack();
     }
   };

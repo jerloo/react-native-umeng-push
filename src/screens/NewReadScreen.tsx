@@ -452,6 +452,9 @@ export default function NewReadScreen() {
             navigation.navigate('Payment', {
               data: newData,
               mode: 'pay',
+              cashPaid: () => {
+                setNewData({ ...newData, oweNumber: 0 });
+              },
             });
           });
         })
