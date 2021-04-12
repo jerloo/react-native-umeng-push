@@ -44,12 +44,12 @@ export default function CameraScreen() {
       X: 30,
       Y: 30,
       color: '#FFFFFF',
-      fontSize: 44,
+      fontSize: 18,
       shadowStyle: {
-        dx: 10.5,
-        dy: 20.8,
-        radius: 20.9,
-        color: '#ff00ff',
+        dx: 5,
+        dy: 5,
+        radius: 5,
+        color: '#CCC',
       },
       textBackgroundStyle: {
         type: TextBackgroundType.stretchY,
@@ -65,7 +65,7 @@ export default function CameraScreen() {
   };
 
   const takePicture = async () => {
-    const options = { quality: 0.3, base64: true };
+    const options = { quality: 0, base64: true, width: 600 };
     const data = await camera?.current?.takePictureAsync(options);
     if (data?.uri) {
       const marked = await markImage(data?.uri);

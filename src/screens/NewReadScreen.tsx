@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Vibration,
+  ListRenderItemInfo,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -54,6 +55,7 @@ import { tryUploadAttachments } from '../utils/attachUtils';
 import { toggle } from 'react-native-lighting';
 import { l } from '../utils/logUtils';
 import { getSession } from '../utils/sesstionUtils';
+import { FlatList } from 'react-native-gesture-handler';
 
 let scaleHeight = defaultScaleHeight;
 scaleHeight = scaleSize;
@@ -492,10 +494,48 @@ export default function NewReadScreen() {
     await saveData();
   };
 
-  const renderLastReadings = () => {
+  const renderReadingHeader = () => {
     return (
-      <View>
-        <View />
+      <View style={[styles.listItem, styles.listItemDark]}>
+        <Text style={[styles.listItemText, { flex: 2 }]}>日期</Text>
+        <Text style={styles.listItemText}>抄码</Text>
+        <Text style={styles.listItemText}>水量</Text>
+        <Text style={styles.listItemText}>状态</Text>
+      </View>
+    );
+  };
+
+  const renderLastReadingItem = (item) => {
+    return (
+      <View style={styles.listItem}>
+        <Text style={[styles.listItemText, { flex: 2 }]}>
+          {dayjs(item.readDate).format('YYYY-MM-DD')}
+        </Text>
+        <Text style={styles.listItemText}>{item.reading}</Text>
+        <Text style={styles.listItemText}>{item.readWater}</Text>
+        <Text style={styles.listItemText}>
+          {
+            readStates?.items.find((it) => it.id === item.readStateId)
+              ?.stateName
+          }
+        </Text>
+      </View>
+    );
+  };
+
+  const renderLastReadings = () => {
+    const items = JSON.parse(newData.lastReadings) || [];
+    return (
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          marginTop: scaleSize(14),
+        }}>
+        {renderReadingHeader()}
+        {items.map((it) => {
+          return renderLastReadingItem(it);
+        })}
       </View>
     );
   };
@@ -1169,5 +1209,22 @@ const styles = StyleSheet.create({
     width: scaleSize(32),
     height: scaleSize(32),
     // alignSelf: 'flex-start',
+  },
+  listItem: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: scaleSize(15),
+    paddingHorizontal: scaleSize(12),
+    borderWidth: scaleSize(1),
+    borderColor: '#DEDEDE',
+  },
+  listItemText: {
+    fontSize: scaleSize(28),
+    color: '#333333',
+    flex: 1,
+  },
+  listItemDark: {
+    backgroundColor: '#F3F3F5',
   },
 });
