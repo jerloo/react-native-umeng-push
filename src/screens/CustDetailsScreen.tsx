@@ -379,16 +379,6 @@ export default function CustDetailsScreen() {
     );
   };
 
-  const renderHeader = (headers: string[]) => {
-    return (
-      <View style={[styles.listItem, styles.listItemDark]}>
-        {headers.map((value) => (
-          <Text style={styles.listItemText}>{value}</Text>
-        ))}
-      </View>
-    );
-  };
-
   const renderReadingHeader = () => {
     return (
       <View style={[styles.listItem, styles.listItemDark]}>
