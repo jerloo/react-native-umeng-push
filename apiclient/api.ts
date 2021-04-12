@@ -57,8 +57,9 @@ axiosInstance.interceptors.response.use(
     process.env.NODE_ENV !== 'production' && axiosLogger.logErrorDetails(error);
     process.env.NODE_ENV === 'production' && l.error(error);
     if (error.response) {
-      if (error.response.error) {
-        return Promise.reject(error.response.error);
+      process.env.NODE_ENV === 'production' && l.error(error.response);
+      if (error.response.data.error && error.response.data.error.message) {
+        return Promise.reject(error.response.data.error);
       } else {
         return Promise.reject({ message: SERVER_ERROR });
       }
