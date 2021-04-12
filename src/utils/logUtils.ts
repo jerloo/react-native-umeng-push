@@ -11,8 +11,7 @@ import * as uuid from 'uuid';
 // /handa/202101/zhangsa/2021-02-05-{uuid}.log.txt
 export const currentLogFileName = `${dayjs().format('YYYY-MM-DD')}.log.txt`;
 export const currentLogFileDir = RNFS.CachesDirectoryPath;
-export const currentLogFilePath =
-  'mobilereadapp/' + currentLogFileDir + '/' + currentLogFileName;
+export const currentLogFilePath = currentLogFileDir + '/' + currentLogFileName;
 
 export const getObjectKey = async () => {
   const session = await getSession();

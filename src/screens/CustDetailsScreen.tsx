@@ -527,7 +527,7 @@ export default function CustDetailsScreen() {
               <Text style={styles.topValue}>
                 {(onlyShowOwe
                   ? details?.billingInfos?.filter(
-                      (it) => it.payState === 0 && it.lateFee > 0,
+                      (it) => it.payState === 0 && it.extendedAmount > 0,
                     )
                   : details?.billingInfos
                 )?.length || 0}
@@ -539,7 +539,7 @@ export default function CustDetailsScreen() {
                 {sumNoFixed(
                   (onlyShowOwe
                     ? details?.billingInfos?.filter(
-                        (it) => it.payState === 0 && it.lateFee > 0,
+                        (it) => it.payState === 0 && it.extendedAmount > 0,
                       )
                     : details?.billingInfos
                   )?.map((value) => value.billWater) || [],
@@ -592,7 +592,7 @@ export default function CustDetailsScreen() {
             data={
               onlyShowOwe
                 ? details?.billingInfos?.filter(
-                    (it) => it.payState === 0 && it.lateFee > 0,
+                    (it) => it.payState === 0 && it.extendedAmount > 0,
                   )
                 : details?.billingInfos
             }
