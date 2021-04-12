@@ -148,7 +148,8 @@ class DataBase {
         highWater INTEGER,
         lowWater INTEGER,
         dataState INTEGER,
-        uploaded boolean
+        uploaded boolean,
+        lastReadings NVARCHAR(2048)
       ); `,
     ).catch((error) => {
       this.errorCB(error);
@@ -631,7 +632,7 @@ class DataBase {
             ?,?,?,?,?,
             ?,?,?,?,?,
             ?,?,?,?,?,
-            ?,?,?)`,
+            ?,?,?,?)`,
           [
             item.billMonth,
             item.custId,
@@ -676,6 +677,7 @@ class DataBase {
             item.lowWater,
             item.dataState,
             false,
+            JSON.stringify(item.lastReadingDatas),
           ],
         ).catch((e) => {
           l.error('插入下载测本数据失败', e);
