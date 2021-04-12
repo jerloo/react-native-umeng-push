@@ -36,6 +36,7 @@ export type MainStackParamList = {
   Payment: {
     data: PdaReadDataDto & PdaPaymentSubtotal;
     mode: 'pay' | 'details';
+    cashPaid?: () => void;
   };
   PaymentCollect: {};
   PaymentSubtotal: {};

@@ -48,7 +48,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -61,7 +61,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -76,7 +76,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -97,7 +97,7 @@ export default class OnlineApiService implements ApiService {
       }
     } catch (e) {
       l.error(e);
-      throw new Error(USERNAME_PWD_ERROR);
+      throw e;
     }
   }
 
@@ -112,7 +112,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -127,7 +127,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -142,7 +142,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -157,7 +157,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -170,7 +170,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -187,7 +187,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -204,7 +204,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -219,7 +219,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -234,7 +234,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -252,7 +252,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -269,7 +269,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -286,7 +286,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -299,7 +299,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -308,15 +308,13 @@ export default class OnlineApiService implements ApiService {
       const result = await api.mobileReadingApi.apiAppMobileReadingCalcBudgetAmountPost(
         input,
       );
-      if (result.status < 400) {
-        return result.data;
-      }
-      throw new Error(SERVER_ERROR);
+      return result.data;
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
+
   async homeQuery(key: string): Promise<PdaCustListDto[]> {
     try {
       const result = await api.chargeApi.apiAppChargeCustListGet(key);
@@ -326,7 +324,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -339,7 +337,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -358,7 +356,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -371,7 +369,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -387,7 +385,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -401,7 +399,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -418,7 +416,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -431,7 +429,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -444,7 +442,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -465,8 +463,8 @@ export default class OnlineApiService implements ApiService {
         return true;
       }
       throw new Error(SERVER_ERROR);
-    } catch {
-      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      throw e;
     }
   }
 
@@ -491,7 +489,7 @@ export default class OnlineApiService implements ApiService {
       throw new Error(SERVER_ERROR);
     } catch (e) {
       l.error(e);
-      throw new Error(SERVER_ERROR);
+      throw e;
     }
   }
 
@@ -517,8 +515,8 @@ export default class OnlineApiService implements ApiService {
         }
       }
       throw new Error(SERVER_ERROR);
-    } catch {
-      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      throw e;
     }
   }
 
@@ -535,8 +533,8 @@ export default class OnlineApiService implements ApiService {
         return true;
       }
       throw new Error(SERVER_ERROR);
-    } catch {
-      throw new Error(SERVER_ERROR);
+    } catch (e) {
+      throw e;
     }
   }
 

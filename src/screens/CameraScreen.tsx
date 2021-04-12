@@ -1,6 +1,13 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import * as React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Platform,
+} from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { scaleSize } from 'react-native-responsive-design';
@@ -14,6 +21,7 @@ import ImageMarker, {
   Position,
   TextBackgroundType,
 } from 'react-native-image-marker';
+import dayjs from 'dayjs';
 
 const MAX_DURATION = 10;
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -30,12 +38,12 @@ export default function CameraScreen() {
   const markImage = async (uri: any) => {
     return ImageMarker.markText({
       src: uri,
-      text: 'text marker',
+      text: dayjs().format('YYYY-MM-DD HH:mm:ss'),
       position: Position.topRight,
       fontName: 'Arial-BoldItalicMT',
       X: 30,
       Y: 30,
-      color: '#FF0000',
+      color: '#FFFFFF',
       fontSize: 44,
       shadowStyle: {
         dx: 10.5,
@@ -44,13 +52,15 @@ export default function CameraScreen() {
         color: '#ff00ff',
       },
       textBackgroundStyle: {
-        type: TextBackgroundType.stretchX,
+        type: TextBackgroundType.stretchY,
         paddingX: 10,
         paddingY: 10,
-        color: '#0f0',
+        color: 'transparent',
       },
       scale: 1,
       quality: 100,
+    }).then((path) => {
+      return Platform.OS === 'android' ? 'file://' + path : path;
     });
   };
 

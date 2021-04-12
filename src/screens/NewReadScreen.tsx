@@ -76,6 +76,7 @@ export default function NewReadScreen() {
   const [attachments, setAttachments] = useState<AttachmentDbItem[]>([]);
   const [bookDataItems, setBookDataItems] = useState<PdaReadDataDto[]>([]);
   const [mustTakePhoto, setMustTakePhoto] = useState(false);
+  const [lastReadingVisible, setLastReadingVisible] = useState(false);
 
   useEffect(() => {
     const fetchLocal = async () => {
@@ -452,6 +453,9 @@ export default function NewReadScreen() {
             navigation.navigate('Payment', {
               data: newData,
               mode: 'pay',
+              cashPaid: () => {
+                setNewData({ ...newData, oweNumber: 0 });
+              },
             });
           });
         })
@@ -486,6 +490,14 @@ export default function NewReadScreen() {
 
   const onConfirmClick = async () => {
     await saveData();
+  };
+
+  const renderLastReadings = () => {
+    return (
+      <View>
+        <View />
+      </View>
+    );
   };
 
   const renderStateExtra = () => {
@@ -552,15 +564,12 @@ export default function NewReadScreen() {
           <View style={[styles.extraRowPart, { justifyContent: 'flex-end' }]}>
             <TouchableOpacity
               style={styles.tableValueButton}
-              onPress={() =>
-                navigation.navigate('CustDetails', {
-                  data: newData,
-                })
-              }>
+              onPress={() => setLastReadingVisible(!lastReadingVisible)}>
               <Text style={styles.tableValueButtonText}>往期</Text>
             </TouchableOpacity>
           </View>
         </View>
+        {lastReadingVisible ? renderLastReadings() : null}
         <View style={styles.extraRow}>
           <View style={styles.extraRowPart}>
             <Text style={styles.extraLabel}>预算金额</Text>
