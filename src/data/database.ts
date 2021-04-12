@@ -758,7 +758,8 @@ class DataBase {
                 readRemark = ?, 
                 recordState = ?, 
                 lastReadDate = ?,
-                uploaded = 1
+                uploaded = 1,
+                lastReadings = ?
             WHERE billMonth = ? AND custId = ? AND readTimes = ?`,
           [
             JSON.stringify(item.terminalFiles),
@@ -799,6 +800,7 @@ class DataBase {
             item.readRemark,
             item.recordState,
             dayjs(item.lastReadDate).format('YYYY-MM-DDTHH:mm:ss'),
+            JSON.stringify(item.lastReadingDatas),
             item.billMonth,
             item.custId,
             item.readTimes,
