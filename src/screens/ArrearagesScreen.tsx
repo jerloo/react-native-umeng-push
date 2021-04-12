@@ -217,10 +217,38 @@ export default function ArrearagesScreen() {
     );
   };
 
-  const onSearch = (text: string) => {
-    const index = findIndex(items, text);
-    if (index > -1) {
-      fRef.current?.scrollToIndex({ animated: true, index });
+  // const onSearch = (text: string) => {
+  //   const index = findIndex(items, text);
+  //   if (index > -1) {
+  //     fRef.current?.scrollToIndex({ animated: true, index });
+  //   }
+  // };
+
+  const onSearch = async (text: string) => {
+    setSettingsModalVisible(false);
+    if (loading) {
+      return;
+    }
+
+    const ps = { ...params };
+    ps.skipCount = 0;
+    ps.maxResultCount = PAGE_SIZE;
+    ps.meterReaderId = currentUser?.id;
+    ps.bookId = currentBooks?.map((it) => it.id) || [];
+    ps.queryConditions = text;
+
+    setLoading(true);
+    try {
+      await fetchLatestBillMonth();
+
+      const res = await center.getArrearageList(ps);
+      setItems(res.items);
+      setParams(ps);
+      setTotal(res.totalCount);
+    } catch (e) {
+      Toast.fail(e.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -274,7 +302,7 @@ export default function ArrearagesScreen() {
                   source={require('../assets/qietu/qianfeichaxxun/arrearage_inquiry_icon_down_normal.png')}
                 />
               </TouchableOpacity>
-              <Text style={styles.settingsSubTitle}>财务年月</Text>
+              <Text style={styles.settingsSubTitle}>账务年月</Text>
               <View style={styles.settingsDatePickers}>
                 <DatePicker
                   value={dayjs(

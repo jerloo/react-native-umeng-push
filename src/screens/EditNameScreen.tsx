@@ -10,7 +10,7 @@ import {
   Platform,
 } from 'react-native';
 import { scaleHeight, scaleSize } from 'react-native-responsive-design';
-import { getSession } from '../utils/sesstionUtils';
+import { getSession, setSession } from '../utils/sesstionUtils';
 import EditTitleBar from '../components/titlebars/EditTitleBar';
 import center from '../data';
 import { Toast } from '@ant-design/react-native';
@@ -37,6 +37,12 @@ export default function EditNameScreen() {
     try {
       const result = await center.updateName(name);
       if (result === true) {
+        const s = await getSession();
+        if (s != null) {
+          s.userInfo.name = name;
+          setName(s.userInfo.name);
+          setSession(s);
+        }
         Toast.remove(key);
         Toast.success('修改成功');
         navigation.goBack();

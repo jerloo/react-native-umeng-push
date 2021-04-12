@@ -9,6 +9,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -29,6 +30,7 @@ import { MainStackParamList } from './routeParams';
 import dayjs from 'dayjs';
 import { getSession, UserSession } from '../utils/sesstionUtils';
 import SubtotalItem from '../components/SubtotalItem';
+import { l } from '../utils/logUtils';
 
 const PAGE_SIZE = 30;
 
@@ -106,6 +108,10 @@ export default function PaymentSubtotalScreen() {
     setParams({ ...params, endDate: value });
   };
 
+  const handleDismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
   const getItemLayout = (
     d: PdaArrearageDto[] | null | undefined,
     index: number,
@@ -116,18 +122,46 @@ export default function PaymentSubtotalScreen() {
   });
 
   const findIndex = (d: PdaArrearageDto[], text: string) => {
-    return d.findIndex(
-      (it) =>
-        (it.custName || '').indexOf(text) > -1 ||
-        (it.custCode?.toString() || '').indexOf(text) > -1 ||
-        (it.custAddress || '').indexOf(text) > -1,
-    );
+    if (d && d.length > 0) {
+      return d.findIndex(
+        (it) =>
+          (it.custName || '').indexOf(text) > -1 ||
+          (it.custCode?.toString() || '').indexOf(text) > -1 ||
+          (it.custAddress || '').indexOf(text) > -1,
+      );
+    } else {
+      return -1;
+    }
   };
 
-  const onSearch = (text: string) => {
-    const index = findIndex(data?.paySubtotals?.items, text);
-    if (index > -1) {
-      fRef.current?.scrollToIndex({ animated: true, index });
+  // const onSearch = (text: string) => {
+  //   l.info('paySubtotals: ', data?.paySubtotals);
+  //   const index = findIndex(data?.paySubtotals?.items, text);
+  //   if (index > -1) {
+  //     fRef.current?.scrollToIndex({ animated: true, index });
+  //   }
+  // };
+
+  const onSearch = async (text: string) => {
+    if (loading) {
+      return;
+    }
+
+    const ps = params;
+    ps.skipCount = 0;
+    ps.maxResultCount = PAGE_SIZE;
+    ps.meterReaderId = session?.userInfo.id;
+    ps.queryConditions = text;
+    setLoading(true);
+
+    try {
+      const res = await center.getPaymentSubtotal(ps);
+      setData(res);
+      setParams(ps);
+    } catch (e) {
+      Toast.fail(e.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -145,6 +179,7 @@ export default function PaymentSubtotalScreen() {
             onChange={onStartPick}
             format="YYYY-MM-DD">
             <TouchableOpacity
+              onPress={handleDismissKeyboard}
               style={[styles.settingsInput, { width: scaleSize(196) }]}>
               <Text style={styles.settingsInputText}>
                 {dayjs(params.beginDate.toString(), 'YYYYMMDD').format(
@@ -167,6 +202,7 @@ export default function PaymentSubtotalScreen() {
             onChange={onEndPick}
             format="YYYY-MM-DD">
             <TouchableOpacity
+              onPress={handleDismissKeyboard}
               style={[styles.settingsInput, { width: scaleSize(196) }]}>
               <Text style={styles.settingsInputText}>
                 {dayjs(params.endDate.toString(), 'YYYYMMDD').format(

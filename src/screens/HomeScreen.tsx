@@ -94,6 +94,11 @@ export default function HomeScreen() {
       const result = await center.getUserInfo();
       if (result) {
         refreshPermissions(result.userPermissions || []);
+        const s = await getSession();
+        if (s && s.userInfo) {
+          s.userInfo = result;
+          setSession(s);
+        }
       }
     } catch (e) {
       l.error(e);

@@ -62,7 +62,7 @@ export default function PaymentItem({ data }: Props) {
               <Text style={styles.detailsValue}>{data.lastReading}</Text>
               <Text style={styles.detailsValue}>{data.reading}</Text>
               <Text style={[styles.detailsValue, { color: '#F0655A' }]}>
-                {((data.extendedAmount || 0) + (data.lateFee || 0))?.toFixed(2)}
+                {data.extendedAmount?.toFixed(2)}
               </Text>
             </View>
           </View>
@@ -124,7 +124,7 @@ export default function PaymentItem({ data }: Props) {
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <Text style={styles.amount}>{data.extendedAmount?.toFixed(2)}</Text>
+          <Text style={styles.amount}>{((data.extendedAmount || 0) + (data.lateFee || 0))?.toFixed(2)}</Text>
           <Image
             resizeMode="contain"
             style={{
