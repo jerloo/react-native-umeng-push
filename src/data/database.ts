@@ -114,9 +114,9 @@ class DataBase {
         bookId INTEGER,
         bookCode NVARCHAR(30),
         bookSortIndex INTEGER,
-        custCode INTEGER,
-        custName NVARCHAR(30),
-        custAddress NVARCHAR(30),
+        custCode NVARCHAR(30),
+        custName NVARCHAR(100),
+        custAddress NVARCHAR(100),
         custState NVARCHAR(30),
         deposit INTEGER,
         lastChange INTEGER,
@@ -244,6 +244,45 @@ class DataBase {
               item.totalNumber,
               false,
               userId,
+            ],
+          )
+            .then(() => {
+              l.info(`保存抄表任务${item.bookId}`);
+            })
+            .catch((err) => {
+              this.errorCB(err);
+            });
+        });
+        l.info(`保存抄表任务[${holders.length}]条`);
+      })
+      .catch((err) => {
+        this.errorCB(err);
+      });
+  };
+
+  updateBooks = (holders: PdaMeterBookDtoHolder[], userId: string) => {
+    this.db
+      ?.transaction((tx) => {
+        holders.forEach((item) => {
+          tx.executeSql(
+            `UPDATE Books SET billMonth = ?, 
+              bookCode = ?, 
+              bookName = ?,
+              readCycle = ?, 
+              readingNumber = ?, 
+              remark = ?, 
+              totalNumber = ? 
+              WHERE userId = ? AND bookId = ?`,
+            [
+              item.billMonth,
+              item.bookCode,
+              item.bookName,
+              item.readCycle,
+              item.readingNumber,
+              item.remark,
+              item.totalNumber,
+              userId,
+              item.bookId,
             ],
           )
             .then(() => {
