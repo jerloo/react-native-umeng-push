@@ -738,6 +738,9 @@ export default function NewReadScreen() {
           onPress={() =>
             navigation.navigate('CustDetails', {
               data: newData,
+              cashPaid: () => {
+                setNewData({ ...newData, oweNumber: 0 });
+              },
             })
           }>
           <Text style={styles.corner}>用户详情</Text>

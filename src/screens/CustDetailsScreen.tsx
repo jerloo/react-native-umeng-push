@@ -427,6 +427,10 @@ export default function CustDetailsScreen() {
           custName: details?.custInfo?.custName,
           custCode: route.params.data.custCode,
         },
+        cashPaid: () => {
+          refresh();
+          route.params.cashPaid && route.params.cashPaid();
+        },
       });
     }
   };
