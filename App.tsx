@@ -37,6 +37,8 @@ import PaymentCollectScreen from './src/screens/PaymentCollectScreen';
 import PaymentSubtotalScreen from './src/screens/PaymentSubtotalScreen';
 import LogViewScreen from './src/screens/LogViewScreen';
 import PaymentDetailsScreen from './src/screens/PaymentScreen';
+import CodePush from 'react-native-code-push';
+import { l } from './src/utils/logUtils';
 
 Toast.config({ duration: 1.5 });
 
@@ -74,6 +76,23 @@ function App() {
   );
 
   React.useEffect(() => {
+    CodePush.sync(
+      {
+        installMode: CodePush.InstallMode.IMMEDIATE,
+        updateDialog: {
+          title: '更新',
+          optionalUpdateMessage: '有一个可用的更新, 是否现在安装?',
+          mandatoryUpdateMessage: '必须安装更新才能继续使用',
+          mandatoryContinueButtonLabel: '立即安装',
+          optionalIgnoreButtonLabel: '暂不安装',
+          optionalInstallButtonLabel: '立即安装',
+        },
+      },
+      (status) => {
+        l.info('CodePush syncing status ', status.toString());
+      },
+    );
+
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let session;

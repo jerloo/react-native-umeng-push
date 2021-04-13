@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Vibration,
+  ListRenderItemInfo,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -54,6 +55,7 @@ import { tryUploadAttachments } from '../utils/attachUtils';
 import { toggle } from 'react-native-lighting';
 import { l } from '../utils/logUtils';
 import { getSession } from '../utils/sesstionUtils';
+import { FlatList } from 'react-native-gesture-handler';
 
 let scaleHeight = defaultScaleHeight;
 scaleHeight = scaleSize;
@@ -779,6 +781,9 @@ export default function NewReadScreen() {
           onPress={() =>
             navigation.navigate('CustDetails', {
               data: newData,
+              cashPaid: () => {
+                setNewData({ ...newData, oweNumber: 0 });
+              },
             })
           }>
           <Text style={styles.corner}>用户详情</Text>
@@ -798,7 +803,13 @@ export default function NewReadScreen() {
               <View style={styles.contentTopDesc}>
                 <Text style={styles.contentTopDescLabel}>水表信息：</Text>
                 <Text style={styles.contentTopDescValue}>
-                  {newData.steelMark}
+                  {[
+                    newData.caliberValue,
+                    newData.steelMark,
+                    newData.installLocation,
+                  ]
+                    .filter((it) => it)
+                    .join('/')}
                 </Text>
               </View>
             </View>

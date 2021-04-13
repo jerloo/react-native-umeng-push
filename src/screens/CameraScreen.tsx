@@ -43,7 +43,7 @@ export default function CameraScreen() {
       fontName: 'Arial-BoldItalicMT',
       X: 30,
       Y: 30,
-      color: '#FFFFFF',
+      color: 'red',
       fontSize: 18,
       shadowStyle: {
         dx: 5,
