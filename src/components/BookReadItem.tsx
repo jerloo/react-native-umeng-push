@@ -120,7 +120,7 @@ export default function BookReadItem(props: Props) {
               ]}>
               <Text style={styles.dateLabel}>抄表日期：</Text>
               <Text style={styles.dateValue}>
-                {dayjs(props.item.lastReadDate).format('YYYY-MM-DD')}
+                {dayjs(props.item.readDate).format('YYYY-MM-DD')}
               </Text>
             </View>
           ) : null}

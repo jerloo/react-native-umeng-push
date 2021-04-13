@@ -244,6 +244,7 @@ export default function NewReadScreen() {
         if (newData.recordState === 0) {
           newData.recordState = 1;
           newData.readWater = water;
+          newData.readDate = new Date();
           await db.readData(newData);
           await db.updateReadingNumberByBookId(newData.bookId);
 
@@ -268,6 +269,7 @@ export default function NewReadScreen() {
                 onPress: async () => {
                   newData.readWater = water;
                   newData.recordState = 1;
+                  newData.readDate = new Date();
                   await db.readData(newData);
                   await db.updateReadingNumberByBookId(newData.bookId);
 
@@ -288,6 +290,7 @@ export default function NewReadScreen() {
           } else {
             newData.readWater = water;
             newData.recordState = 1;
+            newData.readDate = new Date();
             await db.readData(newData);
             await db.updateReadingNumberByBookId(newData.bookId);
 
@@ -327,7 +330,6 @@ export default function NewReadScreen() {
       newData.recordState = 1;
       if (!result) {
         newData.readWater = water;
-        newData.lastReadDate = new Date();
         newData.readDate = new Date();
         await db.readData(newData);
         await db.updateReadingNumberByBookId(newData.bookId);
@@ -358,7 +360,6 @@ export default function NewReadScreen() {
                 onPress: async () => {
                   console.log('水量', water);
                   newData.readWater = water;
-                  newData.lastReadDate = new Date();
                   newData.readDate = new Date();
                   newData.recordState = 1;
                   await db.readData(newData);
@@ -387,7 +388,6 @@ export default function NewReadScreen() {
           } else {
             console.log('水量', water);
             newData.readWater = water;
-            newData.lastReadDate = new Date();
             newData.readDate = new Date();
             newData.recordState = 1;
             await db.readData(newData);
