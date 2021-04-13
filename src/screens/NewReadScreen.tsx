@@ -12,7 +12,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   Vibration,
-  ListRenderItemInfo,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -55,7 +54,6 @@ import { tryUploadAttachments } from '../utils/attachUtils';
 import { toggle } from 'react-native-lighting';
 import { l } from '../utils/logUtils';
 import { getSession } from '../utils/sesstionUtils';
-import { FlatList } from 'react-native-gesture-handler';
 
 let scaleHeight = defaultScaleHeight;
 scaleHeight = scaleSize;
@@ -260,30 +258,47 @@ export default function NewReadScreen() {
         resolve(true);
       } else {
         if (result === WATER_HIGHER || result === WATER_LOWER) {
-          vibrate();
-          AntModal.alert('重新选择', result, [
-            {
-              text: '否',
-              onPress: async () => {
-                newData.readWater = water;
-                newData.recordState = 1;
-                await db.readData(newData);
-                await db.updateReadingNumberByBookId(newData.bookId);
+          if (route.params.setting?.vibrate) {
+            vibrate();
+          }
+          if (route.params.setting?.alert) {
+            AntModal.alert('重新选择', result, [
+              {
+                text: '否',
+                onPress: async () => {
+                  newData.readWater = water;
+                  newData.recordState = 1;
+                  await db.readData(newData);
+                  await db.updateReadingNumberByBookId(newData.bookId);
 
-                const index = bookDataItems.findIndex(
-                  (it) => it.custId === newData.custId,
-                );
-                bookDataItems[index] = newData;
-                setBookDataItems(bookDataItems);
+                  const index = bookDataItems.findIndex(
+                    (it) => it.custId === newData.custId,
+                  );
+                  bookDataItems[index] = newData;
+                  setBookDataItems(bookDataItems);
 
-                resolve(true);
+                  resolve(true);
+                },
               },
-            },
-            {
-              text: '是',
-              onPress: () => resolve(false),
-            },
-          ]);
+              {
+                text: '是',
+                onPress: () => resolve(false),
+              },
+            ]);
+          } else {
+            newData.readWater = water;
+            newData.recordState = 1;
+            await db.readData(newData);
+            await db.updateReadingNumberByBookId(newData.bookId);
+
+            const index = bookDataItems.findIndex(
+              (it) => it.custId === newData.custId,
+            );
+            bookDataItems[index] = newData;
+            setBookDataItems(bookDataItems);
+
+            resolve(true);
+          }
         } else {
           AntModal.alert('提示', result, [
             {
@@ -333,39 +348,65 @@ export default function NewReadScreen() {
         );
       } else {
         if (result === WATER_HIGHER || result === WATER_LOWER) {
-          vibrate();
-          AntModal.alert('重新选择', result, [
-            {
-              text: '否',
-              onPress: async () => {
-                console.log('水量', water);
-                newData.readWater = water;
-                newData.lastReadDate = new Date();
-                newData.readDate = new Date();
-                newData.recordState = 1;
-                await db.readData(newData);
-                await db.updateReadingNumberByBookId(newData.bookId);
-                setNewData({ ...newData });
+          if (route.params.setting?.vibrate) {
+            vibrate();
+          }
+          if (route.params.setting?.alert) {
+            AntModal.alert('重新选择', result, [
+              {
+                text: '否',
+                onPress: async () => {
+                  console.log('水量', water);
+                  newData.readWater = water;
+                  newData.lastReadDate = new Date();
+                  newData.readDate = new Date();
+                  newData.recordState = 1;
+                  await db.readData(newData);
+                  await db.updateReadingNumberByBookId(newData.bookId);
+                  setNewData({ ...newData });
 
-                const index = bookDataItems.findIndex(
-                  (it) => it.custId === newData.custId,
-                );
-                bookDataItems[index] = newData;
-                setBookDataItems(bookDataItems);
+                  const index = bookDataItems.findIndex(
+                    (it) => it.custId === newData.custId,
+                  );
+                  bookDataItems[index] = newData;
+                  setBookDataItems(bookDataItems);
 
-                tryUploadAttachments(
-                  newData.custId,
-                  newData.billMonth,
-                  newData.readTimes,
-                  attachments,
-                );
+                  tryUploadAttachments(
+                    newData.custId,
+                    newData.billMonth,
+                    newData.readTimes,
+                    attachments,
+                  );
+                },
               },
-            },
-            {
-              text: '是',
-              onPress: () => console.log('cancel'),
-            },
-          ]);
+              {
+                text: '是',
+                onPress: () => console.log('cancel'),
+              },
+            ]);
+          } else {
+            console.log('水量', water);
+            newData.readWater = water;
+            newData.lastReadDate = new Date();
+            newData.readDate = new Date();
+            newData.recordState = 1;
+            await db.readData(newData);
+            await db.updateReadingNumberByBookId(newData.bookId);
+            setNewData({ ...newData });
+
+            const index = bookDataItems.findIndex(
+              (it) => it.custId === newData.custId,
+            );
+            bookDataItems[index] = newData;
+            setBookDataItems(bookDataItems);
+
+            tryUploadAttachments(
+              newData.custId,
+              newData.billMonth,
+              newData.readTimes,
+              attachments,
+            );
+          }
         } else {
           AntModal.alert('提示', result, [
             {

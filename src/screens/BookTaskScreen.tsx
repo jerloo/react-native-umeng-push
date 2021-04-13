@@ -173,6 +173,7 @@ export default function BookTaskScreen() {
           navigation.navigate('NewRead', {
             data: info.item.item,
             mode: mode,
+            setting: route.params.setting,
           });
         }}>
         <BookDataItem

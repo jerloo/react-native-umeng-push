@@ -36,6 +36,7 @@ import { l } from '../utils/logUtils';
 import { uploadAttachments } from '../utils/attachUtils';
 import { getSession, UserSession } from '../utils/sesstionUtils';
 import dayjs from 'dayjs';
+import { getNewReadSetting } from '../utils/newReadSettingUtils';
 
 export default function BooksScreen() {
   const navigation = useNavigation();
@@ -56,6 +57,8 @@ export default function BooksScreen() {
   ] = useState<BookAttachmentsTotal>();
   const [readWater, setReadWater] = useState(0);
   const [userSession, setUserSession] = useState<UserSession>();
+  const [settingAlert, setSettingAlert] = useState(true);
+  const [settingVibrate, setSettingVibrate] = useState(true);
 
   useEffect(() => {
     const fetchEL = async () => {
@@ -80,6 +83,7 @@ export default function BooksScreen() {
       });
     };
     fetchEL();
+    fetchReadSetting();
   }, []);
 
   const fetchLocal = React.useCallback(async () => {
@@ -113,6 +117,14 @@ export default function BooksScreen() {
     }
     const result = await db.getBookTotalData(us?.userInfo.id);
     setTotalNumbers(result);
+  };
+
+  const fetchReadSetting = async () => {
+    const setting = await getNewReadSetting();
+    if (setting) {
+      setSettingAlert(setting.alert);
+      setSettingVibrate(setting.vibrate);
+    }
   };
 
   useFocusEffect(
@@ -150,6 +162,10 @@ export default function BooksScreen() {
         navigation.navigate('BookTask', {
           bookId: holder.bookId,
           title: holder.bookCode,
+          setting: {
+            alert: settingAlert,
+            vibrate: settingVibrate,
+          },
         });
       }
     } else {
