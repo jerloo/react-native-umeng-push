@@ -760,7 +760,13 @@ export default function NewReadScreen() {
               <View style={styles.contentTopDesc}>
                 <Text style={styles.contentTopDescLabel}>水表信息：</Text>
                 <Text style={styles.contentTopDescValue}>
-                  {newData.steelMark}
+                  {[
+                    newData.caliberValue,
+                    newData.steelMark,
+                    newData.installLocation,
+                  ]
+                    .filter((it) => it)
+                    .join('/')}
                 </Text>
               </View>
             </View>
