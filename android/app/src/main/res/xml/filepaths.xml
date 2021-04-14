@@ -1,0 +1,4 @@
+<paths>
+    <external-path name="Meter" path="."></external-path>
+    <files-path path="." name="Meter" />
+</paths>
