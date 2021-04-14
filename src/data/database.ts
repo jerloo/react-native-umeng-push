@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import SQLite from 'react-native-sqlite-storage';
+import SQLite from 'react-native-sqlite-external-storage';
 import {
   MobileFileDto,
   PdaReadDataDto,
@@ -27,6 +27,7 @@ class DataBase {
     SQLite.openDatabase({
       name: database_name,
       location: 'default',
+      createFromLocation: database_name,
     })
       .then((DB) => {
         this.db = DB;

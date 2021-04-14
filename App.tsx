@@ -8,13 +8,13 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import { ThemeProvider } from 'react-native-elements';
-import { Provider, Toast } from '@ant-design/react-native';
+import { Modal, Provider, Toast } from '@ant-design/react-native';
 import ProfileScreen from './src/screens/ProfileScreen';
 import EditNameScreen from './src/screens/EditNameScreen';
 import EditPhoneScreen from './src/screens/EditPhoneScreen';
@@ -39,6 +39,14 @@ import LogViewScreen from './src/screens/LogViewScreen';
 import PaymentDetailsScreen from './src/screens/PaymentScreen';
 import CodePush from 'react-native-code-push';
 import { l } from './src/utils/logUtils';
+import {
+  check,
+  request,
+  PERMISSIONS,
+  RESULTS,
+  openSettings,
+} from 'react-native-permissions';
+import { BackHandler } from 'react-native';
 
 Toast.config({ duration: 1.5 });
 
@@ -74,6 +82,63 @@ function App() {
       userToken: null,
     },
   );
+
+  useEffect(() => {
+    check(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE)
+      .then((result) => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            l.info(
+              'This feature is not available (on this device / in this context)',
+            );
+            break;
+          case RESULTS.DENIED:
+            l.info(
+              'The permission has not been requested / is denied but requestable',
+            );
+            Modal.alert('权限申请', '请授权读取权限以继续', [
+              { text: '取消', onPress: () => BackHandler.exitApp() },
+              {
+                text: '确定',
+                onPress: () => {
+                  request(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE, {
+                    title: '权限申请',
+                    message: '请授权读取权限以继续',
+                    buttonPositive: '确认',
+                    buttonNegative: '取消',
+                  }).then((r) => {
+                    if (r !== RESULTS.LIMITED) {
+                      BackHandler.exitApp();
+                    }
+                  });
+                },
+              },
+            ]);
+            break;
+          case RESULTS.LIMITED:
+            l.info('The permission is limited: some actions are possible');
+            break;
+          case RESULTS.GRANTED:
+            l.info('The permission is granted');
+            break;
+          case RESULTS.BLOCKED:
+            l.info('The permission is denied and not requestable anymore');
+            Modal.alert('权限申请', '请授权读取权限以继续', [
+              { text: '取消', onPress: () => BackHandler.exitApp() },
+              {
+                text: '确定',
+                onPress: () => {
+                  openSettings();
+                },
+              },
+            ]);
+            break;
+        }
+      })
+      .catch((error) => {
+        l.error('permission', error);
+      });
+  }, []);
 
   React.useEffect(() => {
     CodePush.sync(

@@ -6833,6 +6833,11 @@ react-native-modal@^11.5.3:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
 
+react-native-permissions@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/react-native-permissions/-/react-native-permissions-3.0.1.tgz#7273f7d07701974ef50bf77bb052881846a3bb91"
+  integrity sha512-loCoNEeBeLsrvITZmrkuCUEMFiuwhKuFvkWbC5Imco4bj2hUW7BVI29i8QyxkC53ydRfSR9OtbR3KQIyghWiNQ==
+
 react-native-portal-view@^0.0.24:
   version "0.0.24"
   resolved "https://registry.npmjs.org/react-native-portal-view/-/react-native-portal-view-0.0.24.tgz#7943880c57f1a46c1663f649943ac22342aee74f"
@@ -6893,10 +6898,10 @@ react-native-smart-modal@^0.0.11:
     react-native-modal "^11.5.3"
     react-native-portal-view "^0.0.24"
 
-react-native-sqlite-storage@^5.0.0:
+react-native-sqlite-external-storage@^5.0.0:
   version "5.0.0"
-  resolved "https://registry.npmjs.org/react-native-sqlite-storage/-/react-native-sqlite-storage-5.0.0.tgz#fb015c928b59d3000360fb0774a99545e7a695d6"
-  integrity sha512-c1Joq3/tO1nmIcP8SkRZNolPSbfvY8uZg5lXse0TmjIPC0qHVbk96IMvWGyly1TmYCIpxpuDRc0/xCffDbYIvg==
+  resolved "https://registry.npmjs.org/react-native-sqlite-external-storage/-/react-native-sqlite-external-storage-5.0.0.tgz#6708adf4d280beed0d9b6f47d307189874793ceb"
+  integrity sha512-xRqArS8ETERD1ReXz4i1x3HpHlImk1YhXJSQ9hKkY7VuVIbO4aRVzWHdkw9HVCJHTXW5P0aM83fv5zwGUw1fZQ==
 
 react-native-submit-button@^1.0.5:
   version "1.0.5"
