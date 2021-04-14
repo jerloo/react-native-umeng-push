@@ -317,7 +317,7 @@ export default function NewReadScreen() {
   };
 
   const saveData = async () => {
-    if (!newData.reading) {
+    if (!newData.reading && newData.reading !== 0) {
       Toast.fail('请先抄表');
       return;
     } else if (newData.reading > newData.rangeValue) {
@@ -613,15 +613,11 @@ export default function NewReadScreen() {
                   margin: 0,
                 },
               ]}
-              defaultValue={(newData.recordState !== 0
-                ? newData.reading || ''
-                : newData.reading
+              defaultValue={(newData.reading || newData.reading === 0
                 ? newData.reading
                 : ''
               ).toString()}
-              value={(newData.recordState !== 0
-                ? newData.reading || ''
-                : newData.reading
+              value={(newData.reading || newData.reading === 0
                 ? newData.reading
                 : ''
               ).toString()}
@@ -946,7 +942,10 @@ export default function NewReadScreen() {
               }
             }}
             onBackClick={() => {
-              if (newData.reading && newData.reading.toString().length !== 0) {
+              if (
+                (newData.reading || newData.reading === 0) &&
+                newData.reading.toString().length !== 0
+              ) {
                 setValue(
                   newData.reading
                     .toString()
