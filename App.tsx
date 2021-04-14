@@ -107,7 +107,7 @@ function App() {
                     buttonPositive: '确认',
                     buttonNegative: '取消',
                   }).then((r) => {
-                    if (r !== RESULTS.LIMITED) {
+                    if (r !== RESULTS.GRANTED) {
                       BackHandler.exitApp();
                     }
                   });
@@ -155,6 +155,20 @@ function App() {
       },
       (status) => {
         l.info('CodePush syncing status ', status.toString());
+      },
+      (progress) => {
+        Toast.loading(`${progress.receivedBytes}/${progress.totalBytes}`);
+      },
+      (binaryVersion) => {
+        binaryVersion
+          .download((downProgress) => {
+            Toast.loading(
+              `${downProgress.receivedBytes}/${downProgress.totalBytes}`,
+            );
+          })
+          .then((local) => {
+            local.install(CodePush.InstallMode.IMMEDIATE);
+          });
       },
     );
 
