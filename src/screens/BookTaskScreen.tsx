@@ -29,7 +29,10 @@ import {
   useRoute,
 } from '@react-navigation/core';
 import { MainStackParamList } from './routeParams';
-UIManager.setLayoutAnimationEnabledExperimental(false);
+
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(false);
+
 import DeviceInfo from 'react-native-device-info';
 
 export default function BookTaskScreen() {
