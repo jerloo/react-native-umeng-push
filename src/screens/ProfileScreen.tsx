@@ -1,4 +1,4 @@
-import { Toast } from '@ant-design/react-native';
+import { Toast, List, Modal } from '@ant-design/react-native';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import {
@@ -8,6 +8,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Switch,
   Platform,
 } from 'react-native';
 import { BottomSheet, ListItem } from 'react-native-elements';
@@ -32,6 +33,11 @@ import { useNavigation } from '@react-navigation/core';
 import AuthContext from '../utils/contextUtls';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { stat } from 'react-native-fs';
+import {
+  getNewReadSetting,
+  saveNewReadSetting,
+  NewReadSetting,
+} from '../utils/newReadSettingUtils';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -40,6 +46,9 @@ export default function ProfileScreen() {
   const [uploadLogVisible, setUploadLogVisible] = useState(false);
   const [checkVersionVisible, setCheckVersionVisible] = useState(false);
   const [clearCacheVisible, setClearCacheVisible] = useState(false);
+  const [readSettingVisible, setReadSettingVisible] = useState(false);
+  const [settingAlert, setSettingAlert] = useState(true);
+  const [settingVibrate, setSettingVibrate] = useState(true);
   const { signOut }: any = React.useContext(AuthContext);
 
   const fetchSession = async () => {
@@ -52,6 +61,41 @@ export default function ProfileScreen() {
   useEffect(() => {
     fetchSession();
   });
+
+  const fetchReadSetting = async () => {
+    const setting = await getNewReadSetting();
+    if (setting) {
+      setSettingAlert(setting.alert);
+      setSettingVibrate(setting.vibrate);
+    }
+  };
+
+  useEffect(() => {
+    fetchReadSetting();
+  }, []);
+
+  const toggleReadSetting = () => {
+    setReadSettingVisible(!readSettingVisible);
+  };
+
+  const showReadSettingModal = async () => {
+    await fetchReadSetting();
+    toggleReadSetting();
+  };
+
+  const saveReadSetting = async () => {
+    const setting: NewReadSetting = {
+      alert: settingAlert,
+      vibrate: settingVibrate,
+    };
+    await saveNewReadSetting(setting);
+    toggleReadSetting();
+  };
+
+  const footerButtons = [
+    { text: '确定', onPress: () => saveReadSetting() },
+    { text: '取消', onPress: () => toggleReadSetting() },
+  ];
 
   const logout = async () => {
     if (session !== null) {
@@ -219,6 +263,17 @@ export default function ProfileScreen() {
       <View style={styles.block}>
         <TouchableOpacity
           style={styles.blockRow}
+          onPress={() => showReadSettingModal()}>
+          <Text style={styles.textPrimary}>抄表设置</Text>
+          <Text style={styles.textSec} />
+          <Image
+            style={styles.arrowRight}
+            source={require('../assets/btn_arrow_right.png')}
+          />
+        </TouchableOpacity>
+        <View style={styles.divideLine} />
+        <TouchableOpacity
+          style={styles.blockRow}
           onPress={() => setUploadLogVisible(true)}>
           <Text style={styles.textPrimary}>日志上传</Text>
           <Text style={styles.textSec} />
@@ -349,6 +404,42 @@ export default function ProfileScreen() {
           </ListItem>
         </View>
       </BottomSheet>
+      <Modal
+        title="抄表设置"
+        transparent
+        onClose={() => toggleReadSetting()}
+        maskClosable={false}
+        visible={readSettingVisible}
+        footer={footerButtons}>
+        <List.Item
+          extra={
+            <Switch
+              trackColor={{ false: '#767577', true: '#81b0ff' }}
+              thumbColor={settingAlert ? '#f4f3f4' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={() =>
+                setSettingAlert((previousState) => !previousState)
+              }
+              value={settingAlert}
+            />
+          }>
+          异常水量弹窗
+        </List.Item>
+        <List.Item
+          extra={
+            <Switch
+              trackColor={{ false: '#767577', true: '#81b0ff' }}
+              thumbColor={settingVibrate ? '#f4f3f4' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={() =>
+                setSettingVibrate((previousState) => !previousState)
+              }
+              value={settingVibrate}
+            />
+          }>
+          异常水量振动
+        </List.Item>
+      </Modal>
     </View>
   );
 }

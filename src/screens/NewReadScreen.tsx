@@ -246,6 +246,7 @@ export default function NewReadScreen() {
         if (newData.recordState === 0) {
           newData.recordState = 1;
           newData.readWater = water;
+          newData.readDate = new Date();
           await db.readData(newData);
           await db.updateReadingNumberByBookId(newData.bookId);
 
@@ -260,30 +261,49 @@ export default function NewReadScreen() {
         resolve(true);
       } else {
         if (result === WATER_HIGHER || result === WATER_LOWER) {
-          vibrate();
-          AntModal.alert('重新选择', result, [
-            {
-              text: '否',
-              onPress: async () => {
-                newData.readWater = water;
-                newData.recordState = 1;
-                await db.readData(newData);
-                await db.updateReadingNumberByBookId(newData.bookId);
+          if (route.params.setting?.vibrate) {
+            vibrate();
+          }
+          if (route.params.setting?.alert) {
+            AntModal.alert('重新选择', result, [
+              {
+                text: '否',
+                onPress: async () => {
+                  newData.readWater = water;
+                  newData.recordState = 1;
+                  newData.readDate = new Date();
+                  await db.readData(newData);
+                  await db.updateReadingNumberByBookId(newData.bookId);
 
-                const index = bookDataItems.findIndex(
-                  (it) => it.custId === newData.custId,
-                );
-                bookDataItems[index] = newData;
-                setBookDataItems(bookDataItems);
+                  const index = bookDataItems.findIndex(
+                    (it) => it.custId === newData.custId,
+                  );
+                  bookDataItems[index] = newData;
+                  setBookDataItems(bookDataItems);
 
-                resolve(true);
+                  resolve(true);
+                },
               },
-            },
-            {
-              text: '是',
-              onPress: () => resolve(false),
-            },
-          ]);
+              {
+                text: '是',
+                onPress: () => resolve(false),
+              },
+            ]);
+          } else {
+            newData.readWater = water;
+            newData.recordState = 1;
+            newData.readDate = new Date();
+            await db.readData(newData);
+            await db.updateReadingNumberByBookId(newData.bookId);
+
+            const index = bookDataItems.findIndex(
+              (it) => it.custId === newData.custId,
+            );
+            bookDataItems[index] = newData;
+            setBookDataItems(bookDataItems);
+
+            resolve(true);
+          }
         } else {
           AntModal.alert('提示', result, [
             {
@@ -297,7 +317,7 @@ export default function NewReadScreen() {
   };
 
   const saveData = async () => {
-    if (!newData.reading) {
+    if (!newData.reading && newData.reading !== 0) {
       Toast.fail('请先抄表');
       return;
     } else if (newData.reading > newData.rangeValue) {
@@ -312,7 +332,6 @@ export default function NewReadScreen() {
       newData.recordState = 1;
       if (!result) {
         newData.readWater = water;
-        newData.lastReadDate = new Date();
         newData.readDate = new Date();
         await db.readData(newData);
         await db.updateReadingNumberByBookId(newData.bookId);
@@ -333,39 +352,63 @@ export default function NewReadScreen() {
         );
       } else {
         if (result === WATER_HIGHER || result === WATER_LOWER) {
-          vibrate();
-          AntModal.alert('重新选择', result, [
-            {
-              text: '否',
-              onPress: async () => {
-                console.log('水量', water);
-                newData.readWater = water;
-                newData.lastReadDate = new Date();
-                newData.readDate = new Date();
-                newData.recordState = 1;
-                await db.readData(newData);
-                await db.updateReadingNumberByBookId(newData.bookId);
-                setNewData({ ...newData });
+          if (route.params.setting?.vibrate) {
+            vibrate();
+          }
+          if (route.params.setting?.alert) {
+            AntModal.alert('重新选择', result, [
+              {
+                text: '否',
+                onPress: async () => {
+                  console.log('水量', water);
+                  newData.readWater = water;
+                  newData.readDate = new Date();
+                  newData.recordState = 1;
+                  await db.readData(newData);
+                  await db.updateReadingNumberByBookId(newData.bookId);
+                  setNewData({ ...newData });
 
-                const index = bookDataItems.findIndex(
-                  (it) => it.custId === newData.custId,
-                );
-                bookDataItems[index] = newData;
-                setBookDataItems(bookDataItems);
+                  const index = bookDataItems.findIndex(
+                    (it) => it.custId === newData.custId,
+                  );
+                  bookDataItems[index] = newData;
+                  setBookDataItems(bookDataItems);
 
-                tryUploadAttachments(
-                  newData.custId,
-                  newData.billMonth,
-                  newData.readTimes,
-                  attachments,
-                );
+                  tryUploadAttachments(
+                    newData.custId,
+                    newData.billMonth,
+                    newData.readTimes,
+                    attachments,
+                  );
+                },
               },
-            },
-            {
-              text: '是',
-              onPress: () => console.log('cancel'),
-            },
-          ]);
+              {
+                text: '是',
+                onPress: () => console.log('cancel'),
+              },
+            ]);
+          } else {
+            console.log('水量', water);
+            newData.readWater = water;
+            newData.readDate = new Date();
+            newData.recordState = 1;
+            await db.readData(newData);
+            await db.updateReadingNumberByBookId(newData.bookId);
+            setNewData({ ...newData });
+
+            const index = bookDataItems.findIndex(
+              (it) => it.custId === newData.custId,
+            );
+            bookDataItems[index] = newData;
+            setBookDataItems(bookDataItems);
+
+            tryUploadAttachments(
+              newData.custId,
+              newData.billMonth,
+              newData.readTimes,
+              attachments,
+            );
+          }
         } else {
           AntModal.alert('提示', result, [
             {
@@ -570,15 +613,11 @@ export default function NewReadScreen() {
                   margin: 0,
                 },
               ]}
-              defaultValue={(newData.recordState !== 0
-                ? newData.reading || ''
-                : newData.reading
+              defaultValue={(newData.reading || newData.reading === 0
                 ? newData.reading
                 : ''
               ).toString()}
-              value={(newData.recordState !== 0
-                ? newData.reading || ''
-                : newData.reading
+              value={(newData.reading || newData.reading === 0
                 ? newData.reading
                 : ''
               ).toString()}
@@ -903,7 +942,10 @@ export default function NewReadScreen() {
               }
             }}
             onBackClick={() => {
-              if (newData.reading && newData.reading.toString().length !== 0) {
+              if (
+                (newData.reading || newData.reading === 0) &&
+                newData.reading.toString().length !== 0
+              ) {
                 setValue(
                   newData.reading
                     .toString()

@@ -6,9 +6,11 @@ import {
   StyleSheet,
   ImageSourcePropType,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 import { colorWhite } from '../../styles';
+import { useNavigation } from '@react-navigation/core';
 
 interface Props {
   onBack?: () => void;
@@ -20,6 +22,7 @@ interface Props {
 }
 
 export default function BooksBackTitleBar(props: Props) {
+  const navigation = useNavigation();
   return (
     <View style={styles.titleBar}>
       <TouchableWithoutFeedback onPress={() => props.onBack && props.onBack()}>
@@ -29,6 +32,12 @@ export default function BooksBackTitleBar(props: Props) {
             props.leftIcon ||
             require('../../assets/qietu/cebenxiangqing/book_details_icon_back_normal.png')
           }
+        />
+      </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
+        <Image
+          style={styles.titleBarHomeButton}
+          source={require('../../assets/home.png')}
         />
       </TouchableWithoutFeedback>
 
@@ -71,6 +80,11 @@ const styles = StyleSheet.create({
     width: scaleSize(32),
     height: scaleSize(32),
     // alignSelf: 'flex-start',
+  },
+  titleBarHomeButton: {
+    width: scaleSize(32),
+    height: scaleSize(32),
+    marginLeft: scaleSize(30),
   },
   titleBarTitle: {
     fontSize: scaleSize(40),

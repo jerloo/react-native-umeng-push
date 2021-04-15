@@ -31,6 +31,8 @@ import {
 import { MainStackParamList } from './routeParams';
 import { BookSortIndexDto } from '../../apiclient/src/models/book-sort-index-dto';
 import db from '../data/database';
+import SearchBox from '../components/SearchBox';
+import { l } from '../utils/logUtils';
 
 export default function BookTaskSortScreen() {
   const route = useRoute<RouteProp<MainStackParamList, 'BookTaskSort'>>();
@@ -40,7 +42,10 @@ export default function BookTaskSortScreen() {
     [],
   );
   const itemRefs = new Map<number, SwipeableItem<PdaReadDataDtoHolder>>();
+  // const fRef = React.useRef<DraggableFlatList<PdaReadDataDtoHolder[]>>(null);
+  const fRef = React.useRef(null);
   const [changedIndex, setChangedIndex] = useState(-1);
+  const [searching, setSearching] = useState(false);
 
   useEffect(() => {
     const { bookId } = route.params;
@@ -215,7 +220,31 @@ export default function BookTaskSortScreen() {
     );
   };
 
-  const onSearchButtonClick = () => {};
+  const findIndex = (data: PdaReadDataDtoHolder[], text: string) => {
+    return data.findIndex(
+      (it) =>
+        (it.item?.custName || '').indexOf(text) > -1 ||
+        (it.item?.custCode?.toString() || '').indexOf(text) > -1 ||
+        (it.item?.custAddress || '').indexOf(text) > -1,
+    );
+  };
+
+  const onSearch = (text: string) => {
+    const index = findIndex(bookSortItems, text);
+    l.debug('搜索项目下标', index);
+    if (index > -1) {
+      // @ts-ignore
+      fRef.current?.flatlistRef.current._component.scrollToIndex({
+        animated: true,
+        index: index,
+      });
+    }
+    setSearching(false);
+  };
+
+  const onSearchButtonClick = () => {
+    setSearching(true);
+  };
 
   const onBack = () => {
     if (changedIndex > -1) {
@@ -248,13 +277,21 @@ export default function BookTaskSortScreen() {
         colors={['#4888E3', '#2567E5']}
         style={styles.topContainer}>
         <SafeAreaView edges={['right', 'top', 'left']}>
-          <BooksBackTitleBar
-            onRightClick={onSearchButtonClick}
-            title={`${route.params.title}册本`}
-            onBack={onBack}
-            titleColor={colorWhite}
-            rightIcon={require('../assets/qietu/cebenxiangqing/book_details_icon_query_normal.png')}
-          />
+          {searching ? (
+            <SearchBox
+              style={styles.searchContainer}
+              placeholderTextColor={colorWhite}
+              onSearch={onSearch}
+            />
+          ) : (
+            <BooksBackTitleBar
+              onRightClick={onSearchButtonClick}
+              title={`${route.params.title}册本`}
+              onBack={onBack}
+              titleColor={colorWhite}
+              rightIcon={require('../assets/qietu/cebenxiangqing/book_details_icon_query_normal.png')}
+            />
+          )}
         </SafeAreaView>
       </LinearGradient>
 
@@ -270,6 +307,7 @@ export default function BookTaskSortScreen() {
           paddingBottom: scaleSize(30),
           paddingTop: scaleSize(18),
         }}
+        ref={fRef}
         onDragEnd={({ data, from, to }) => {
           if (from > changedIndex) {
             setChangedIndex(from);
@@ -296,6 +334,10 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     paddingBottom: scaleSize(30),
+  },
+  searchContainer: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    marginHorizontal: scaleSize(30),
   },
   rowHidden: {
     display: 'flex',

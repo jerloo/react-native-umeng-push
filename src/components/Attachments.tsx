@@ -38,14 +38,18 @@ export default function Attachments({
                 source={{ uri: info.item.filePath }}
               />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={() => onPhotoDeleteClick(info.item)}>
-              <Image
-                style={styles.deleteIcon}
-                source={require('../assets/qietu/chaobiaoluru/enter_icon_idelete_normal.png')}
-              />
-            </TouchableOpacity>
+            {!info.item.uploaded ? (
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => onPhotoDeleteClick(info.item)}>
+                <Image
+                  style={styles.deleteIcon}
+                  source={require('../assets/qietu/chaobiaoluru/enter_icon_idelete_normal.png')}
+                />
+              </TouchableOpacity>
+            ) : (
+              <></>
+            )}
           </View>
         ) : (
           <TouchableOpacity
@@ -75,14 +79,18 @@ export default function Attachments({
                 source={{ uri: info.item.filePath }}
               />
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => onPhotoDeleteClick(info.item)}
-              style={styles.deleteButton}>
-              <Image
-                style={styles.deleteIcon}
-                source={require('../assets/qietu/chaobiaoluru/enter_icon_idelete_normal.png')}
-              />
-            </TouchableOpacity>
+            {!info.item.uploaded ? (
+              <TouchableOpacity
+                onPress={() => onPhotoDeleteClick(info.item)}
+                style={styles.deleteButton}>
+                <Image
+                  style={styles.deleteIcon}
+                  source={require('../assets/qietu/chaobiaoluru/enter_icon_idelete_normal.png')}
+                />
+              </TouchableOpacity>
+            ) : (
+              <></>
+            )}
           </View>
         ) : (
           <TouchableOpacity
