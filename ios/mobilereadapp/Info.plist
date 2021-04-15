@@ -66,5 +66,9 @@
 		<string>YOUR TEXT</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
 		<string>YOUR TEXT</string>
+		<key>CodePushDeploymentKey</key>
+		<string>a2IeOdfbWPSOc6sF6UqCofQjluSv4ksvOXqog</string>
+		<key>CodePushServerUrl</key>
+		<string>http://codepush.mashangjiama.com</string>
 	</dict>
 </plist>
