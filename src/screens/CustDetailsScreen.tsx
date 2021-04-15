@@ -414,8 +414,9 @@ export default function CustDetailsScreen() {
 
   const onPayButtonClick = () => {
     if (
-      details?.billingInfos?.filter((it) => it.payState === 0 && it.lateFee > 0)
-        .length === 0
+      details?.billingInfos?.filter(
+        (it) => it.payState === 0 && it.extendedAmount > 0,
+      ).length === 0
     ) {
       Toast.info('当前未欠费');
     } else {

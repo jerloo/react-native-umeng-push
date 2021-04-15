@@ -3,7 +3,7 @@ import { l } from './logUtils';
 import { getAlgorithmByReadStateId } from './statesUtils';
 
 export const normalCalc = (data: PdaReadDataDto): number => {
-  if (!data.reading) {
+  if (!data.reading && data.reading !== 0) {
     throw new Error('本次抄码不能为空');
   }
   const result = data.reading - data.lastReading + data.replaceWater;
@@ -92,7 +92,7 @@ export const judgeReadWater = (
   data: PdaReadDataDto,
   readStates: PdaReadStateDto[],
 ) => {
-  if (!data.reading) {
+  if (!data.reading && data.reading !== 0) {
     return '本次抄码不能为空';
   }
   if (data.rangeValue <= data.reading) {

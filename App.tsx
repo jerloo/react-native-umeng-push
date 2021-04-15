@@ -47,6 +47,7 @@ import {
   openSettings,
 } from 'react-native-permissions';
 import { BackHandler } from 'react-native';
+import db from './src/data/database';
 
 Toast.config({ duration: 1.5 });
 
@@ -109,6 +110,8 @@ function App() {
                   }).then((r) => {
                     if (r !== RESULTS.GRANTED) {
                       BackHandler.exitApp();
+                    } else {
+                      db.ensure();
                     }
                   });
                 },
@@ -120,6 +123,7 @@ function App() {
             break;
           case RESULTS.GRANTED:
             l.info('The permission is granted');
+            db.ensure();
             break;
           case RESULTS.BLOCKED:
             l.info('The permission is denied and not requestable anymore');

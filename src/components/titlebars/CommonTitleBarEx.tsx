@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
 import { colorWhite } from '../../styles';
+import { useNavigation } from '@react-navigation/core';
 
 interface Props {
   onBack?: () => void;
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export default function CommonTitleBarEx(props: Props) {
+  const navigation = useNavigation();
   return (
     <View style={styles.titleBar}>
       <View style={styles.rightContainer}>
@@ -37,10 +39,18 @@ export default function CommonTitleBarEx(props: Props) {
             }
           />
         </TouchableOpacity>
+        {/*<TouchableOpacity*/}
+        {/*  style={styles.button}*/}
+        {/*  onPress={() => props.onBack && props.onBack()}>*/}
+        {/*  <View style={styles.titleBarBackButton} />*/}
+        {/*</TouchableOpacity>*/}
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => props.onBack && props.onBack()}>
-          <View style={styles.titleBarBackButton} />
+          style={[styles.button, styles.homeButton]}
+          onPress={() => navigation.navigate('Home')}>
+          <Image
+            style={styles.titleBarBackButton}
+            source={require('../../assets/home.png')}
+          />
         </TouchableOpacity>
       </View>
 
@@ -103,6 +113,9 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: scaleSize(10),
+  },
+  homeButton: {
+    marginLeft: scaleSize(10),
   },
   titleBar: {
     backgroundColor: 'transparent',
