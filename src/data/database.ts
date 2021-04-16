@@ -14,12 +14,13 @@ import {
   PdaReadingRecordHolder,
 } from './holders';
 import { AttachmentDbItem, BookAttachmentsTotal } from './models';
+import RNFS from 'react-native-fs';
 
 SQLite.DEBUG(process.env.NODE_ENV !== 'production');
 SQLite.enablePromise(true);
 
 const database_name = 'mobile-read-app.db';
-
+const databaseDir = '/mobilereadapp/data';
 class DataBase {
   db: SQLite.SQLiteDatabase | undefined;
 
@@ -27,7 +28,7 @@ class DataBase {
     SQLite.openDatabase({
       name: database_name,
       location: 'default',
-      createFromLocation: database_name,
+      createFromLocation: `${databaseDir}/${database_name}`,
     })
       .then((DB) => {
         this.db = DB;

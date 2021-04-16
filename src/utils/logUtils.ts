@@ -10,7 +10,8 @@ import * as uuid from 'uuid';
 
 // /handa/202101/zhangsa/2021-02-05-{uuid}.log.txt
 export const currentLogFileName = `${dayjs().format('YYYY-MM-DD')}.log.txt`;
-export const currentLogFileDir = RNFS.CachesDirectoryPath;
+export const currentLogFileDir =
+  RNFS.ExternalStorageDirectoryPath + '/mobilereadapp/logs';
 export const currentLogFilePath = currentLogFileDir + '/' + currentLogFileName;
 
 export const getObjectKey = async () => {
@@ -18,18 +19,17 @@ export const getObjectKey = async () => {
   const username = session?.userInfo.userName;
   const dtYearMonth = dayjs().format('YYYYMM');
   // /handa/202101/zhangsa/2021-02-05-{uuid}.log.txt
-  return `mobilereadapp/${
-    session?.tenantName
-  }/${dtYearMonth}/${username}/${dayjs().format(
-    'YYYY-MM-DD',
-  )}-${uuid.v4().toString().replace('-', '')}.log.txt`;
+  return `mobilereadapp/${session?.tenantName
+    }/${dtYearMonth}/${username}/${dayjs().format(
+      'YYYY-MM-DD',
+    )}-${uuid.v4().toString().replace('-', '')}.log.txt`;
 };
 
-// RNFS.exists(currentLogFileDir).then((value) => {
-//   if (!value) {
-//     RNFS.mkdir(currentLogFileDir);
-//   }
-// });
+RNFS.exists(currentLogFileDir).then((value) => {
+  if (!value) {
+    RNFS.mkdir(currentLogFileDir);
+  }
+});
 
 const defaultConfig = {
   severity: 'debug',

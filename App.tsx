@@ -38,7 +38,7 @@ import PaymentSubtotalScreen from './src/screens/PaymentSubtotalScreen';
 import LogViewScreen from './src/screens/LogViewScreen';
 import PaymentDetailsScreen from './src/screens/PaymentScreen';
 import CodePush from 'react-native-code-push';
-import { l } from './src/utils/logUtils';
+import { currentLogFileDir, l } from './src/utils/logUtils';
 import {
   check,
   request,
@@ -48,6 +48,7 @@ import {
 } from 'react-native-permissions';
 import { BackHandler } from 'react-native';
 import db from './src/data/database';
+import RNFS from 'react-native-fs';
 
 Toast.config({ duration: 1.5 });
 
@@ -112,6 +113,11 @@ function App() {
                       BackHandler.exitApp();
                     } else {
                       db.ensure();
+                      RNFS.exists(currentLogFileDir).then((value) => {
+                        if (!value) {
+                          RNFS.mkdir(currentLogFileDir);
+                        }
+                      });
                     }
                   });
                 },
@@ -124,6 +130,11 @@ function App() {
           case RESULTS.GRANTED:
             l.info('The permission is granted');
             db.ensure();
+            RNFS.exists(currentLogFileDir).then((value) => {
+              if (!value) {
+                RNFS.mkdir(currentLogFileDir);
+              }
+            });
             break;
           case RESULTS.BLOCKED:
             l.info('The permission is denied and not requestable anymore');
