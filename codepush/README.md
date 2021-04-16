@@ -1,6 +1,6 @@
-# docker 部署 code-push-server
+# docker 部署热更新服务器
 
->该文档用于描述docker部署code-push-server，实例包含三个部分
+> 该文档用于描述docker部署code-push-server，实例包含三个部分
 
 - code-push-server部分
   - 更新包默认采用`local`存储(即存储在本地机器上)。使用docker volume存储方式，容器销毁不会导致数据丢失，除非人为删除volume。
@@ -25,18 +25,11 @@
 
 `$ docker info` 能成功输出相关信息，则安装成功，才能继续下面步骤
 
-## 启动swarm
-
-```shell
-$ sudo docker swarm init
-```
-
-
 ## 获取代码
 
 ```shell
-$ git clone https://github.com/lisong/code-push-server.git
-$ cd code-push-server/docker
+$ git clone git@gitee.com:h3_1/mobile-read-app.git
+$ cd codepush
 ```
 
 ## 修改配置文件
@@ -46,10 +39,6 @@ $ vim docker-compose.yml
 ```
 
 *将`DOWNLOAD_URL`中`YOU_MACHINE_IP`替换成本机外网ip或者域名*
-
-*将`MYSQL_HOST`中`YOU_MACHINE_IP`替换成本机内网ip*
-
-*将`REDIS_HOST`中`YOU_MACHINE_IP`替换成本机内网ip*
 
 ## jwt.tokenSecret修改
 
@@ -62,7 +51,7 @@ $ vim docker-compose.yml
 ## 部署
 
 ```shell
-$ sudo docker stack deploy -c docker-compose.yml code-push-server
+$ docker-compose up -d
 ```
 
 > 如果网速不佳，需要漫长而耐心的等待。。。去和妹子聊会天吧^_^
@@ -71,10 +60,7 @@ $ sudo docker stack deploy -c docker-compose.yml code-push-server
 ## 查看进展
 
 ```shell
-$ sudo docker service ls
-$ sudo docker service ps code-push-server_db
-$ sudo docker service ps code-push-server_redis
-$ sudo docker service ps code-push-server_server
+$ docker-compose ps
 ```
 
 > 确认`CURRENT STATE` 为 `Running about ...`, 则已经部署完成
@@ -115,23 +101,20 @@ $ redis-cli -p6388  # 进入redis
 ## 查看服务日志
 
 ```shell
-$ sudo docker service logs code-push-server_server
-$ sudo docker service logs code-push-server_db
-$ sudo docker service logs code-push-server_redis
+$ docker-compose logs
 ```
 
 ## 查看存储 `docker volume ls`
 
-DRIVER | VOLUME NAME |  描述    
------- | ----- | -------
-local  | code-push-server_data-mysql | 数据库存储数据目录
-local  | code-push-server_data-storage | 存储打包文件目录
-local  | code-push-server_data-tmp | 用于计算更新包差异文件临时目录
-local  | code-push-server_data-redis | redis落地数据
+| DRIVER | VOLUME NAME                   | 描述                           |
+| ------ | ----------------------------- | ------------------------------ |
+| local  | code-push-server_data-mysql   | 数据库存储数据目录             |
+| local  | code-push-server_data-storage | 存储打包文件目录               |
+| local  | code-push-server_data-tmp     | 用于计算更新包差异文件临时目录 |
+| local  | code-push-server_data-redis   | redis落地数据                  |
 
 ## 销毁退出应用
 
 ```bash
-$ sudo docker stack rm code-push-server
-$ sudo docker swarm leave --force
+$ docker-compose rm
 ```

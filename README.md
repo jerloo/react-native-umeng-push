@@ -93,3 +93,81 @@ http://mobilereadtransfer.yuncloudtech.cn/index.html
 | handa    | malp   | Mobile_2021!.  |
 | shhd     | 306    | Mobile_2021!.T |
 | handa    | xush   | 1q2w3E*        |
+
+## 热更新服务
+
+### 服务端部署
+
+获取代码
+
+```shell
+$ git clone git@gitee.com:h3_1/mobile-read-app.git
+$ cd codepush
+```
+
+修改 `docker-compose.yml` 中的 `DOWNLOAD_URL` 为真实服务器IP地址
+
+启动服务
+```console
+docker-compose up -d
+```
+
+不断输入下面命令,查看服务部署状态,等待完成
+```console
+docker-compose ps 
+```
+
+详细配置和步骤见服务端部署文档[codepush](codepush/README.md)
+
+### 客户端配置
+
+#### 安装操作命令行
+
+在操作员的电脑中安装
+
+```console
+yarn global add code-push-cli@2.1.9 # 重要: 只允许安装此版本的命令行,不允许升级
+```
+打开浏览器,输入服务器地址包含端口 `SERVER_URL_WITH_PORT`
+登录后获取token
+```console
+code-push login SERVER_URL_WITH_PORT
+```
+填入 token 完成登录
+
+```console
+$ code-push app add CodePushDemoiOS ios react-native #创建iOS版, 获取Production DeploymentKey
+$ code-push app add CodePushDemoAndroid android react-native #创建android版，获取获取Production DeploymentKey
+```
+
+#### iOS 配置
+
+编辑`Info.plist`文件，添加`CodePushDeploymentKey`和`CodePushServerURL`
+
+1. `CodePushDeploymentKey`值设置为CodePushDemo-ios的Production DeploymentKey值。
+
+2. `CodePushServerURL`值设置为code-push-server服务地址 http://YOUR_CODE_PUSH_SERVER_IP:3000/ 不在同一台机器的时候，请将YOUR_CODE_PUSH_SERVER_IP改成外网ip或者域名地址。
+
+3. 将默认版本号1.0改成三位1.0.0
+
+```xml
+...
+<key>CodePushDeploymentKey</key>
+<string>YourCodePushKey</string>
+<key>CodePushServerURL</key>
+<string>YourCodePushServerUrl</string>
+...
+```
+
+#### android 配置
+
+编辑`andriod/app/src/main/res/values/strings.xml`
+
+```xml
+<resources>
+    <string name="app_name">云抄表</string>
+    <string name="CodePushDeploymentKey">a2IeOdfbWPSOc6sF6UqCofQjluSv4ksvOXqog</string>
+    <string name="CodePushServerUrl">http://codepush.mashangjiama.com</string>
+</resources>
+```
+
