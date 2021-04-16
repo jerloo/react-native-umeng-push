@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "bundle-ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.js  --platform ios --dev false --bundle-output ./ios/bundle/index.ios.jsbundle --assets-dest ./ios/bundle"
   },
   "dependencies": {
     "@ant-design/icons-react-native": "^2.2.1",
@@ -41,13 +42,12 @@
     "react-native-device-info": "^8.0.1",
     "react-native-draggable-flatlist": "^2.5.4",
     "react-native-elements": "^3.1.0",
-    "react-native-fetch-blob": "^0.10.8",
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-get-random-values": "^1.6.0",
     "react-native-image-marker": "^0.6.1",
     "react-native-image-picker": "^3.2.1",
-    "react-native-lighting": "^1.2.1",
+    "react-native-lighting": "^1.2.2",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-logs": "^3.0.2",
     "react-native-permissions": "^3.0.1",
@@ -66,6 +66,7 @@
     "react-native-vector-icons": "^8.0.0",
     "react-native-video": "^5.1.1",
     "rn-animated-loading-button": "^1.0.4",
+    "rn-fetch-blob": "0.10.16",
     "uuid": "^8.3.2",
     "yarn": "^1.22.10"
   },
