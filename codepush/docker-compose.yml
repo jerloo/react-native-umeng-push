@@ -9,7 +9,7 @@ services:
     environment:
       DOWNLOAD_URL: 'http://192.168.31.95:3000/download'
       MYSQL_HOST: 'db'
-      MYSQL_PORT: '3308'
+      MYSQL_PORT: '3306'
       MYSQL_USERNAME: 'codepush'
       MYSQL_PASSWORD: '123456'
       MYSQL_DATABASE: 'codepush'
@@ -18,7 +18,7 @@ services:
       NODE_ENV: 'production'
       CONFIG_FILE: '/config.js'
       REDIS_HOST: 'redis'
-      REDIS_PORT: '6388'
+      REDIS_PORT: '6379'
     deploy:
       resources:
         limits:
@@ -28,34 +28,27 @@ services:
         condition: on-failure
     ports:
       - '3000:3000'
-    networks:
-      - servernet
     depends_on:
       - db
       - redis
+    links:
+      - 'db:db'
+      - 'redis:redis'
   db:
     image: mysql:5.7.23
     volumes:
       - data-mysql:/var/lib/mysql
       - ./sql/codepush-all.sql:/docker-entrypoint-initdb.d/codepush-all.sql
     ports:
-      - '3308:3306'
+      - '3310:3306'
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'On'
-    networks:
-      - dbnet
   redis:
     image: redis:4.0.11-alpine
     volumes:
       - data-redis:/data
     ports:
       - '6388:6379'
-    networks:
-      - redisnet
-networks:
-  servernet:
-  dbnet:
-  redisnet:
 volumes:
   data-storage:
   data-tmp:
