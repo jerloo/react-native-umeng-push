@@ -126,7 +126,7 @@ docker-compose ps
 在操作员的电脑中安装
 
 ```console
-yarn global add code-push-cli@2.1.9 # 重要: 只允许安装此版本的命令行,不允许升级
+npm install -g code-push-cli@2.1.9 # 重要: 只允许安装此版本的命令行,不允许升级
 ```
 打开浏览器,输入服务器地址包含端口 `SERVER_URL_WITH_PORT`
 登录后获取token
@@ -171,3 +171,13 @@ $ code-push app add CodePushDemoAndroid android react-native #创建android版�
 </resources>
 ```
 
+#### 发布更新到服务上
+
+iOS和android要分开发布，所以创建了CodePushDemo-ios和CodePushDemo-android应用
+
+```console
+$ code-push release-react CodePushDemo-ios ios -d Production #iOS版
+$ code-push release-react CodePushDemo-android android -d Production #android版
+```
+
+其中CodePushDemo-ios为创建的应用名称
