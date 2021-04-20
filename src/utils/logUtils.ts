@@ -30,6 +30,7 @@ export const getObjectKey = async () => {
 
 RNFS.exists(currentLogFileDir).then((value) => {
   if (!value) {
+    console.log('create currentLogFileDir', currentLogFileDir);
     RNFS.mkdir(currentLogFileDir);
   }
 });

@@ -247,11 +247,11 @@ const styles = StyleSheet.create({
   textTitleNew: {
     color: '#333333',
     fontSize: scaleSize(34),
-    alignSelf: 'flex-start',
+    // alignSelf: 'flex-start',
     minWidth: scaleSize(136),
     textAlign: 'right',
     // backgroundColor: 'black',
-    height: '100%',
+    // height: '100%',
     textAlignVertical: 'center',
   },
   divideLine: {

@@ -70,5 +70,13 @@
 		<string>a2IeOdfbWPSOc6sF6UqCofQjluSv4ksvOXqog</string>
 		<key>CodePushServerUrl</key>
 		<string>http://codepush.mashangjiama.com</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>baidumap</string>
+			<string>iosamap</string>
+			<string>amap</string>
+			<string>amapuri</string>
+			<string>qqmap</string>
+		</array>
 	</dict>
 </plist>
