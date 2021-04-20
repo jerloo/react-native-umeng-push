@@ -193,9 +193,10 @@ export default function ProfileScreen() {
       await Caches.runClearCache();
       l.info('清理缓存成功');
       Toast.success('清理缓存成功');
-    } catch {
-      l.info('清理缓存失败');
+    } catch (e) {
+      l.error('清理缓存失败');
       Toast.success('清理缓存失败');
+      l.error(e);
     }
   };
 

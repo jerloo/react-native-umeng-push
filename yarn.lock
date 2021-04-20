@@ -6680,10 +6680,10 @@ react-native-animated-loading-button@^1.0.1:
   resolved "https://registry.npmjs.org/react-native-animated-loading-button/-/react-native-animated-loading-button-1.0.1.tgz#966a5241a4379ef98ed6c8aa2e16d5d62504734e"
   integrity sha512-zkXd0oY4wzu7FPRSgbAsF0RKUm1ZDZV1NZeeqK4gJSe/Zrj8/tjEt5DTQf5OnvwRkaxaRvEPgW/UkAjipBqPfA==
 
-react-native-caches@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/react-native-caches/-/react-native-caches-1.0.1.tgz#dced8f479b24ee1be54e0648a5dce8778580aef6"
-  integrity sha512-Maad30jjBCGiTjnEGvNuWrGNpPCfuLg5Ymb3Eun6ZQ6T7a7f5eNcq9+9xtAAD5B5zfQrJYIsFvnJ9MliEJr2OQ==
+react-native-caches@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/react-native-caches/-/react-native-caches-1.2.0.tgz#ea71d1873bb7deb04c5a2fb2e1863ded09e9ac43"
+  integrity sha512-RkoqwCkXggwNN739nQctxiILVaicSo/pFkChESRRGOmK2EyuKiPeFZ73BTeLm3hpDFfT4TBYtiZ5iu9H3Qeacg==
 
 react-native-camera@^3.43.0:
   version "3.43.0"
