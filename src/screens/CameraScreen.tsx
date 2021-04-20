@@ -60,7 +60,9 @@ export default function CameraScreen() {
       scale: 1,
       quality: 100,
     }).then((path) => {
-      return Platform.OS === 'android' ? 'file://' + path : path;
+      return Platform.OS === 'android'
+        ? 'file://' + path
+        : path.replace('file://', '');
     });
   };
 

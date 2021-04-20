@@ -16,6 +16,8 @@ target 'mobilereadapp' do
   pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
   pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly"
+  
+  pod 'RNImageMarker', :path => '../node_modules/react-native-image-marker'
 
 
   target 'mobilereadappTests' do

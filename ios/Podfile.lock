@@ -264,7 +264,7 @@ PODS:
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
   - React-jsinspector (0.63.4)
-  - react-native-caches (1.0.1):
+  - react-native-caches (1.2.0):
     - React
   - react-native-camera (3.43.0):
     - React-Core
@@ -668,7 +668,7 @@ SPEC CHECKSUMS:
   React-jsi: a0418934cf48f25b485631deb27c64dc40fb4c31
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
-  react-native-caches: 28bd883d4294fe0a1381eb85b11ff5be3b05d956
+  react-native-caches: 5bd7b784e456b3be185e9056543594981c191bdf
   react-native-camera: f432fcf1b32b528bbf7c3543d3e3b1deb0c5b72a
   react-native-cameraroll: 1965db75c851b15e77a22ca0ac78e32af6b571ae
   react-native-get-random-values: f0fc24a5887a3341589515a86282a574407b59e4
@@ -710,6 +710,6 @@ SPEC CHECKSUMS:
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 184ef4eb6bee7bd9ad5f011b3080bfea9f7b8c57
+PODFILE CHECKSUM: 12be436c1dc7962eced78cdc3fc83e0331d455f7
 
 COCOAPODS: 1.10.1
