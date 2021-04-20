@@ -7,11 +7,14 @@ import RNFS from 'react-native-fs';
 import dayjs from 'dayjs';
 import { getSession } from './sesstionUtils';
 import * as uuid from 'uuid';
+import { Platform } from 'react-native';
 
 // /handa/202101/zhangsa/2021-02-05-{uuid}.log.txt
 export const currentLogFileName = `${dayjs().format('YYYY-MM-DD')}.log.txt`;
 export const currentLogFileDir =
-  RNFS.ExternalStorageDirectoryPath + '/mobilereadapp/logs';
+  Platform.OS === 'android'
+    ? RNFS.ExternalStorageDirectoryPath
+    : RNFS.DocumentDirectoryPath + '/mobilereadapp/logs';
 export const currentLogFilePath = currentLogFileDir + '/' + currentLogFileName;
 
 export const getObjectKey = async () => {
