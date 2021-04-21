@@ -95,13 +95,13 @@ export default function NewReadScreen() {
   }, [data]);
 
   useEffect(() => {
-    db.getAttachments(data.custId, data.readTimes, data.billMonth).then((r) => {
+    db.getAttachments(data.custId, data.readTimes, data.billMonth).then(r => {
       setAttachments(r);
     });
   }, [data.billMonth, data.custId, data.readTimes]);
 
   useEffect(() => {
-    getSystemSettings().then((r) => {
+    getSystemSettings().then(r => {
       if (r) {
         setMustTakePhoto(r.isMobileReadingMustPhoto);
         setCanCharge(r.isMobileReadingCanCharge);
@@ -110,18 +110,18 @@ export default function NewReadScreen() {
   }, []);
 
   useEffect(() => {
-    getSession().then((session) => {
-      getReadStateSettings(session?.userInfo.id).then((r) => {
+    getSession().then(session => {
+      getReadStateSettings(session?.userInfo.id).then(r => {
         if (r) {
           setReadStates(r);
           db.getBookDataDetails(
             data.custId,
             data.billMonth,
             data.readTimes,
-          ).then((details) => {
+          ).then(details => {
             if (details) {
               if (!details.readStateId) {
-                const readState = r.items.find((it) => it.stateName === '正常');
+                const readState = r.items.find(it => it.stateName === '正常');
                 details.readStateId = readState?.id;
                 setNewData(details);
               }
@@ -159,33 +159,31 @@ export default function NewReadScreen() {
     switch (route.params.mode) {
       case 'read':
         result = bookDataItems.filter(
-          (it) =>
+          it =>
             it.bookSortIndex < newData.bookSortIndex && it.recordState !== 0,
         );
         break;
       case 'unread':
         result = bookDataItems.filter(
-          (it) =>
+          it =>
             it.bookSortIndex < newData.bookSortIndex && it.recordState === 0,
         );
         break;
       case 'all':
         result = bookDataItems.filter(
-          (it) => it.bookSortIndex < newData.bookSortIndex,
+          it => it.bookSortIndex < newData.bookSortIndex,
         );
         break;
     }
     if (result.length > 0) {
       const r = result[result.length - 1];
       if (!r.readStateId) {
-        const readState = readStates?.items.find(
-          (it) => it.stateName === '正常',
-        );
+        const readState = readStates?.items.find(it => it.stateName === '正常');
         r.readStateId = readState?.id;
       }
       setNewData(r);
       setAmount(0);
-      db.getAttachments(r.custId, r.readTimes, r.billMonth).then((rs) => {
+      db.getAttachments(r.custId, r.readTimes, r.billMonth).then(rs => {
         setAttachments(rs);
       });
     } else {
@@ -204,29 +202,29 @@ export default function NewReadScreen() {
     switch (route.params.mode) {
       case 'read':
         result = bookDataItems.filter(
-          (it) =>
+          it =>
             it.bookSortIndex > newData.bookSortIndex && it.recordState !== 0,
         );
         break;
       case 'unread':
         result = bookDataItems.filter(
-          (it) =>
+          it =>
             it.bookSortIndex > newData.bookSortIndex && it.recordState === 0,
         );
         break;
       case 'all':
         result = bookDataItems.filter(
-          (it) => it.bookSortIndex > newData.bookSortIndex,
+          it => it.bookSortIndex > newData.bookSortIndex,
         );
         break;
     }
     if (result.length > 0) {
-      const readState = readStates?.items.find((it) => it.stateName === '正常');
+      const readState = readStates?.items.find(it => it.stateName === '正常');
       const r = result[0];
       r.readStateId = readState?.id;
       setNewData(r);
       setAmount(0);
-      db.getAttachments(r.custId, r.readTimes, r.billMonth).then((rs) => {
+      db.getAttachments(r.custId, r.readTimes, r.billMonth).then(rs => {
         setAttachments(rs);
       });
     } else {
@@ -251,7 +249,7 @@ export default function NewReadScreen() {
           await db.updateReadingNumberByBookId(newData.bookId);
 
           const index = bookDataItems.findIndex(
-            (it) => it.custId === newData.custId,
+            it => it.custId === newData.custId,
           );
           bookDataItems[index] = newData;
           setBookDataItems(bookDataItems);
@@ -276,7 +274,7 @@ export default function NewReadScreen() {
                   await db.updateReadingNumberByBookId(newData.bookId);
 
                   const index = bookDataItems.findIndex(
-                    (it) => it.custId === newData.custId,
+                    it => it.custId === newData.custId,
                   );
                   bookDataItems[index] = newData;
                   setBookDataItems(bookDataItems);
@@ -297,7 +295,7 @@ export default function NewReadScreen() {
             await db.updateReadingNumberByBookId(newData.bookId);
 
             const index = bookDataItems.findIndex(
-              (it) => it.custId === newData.custId,
+              it => it.custId === newData.custId,
             );
             bookDataItems[index] = newData;
             setBookDataItems(bookDataItems);
@@ -338,7 +336,7 @@ export default function NewReadScreen() {
         setNewData({ ...newData });
 
         const index = bookDataItems.findIndex(
-          (it) => it.custId === newData.custId,
+          it => it.custId === newData.custId,
         );
         bookDataItems[index] = newData;
         setBookDataItems(bookDataItems);
@@ -369,7 +367,7 @@ export default function NewReadScreen() {
                   setNewData({ ...newData });
 
                   const index = bookDataItems.findIndex(
-                    (it) => it.custId === newData.custId,
+                    it => it.custId === newData.custId,
                   );
                   bookDataItems[index] = newData;
                   setBookDataItems(bookDataItems);
@@ -397,7 +395,7 @@ export default function NewReadScreen() {
             setNewData({ ...newData });
 
             const index = bookDataItems.findIndex(
-              (it) => it.custId === newData.custId,
+              it => it.custId === newData.custId,
             );
             bookDataItems[index] = newData;
             setBookDataItems(bookDataItems);
@@ -449,7 +447,7 @@ export default function NewReadScreen() {
       newData.readTimes,
       newData.billMonth,
     );
-    const newAtts = attachments.filter((it) => it.filePath !== item.filePath);
+    const newAtts = attachments.filter(it => it.filePath !== item.filePath);
     setAttachments(newAtts);
     setAttachmentsModalVisible(false);
   };
@@ -504,7 +502,7 @@ export default function NewReadScreen() {
             });
           });
         })
-        .catch((e) => {
+        .catch(e => {
           Toast.fail(e.message);
         })
         .finally(() => {
@@ -522,10 +520,7 @@ export default function NewReadScreen() {
         },
         {
           text: '立即拍照',
-          onPress: () =>
-            navigation.navigate('Camera', {
-              callback: addNewAttachment,
-            }),
+          onPress: () => onTakePhotoClick(),
         },
       ]);
     } else {
@@ -548,7 +543,7 @@ export default function NewReadScreen() {
     );
   };
 
-  const renderLastReadingItem = (item) => {
+  const renderLastReadingItem = item => {
     return (
       <View style={styles.listItem}>
         <Text style={[styles.listItemText, { flex: 2 }]}>
@@ -557,10 +552,7 @@ export default function NewReadScreen() {
         <Text style={styles.listItemText}>{item.reading}</Text>
         <Text style={styles.listItemText}>{item.readWater}</Text>
         <Text style={styles.listItemText}>
-          {
-            readStates?.items.find((it) => it.id === item.readStateId)
-              ?.stateName
-          }
+          {readStates?.items.find(it => it.id === item.readStateId)?.stateName}
         </Text>
       </View>
     );
@@ -576,7 +568,7 @@ export default function NewReadScreen() {
           marginTop: scaleSize(14),
         }}>
         {renderReadingHeader()}
-        {items.map((it) => {
+        {items.map(it => {
           return renderLastReadingItem(it);
         })}
       </View>
@@ -732,6 +724,14 @@ export default function NewReadScreen() {
               setAttachmentsModalVisible(false);
               navigation.navigate('Camera', {
                 callback: addNewAttachment,
+                mode: 'photo',
+              });
+            }}
+            onTakeVideo={() => {
+              setAttachmentsModalVisible(false);
+              navigation.navigate('Camera', {
+                callback: addNewAttachment,
+                mode: 'video',
               });
             }}
             files={attachments}
@@ -754,12 +754,12 @@ export default function NewReadScreen() {
           <NewReadSettings
             readStates={readStates}
             selectedStateId={newData.readStateId}
-            onSelected={(item) => {
+            onSelected={item => {
               l.info('选择抄表状态', item);
               setSettingsModalVisible(false);
               setNewData({ ...newData, readStateId: item.id });
             }}
-            onSaved={(r) => {
+            onSaved={r => {
               setSettingsModalVisible(false);
               setReadStates(r);
             }}
@@ -804,7 +804,7 @@ export default function NewReadScreen() {
                     newData.steelMark,
                     newData.installLocation,
                   ]
-                    .filter((it) => it)
+                    .filter(it => it)
                     .join('/')}
                 </Text>
               </View>
@@ -841,6 +841,29 @@ export default function NewReadScreen() {
         </View>
       </View>
     );
+  };
+
+  const onTakePhotoClick = () => {
+    AntModal.operation([
+      {
+        text: '拍照片',
+        onPress: () => {
+          navigation.navigate('Camera', {
+            mode: 'photo',
+            callback: addNewAttachment,
+          });
+        },
+      },
+      {
+        text: '拍视频',
+        onPress: () => {
+          navigation.navigate('Camera', {
+            mode: 'video',
+            callback: addNewAttachment,
+          });
+        },
+      },
+    ]);
   };
 
   return (
@@ -904,7 +927,7 @@ export default function NewReadScreen() {
                   style={styles.remark}
                   placeholder="点击添加备注(100字以内)"
                   placeholderTextColor="#999999"
-                  onChangeText={(text) =>
+                  onChangeText={text =>
                     setNewData({ ...newData, readRemark: text })
                   }
                   value={newData.readRemark}
@@ -929,14 +952,14 @@ export default function NewReadScreen() {
               newData.recordState === 2 ||
               newData.recordState === 3 ||
               newData.readStateId ===
-                readStates?.items.find((it) => it.stateName === '无量')?.id
+                readStates?.items.find(it => it.stateName === '无量')?.id
             }
             onDisabledCall={() => {
               if (newData.recordState === 2 || newData.recordState === 3) {
                 Toast.info('当前数据已复核或已开账，不允许修改');
               } else if (
                 newData.readStateId ===
-                readStates?.items.find((it) => it.stateName === '无量')?.id
+                readStates?.items.find(it => it.stateName === '无量')?.id
               ) {
                 Toast.info('无法修改抄码，请切换抄表状态');
               }
@@ -954,18 +977,14 @@ export default function NewReadScreen() {
               }
             }}
             onNumberClick={onNumberClick}
-            onPhotoClick={() =>
-              navigation.navigate('Camera', {
-                callback: addNewAttachment,
-              })
-            }
+            onPhotoClick={onTakePhotoClick}
             onConfirmClick={onConfirmClick}
             onNextClick={nextItem}
             onPreClick={preItem}
             onSettingsOpen={() => setSettingsModalVisible(true)}
             readStates={readStates}
             selectStateId={newData.readStateId}
-            onStateSelect={(item) => {
+            onStateSelect={item => {
               l.info('选择抄表状态', item, newData);
 
               const valueData = {

@@ -14,6 +14,7 @@ import { AttachmentDbItem } from '../data/models';
 interface Props {
   files: AttachmentDbItem[];
   onTakePhoto: () => void;
+  onTakeVideo: () => void;
   onPhotoClick: (item: AttachmentDbItem) => void;
   onPhotoDeleteClick: (item: AttachmentDbItem) => void;
 }
@@ -21,6 +22,7 @@ interface Props {
 export default function Attachments({
   files,
   onTakePhoto,
+  onTakeVideo,
   onPhotoClick,
   onPhotoDeleteClick,
 }: Props) {
@@ -95,7 +97,7 @@ export default function Attachments({
         ) : (
           <TouchableOpacity
             style={styles.takeImageContainer}
-            onPress={() => onTakePhoto()}>
+            onPress={() => onTakeVideo()}>
             <Image
               style={styles.takeImage}
               source={require('../assets/qietu/chaobiaoluru/enter_icon_camera2_normal.png')}
@@ -108,15 +110,15 @@ export default function Attachments({
 
   const renderPhotosItems = () => {
     const items = files.filter(
-      (it) => !(it.filePath || ('' as string)).endsWith('.mp4'),
+      it => !(it.filePath || ('' as string)).endsWith('.mp4'),
     );
     return (
       <FlatList<AttachmentDbItem>
         style={styles.items}
         data={[...items, { fileName: 'ADD' }]}
         numColumns={3}
-        renderItem={(item) => renderPhotoItem(item, items)}
-        keyExtractor={(item) =>
+        renderItem={item => renderPhotoItem(item, items)}
+        keyExtractor={item =>
           item.filePath || `${item.custId}${item.readTimes}${item.billMonth}`
         }
       />
@@ -124,7 +126,7 @@ export default function Attachments({
   };
 
   const renderVideosItems = () => {
-    const items = files.filter((it) =>
+    const items = files.filter(it =>
       (it.filePath || ('' as string)).endsWith('.mp4'),
     );
     return (
@@ -132,8 +134,8 @@ export default function Attachments({
         style={styles.items}
         data={[...items, { fileName: 'ADD' }]}
         numColumns={3}
-        renderItem={(item) => renderVideoItem(item, items)}
-        keyExtractor={(item) =>
+        renderItem={item => renderVideoItem(item, items)}
+        keyExtractor={item =>
           item.filePath || `${item.custId}${item.readTimes}${item.billMonth}`
         }
       />

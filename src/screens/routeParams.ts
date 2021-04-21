@@ -36,6 +36,7 @@ export type MainStackParamList = {
   };
   Camera: {
     callback: (result: MobileFileDto) => void;
+    mode: 'photo' | 'video';
   };
   Payment: {
     data: PdaReadDataDto & PdaPaymentSubtotal;

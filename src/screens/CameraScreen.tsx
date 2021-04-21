@@ -22,6 +22,7 @@ import ImageMarker, {
   TextBackgroundType,
 } from 'react-native-image-marker';
 import dayjs from 'dayjs';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const MAX_DURATION = 10;
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -74,23 +75,30 @@ export default function CameraScreen() {
   const [timer, setTimer] = React.useState<number>();
 
   const takeVideo = async () => {
+    if (timing > 0) {
+      camera.current?.stopRecording();
+      setTiming(0);
+      return;
+    }
     l.info('开始录像');
-    setTiming(MAX_DURATION);
+    let dt = MAX_DURATION;
     const t = setInterval(() => {
-      l.info('timing');
-      if (timing > 1) {
-        setTiming(timing - 1);
+      l.info('timing', dt);
+      if (dt > 1) {
+        dt = dt - 1;
+        setTiming(dt);
       }
     }, 1000);
     setTimer(t);
     setTimeout(() => {
       clearInterval(t);
-    }, MAX_DURATION);
+      setTiming(0);
+    }, MAX_DURATION * 1000);
 
     const data = await camera?.current?.recordAsync({
       quality: '480p',
       maxDuration: MAX_DURATION,
-      maxFileSize: MAX_FILE_SIZE,
+      // maxFileSize: MAX_FILE_SIZE,
     });
     if (data?.uri) {
       const fileInfo = await stat(data?.uri);
@@ -101,6 +109,14 @@ export default function CameraScreen() {
         fileSource: 2,
       };
       setResult(r);
+    }
+  };
+
+  const onButtonClick = () => {
+    if (route.params.mode === 'photo') {
+      takePicture();
+    } else {
+      takeVideo();
     }
   };
 
@@ -121,23 +137,22 @@ export default function CameraScreen() {
         }}>
         <TouchableOpacity
           activeOpacity={1}
-          onPress={takePicture}
-          style={styles.capture}
-          onLongPress={takeVideo}
-          onPressOut={() => {
-            camera?.current?.stopRecording();
-            setTiming(0);
-            timer && clearInterval(timer);
-            l.info('停止录像');
-          }}>
+          onPress={onButtonClick}
+          style={styles.capture}>
           <AnimatedCircularProgress
             size={100}
             width={10}
             backgroundWidth={30}
-            fill={(timing / MAX_DURATION) * 100}
+            fill={
+              timing === 0 ? 0 : ((MAX_DURATION - timing) / MAX_DURATION) * 100
+            }
             tintColor="red"
             backgroundColor={colorWhite}>
-            {() => <Text style={styles.timing}>{timing}</Text>}
+            {() => (
+              <Text style={styles.timing}>
+                {route.params.mode === 'video' && timing > 0 ? timing : ''}
+              </Text>
+            )}
           </AnimatedCircularProgress>
         </TouchableOpacity>
       </View>
@@ -251,5 +266,6 @@ const styles = StyleSheet.create({
   },
   timing: {
     fontSize: scaleSize(40),
+    color: colorWhite,
   },
 });
