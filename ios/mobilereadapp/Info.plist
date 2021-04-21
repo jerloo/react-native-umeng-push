@@ -70,6 +70,8 @@
 		<string>ThfMO0Iu5SW5b79zfCS569mSdBUy4ksvOXqog</string>
 		<key>CodePushServerUrl</key>
 		<string>http://175.24.249.87:3000/</string>
+		<key>CodePushServerURL</key>
+		<string>http://175.24.249.87:3000/</string>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
 			<string>baidumap</string>
