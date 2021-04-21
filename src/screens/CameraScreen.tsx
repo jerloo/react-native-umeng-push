@@ -41,29 +41,18 @@ export default function CameraScreen() {
       text: dayjs().format('YYYY-MM-DD HH:mm:ss'),
       position: Position.topRight,
       fontName: 'Arial-BoldItalicMT',
-      X: 30,
-      Y: 30,
-      color: 'red',
+      color: '#FF0000',
       fontSize: 18,
-      shadowStyle: {
-        dx: 5,
-        dy: 5,
-        radius: 5,
-        color: '#CCC',
-      },
-      textBackgroundStyle: {
-        type: TextBackgroundType.stretchY,
-        paddingX: 10,
-        paddingY: 10,
-        color: 'transparent',
-      },
       scale: 1,
       quality: 100,
-    }).then((path) => {
-      return Platform.OS === 'android'
-        ? 'file://' + path
-        : path.replace('file://', '');
-    });
+    })
+      .then(path => {
+        return Platform.OS === 'android' ? 'file://' + path : path;
+      })
+      .catch(err => {
+        l.error('添加水印失败');
+        l.error(err);
+      });
   };
 
   const takePicture = async () => {
