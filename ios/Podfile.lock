@@ -296,7 +296,7 @@ PODS:
     - React-Core
   - react-native-image-picker (3.2.1):
     - React-Core
-  - react-native-lighting (1.2.2):
+  - react-native-lighting (1.3.0):
     - React
   - react-native-netinfo (5.9.10):
     - React-Core
@@ -699,7 +699,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: 1965db75c851b15e77a22ca0ac78e32af6b571ae
   react-native-get-random-values: f0fc24a5887a3341589515a86282a574407b59e4
   react-native-image-picker: 64d12e81f3d9dad0af107fe6536b295d51932ec0
-  react-native-lighting: 59287f5ce719117881f01b0cad663565ebc4c5fc
+  react-native-lighting: a23a77845b8a18f939bbe7a938f0c0b5c6cb74bc
   react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-segmented-control: 65df6cd0619b780b3843d574a72d4c7cec396097
