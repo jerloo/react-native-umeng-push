@@ -17,13 +17,9 @@ import { colorWhite } from '../styles';
 import { MainStackParamList } from './routeParams';
 import { stat } from 'react-native-fs';
 import { l } from '../utils/logUtils';
-import ImageMarker, {
-  Position,
-  TextBackgroundType,
-} from 'react-native-image-marker';
+import ImageMarker, { Position } from 'react-native-image-marker';
 import dayjs from 'dayjs';
-import AsyncStorage from '@react-native-community/async-storage';
-
+import { isVideo } from '../utils/attachUtils';
 const MAX_DURATION = 10;
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
@@ -98,6 +94,7 @@ export default function CameraScreen() {
     const data = await camera?.current?.recordAsync({
       quality: '480p',
       maxDuration: MAX_DURATION,
+      codec: 'JPEG',
       // maxFileSize: MAX_FILE_SIZE,
     });
     if (data?.uri) {
@@ -188,7 +185,7 @@ export default function CameraScreen() {
   const renderPreview = () => {
     return (
       <>
-        {result?.filePath?.endsWith('.mp4') ? (
+        {isVideo(result?.filePath) ? (
           <Video
             source={{ uri: result?.filePath }} // Can be a URL or a local file.
             // ref={player} // Store reference

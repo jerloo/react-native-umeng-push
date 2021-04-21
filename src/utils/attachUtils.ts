@@ -35,9 +35,9 @@ export const uploadAttachments = async (
     'mobilereadapp/' +
     `${session?.tenantName}/${dtYearMonth}/${username}` +
     `/${dayjs().format('YYYY-MM-DD')}-${uuid.v4().toString().replace('-', '')}`;
-  const filesToUpload = files.filter((it) => !it.uploaded);
+  const filesToUpload = files.filter(it => !it.uploaded);
   l.info('待上传附件列表', filesToUpload);
-  const requests = filesToUpload.map((it) => {
+  const requests = filesToUpload.map(it => {
     const uploadRequest = {
       bucket: `${COS_BUCKET_NAME}-1259078701`,
       object: objectName + it.filePath?.substring(it.filePath.lastIndexOf('/')),
@@ -46,7 +46,7 @@ export const uploadAttachments = async (
     };
     return uploadRequest;
   });
-  const rsp = requests.map((it) => CosXmlReactNative.upload(it));
+  const rsp = requests.map(it => CosXmlReactNative.upload(it));
   const results = await Promise.all(rsp);
   results.forEach((value, index) => {
     filesToUpload[index].url = value.Location;
@@ -58,7 +58,7 @@ export const uploadAttachments = async (
         custId,
         billMonth,
         readTimes,
-        files: filesToUpload.map((it) => {
+        files: filesToUpload.map(it => {
           const item: MobileFileDto = {
             fileName: it.fileName,
             filePath:
@@ -74,4 +74,8 @@ export const uploadAttachments = async (
     ],
   });
   await db.updateAttachmentsUploaded(custId, filesToUpload);
+};
+
+export const isVideo = (path: string) => {
+  return path.endsWith('.mp4') || path.endsWith('.mov');
 };

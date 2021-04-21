@@ -51,7 +51,7 @@ import { Modal as AntModal } from '@ant-design/react-native';
 import { meterState, recordState } from '../utils/stateConverter';
 import Video from 'react-native-video';
 import { AttachmentDbItem } from '../data/models';
-import { tryUploadAttachments } from '../utils/attachUtils';
+import { isVideo, tryUploadAttachments } from '../utils/attachUtils';
 import { toggle } from 'react-native-lighting';
 import { l } from '../utils/logUtils';
 import { getSession } from '../utils/sesstionUtils';
@@ -671,7 +671,7 @@ export default function NewReadScreen() {
         animationOut="zoomOut"
         style={{ justifyContent: 'center', alignItems: 'center' }}
         onChange={setPreviewModalVisible}>
-        {currentPreviewFile?.filePath?.endsWith('.mp4') ? (
+        {isVideo(currentPreviewFile?.filePath) ? (
           <Video
             source={{ uri: currentPreviewFile?.filePath }} // Can be a URL or a local file.
             ref={player} // Store reference

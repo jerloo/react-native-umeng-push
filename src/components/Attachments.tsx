@@ -9,7 +9,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { scaleSize } from 'react-native-responsive-design';
+import Video from 'react-native-video';
 import { AttachmentDbItem } from '../data/models';
+import { isVideo } from '../utils/attachUtils';
 
 interface Props {
   files: AttachmentDbItem[];
@@ -76,7 +78,7 @@ export default function Attachments({
         {info.index < items.length ? (
           <View style={styles.itemContainer}>
             <TouchableOpacity onPress={() => onPhotoClick(info.item)}>
-              <Image
+              <Video
                 style={styles.image}
                 source={{ uri: info.item.filePath }}
               />
@@ -109,9 +111,7 @@ export default function Attachments({
   };
 
   const renderPhotosItems = () => {
-    const items = files.filter(
-      it => !(it.filePath || ('' as string)).endsWith('.mp4'),
-    );
+    const items = files.filter(it => !(it.filePath || isVideo('' as string)));
     return (
       <FlatList<AttachmentDbItem>
         style={styles.items}
@@ -126,9 +126,7 @@ export default function Attachments({
   };
 
   const renderVideosItems = () => {
-    const items = files.filter(it =>
-      (it.filePath || ('' as string)).endsWith('.mp4'),
-    );
+    const items = files.filter(it => it.filePath || isVideo('' as string));
     return (
       <FlatList<AttachmentDbItem>
         style={styles.items}
