@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">云抄表</string>
-    <string name="CodePushDeploymentKey">a2IeOdfbWPSOc6sF6UqCofQjluSv4ksvOXqog</string>
-    <string name="CodePushServerUrl">http://codepush.mashangjiama.com</string>
+    <string name="CodePushDeploymentKey">Hc10tDcAWR8nINEOqogzLmMIpLjR4ksvOXqog</string>
+    <string name="CodePushServerUrl">http://175.24.249.87:3000/</string>
 </resources>
