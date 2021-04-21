@@ -76,6 +76,6 @@ export const uploadAttachments = async (
   await db.updateAttachmentsUploaded(custId, filesToUpload);
 };
 
-export const isVideo = (path: string) => {
-  return path.endsWith('.mp4') || path.endsWith('.mov');
+export const isVideo = (path?: string) => {
+  return path?.endsWith('.mp4') || path?.endsWith('.mov');
 };

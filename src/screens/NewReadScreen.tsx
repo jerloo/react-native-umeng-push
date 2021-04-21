@@ -715,7 +715,10 @@ export default function NewReadScreen() {
             width: scaleSize(509),
             backgroundColor: colorWhite,
             height: '100%',
-            paddingTop: StatusBar.currentHeight,
+            paddingTop:
+              Platform.OS === 'android'
+                ? StatusBar.currentHeight
+                : StatusBar.currentHeight + 40,
           }}>
           <Attachments
             onPhotoClick={onPhotoClick}
