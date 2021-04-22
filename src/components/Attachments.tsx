@@ -111,7 +111,7 @@ export default function Attachments({
   };
 
   const renderPhotosItems = () => {
-    const items = files.filter(it => !(it.filePath || isVideo('' as string)));
+    const items = files.filter(it => !isVideo(it.filePath));
     return (
       <FlatList<AttachmentDbItem>
         style={styles.items}
@@ -126,7 +126,7 @@ export default function Attachments({
   };
 
   const renderVideosItems = () => {
-    const items = files.filter(it => it.filePath || isVideo('' as string));
+    const items = files.filter(it => isVideo(it.filePath));
     return (
       <FlatList<AttachmentDbItem>
         style={styles.items}
