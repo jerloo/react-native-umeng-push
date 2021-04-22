@@ -2,10 +2,15 @@ package com.example
 
 import android.app.Application
 import android.content.Context
-import com.jerloo.reactnativeumengpush.RNUmengPushPackage
 import com.facebook.react.*
 import com.facebook.soloader.SoLoader
+import com.jerloo.reactnativeumengpush.RNUmengPushPackage
+import com.jerloo.reactnativeumengpush.help.PushHelper
+import com.jerloo.reactnativeumengpush.help.PushHelper.init
+import com.jerloo.reactnativeumengpush.help.PushHelper.isMainProcess
+import com.umeng.commonsdk.UMConfigure
 import java.lang.reflect.InvocationTargetException
+
 
 class MainApplication : Application(), ReactApplication {
 
@@ -35,7 +40,34 @@ class MainApplication : Application(), ReactApplication {
         super.onCreate()
         SoLoader.init(this, false)
         initializeFlipper(this, reactNativeHost.reactInstanceManager)
+
+        //日志开关
+        UMConfigure.setLogEnabled(true);
+        //预初始化
+//        PushHelper.preInit(this);
+        //正式初始化
+//        initPushSDK();
+
+        if (isMainProcess(this)) {
+            Thread { init(applicationContext, "", "", "") }.start()
+        }
     }
+
+    /**
+     * 初始化推送SDK，在用户隐私政策协议同意后，再做初始化
+     */
+//    private fun initPushSDK() {
+//        /*
+//         * 判断用户是否已同意隐私政策
+//         * 当同意时，直接进行初始化；
+//         * 当未同意时，待用户同意后，通过PushHelper.init(...)方法进行初始化。
+//         */
+//        val agreed: Boolean = MyPreferences.getInstance(this).hasAgreePrivacyAgreement()
+//        if (agreed && isMainProcess(this)) {
+//            //建议在线程中执行初始化
+//            Thread { init(applicationContext) }.start()
+//        }
+//    }
 
     companion object {
 
