@@ -1,11 +1,11 @@
-package com.alexdemchenko.reactnativemoduletemplate
+package com.jerloo.reactnativeumengpush
 
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 
-class RNModuleTemplateModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+class RNUmengPushModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
-    override fun getName() = "RNModuleTemplateModule"
+    override fun getName() = "RNUmengPushModule"
 
     override fun getConstants(): MutableMap<String, Any> {
         return hashMapOf("count" to 1)
