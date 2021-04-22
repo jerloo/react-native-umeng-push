@@ -9,7 +9,7 @@ PODS:
     - JWT (~> 3.0.0-beta.12)
     - React-Core
     - SSZipArchive (~> 2.2.2)
-  - cos-xml-react-native (1.0.1):
+  - cos-xml-react-native (1.0.2):
     - QCloudCOSXML/Transfer
     - React
   - DoubleConversion (1.1.6)
@@ -308,6 +308,11 @@ PODS:
     - React
   - react-native-sqlite-storage (5.0.0):
     - React
+  - react-native-umeng-push (0.0.3):
+    - React
+    - UMCommon
+    - UMCSecurityPlugins
+    - UMPush
   - react-native-video (5.1.1):
     - React-Core
     - react-native-video/Video (= 5.1.1)
@@ -410,6 +415,12 @@ PODS:
   - RNVectorIcons (8.0.0):
     - React-Core
   - SSZipArchive (2.2.3)
+  - UMCommon (7.2.8):
+    - UMDevice
+  - UMCSecurityPlugins (1.0.6)
+  - UMDevice (1.2.0)
+  - UMPush (3.3.1):
+    - UMCommon
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -471,6 +482,7 @@ DEPENDENCIES:
   - "react-native-segmented-control (from `../node_modules/@react-native-community/segmented-control`)"
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-external-storage`)
+  - "react-native-umeng-push (from `../node_modules/@apprush/react-native-umeng-push`)"
   - react-native-video (from `../node_modules/react-native-video`)
   - "react-native-viewpager (from `../node_modules/@react-native-community/viewpager`)"
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -520,6 +532,10 @@ SPEC REPOS:
     - QCloudCore
     - QCloudCOSXML
     - SSZipArchive
+    - UMCommon
+    - UMCSecurityPlugins
+    - UMDevice
+    - UMPush
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -593,6 +609,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/slider"
   react-native-sqlite-storage:
     :path: "../node_modules/react-native-sqlite-external-storage"
+  react-native-umeng-push:
+    :path: "../node_modules/@apprush/react-native-umeng-push"
   react-native-video:
     :path: "../node_modules/react-native-video"
   react-native-viewpager:
@@ -660,7 +678,7 @@ SPEC CHECKSUMS:
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CodePush: 9bb93f52a44ee80b72739d89dead9c7e86c3bd3a
-  cos-xml-react-native: 80221f9a566a465778936b5ace502c599273a5c7
+  cos-xml-react-native: c02bc1e782f2d6f13c2e262748fba9afd4646d3a
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   FBLazyVector: 49cbe4b43e445b06bf29199b6ad2057649e4c8f5
   FBReactNativeSpec: cffb4c6f39e1780c3557b8e7279b6f7365c0b8f4
@@ -705,6 +723,7 @@ SPEC CHECKSUMS:
   react-native-segmented-control: 65df6cd0619b780b3843d574a72d4c7cec396097
   react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
   react-native-sqlite-storage: 418ef4afc5e6df6ce3574c4617e5f0b65cffde55
+  react-native-umeng-push: bcd8869b3e5bbc0d406ddd4152042d2217f8047a
   react-native-video: 0bb76b6d6b77da3009611586c7dbf817b947f30e
   react-native-viewpager: ea945e2881ce9a4a8bcdc84de4ec65ff23c90f6e
   React-perflogger: 9c547d8f06b9bf00cb447f2b75e8d7f19b7e02af
@@ -735,6 +754,10 @@ SPEC CHECKSUMS:
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: f67a1abce2ec73e62fe4606e8110e95a832bc859
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
+  UMCommon: 87e2bf6a5c44df6f60509219a7279d9f94c31d24
+  UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
+  UMDevice: da050ba77e5075b1ec08303065722d25f599e483
+  UMPush: 7ef2ff2fcca16e4d5c7897183a78a0d26f920bfe
   Yoga: 8c8436d4171c87504c648ae23b1d81242bdf3bbf
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
