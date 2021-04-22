@@ -1,4 +1,4 @@
-package com.mobilereadapp;
+package com.yytech.mobilereadapp;
 
 import com.facebook.react.ReactActivity;
 
