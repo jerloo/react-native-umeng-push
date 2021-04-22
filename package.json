@@ -1,6 +1,6 @@
 {
   "name": "@apprush/react-native-umeng-push",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "友盟推送SDK for react-native",
   "homepage": "https://github.com/jerloo/react-native-umeng-push",
   "main": "lib/index.js",
