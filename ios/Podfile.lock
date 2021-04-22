@@ -9,7 +9,7 @@ PODS:
     - JWT (~> 3.0.0-beta.12)
     - React-Core
     - SSZipArchive (~> 2.2.2)
-  - cos-xml-react-native (1.0.1):
+  - cos-xml-react-native (1.0.2):
     - QCloudCOSXML/Transfer
     - React
   - DoubleConversion (1.1.6)
@@ -660,7 +660,7 @@ SPEC CHECKSUMS:
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CodePush: 9bb93f52a44ee80b72739d89dead9c7e86c3bd3a
-  cos-xml-react-native: 80221f9a566a465778936b5ace502c599273a5c7
+  cos-xml-react-native: c02bc1e782f2d6f13c2e262748fba9afd4646d3a
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: 49cbe4b43e445b06bf29199b6ad2057649e4c8f5
   FBReactNativeSpec: 58bf0822816fd024c2badc4d3507d9cd7b02074d

@@ -2796,10 +2796,10 @@ cos-nodejs-sdk-v5@^2.9.12:
     request "^2.88.2"
     xml2js "^0.4.19"
 
-cos-xml-react-native-fix-upload@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/cos-xml-react-native-fix-upload/-/cos-xml-react-native-fix-upload-1.0.1.tgz#73d0421b55a0ff45f3a290b25d53ab2a605655e2"
-  integrity sha512-Tv99rOt0LlsSQ96XAh4y8+EZ6ltcpV/UUzav5zwqgu7n7cqxyArgyoxiI9DfxmR2Eu7DgHQruZzijXgifmRlIw==
+cos-xml-react-native-fix-upload@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/cos-xml-react-native-fix-upload/-/cos-xml-react-native-fix-upload-1.0.2.tgz#b2e9b5117aabae2d0c0c0c314a5e4108ed51c509"
+  integrity sha512-IiKh8rnr4DTpjTPA9BJ/lJuRaAduPp5siRNXIdsXDvylw2SEX7x8Fm2J8+AEXauLlNhJZveb8B2i0ydW4A+A0A==
 
 cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
   version "5.2.1"

@@ -182,6 +182,7 @@ export default function ProfileScreen() {
       }
     } catch (e) {
       l.error('上传失败', e);
+      console.log(e);
       Toast.remove(key);
       Toast.fail('上传失败');
     }
@@ -419,7 +420,7 @@ export default function ProfileScreen() {
               thumbColor={settingAlert ? '#f4f3f4' : '#f4f3f4'}
               ios_backgroundColor="#3e3e3e"
               onValueChange={() =>
-                setSettingAlert((previousState) => !previousState)
+                setSettingAlert(previousState => !previousState)
               }
               value={settingAlert}
             />
@@ -433,7 +434,7 @@ export default function ProfileScreen() {
               thumbColor={settingVibrate ? '#f4f3f4' : '#f4f3f4'}
               ios_backgroundColor="#3e3e3e"
               onValueChange={() =>
-                setSettingVibrate((previousState) => !previousState)
+                setSettingVibrate(previousState => !previousState)
               }
               value={settingVibrate}
             />
