@@ -49,36 +49,8 @@ npx react-native run-android --variant=release
 
 https://blog.csdn.net/weixin_43586120/article/details/104622566
 
-1. 在ios目录下新建bundle目录。
-2. 进行编译，离线打包资源
-```console
-react-native bundle  --entry-file index.js --platform ios --dev false --bundle-output ./ios/bundle/index.ios.jsbundle --assets-dest ./ios/bundle
-```
-可以将相关命令加入`package.json`中
-```json
-"scripts": {
-    ...,
-    "bundle-ios":"node node_modules/react-native/local-cli/cli.js bundle --entry-file index.js  --platform ios --dev false --bundle-output ./ios/bundle/index.ios.jsbundle --assets-dest ./ios/bundle"
-}
-```
-3. 打开 xcode 项目文件, 右键项目菜单, `Add Files to "项目名"`
-4. 选择之前打包的bundle文件，在option中选择`Create folder references`,(注意: 添加到项目中的文件夹必须是蓝色)
-5. 设置AppDelegate.m文件
-修改ios目录下与项目同名的文件目录里边的`AppDelegate.m: jsCodeLocation`
-```oc
-NSURL *jsCodeLocation;
-//测试
-#if DEBUG
-jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
- 
-//正式
-#else
-jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
- 
-#endif
-```
-6. Xcode——Product——Schema——Edit Scheme，查看run选择的模式，将项目由debug状态改成release状态（debug为内测，release为发布App Store）
-7. 点击Product——Archive开始打包。显示build完成之后，显示弹框：点击Distribute App
+1. Xcode——Product——Schema——Edit Scheme，查看run选择的模式，将项目由debug状态改成release状态（debug为内测，release为发布App Store）
+2. 点击Product——Archive开始打包。显示build完成之后，显示弹框：点击Distribute App
 
 ### API地址
 
@@ -148,7 +120,7 @@ $ code-push app add CodePushDemoAndroid android react-native #创建android版�
 
 2. `CodePushServerURL`值设置为code-push-server服务地址 http://YOUR_CODE_PUSH_SERVER_IP:3000/ 不在同一台机器的时候，请将YOUR_CODE_PUSH_SERVER_IP改成外网ip或者域名地址。
 
-3. 将默认版本号1.0改成三位1.0.0
+3. 请确认版本号为`1.0.0`这样的三位版本号
 
 ```xml
 ...
@@ -174,6 +146,8 @@ $ code-push app add CodePushDemoAndroid android react-native #创建android版�
 #### 发布更新到服务上
 
 iOS和android要分开发布，所以创建了CodePushDemo-ios和CodePushDemo-android应用
+
+重要: 请在项目根目录进行热更新发布,这样才能正确打包热更新JS代码并且不会报错
 
 ```console
 $ code-push release-react CodePushDemo-ios ios -d Production #iOS版
