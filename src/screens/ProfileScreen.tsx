@@ -132,6 +132,7 @@ export default function ProfileScreen() {
 
     const fileInfo = await stat(currentLogFilePath);
     l.info(`日志文件大小: ${fileInfo.size}`);
+    l.info(currentLogFilePath);
 
     const key = Toast.loading('上传中', 0);
     // 上传 与 暂停后续传对象
