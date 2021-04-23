@@ -24,10 +24,10 @@
     react-native-swipeout "^2.3.6"
     utility-types "^3.10.0"
 
-"@apprush/react-native-umeng-push@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.npmjs.org/@apprush/react-native-umeng-push/-/react-native-umeng-push-0.0.3.tgz#04d942ccc8e512f57dcd221195d155206da134ae"
-  integrity sha512-CJkxzFJrl9cNMPvKBIVQazEAtQVMkclPijIz6ffgLgXLzEMlFJBfbHnLNcgr1vLqiyNdea1nmiep4bQGFE/K5g==
+"@apprush/react-native-umeng-push@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.npmjs.org/@apprush/react-native-umeng-push/-/react-native-umeng-push-0.0.4.tgz#1153237001e133c080750ee0ebdc2803a4cf03cc"
+  integrity sha512-yBheCX63EcFB9e3zs2wSBGxuyN2Lb6y4ooWIezS8JWFXJujG3FMPcr6wXyQ0cwc4YtqPDQ1pY4A4EOjdFl46lA==
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.11":
   version "7.12.11"

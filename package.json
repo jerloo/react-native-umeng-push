@@ -13,7 +13,7 @@
   "dependencies": {
     "@ant-design/icons-react-native": "^2.2.1",
     "@ant-design/react-native": "^4.0.7",
-    "@apprush/react-native-umeng-push": "^0.0.3",
+    "@apprush/react-native-umeng-push": "^0.0.4",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/cameraroll": "^4.0.2",
