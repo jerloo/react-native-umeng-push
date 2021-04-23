@@ -13,6 +13,7 @@
   "dependencies": {
     "@ant-design/icons-react-native": "^2.2.1",
     "@ant-design/react-native": "^4.0.7",
+    "@apprush/cos-xml-react-native": "^1.0.2",
     "@apprush/react-native-umeng-push": "^0.0.4",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/async-storage": "^1.12.1",
@@ -29,7 +30,6 @@
     "add": "^2.0.6",
     "axios": "^0.21.1",
     "axios-pretty-logger": "^0.1.12",
-    "cos-xml-react-native-fix-upload": "^1.0.2",
     "dayjs": "^1.10.4",
     "mobx": "^6.1.8",
     "mobx-react-lite": "^3.2.0",

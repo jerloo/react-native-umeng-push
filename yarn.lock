@@ -24,6 +24,11 @@
     react-native-swipeout "^2.3.6"
     utility-types "^3.10.0"
 
+"@apprush/cos-xml-react-native@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/@apprush/cos-xml-react-native/-/cos-xml-react-native-1.0.2.tgz#f301aafee5abbb352d796e659d08abac819e8734"
+  integrity sha512-E87D2SGjVoBfz9XzEzQ9KRkQK/z+34W7vlykKUKUlLvy7ZWAZqI1X8LkiNW5lHDfOJZpIIhrmrMAkdIH8cZFSQ==
+
 "@apprush/react-native-umeng-push@^0.0.4":
   version "0.0.4"
   resolved "https://registry.npmjs.org/@apprush/react-native-umeng-push/-/react-native-umeng-push-0.0.4.tgz#1153237001e133c080750ee0ebdc2803a4cf03cc"
@@ -2800,11 +2805,6 @@ cos-nodejs-sdk-v5@^2.9.12:
     mime-types "^2.1.24"
     request "^2.88.2"
     xml2js "^0.4.19"
-
-cos-xml-react-native-fix-upload@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/cos-xml-react-native-fix-upload/-/cos-xml-react-native-fix-upload-1.0.2.tgz#b2e9b5117aabae2d0c0c0c314a5e4108ed51c509"
-  integrity sha512-IiKh8rnr4DTpjTPA9BJ/lJuRaAduPp5siRNXIdsXDvylw2SEX7x8Fm2J8+AEXauLlNhJZveb8B2i0ydW4A+A0A==
 
 cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
   version "5.2.1"

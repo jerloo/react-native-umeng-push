@@ -123,28 +123,32 @@ export default function ProfileScreen() {
     // /handa/202101/zhangsa/2021-02-05-001.log.txt
     const objectName = await getObjectKey();
     l.debug('log file object name', objectName);
+    const targetFile =
+      Platform.OS === 'android'
+        ? 'file://' + currentLogFilePath
+        : currentLogFilePath;
     const uploadRequest = {
       bucket: `${COS_BUCKET_NAME}-1259078701`,
       object: objectName,
       // 文件本地 Uri 或者 路径
-      fileUri: 'file://' + currentLogFilePath,
+      fileUri: targetFile,
     };
 
     const fileInfo = await stat(currentLogFilePath);
-    l.info(`日志文件大小: ${fileInfo.size}`);
-    l.info(currentLogFilePath);
+    console.log(`日志文件大小: ${fileInfo.size}`);
+    console.log(targetFile);
 
     const key = Toast.loading('上传中', 0);
     // 上传 与 暂停后续传对象
     // 注意如果是续传，请务必跟初始上传使用同一个 uploadRequest 对象
     try {
       const startAt = new Date();
-      l.info('开始上传 ', dayjs(startAt).format('YYYY-MM-DD HH:mm:ss'));
+      console.log('开始上传 ', dayjs(startAt).format('YYYY-MM-DD HH:mm:ss'));
       const uploadResult = await CosXmlReactNative.upload(
         uploadRequest,
         (processedBytes: number, targetBytes: number) => {
           // 回调进度
-          l.info(
+          console.log(
             'put Progress callback : ',
             processedBytes,
             targetBytes,
@@ -154,10 +158,10 @@ export default function ProfileScreen() {
         },
       );
       const endAt = new Date();
-      l.info('结束上传', dayjs(endAt).format('YYYY-MM-DD HH:mm:ss'));
-      l.info('上传文件耗时', (endAt.getTime() - startAt.getTime()) / 1000);
+      console.log('结束上传', dayjs(endAt).format('YYYY-MM-DD HH:mm:ss'));
+      console.log('上传文件耗时', (endAt.getTime() - startAt.getTime()) / 1000);
       const startRecord = new Date();
-      l.info(
+      console.log(
         '开始调取上传接口添加文件记录 ',
         dayjs(startRecord).format('YYYY-MM-DD HH:mm:ss'),
       );
@@ -167,11 +171,11 @@ export default function ProfileScreen() {
         uploadResult.Location,
       );
       const endRecord = new Date();
-      l.info(
+      console.log(
         '结束调取上传接口添加文件记录 ',
         dayjs(endRecord).format('YYYY-MM-DD HH:mm:ss'),
       );
-      l.info(
+      console.log(
         '调取添加文件记录接口耗时',
         (endRecord.getTime() - startRecord.getTime()) / 1000,
       );

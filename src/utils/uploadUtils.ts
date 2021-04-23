@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
-import CosXmlReactNative from 'cos-xml-react-native-fix-upload';
+import CosXmlReactNative from '@apprush/cos-xml-react-native';
 import dayjs from 'dayjs';
 import { l } from './logUtils';
 

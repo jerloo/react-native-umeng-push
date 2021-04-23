@@ -84,9 +84,9 @@ PODS:
     - RNPermissions
   - Permission-PhotoLibraryAddOnly (3.0.1):
     - RNPermissions
-  - QCloudCore/WithoutMTA (5.8.4)
-  - QCloudCOSXML/Transfer (5.8.4):
-    - QCloudCore/WithoutMTA (= 5.8.4)
+  - QCloudCore/WithoutMTA (5.8.6)
+  - QCloudCOSXML/Transfer (5.8.6):
+    - QCloudCore/WithoutMTA (= 5.8.6)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -308,7 +308,7 @@ PODS:
     - React
   - react-native-sqlite-storage (5.0.0):
     - React
-  - react-native-umeng-push (0.0.3):
+  - react-native-umeng-push (0.0.4):
     - React
     - UMCommon
     - UMCSecurityPlugins
@@ -428,7 +428,7 @@ PODS:
 DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CodePush (from `../node_modules/react-native-code-push`)
-  - cos-xml-react-native (from `../node_modules/cos-xml-react-native-fix-upload`)
+  - "cos-xml-react-native (from `../node_modules/@apprush/cos-xml-react-native`)"
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
@@ -544,7 +544,7 @@ EXTERNAL SOURCES:
   CodePush:
     :path: "../node_modules/react-native-code-push"
   cos-xml-react-native:
-    :path: "../node_modules/cos-xml-react-native-fix-upload"
+    :path: "../node_modules/@apprush/cos-xml-react-native"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   FBLazyVector:
@@ -681,7 +681,7 @@ SPEC CHECKSUMS:
   cos-xml-react-native: c02bc1e782f2d6f13c2e262748fba9afd4646d3a
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: 49cbe4b43e445b06bf29199b6ad2057649e4c8f5
-  FBReactNativeSpec: 58bf0822816fd024c2badc4d3507d9cd7b02074d
+  FBReactNativeSpec: cffb4c6f39e1780c3557b8e7279b6f7365c0b8f4
   Flipper: d3da1aa199aad94455ae725e9f3aa43f3ec17021
   Flipper-DoubleConversion: 38631e41ef4f9b12861c67d17cb5518d06badc41
   Flipper-Folly: f7a3caafbd74bda4827954fd7a6e000e36355489
@@ -699,8 +699,8 @@ SPEC CHECKSUMS:
   Permission-Microphone: bcdaaa22af6217b86fad0843413a238b9413f2d6
   Permission-PhotoLibrary: 29a07bdd077ae760363f73ab52d22a7b88cbd781
   Permission-PhotoLibraryAddOnly: fa32d59bded28fe9f77519289ceba90df946382b
-  QCloudCore: 3dd29860235cab8d84342a6312e8319742520b6c
-  QCloudCOSXML: e6b0028b5e7b89fdf59fc0413a7ccef2465be5d2
+  QCloudCore: bb327d2ad5f2d6b47e35ca73e50206557efd5a60
+  QCloudCOSXML: 4294d95d48f90ca45999b71e2a71a7a63ebcf803
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: 2f8cb5b7533219bf4218a045f92768129cf7050a
   RCTTypeSafety: 512728b73549e72ad7330b92f3d42936f2a4de5b
@@ -723,7 +723,7 @@ SPEC CHECKSUMS:
   react-native-segmented-control: 65df6cd0619b780b3843d574a72d4c7cec396097
   react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
   react-native-sqlite-storage: 418ef4afc5e6df6ce3574c4617e5f0b65cffde55
-  react-native-umeng-push: bcd8869b3e5bbc0d406ddd4152042d2217f8047a
+  react-native-umeng-push: 4897f3dd0d6824acd8e7b5d843968de66f748a52
   react-native-video: 0bb76b6d6b77da3009611586c7dbf817b947f30e
   react-native-viewpager: ea945e2881ce9a4a8bcdc84de4ec65ff23c90f6e
   React-perflogger: 9c547d8f06b9bf00cb447f2b75e8d7f19b7e02af
