@@ -14,6 +14,9 @@ import com.umeng.message.common.inter.ITagManager
 
 class RNUmengPushModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
+    val DidReceiveMessage = "DidReceiveMessage"
+    val DidOpenMessage = "DidOpenMessage"
+
     override fun getName() = "RNUmengPushModule"
 
     override fun getConstants(): MutableMap<String, Any> {
